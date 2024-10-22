@@ -26,7 +26,7 @@ import io.prestosql.spi.security.ViewExpression;
 import io.prestosql.spi.type.Type;
 import org.apache.ranger.plugin.classloader.RangerPluginClassLoader;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;

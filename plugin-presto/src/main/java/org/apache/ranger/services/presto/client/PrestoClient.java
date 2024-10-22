@@ -19,7 +19,7 @@
 package org.apache.ranger.services.presto.client;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.ranger.plugin.client.BaseClient;
 import org.apache.ranger.plugin.client.HadoopConfigHolder;
 import org.apache.ranger.plugin.client.HadoopException;
@@ -49,9 +49,11 @@ public class PrestoClient extends BaseClient implements Closeable {
 
   private static final Logger LOG = LoggerFactory.getLogger(PrestoClient.class);
 
-  private static final String ERR_MSG = "You can still save the repository and start creating "
-    + "policies, but you would not be able to use autocomplete for "
-    + "resource names. Check ranger_admin.log for more info.";
+  private static final String ERR_MSG = """
+    You can still save the repository and start creating \
+    policies, but you would not be able to use autocomplete for \
+    resource names. Check ranger_admin.log for more info.\
+    """;
 
   private Connection con;
 
@@ -101,8 +103,10 @@ public class PrestoClient extends BaseClient implements Closeable {
         Driver driver = (Driver) Class.forName(driverClassName).newInstance();
         DriverManager.registerDriver(driver);
       } catch (SQLException e) {
-        String msgDesc = "initConnection: Caught SQLException while registering"
-          + " the Presto driver.";
+        String msgDesc = """
+          initConnection: Caught SQLException while registering\
+           the Presto driver.\
+          """;
         HadoopException hdpException = new HadoopException(msgDesc, e);
         hdpException.generateResponseDataMap(false, getMessage(e),
           msgDesc + ERR_MSG, null, null);
@@ -114,32 +118,40 @@ public class PrestoClient extends BaseClient implements Closeable {
           msgDesc + ERR_MSG, null, null);
         throw hdpException;
       } catch (InstantiationException ie) {
-        String msgDesc = "initConnection: Class may not have its nullary constructor or "
-          + "may be the instantiation fails for some other reason.";
+        String msgDesc = """
+          initConnection: Class may not have its nullary constructor or \
+          may be the instantiation fails for some other reason.\
+          """;
         HadoopException hdpException = new HadoopException(msgDesc, ie);
         hdpException.generateResponseDataMap(false, getMessage(ie),
           msgDesc + ERR_MSG, null, null);
         throw hdpException;
       } catch (ExceptionInInitializerError eie) {
-        String msgDesc = "initConnection: Got ExceptionInInitializerError, "
-          + "The initialization provoked by this method fails.";
+        String msgDesc = """
+          initConnection: Got ExceptionInInitializerError, \
+          The initialization provoked by this method fails.\
+          """;
         HadoopException hdpException = new HadoopException(msgDesc,
           eie);
         hdpException.generateResponseDataMap(false, getMessage(eie),
           msgDesc + ERR_MSG, null, null);
         throw hdpException;
       } catch (SecurityException se) {
-        String msgDesc = "initConnection: unable to initiate connection to Presto instance,"
-          + " The caller's class loader is not the same as or an ancestor "
-          + "of the class loader for the current class and invocation of "
-          + "s.checkPackageAccess() denies access to the package of this class.";
+        String msgDesc = """
+          initConnection: unable to initiate connection to Presto instance,\
+           The caller's class loader is not the same as or an ancestor \
+          of the class loader for the current class and invocation of \
+          s.checkPackageAccess() denies access to the package of this class.\
+          """;
         HadoopException hdpException = new HadoopException(msgDesc, se);
         hdpException.generateResponseDataMap(false, getMessage(se),
           msgDesc + ERR_MSG, null, null);
         throw hdpException;
       } catch (Throwable t) {
-        String msgDesc = "initConnection: Unable to connect to Presto instance, "
-          + "please provide valid value of field : {jdbc.driverClassName}.";
+        String msgDesc = """
+          initConnection: Unable to connect to Presto instance, \
+          please provide valid value of field : {jdbc.driverClassName}.\
+          """;
         HadoopException hdpException = new HadoopException(msgDesc, t);
         hdpException.generateResponseDataMap(false, getMessage(t),
           msgDesc + ERR_MSG, null, null);

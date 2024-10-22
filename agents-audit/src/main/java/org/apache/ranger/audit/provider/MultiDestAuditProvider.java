@@ -67,8 +67,7 @@ public class MultiDestAuditProvider extends BaseAuditHandler {
 	public void setParentPath(String parentPath) {
 		super.setParentPath(parentPath);
 		for (AuditHandler provider : mProviders) {
-			if (provider instanceof BaseAuditHandler) {
-				BaseAuditHandler baseAuditHander = (BaseAuditHandler) provider;
+			if (provider instanceof BaseAuditHandler baseAuditHander) {
 				baseAuditHander.setParentPath(getName());
 			}
 		}
@@ -78,8 +77,7 @@ public class MultiDestAuditProvider extends BaseAuditHandler {
 	public void setName(String name) {
 		super.setName(name);
 		for (AuditHandler provider : mProviders) {
-			if (provider instanceof BaseAuditHandler) {
-				BaseAuditHandler baseAuditHander = (BaseAuditHandler) provider;
+			if (provider instanceof BaseAuditHandler baseAuditHander) {
 				baseAuditHander.setParentPath(getName());
 			}
 		}
@@ -91,8 +89,7 @@ public class MultiDestAuditProvider extends BaseAuditHandler {
 					+ provider.getClass().getCanonicalName() + ")");
 
 			mProviders.add(provider);
-			if (provider instanceof BaseAuditHandler) {
-				BaseAuditHandler baseAuditHander = (BaseAuditHandler) provider;
+			if (provider instanceof BaseAuditHandler baseAuditHander) {
 				baseAuditHander.setParentPath(getName());
 			}
 		}

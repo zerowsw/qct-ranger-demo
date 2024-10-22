@@ -32,10 +32,10 @@ public class UsernamePasswordCallbackHandler implements CallbackHandler {
     @Override
     public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
         for (Callback callback : callbacks) {
-            if (callback instanceof NameCallback) {
-                handleName((NameCallback) callback);
-            } else if (callback instanceof PasswordCallback) {
-                handlePassword((PasswordCallback) callback);
+            if (callback instanceof NameCallback nameCallback) {
+                handleName(nameCallback);
+            } else if (callback instanceof PasswordCallback passwordCallback) {
+                handlePassword(passwordCallback);
             } else {
                 throw new UnsupportedCallbackException(callback);
             }

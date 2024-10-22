@@ -34,8 +34,8 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.testng.annotations.BeforeMethod;
 
-import javax.ws.rs.HttpMethod;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.HttpMethod;
+import jakarta.ws.rs.core.Response;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,9 +45,9 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.anyString;
 
 @ExtendWith(MockitoExtension.class)
 public class TestRangerClient {
@@ -67,7 +67,7 @@ public class TestRangerClient {
             RangerClient     client     = new RangerClient(restClient);
             RangerService    service    = new RangerService("testType", "testService", "MockedService", "testTag", new HashMap<>());
 
-            when(restClient.get(anyString(), any())).thenReturn(response);
+            when(restClient.get(nullable(String.class), any())).thenReturn(response);
             when(response.getStatus()).thenReturn(GET_TEST_API.getExpectedStatus().getStatusCode());
             when(response.getEntity(String.class)).thenReturn(JsonUtilsV2.objToJson(service));
 
@@ -87,7 +87,7 @@ public class TestRangerClient {
             ClientResponse   response   = mock(ClientResponse.class);
             RangerClient     client     = new RangerClient(restClient);
 
-            when(restClient.get(anyString(), any())).thenReturn(response);
+            when(restClient.get(nullable(String.class), any())).thenReturn(response);
             when(response.getStatus()).thenReturn(ClientResponse.Status.SERVICE_UNAVAILABLE.getStatusCode());
 
             RangerService ret = client.getService(1L);
@@ -105,7 +105,7 @@ public class TestRangerClient {
             ClientResponse   response   = mock(ClientResponse.class);
             RangerClient     client     = new RangerClient(restClient);
 
-            when(restClient.get(anyString(), any())).thenReturn(response);
+            when(restClient.get(nullable(String.class), any())).thenReturn(response);
             when(response.getStatus()).thenReturn(ClientResponse.Status.INTERNAL_SERVER_ERROR.getStatusCode());
 
             client.getService(1L);
@@ -123,7 +123,7 @@ public class TestRangerClient {
             RangerRESTClient restClient = mock(RangerRESTClient.class);
             RangerClient     client     = new RangerClient(restClient);
 
-            when(restClient.get(anyString(), any())).thenReturn(null);
+            when(restClient.get(nullable(String.class), any())).thenReturn(null);
 
             client.getService(1L);
 
@@ -172,7 +172,7 @@ public class TestRangerClient {
         expected.add(new RangerSecurityZoneHeaderInfo(1L, "zone-1"));
         expected.add(new RangerSecurityZoneHeaderInfo(2L, "zone-2"));
 
-        when(restClient.get(anyString(), any())).thenReturn(response);
+        when(restClient.get(nullable(String.class), any())).thenReturn(response);
         when(response.getStatus()).thenReturn(GET_TEST_API.getExpectedStatus().getStatusCode());
         when(response.getEntity(String.class)).thenReturn(JsonUtilsV2.listToJson(expected));
 
@@ -197,7 +197,7 @@ public class TestRangerClient {
         expected.add(new RangerServiceHeaderInfo(1L, "dev_hdfs", "HDFS: DEV", "hdfs"));
         expected.add(new RangerServiceHeaderInfo(2L, "dev_hive", "DEV HADOOP-SQL: DEV", "hive"));
 
-        when(restClient.get(anyString(), any())).thenReturn(response);
+        when(restClient.get(nullable(String.class), any())).thenReturn(response);
         when(response.getStatus()).thenReturn(GET_TEST_API.getExpectedStatus().getStatusCode());
         when(response.getEntity(String.class)).thenReturn(JsonUtilsV2.listToJson(expected));
 

@@ -85,9 +85,11 @@ public class RangerMasterKeyTest {
         RangerKMSDB rangerkmsDb = new RangerKMSDB(RangerKeyStoreProvider.getDBKSConf());
         DaoManager daoManager = rangerkmsDb.getDaoManager();
 
-        String masterKeyPassword = "password0password0password0password0password0password0password0password0"
-            + "password0password0password0password0password0password0password0password0password0password0"
-            + "password0password0password0password0password0password0password0password0password0password0";
+        String masterKeyPassword = """
+            password0password0password0password0password0password0password0password0\
+            password0password0password0password0password0password0password0password0password0password0\
+            password0password0password0password0password0password0password0password0password0password0\
+            """;
 
         RangerMasterKey rangerMasterKey = new RangerMasterKey(daoManager);
         Assertions.assertTrue(rangerMasterKey.generateMasterKey(masterKeyPassword));

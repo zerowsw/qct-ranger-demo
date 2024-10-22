@@ -20,14 +20,14 @@ package org.apache.ranger.service;
 
 import org.apache.ranger.db.XXServiceResourceDao;
 import org.apache.ranger.entity.XXServiceResource;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.MethodOrderer.MethodName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Date;
 
@@ -40,8 +40,8 @@ import org.apache.ranger.db.XXTagDefDao;
 import org.apache.ranger.entity.XXTag;
 import org.apache.ranger.entity.XXTagDef;
 
-@RunWith(MockitoJUnitRunner.class)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@ExtendWith(MockitoExtension.class)
+@TestMethodOrder(MethodName.class)
 public class TestRangerTagService {
 
         @InjectMocks

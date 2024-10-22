@@ -50,8 +50,8 @@ import javax.security.auth.login.Configuration;
 import javax.security.auth.login.LoginContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.apache.hadoop.security.authentication.util.KerberosName;
 import org.apache.hadoop.security.authentication.util.KerberosUtil;
@@ -318,8 +318,8 @@ public class MiscUtil {
 		String ret = null;
 
 		if (log != null) {
-			if (log instanceof String) {
-				ret = (String) log;
+			if (log instanceof String string) {
+				ret = string;
             } else if (getMapper() != null) {
                 try {
                     ret = getMapper().writeValueAsString(log);
@@ -947,8 +947,8 @@ public class MiscUtil {
 		if (value == null) {
 			return 0;
 		}
-		if (value instanceof Integer) {
-			return (Integer) value;
+		if (value instanceof Integer integer) {
+			return integer;
 		}
 		if (value.toString().isEmpty()) {
 			return 0;
@@ -965,8 +965,8 @@ public class MiscUtil {
 		if (value == null) {
 			return 0;
 		}
-		if (value instanceof Long) {
-			return (Long) value;
+		if (value instanceof Long long1) {
+			return long1;
 		}
 		if (value.toString().isEmpty()) {
 			return 0;
@@ -983,8 +983,8 @@ public class MiscUtil {
 		if (value == null) {
 			return null;
 		}
-		if (value instanceof Date) {
-			return (Date) value;
+		if (value instanceof Date date) {
+			return date;
 		}
 		try {
 			// TODO: Do proper parsing based on Solr response value
@@ -999,8 +999,8 @@ public class MiscUtil {
 		if (value == null) {
 			return null;
 		}
-		if (value instanceof Date) {
-			return (Date) value;
+		if (value instanceof Date date) {
+			return date;
 		}
 		try {
 			LocalDateTime localDateTime = LocalDateTime.parse(value.toString(), DateTimeFormatter.ISO_DATE_TIME);

@@ -69,7 +69,7 @@ public abstract class RangerHiveAuthorizerBase extends AbstractHiveAuthorizer {
 		} else if(StringUtil.isEmpty(userName)) {
 			LOG.warn("RangerHiveAuthorizerBase.RangerHiveAuthorizerBase(): hiveAuthenticator.getUserName() returned null/empty");
 		} else if(mUgi == null) {
-			LOG.warn(String.format("RangerHiveAuthorizerBase.RangerHiveAuthorizerBase(): UserGroupInformation.createRemoteUser(%s) returned null", userName));
+			LOG.warn("RangerHiveAuthorizerBase.RangerHiveAuthorizerBase(): UserGroupInformation.createRemoteUser(%s) returned null".formatted(userName));
 		}
 	}
 

@@ -19,19 +19,17 @@ package org.apache.ranger.service;
 import org.apache.ranger.db.RangerDaoManager;
 import org.apache.ranger.entity.XXTagDef;
 import org.apache.ranger.plugin.model.RangerTagDef;
-import org.junit.Assert;
-import org.junit.FixMethodOrder;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.MethodOrderer.MethodName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@ExtendWith(MockitoExtension.class)
+@TestMethodOrder(MethodName.class)
 public class TestRangerTagDefServiceBase {
 	Long id = 1L;
 	String guid = "989898_01_1";
@@ -45,9 +43,6 @@ public class TestRangerTagDefServiceBase {
 	
 	@Mock
 	RangerDaoManager daoMgr;
-	
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
 	
 	@Test
 	public void test1mapViewToEntityBean() {
@@ -63,11 +58,11 @@ public class TestRangerTagDefServiceBase {
 		int operationContext = 1;
 
 		XXTagDef result = rangerTagDefService.mapViewToEntityBean(rangerTagDef,xxTagDef,operationContext);
-		Assert.assertNotNull(result);
-		Assert.assertEquals(result, xxTagDef);
-		Assert.assertEquals(result.getGuid(), xxTagDef.getGuid());
-		Assert.assertEquals(result.getName(), xxTagDef.getName());
-		Assert.assertEquals(result.getId(), xxTagDef.getId());
-		Assert.assertEquals(result.getVersion(), xxTagDef.getVersion());
+		Assertions.assertNotNull(result);
+		Assertions.assertEquals(result, xxTagDef);
+		Assertions.assertEquals(result.getGuid(), xxTagDef.getGuid());
+		Assertions.assertEquals(result.getName(), xxTagDef.getName());
+		Assertions.assertEquals(result.getId(), xxTagDef.getId());
+		Assertions.assertEquals(result.getVersion(), xxTagDef.getVersion());
 	}
 } 

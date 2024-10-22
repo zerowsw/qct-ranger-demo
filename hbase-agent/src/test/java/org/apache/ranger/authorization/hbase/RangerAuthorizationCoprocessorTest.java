@@ -18,12 +18,12 @@
  */
 package org.apache.ranger.authorization.hbase;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Map;
-import java.util.Set;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import java.util.Set;
 
 public class RangerAuthorizationCoprocessorTest {
 

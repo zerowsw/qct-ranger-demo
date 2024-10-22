@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.ranger.audit.model.AuthzAuditEvent;
 import org.apache.ranger.audit.provider.MiscUtil;
 import org.apache.ranger.common.JSONUtil;
@@ -77,7 +77,7 @@ public class CloudWatchAccessAuditsService extends org.apache.ranger.AccessAudit
 		try {
 			result = cloudWatchUtil.searchResources(client, searchCriteria, searchFields, sortFields);
 		} catch (Exception e) {
-			LOGGER.warn(String.format("CloudWatch query failed: %s", e.getMessage()));
+			LOGGER.warn("CloudWatch query failed: %s".formatted(e.getMessage()));
 			throw restErrorUtil.createRESTException("Error querying search engine", MessageEnums.ERROR_SYSTEM);
 		}
 

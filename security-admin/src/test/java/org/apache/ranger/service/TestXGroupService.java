@@ -22,14 +22,17 @@ import org.apache.ranger.biz.RangerBizUtil;
 import org.apache.ranger.db.RangerDaoManager;
 import org.apache.ranger.db.XXGroupDao;
 import org.apache.ranger.db.XXPortalUserDao;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.MethodOrderer.MethodName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
+
 import org.apache.ranger.entity.XXDBBase;
 import org.apache.ranger.entity.XXGroup;
 import org.apache.ranger.entity.XXPortalUser;
@@ -44,8 +47,9 @@ import org.apache.ranger.common.db.BaseDao;
 import static org.apache.ranger.service.RangerBaseModelService.OPERATION_CREATE_CONTEXT;
 import static org.apache.ranger.service.RangerBaseModelService.OPERATION_UPDATE_CONTEXT;
 
-@RunWith(MockitoJUnitRunner.Silent.class)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@ExtendWith(MockitoExtension.class)
+@TestMethodOrder(MethodName.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class TestXGroupService {
 
 	@InjectMocks

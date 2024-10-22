@@ -19,14 +19,14 @@
 
 package org.apache.ranger.usergroupsync;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class TestRegEx {
 	protected String userNameBaseProperty = "ranger.usersync.mapping.username.regex";
@@ -37,7 +37,7 @@ public class TestRegEx {
     List<String> userRegexPatterns = null;
     List<String> groupRegexPatterns = null;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		userNameRegEx = new RegEx();
         //userNameRegEx.init(userNameBaseProperty);
@@ -96,7 +96,7 @@ public class TestRegEx {
         String[] separators = {"%", "#", "&", "!", "@", "-", "~", "=", ",", " "};
         for (String separator : separators) {
             userRegexPatterns = new ArrayList<String>();
-            userRegexPatterns.add(String.format("s%sdark%sDE/dark%sg", separator, separator, separator));
+            userRegexPatterns.add("s%sdark%sDE/dark%sg".formatted(separator, separator, separator));
             userNameRegEx.populateReplacementPatterns(userNameBaseProperty, userRegexPatterns, separator);
             assertEquals("DE/dark_knight_admin", userNameRegEx.transform("dark_knight_admin"));
         }

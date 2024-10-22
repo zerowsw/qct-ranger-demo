@@ -19,10 +19,10 @@
 
 package org.apache.ranger.authorization.credutils.kerberos;
 
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.Credentials;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.config.AuthSchemes;
+import org.apache.hc.client5.http.auth.AuthScope;
+import org.apache.hc.client5.http.auth.Credentials;
+import org.apache.hc.client5.http.auth.CredentialsProvider;
+import org.apache.hc.client5.http.config.AuthSchemes;
 
 public class KerberosCredentialsProvider implements CredentialsProvider {
     private AuthScope authScope;

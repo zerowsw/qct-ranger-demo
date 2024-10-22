@@ -38,8 +38,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ServiceLoader;
@@ -173,10 +173,12 @@ public class KMSWebApp implements ServletContextListener {
       LOG.info("----------------Instantiating key provider ---------------");
       KeyProvider keyProvider =
           createKeyProvider(new URI(providerString), kmsConf);
-      Preconditions.checkNotNull(keyProvider, String.format("No" +
-              " KeyProvider has been initialized, please" +
-              " check whether %s '%s' is configured correctly in" +
-              " kms-site.xml.", KMSConfiguration.KEY_PROVIDER_URI,
+      Preconditions.checkNotNull(keyProvider, ("""
+				No\
+				 KeyProvider has been initialized, please\
+				 check whether %s '%s' is configured correctly in\
+				 kms-site.xml.\
+				""").formatted(KMSConfiguration.KEY_PROVIDER_URI,
           providerString));
       LOG.info("keyProvider = "+keyProvider.toString());
       if (kmsConf.getBoolean(KMSConfiguration.KEY_CACHE_ENABLE,

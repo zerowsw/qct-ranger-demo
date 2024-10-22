@@ -91,7 +91,7 @@ public class HIVERangerAuthorizerTest {
         // Create a temporary directory for the Hive metastore
         File metastoreDir = new File("./metastore_db/").getAbsoluteFile();
         conf.set(HiveConf.ConfVars.METASTORECONNECTURLKEY.varname,
-                 String.format("jdbc:derby:;databaseName=%s;create=true",  metastoreDir.getPath()));
+				"jdbc:derby:;databaseName=%s;create=true".formatted(metastoreDir.getPath()));
 
         conf.set(HiveConf.ConfVars.METASTORE_AUTO_CREATE_ALL.varname, "true");
         conf.set(HiveConf.ConfVars.HIVE_SERVER2_THRIFT_PORT.varname, "" + port);

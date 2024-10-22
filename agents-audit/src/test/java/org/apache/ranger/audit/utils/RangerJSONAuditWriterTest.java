@@ -20,18 +20,17 @@ package org.apache.ranger.audit.utils;
 
 import org.apache.hadoop.fs.CommonPathCapabilities;
 import org.apache.hadoop.fs.FileSystem;
-import org.junit.Test;
 
 import java.io.IOException;
+
+import org.junit.jupiter.api.Test;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.Collections;
 import java.io.PrintWriter;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

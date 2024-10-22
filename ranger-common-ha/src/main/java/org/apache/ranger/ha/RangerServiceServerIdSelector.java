@@ -21,7 +21,7 @@ package org.apache.ranger.ha;
 
 import java.net.InetSocketAddress;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.net.NetUtils;
 import org.slf4j.Logger;
@@ -83,7 +83,7 @@ public class RangerServiceServerIdSelector {
 		}
 
 		if (matchingServerId == null) {
-			String msg = String.format("Could not find server id for this instance. Unable to find IDs matching any local host and port binding among %s", StringUtils.join(ids, ","));
+			String msg = "Could not find server id for this instance. Unable to find IDs matching any local host and port binding among %s".formatted(StringUtils.join(ids, ","));
 			throw new Exception(msg);
 		}
 		return matchingServerId;

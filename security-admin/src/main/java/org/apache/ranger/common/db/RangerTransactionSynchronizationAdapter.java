@@ -22,7 +22,7 @@ package org.apache.ranger.common.db;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 
 import org.apache.ranger.service.RangerTransactionService;
 import org.slf4j.Logger;
@@ -40,7 +40,7 @@ import org.springframework.transaction.support.TransactionSynchronizationAdapter
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import javax.persistence.OptimisticLockException;
+import jakarta.persistence.OptimisticLockException;
 
 @Component
 public class RangerTransactionSynchronizationAdapter extends TransactionSynchronizationAdapter {

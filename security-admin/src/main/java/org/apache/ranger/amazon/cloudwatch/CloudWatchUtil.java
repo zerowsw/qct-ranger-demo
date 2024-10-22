@@ -31,9 +31,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.time.DateUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.common.PropertiesUtil;
 import org.apache.ranger.common.SearchCriteria;
 import org.apache.ranger.common.SearchField;
@@ -150,8 +150,8 @@ public class CloudWatchUtil {
 							toDate = (Date) paramValue;
 						}
 					}
-				} else if (paramValue instanceof Collection) {
-					String fq = orList(fieldName, (Collection<?>) paramValue);
+				} else if (paramValue instanceof Collection<?> collection) {
+					String fq = orList(fieldName, collection);
 					if (StringUtils.isNotBlank(fq)) {
 						filterExpr.add(fq);
 					}

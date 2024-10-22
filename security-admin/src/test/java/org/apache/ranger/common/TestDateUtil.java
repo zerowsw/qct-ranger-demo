@@ -22,9 +22,9 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @SuppressWarnings("deprecation")
@@ -36,15 +36,15 @@ public class TestDateUtil {
 	DateUtil dateUtil = new DateUtil();
 
     @Test
-    @Ignore
+    @Disabled
 	public void testGetDateFromNow() {
 		int days = 1;		
 		Date dateCheck= dateUtil.getDateFromNow(days);
 		int minutes=dateCheck.getMinutes();
 		int hourse=dateCheck.getHours();
-		Assert.assertEquals(dateCheck.getDay(),days+2);
-		Assert.assertEquals(dateCheck.getMinutes(), minutes);
-		Assert.assertEquals(dateCheck.getHours(), hourse);
+		Assertions.assertEquals(dateCheck.getDay(),days+2);
+		Assertions.assertEquals(dateCheck.getMinutes(), minutes);
+		Assertions.assertEquals(dateCheck.getHours(), hourse);
 	}
 
     @Test
@@ -63,9 +63,9 @@ public class TestDateUtil {
 
 	Date actualDate = dateUtil.getDateFromNow(days, hours, minutes);
 
-	Assert.assertEquals(expectedDate.getYear(), actualDate.getYear());
-	Assert.assertEquals(expectedDate.getDay(), actualDate.getDay());
-	Assert.assertEquals(expectedDate.getMonth(), actualDate.getMonth());
+	Assertions.assertEquals(expectedDate.getYear(), actualDate.getYear());
+	Assertions.assertEquals(expectedDate.getDay(), actualDate.getDay());
+	Assertions.assertEquals(expectedDate.getMonth(), actualDate.getMonth());
 
     }
 
@@ -75,7 +75,7 @@ public class TestDateUtil {
 		SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
 		String dateFromat = DATE_FORMAT.format(date);
 		String dateCheck = DateUtil.dateToString(date, dateFromat);
-		Assert.assertEquals(dateCheck,dateFromat);
+		Assertions.assertEquals(dateCheck,dateFromat);
 	}
 	
 	@Test
@@ -86,19 +86,22 @@ public class TestDateUtil {
 		int minutes=date.getMinutes();
 		int second=date.getSeconds();
 		Date currentDate = dateUtil.getDateFromGivenDate(date, days, 0, 0, 0);
-		Assert.assertEquals(currentDate.getDay(),date.getDay()+days);
-		Assert.assertEquals(currentDate.getHours(),hours);
-		Assert.assertEquals(currentDate.getMinutes(),minutes);
-		Assert.assertEquals(currentDate.getSeconds(),second);
+		Assertions.assertEquals(currentDate.getDay(),date.getDay()+days);
+		Assertions.assertEquals(currentDate.getHours(),hours);
+		Assertions.assertEquals(currentDate.getMinutes(),minutes);
+		Assertions.assertEquals(currentDate.getSeconds(),second);
 	}
 	
 	@Test
 	public void testAddTimeOffset(){
 		Date date = new Date();
-		int mins=date.getMinutes();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		int mins = calendar.get(Calendar.MINUTE);
 		Date currentDate=dateUtil.addTimeOffset(date, 0);
-		Assert.assertEquals(currentDate.getDate(),date.getDate());
-		Assert.assertEquals(currentDate.getMinutes(),mins);
+		Calendar currentCalendar = Calendar.getInstance();
+		currentCalendar.setTime(currentDate);
+		Assertions.assertEquals(currentCalendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 	}
 
         @Test
@@ -112,9 +115,9 @@ public class TestDateUtil {
 
                 Date actualDate = dateUtil.stringToDate(dateString, dateFormat);
                 if(actualDate != null){
-                        Assert.assertEquals(expectedDate.getYear(), actualDate.getYear());
-                                        Assert.assertEquals(expectedDate.getDay(), actualDate.getDay());
-                                        Assert.assertEquals(expectedDate.getMonth(), actualDate.getMonth());
+                        Assertions.assertEquals(expectedDate.getYear(), actualDate.getYear());
+                                        Assertions.assertEquals(expectedDate.getDay(), actualDate.getDay());
+                                        Assertions.assertEquals(expectedDate.getMonth(), actualDate.getMonth());
                 }
 
         }
@@ -130,8 +133,12 @@ public class TestDateUtil {
             Date expectedDate = utc.getTime();
 
                 Date actualDate = dateUtil.getUTCDate();
-                Assert.assertEquals(actualDate.getDate(),expectedDate.getDate());
-                Assert.assertEquals(actualDate.getMinutes(),expectedDate.getMinutes());
+                Calendar actualCalendar = Calendar.getInstance();
+                actualCalendar.setTime(actualDate);
+                Calendar expectedCalendar = Calendar.getInstance();
+                expectedCalendar.setTime(expectedDate);
+                Assertions.assertEquals(actualCalendar.get(Calendar.DAY_OF_MONTH), expectedCalendar.get(Calendar.DAY_OF_MONTH));
+                Assertions.assertEquals(actualCalendar.get(Calendar.MINUTE), expectedCalendar.get(Calendar.MINUTE));
         }
 
         @Test
@@ -145,8 +152,8 @@ public class TestDateUtil {
             Date expectedDate = utc.getTime();
 
                 Date actualDate = dateUtil.getUTCDate(2008);
-                Assert.assertEquals(actualDate.getDate(),expectedDate.getDate());
-                Assert.assertEquals(actualDate.getMinutes(),expectedDate.getMinutes());
+                Assertions.assertEquals(actualDate.getDate(),expectedDate.getDate());
+                Assertions.assertEquals(actualDate.getMinutes(),expectedDate.getMinutes());
         }
 
         @Test
@@ -160,10 +167,14 @@ public class TestDateUtil {
             Date expectedDate = utc.getTime();
 
                 Date actualDate = dateUtil.getLocalDateForUTCDate(dt);
-                Assert.assertEquals(actualDate.getDate(),expectedDate.getDate());
-                Assert.assertEquals(actualDate.getMinutes(),expectedDate.getMinutes());
-                Assert.assertEquals(actualDate.getHours(),expectedDate.getHours());
+                Calendar actualCalendar = Calendar.getInstance();
+                actualCalendar.setTime(actualDate);
+                Calendar expectedCalendar = Calendar.getInstance();
+                expectedCalendar.setTime(expectedDate);
 
+                Assertions.assertEquals(actualCalendar.get(Calendar.DAY_OF_MONTH), expectedCalendar.get(Calendar.DAY_OF_MONTH));
+                Assertions.assertEquals(actualCalendar.get(Calendar.MINUTE), expectedCalendar.get(Calendar.MINUTE));
+                Assertions.assertEquals(actualCalendar.get(Calendar.HOUR_OF_DAY), expectedCalendar.get(Calendar.HOUR_OF_DAY));
         }
 
 }

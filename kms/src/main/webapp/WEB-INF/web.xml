@@ -16,7 +16,7 @@
   limitations under the License.
 -->
 
-<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee">
+<web-app version="6.0" xmlns="http://xmlns.jcp.org/xml/ns/javaee">
 
   <display-name>ranger-kms</display-name>
   <absolute-ordering />

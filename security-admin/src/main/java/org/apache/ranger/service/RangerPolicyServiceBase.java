@@ -17,8 +17,8 @@
 
 package org.apache.ranger.service;
 
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.authorization.utils.JsonUtils;
 import org.apache.ranger.common.*;
 import org.apache.ranger.common.SearchField.DATA_TYPE;
@@ -63,14 +63,20 @@ public abstract class RangerPolicyServiceBase<T extends XXPolicyBase, V extends 
 		searchFields.add(new SearchField(SearchFilter.POLICY_NAME, "obj.name", DATA_TYPE.STRING, SEARCH_TYPE.FULL));
 		searchFields.add(new SearchField(SearchFilter.GUID, "obj.guid", DATA_TYPE.STRING, SEARCH_TYPE.FULL));
 		searchFields.add(new SearchField(SearchFilter.USER, "xUser.name", DATA_TYPE.STRING, SEARCH_TYPE.FULL,
-				"XXUser xUser, XXPolicyRefUser refUser", "obj.id = refUser.policyId "
-						+ "and xUser.id = refUser.userId"));
+				"XXUser xUser, XXPolicyRefUser refUser", """
+						obj.id = refUser.policyId \
+						and xUser.id = refUser.userId\
+						"""));
 		searchFields.add(new SearchField(SearchFilter.GROUP, "xGrp.name", DATA_TYPE.STRING, SEARCH_TYPE.FULL,
-				"XXGroup xGrp , XXPolicyRefGroup refGroup", "obj.id = refGroup.policyId "
-						+ "and xGrp.id = refGroup.groupId"));
+				"XXGroup xGrp , XXPolicyRefGroup refGroup", """
+						obj.id = refGroup.policyId \
+						and xGrp.id = refGroup.groupId\
+						"""));
 		searchFields.add(new SearchField(SearchFilter.ROLE, "xRole.name", DATA_TYPE.STRING, SEARCH_TYPE.FULL,
-				"XXRole xRole , XXPolicyRefRole refRole", "obj.id = refRole.policyId "
-				+ "and xRole.id = refRole.roleId"));
+				"XXRole xRole , XXPolicyRefRole refRole", """
+				obj.id = refRole.policyId \
+				and xRole.id = refRole.roleId\
+				"""));
 		//might need updation
 		/*searchFields.add(new SearchField(SearchFilter.POL_RESOURCE, "resMap.value", DATA_TYPE.STRING,
 				SEARCH_TYPE.PARTIAL, "XXPolicyResourceMap resMap, XXPolicyResource polRes",

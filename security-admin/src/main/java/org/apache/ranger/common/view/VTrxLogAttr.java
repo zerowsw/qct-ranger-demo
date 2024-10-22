@@ -126,7 +126,7 @@ public class VTrxLogAttr extends ViewBaseBean implements Serializable{
 			}
 		}
 
-		if (field != null && !field.isAccessible()) {
+		if (field != null && !field.canAccess(obj)) {
 			field.setAccessible(true);
 		}
 
@@ -149,8 +149,8 @@ public class VTrxLogAttr extends ViewBaseBean implements Serializable{
 
 			if (val == null) {
 				enumValue = 0;
-			} else if (val instanceof Number) {
-				enumValue = ((Number) val).intValue();
+			} else if (val instanceof Number number) {
+				enumValue = number.intValue();
 			} else {
 				try {
 					enumValue = Integer.parseInt(val.toString());
@@ -165,13 +165,13 @@ public class VTrxLogAttr extends ViewBaseBean implements Serializable{
 				ret = xaEnumUtil.getLabel(enumName, enumValue);
 			}
 		} else if (val != null) {
-			if (val instanceof String) {
-				ret = (String) val;
-			} else if (val instanceof Collection && ((Collection) val).isEmpty()) {
+			if (val instanceof String string) {
+				ret = string;
+			} else if (val instanceof Collection<?> collection && collection.isEmpty()) {
 				ret = null;
-			} else if (val instanceof Serializable) {
+			} else if (val instanceof Serializable serializable) {
 				try {
-					ret = JsonUtilsV2.objToJson((Serializable) val);
+					ret = JsonUtilsV2.objToJson(serializable);
 				} catch (Exception excp) {
 					// ignore
 				}

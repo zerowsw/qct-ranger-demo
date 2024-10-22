@@ -29,12 +29,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOCase;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.apache.ranger.authorization.hadoop.config.RangerAdminConfig;
 import org.apache.ranger.common.AppConstants;
@@ -1310,12 +1310,12 @@ public class RangerBizUtil {
 		boolean isAuditorKeyAdmin = session.isAuditKeyAdmin();
 		boolean isUser = session.getUserRoleList().contains(RangerConstants.ROLE_USER);
 
-		if (xxDbBase != null && xxDbBase instanceof XXServiceDef) {
-			return hasAccessToXXServiceDef((XXServiceDef) xxDbBase, isKeyAdmin, isSysAdmin, isAuditor, isAuditorKeyAdmin, isUser);
+		if (xxDbBase != null && xxDbBase instanceof XXServiceDef def) {
+			return hasAccessToXXServiceDef(def, isKeyAdmin, isSysAdmin, isAuditor, isAuditorKeyAdmin, isUser);
 		}
 
-		if (xxDbBase != null && xxDbBase instanceof XXService) {
-			return hasAccessToXXService((XXService) xxDbBase, isKeyAdmin, isSysAdmin, isAuditor, isAuditorKeyAdmin, isUser);
+		if (xxDbBase != null && xxDbBase instanceof XXService service) {
+			return hasAccessToXXService(service, isKeyAdmin, isSysAdmin, isAuditor, isAuditorKeyAdmin, isUser);
 		}
 		return false;
 	}
@@ -1609,10 +1609,10 @@ public class RangerBizUtil {
 	}
 
 	public boolean isGdsServiceDef(XXDBBase xxdbBase) {
-		return (xxdbBase instanceof XXServiceDef) && EmbeddedServiceDefsUtil.EMBEDDED_SERVICEDEF_GDS_NAME.equals(((XXServiceDef) xxdbBase).getName());
+		return (xxdbBase instanceof XXServiceDef xxsd) && EmbeddedServiceDefsUtil.EMBEDDED_SERVICEDEF_GDS_NAME.equals(xxsd.getName());
 	}
 
 	public boolean isGdsService(XXDBBase xxdbBase) {
-		return (xxdbBase instanceof XXService) && EmbeddedServiceDefsUtil.instance().getGdsServiceDefId() == ((XXService) xxdbBase).getType();
+		return (xxdbBase instanceof XXService xxs) && EmbeddedServiceDefsUtil.instance().getGdsServiceDefId() == xxs.getType();
 	}
 }

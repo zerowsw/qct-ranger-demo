@@ -111,8 +111,8 @@ public class SolrUtil {
 					continue;
 				}
 				String fieldName = searchField.getFieldName();
-				if (paramValue instanceof Collection) {
-					String fq = orList(fieldName, (Collection<?>) paramValue);
+				if (paramValue instanceof Collection<?> collection) {
+					String fq = orList(fieldName, collection);
 					if (fq != null) {
 						query.addFilterQuery(fq);
 					}

@@ -26,17 +26,18 @@ import org.apache.ranger.plugin.policyresourcematcher.RangerResourceEvaluator;
 import org.apache.ranger.plugin.policyresourcematcher.RangerPolicyResourceMatcher;
 import org.apache.ranger.plugin.resourcematcher.RangerPathResourceMatcher;
 import org.apache.ranger.plugin.resourcematcher.RangerResourceMatcher;
-import org.junit.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Arrays;
+
+import org.junit.jupiter.api.Test;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import static org.junit.Assert.assertEquals;
 
 
 public class TestPathResourceTrie {
@@ -119,7 +120,7 @@ public class TestPathResourceTrie {
 		Set<RangerResourceEvaluator> expected = evaluators.length == 0 ? null : new HashSet<>(Arrays.asList(evaluators));
 		Set<RangerResourceEvaluator> result   = trie.getEvaluatorsForResource(resource, scope);
 
-		assertEquals("incorrect evaluators for resource "  + resource, expected, result);
+		assertEquals(expected, result, "incorrect evaluators for resource "  + resource);
 	}
 
 	private static RangerResourceDef getPathResourceDef() {

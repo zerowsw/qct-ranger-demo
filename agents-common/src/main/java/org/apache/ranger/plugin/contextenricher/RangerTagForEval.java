@@ -19,8 +19,8 @@
 
 package org.apache.ranger.plugin.contextenricher;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.ranger.authorization.utils.JsonUtils;
 import org.apache.ranger.plugin.model.RangerTag;
 import org.apache.ranger.plugin.model.RangerValiditySchedule;
@@ -95,8 +95,8 @@ public class RangerTagForEval implements Serializable {
         if (MapUtils.isNotEmpty(options) && CollectionUtils.isEmpty(validityPeriodEvaluators)) {
             Object value = getOption(RangerTag.OPTION_TAG_VALIDITY_PERIODS);
 
-            if (value != null && value instanceof String) {
-                this.validityPeriods = JsonUtils.jsonToRangerValiditySchedule((String) value);
+            if (value != null && value instanceof String string) {
+                this.validityPeriods = JsonUtils.jsonToRangerValiditySchedule(string);
 
                 validityPeriodEvaluators = createValidityPeriodEvaluators();
             } else {

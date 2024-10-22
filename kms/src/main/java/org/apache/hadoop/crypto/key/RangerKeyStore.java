@@ -68,9 +68,9 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
+import jakarta.xml.bind.DatatypeConverter;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.crypto.key.KeyProvider.Metadata;
 import org.apache.hadoop.crypto.key.RangerKeyStoreProvider.KeyMetadata;
 import org.apache.ranger.entity.XXRangerKeyStore;
@@ -131,9 +131,9 @@ public class RangerKeyStore extends KeyStoreSpi {
 
         Key ret = null;
 
-        if (entry instanceof SecretKeyEntry) {
+        if (entry instanceof SecretKeyEntry keyEntry) {
             try {
-                ret = unsealKey(((SecretKeyEntry) entry).sealedKey, password);
+                ret = unsealKey(keyEntry.sealedKey, password);
             } catch (Exception e) {
                 logger.error("engineGetKey({}) error", alias, e);
             }
@@ -158,8 +158,7 @@ public class RangerKeyStore extends KeyStoreSpi {
         byte[] ret = null;
 
         try {
-            if (entry instanceof SecretKeyByteEntry) {
-                SecretKeyByteEntry key = (SecretKeyByteEntry) entry;
+            if (entry instanceof SecretKeyByteEntry key) {
 
                 ret = masterKeyProvider.decryptZoneKey(key.key);
             }
@@ -201,8 +200,7 @@ public class RangerKeyStore extends KeyStoreSpi {
 
         Metadata ret = null;
 
-        if (entry instanceof SecretKeyByteEntry) {
-            SecretKeyByteEntry  key           = (SecretKeyByteEntry) entry;
+        if (entry instanceof SecretKeyByteEntry key) {
             ObjectMapper        mapper        = new ObjectMapper();
             Map<String, String> attributesMap = null;
 
@@ -597,8 +595,7 @@ public class RangerKeyStore extends KeyStoreSpi {
                     final SecretKey secretKey;
 
 
-                    if (k instanceof JavaKeyStoreProvider.KeyMetadata) {
-                        JavaKeyStoreProvider.KeyMetadata keyMetadata = (JavaKeyStoreProvider.KeyMetadata) k;
+                    if (k instanceof JavaKeyStoreProvider.KeyMetadata keyMetadata) {
                         Field                            f           = JavaKeyStoreProvider.KeyMetadata.class.getDeclaredField(METADATA_FIELDNAME);
 
                         f.setAccessible(true);
@@ -616,8 +613,8 @@ public class RangerKeyStore extends KeyStoreSpi {
                         k = constructor.newInstance(metadata);
 
                         secretKey = new SecretKeySpec(k.getEncoded(), getAlgorithm(metadata.getAlgorithm()));
-                    } else if (k instanceof KeyByteMetadata) {
-                        Metadata metadata = ((KeyByteMetadata) k).metadata;
+                    } else if (k instanceof KeyByteMetadata byteMetadata) {
+                        Metadata metadata = byteMetadata.metadata;
 
                         cipher_field = metadata.getCipher();
                         version      = metadata.getVersions();
@@ -634,8 +631,8 @@ public class RangerKeyStore extends KeyStoreSpi {
 
                             secretKey = new SecretKeySpec(keyByte, getAlgorithm(metadata.getCipher()));
                         }
-                    } else if (k instanceof KeyMetadata) {
-                        Metadata metadata = ((KeyMetadata) k).metadata;
+                    } else if (k instanceof KeyMetadata keyMetadata) {
+                        Metadata metadata = keyMetadata.metadata;
 
                         bit_length   = metadata.getBitLength();
                         cipher_field = metadata.getCipher();
@@ -702,8 +699,7 @@ public class RangerKeyStore extends KeyStoreSpi {
                     final int       bit_length;
                     final int       version;
 
-                    if (k instanceof JavaKeyStoreProvider.KeyMetadata) {
-                        JavaKeyStoreProvider.KeyMetadata keyMetadata = (JavaKeyStoreProvider.KeyMetadata) k;
+                    if (k instanceof JavaKeyStoreProvider.KeyMetadata keyMetadata) {
                         Field                            f           = JavaKeyStoreProvider.KeyMetadata.class.getDeclaredField(METADATA_FIELDNAME);
 
                         f.setAccessible(true);
@@ -719,8 +715,8 @@ public class RangerKeyStore extends KeyStoreSpi {
                         constructor.setAccessible(true);
 
                         k = constructor.newInstance(metadata);
-                    } else if (k instanceof KeyMetadata) {
-                        Metadata metadata = ((KeyMetadata) k).metadata;
+                    } else if (k instanceof KeyMetadata keyMetadata) {
+                        Metadata metadata = keyMetadata.metadata;
 
                         bit_length   = metadata.getBitLength();
                         cipher_field = metadata.getCipher();
@@ -798,8 +794,8 @@ public class RangerKeyStore extends KeyStoreSpi {
                     } else {
                         key = engineGetKey(alias, masterKey);
 
-                        if (key instanceof KeyMetadata) {
-                            Metadata meta = ((KeyMetadata) key).metadata;
+                        if (key instanceof KeyMetadata metadata) {
+                            Metadata meta = metadata.metadata;
 
                             if (meta != null) {
                                 key = new KeyMetadata(meta);
@@ -854,8 +850,8 @@ public class RangerKeyStore extends KeyStoreSpi {
             SecretKeyEntry   secretKey = (SecretKeyEntry) getKeyEntry(alias);
             XXRangerKeyStore xxRangerKeyStore;
 
-            if (key instanceof KeyMetadata) {
-                Metadata     meta         = ((KeyMetadata) key).metadata;
+            if (key instanceof KeyMetadata metadata) {
+                Metadata     meta         = metadata.metadata;
                 KeyGenerator keyGenerator = KeyGenerator.getInstance(getAlgorithm(meta.getCipher()));
 
                 keyGenerator.init(meta.getBitLength());
@@ -1029,8 +1025,8 @@ public class RangerKeyStore extends KeyStoreSpi {
         // Get the AlgorithmParameters from RangerSealedObject
         AlgorithmParameters algorithmParameters;
 
-        if (sealedKey instanceof RangerSealedObject) {
-            algorithmParameters = ((RangerSealedObject) sealedKey).getParameters();
+        if (sealedKey instanceof RangerSealedObject object) {
+            algorithmParameters = object.getParameters();
         } else {
             algorithmParameters = new RangerSealedObject(sealedKey).getParameters();
         }

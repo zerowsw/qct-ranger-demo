@@ -22,6 +22,7 @@ package org.apache.ranger.authorization.storm.authorizer;
 
 
 import java.util.Map;
+import java.lang.reflect.InvocationTargetException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,7 +66,7 @@ public class RangerStormAuthorizer implements IAuthorizer {
 
 			activatePluginClassLoader();
 
-			rangerStormAuthorizerImpl = cls.newInstance();
+            rangerStormAuthorizerImpl = cls.getDeclaredConstructor().newInstance();
 		} catch (Exception e) {
 			// check what need to be done
 			LOG.error("Error Enabling RangerStormPlugin", e);

@@ -106,7 +106,7 @@ public class RangerPolicyFactory {
 	private static RangerPolicy createPolicyFromTemplate(String template, long policyId, boolean isAllowed) {
 		RangerPolicy rangerPolicy = buildGson().fromJson(template, RangerPolicy.class);
 		rangerPolicy.setId(policyId);
-		rangerPolicy.setName(String.format("generated policyname #%s", policyId));
+		rangerPolicy.setName("generated policyname #%s".formatted(policyId));
 		rangerPolicy.setResources(createRangerPolicyResourceMap(isAllowed));
 		rangerPolicy.setPolicyItems(createPolicyItems(isAllowed));
 		return rangerPolicy;
@@ -180,9 +180,9 @@ public class RangerPolicyFactory {
 	}
 
 	private static ImmutableMap<String, Object> createResourceElements(boolean shouldEvaluateToTrue) {
-		String database = String.format("db_%s", System.nanoTime());
-		String table = String.format("table_%s", System.nanoTime());
-		String column = String.format("column_%s", System.nanoTime());
+		String database = "db_%s".formatted(System.nanoTime());
+		String table = "table_%s".formatted(System.nanoTime());
+		String column = "column_%s".formatted(System.nanoTime());
 
 		if (shouldEvaluateToTrue) {
 			database = pickOneRandomly(KNOWN_DATABASES);
@@ -195,7 +195,7 @@ public class RangerPolicyFactory {
 	private static List<String> createList(String name, int n) {
 		List<String> results = Lists.newArrayList();
 		for (int i = 0; i < n; i++) {
-			results.add(String.format("%s_%s",name, i));
+			results.add("%s_%s".formatted(name, i));
 		}
 		return results;
 	}

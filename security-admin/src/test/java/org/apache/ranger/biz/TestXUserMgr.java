@@ -25,8 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.WebApplicationException;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.ws.rs.WebApplicationException;
 
 import org.apache.ranger.common.AppConstants;
 import org.apache.ranger.common.ContextUtil;
@@ -127,23 +127,23 @@ import org.apache.ranger.view.VXUser;
 import org.apache.ranger.view.VXUserGroupInfo;
 import org.apache.ranger.view.VXUserList;
 import org.apache.ranger.view.VXUserPermission;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.FixMethodOrder;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.MethodOrderer.MethodName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.PlatformTransactionManager;
 
-@RunWith(MockitoJUnitRunner.class)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@ExtendWith(MockitoExtension.class)
+@TestMethodOrder(MethodName.class)
 public class TestXUserMgr {
 
 	private static Long userId = 8L;
@@ -236,9 +236,6 @@ public class TestXUserMgr {
 	@Mock
 	XXGlobalStateDao xxGlobalStateDao;
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 	@Mock
 	@Qualifier(value = "transactionManager")
 	PlatformTransactionManager txManager;
@@ -256,7 +253,7 @@ public class TestXUserMgr {
 		Mockito.when(daoManager.getXXGlobalState()).thenReturn(xxGlobalStateDao);
 	}
 
-	@After
+	@AfterEach
 	public void destroySession() {
 		RangerSecurityContext context = new RangerSecurityContext();
 		context.setUserSession(null);
@@ -625,13 +622,13 @@ public class TestXUserMgr {
 		Mockito.when(userMgr.createDefaultAccountUser((VXPortalUser) Mockito.any())).thenReturn(vXPortalUser);
     Mockito.when(stringUtil.validateEmail("test@test.com")).thenReturn(true);
 		VXUser dbUser = xUserMgr.createXUser(vxUser);
-		Assert.assertNotNull(dbUser);
+		Assertions.assertNotNull(dbUser);
 		userId = dbUser.getId();
-		Assert.assertEquals(userId, dbUser.getId());
-		Assert.assertEquals(dbUser.getDescription(), vxUser.getDescription());
-		Assert.assertEquals(dbUser.getName(), vxUser.getName());
-		Assert.assertEquals(dbUser.getUserRoleList(), vxUser.getUserRoleList());
-		Assert.assertEquals(dbUser.getGroupNameList(),
+		Assertions.assertEquals(userId, dbUser.getId());
+		Assertions.assertEquals(dbUser.getDescription(), vxUser.getDescription());
+		Assertions.assertEquals(dbUser.getName(), vxUser.getName());
+		Assertions.assertEquals(dbUser.getUserRoleList(), vxUser.getUserRoleList());
+		Assertions.assertEquals(dbUser.getGroupNameList(),
 		vxUser.getGroupNameList());
 		Mockito.verify(xUserService).createResource(vxUser);
 		Mockito.when(xUserService.readResourceWithOutLogin(userId)).thenReturn(vxUser);
@@ -646,18 +643,19 @@ public class TestXUserMgr {
 		
 		VXUser dbvxUser = xUserMgr.getXUser(userId);
 		Mockito.verify(userMgr).createDefaultAccountUser((VXPortalUser) Mockito.any());
-		Assert.assertNotNull(dbvxUser);
-		Assert.assertEquals(userId, dbvxUser.getId());
-		Assert.assertEquals(dbvxUser.getDescription(), vxUser.getDescription());
-		Assert.assertEquals(dbvxUser.getName(), vxUser.getName());
-		Assert.assertEquals(dbvxUser.getUserRoleList(),vxUser.getUserRoleList());
-		Assert.assertEquals(dbvxUser.getGroupIdList(),vxUser.getGroupIdList());
-		Assert.assertEquals(dbvxUser.getGroupNameList(),vxUser.getGroupNameList());
+		Assertions.assertNotNull(dbvxUser);
+		Assertions.assertEquals(userId, dbvxUser.getId());
+		Assertions.assertEquals(dbvxUser.getDescription(), vxUser.getDescription());
+		Assertions.assertEquals(dbvxUser.getName(), vxUser.getName());
+		Assertions.assertEquals(dbvxUser.getUserRoleList(),vxUser.getUserRoleList());
+		Assertions.assertEquals(dbvxUser.getGroupIdList(),vxUser.getGroupIdList());
+		Assertions.assertEquals(dbvxUser.getGroupNameList(),vxUser.getGroupNameList());
 		Mockito.verify(xUserService).readResourceWithOutLogin(userId);
 	}
 
 	@Test
 	public void test02CreateXUser_WithBlankName() {
+		assertThrows(WebApplicationException.class, () -> {
 		setup();
 		VXUser vxUser = vxUser();
 		ArrayList<String> userRoleListVXPortaUser = getRoleList();
@@ -665,12 +663,13 @@ public class TestXUserMgr {
 		vXPortalUser.setUserRoleList(userRoleListVXPortaUser);
 		vxUser.setName(null);
 		Mockito.when(restErrorUtil.createRESTException("Please provide a valid username.",MessageEnums.INVALID_INPUT_DATA)).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.createXUser(vxUser);
+		});
 	}
 
 	@Test
 	public void test03CreateXUser_WithBlankName() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setup();
 		VXUser vxUser = vxUser();
@@ -679,24 +678,26 @@ public class TestXUserMgr {
 		vXPortalUser.setUserRoleList(userRoleListVXPortaUser);
 		vxUser.setName("");
 		Mockito.when(restErrorUtil.createRESTException("Please provide a valid username.",MessageEnums.INVALID_INPUT_DATA)).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.createXUser(vxUser);
+		});
 	}
 
 	@Test
 	public void testCreateXUser_WithBlankFirstName() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setup();
 		VXUser vxUser = vxUser();
 		vxUser.setName("test");
 		vxUser.setFirstName(null);
 		Mockito.when(restErrorUtil.createRESTException("Please provide a valid first name.",MessageEnums.INVALID_INPUT_DATA)).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.createXUser(vxUser);
+		});
 	}
 
 	@Test
 	public void test04CreateXUser_WithBlankValues() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setup();
 		VXUser vxUser = vxUser();
@@ -704,12 +705,13 @@ public class TestXUserMgr {
 		vxUser.setFirstName("test");
 		vxUser.setLastName("null");
 		Mockito.when(restErrorUtil.createRESTException("Please provide valid email address.",MessageEnums.INVALID_INPUT_DATA)).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.createXUser(vxUser);
+		});
 	}
 
 	@Test
 	public void testUpdateXUser_WithBlankFirstName() {
+		assertThrows(WebApplicationException.class, () -> {
 		setup();
 		VXUser vxUser = vxUser();
 		ArrayList<String> userRoleListVXPortaUser = getRoleList();
@@ -718,12 +720,13 @@ public class TestXUserMgr {
 		vxUser.setDescription(null);
 		vxUser.setFirstName("null");
 		Mockito.when(restErrorUtil.createRESTException("Please provide a valid first name.",MessageEnums.INVALID_INPUT_DATA)).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.updateXUser(vxUser);
+		});
 	}
 
 	@Test
 	public void testUpdateXUser_WithBlankUserName() {
+		assertThrows(WebApplicationException.class, () -> {
 		setup();
 		VXUser vxUser = vxUser();
 		ArrayList<String> userRoleListVXPortaUser = getRoleList();
@@ -732,8 +735,8 @@ public class TestXUserMgr {
 		vxUser.setDescription(null);
 		vxUser.setName("null");
 		Mockito.when(restErrorUtil.createRESTException("Please provide a valid username.",MessageEnums.INVALID_INPUT_DATA)).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.updateXUser(vxUser);
+		});
 	}
 
 	@Test
@@ -786,10 +789,10 @@ public class TestXUserMgr {
 		Mockito.when(xUserPermissionService.createResource((VXUserPermission) Mockito.any())).thenReturn(vXUserPermission);
 		Mockito.when(sessionMgr.getActiveUserSessionsForPortalUserId(userId)).thenReturn(userSessions);
 		VXUser dbvxUser = xUserMgr.updateXUser(vxUser);
-		Assert.assertNotNull(dbvxUser);
-		Assert.assertEquals(dbvxUser.getId(), vxUser.getId());
-		Assert.assertEquals(dbvxUser.getDescription(), vxUser.getDescription());
-		Assert.assertEquals(dbvxUser.getName(), vxUser.getName());
+		Assertions.assertNotNull(dbvxUser);
+		Assertions.assertEquals(dbvxUser.getId(), vxUser.getId());
+		Assertions.assertEquals(dbvxUser.getDescription(), vxUser.getDescription());
+		Assertions.assertEquals(dbvxUser.getName(), vxUser.getName());
 		Mockito.verify(xUserService).updateResource(vxUser);
 		groupIdList.clear();
 		groupIdList.add(9L);
@@ -799,7 +802,7 @@ public class TestXUserMgr {
 		VXGroupUser vXGroupUser = vxGroupUser();
 		Mockito.when(xGroupUserService.createResource((VXGroupUser) Mockito.any())).thenReturn(vXGroupUser);
 		dbvxUser = xUserMgr.updateXUser(vxUser);
-		Assert.assertNotNull(dbvxUser);
+		Assertions.assertNotNull(dbvxUser);
 	}
 
 	@Test
@@ -816,8 +819,8 @@ public class TestXUserMgr {
 		Mockito.when(xxUserDao.getById(userId)).thenReturn(xxUser);
 		Mockito.when(xUserService.populateViewBean(xxUser)).thenReturn(vxUser);
 		xUserMgr.modifyUserVisibility(visibilityMap);
-		Assert.assertEquals(value, vxUser.getIsVisible());
-		Assert.assertEquals(userId, vxUser.getId());
+		Assertions.assertEquals(value, vxUser.getIsVisible());
+		Assertions.assertEquals(userId, vxUser.getId());
 		Mockito.verify(xUserService).updateResource(vxUser);
 		Mockito.verify(daoManager).getXXUser();
 		Mockito.verify(xUserService).populateViewBean(xxUser);
@@ -837,8 +840,8 @@ public class TestXUserMgr {
 		Mockito.when(xxUserDao.getById(userId)).thenReturn(xxUser);
 		Mockito.when(xUserService.populateViewBean(xxUser)).thenReturn(vxUser);
 		xUserMgr.modifyUserVisibility(visibilityMap);
-		Assert.assertEquals(value, vxUser.getIsVisible());
-		Assert.assertEquals(userId, vxUser.getId());
+		Assertions.assertEquals(value, vxUser.getIsVisible());
+		Assertions.assertEquals(userId, vxUser.getId());
 		Mockito.verify(xUserService).updateResource(vxUser);
 		Mockito.verify(daoManager).getXXUser();
 		Mockito.verify(xUserService).populateViewBean(xxUser);
@@ -857,8 +860,8 @@ public class TestXUserMgr {
 		Mockito.when(xxUserDao.getById(userId)).thenReturn(xxUser);
 		Mockito.when(xUserService.populateViewBean(xxUser)).thenReturn(vxUser);
 		xUserMgr.modifyUserVisibility(visibilityMap);
-		Assert.assertEquals(emptyValue, vxUser.getIsVisible());
-		Assert.assertEquals(userId, vxUser.getId());
+		Assertions.assertEquals(emptyValue, vxUser.getIsVisible());
+		Assertions.assertEquals(userId, vxUser.getId());
 		Mockito.verify(xUserService).updateResource(vxUser);
 		Mockito.verify(daoManager).getXXUser();
 		Mockito.verify(xUserService).populateViewBean(xxUser);
@@ -871,21 +874,22 @@ public class TestXUserMgr {
 		vXGroup.setDescription(null);
 		Mockito.when(xGroupService.createResource(vXGroup)).thenReturn(vXGroup);
 		VXGroup dbXGroup = xUserMgr.createXGroup(vXGroup);
-		Assert.assertNotNull(dbXGroup);
+		Assertions.assertNotNull(dbXGroup);
 		userId = dbXGroup.getId();
-		Assert.assertEquals(userId, dbXGroup.getId());
-		Assert.assertEquals(vXGroup.getName(), dbXGroup.getName());
+		Assertions.assertEquals(userId, dbXGroup.getId());
+		Assertions.assertEquals(vXGroup.getName(), dbXGroup.getName());
 		Mockito.verify(xGroupService).createResource(vXGroup);
 		Mockito.when(xGroupService.readResourceWithOutLogin(userId)).thenReturn(vXGroup);
 		VXGroup dbxGroup = xUserMgr.getXGroup(userId);
-		Assert.assertNotNull(dbXGroup);
-		Assert.assertEquals(userId, dbxGroup.getId());
-		Assert.assertEquals(dbXGroup.getName(), dbxGroup.getName());
+		Assertions.assertNotNull(dbXGroup);
+		Assertions.assertEquals(userId, dbxGroup.getId());
+		Assertions.assertEquals(dbXGroup.getName(), dbxGroup.getName());
 		Mockito.verify(xGroupService).readResourceWithOutLogin(userId);
 	}
 
 	@Test
 	public void test10UpdateXGroup() {
+		assertThrows(WebApplicationException.class, () -> {
 		XXGroupDao xxGroupDao = Mockito.mock(XXGroupDao.class);
 		XXGroupUserDao xxGroupUserDao = Mockito.mock(XXGroupUserDao.class);
 		List<XXGroupUser> grpUsers =new ArrayList<XXGroupUser>();
@@ -899,19 +903,19 @@ public class TestXUserMgr {
 		Mockito.when(daoManager.getXXGroupUser()).thenReturn(xxGroupUserDao);
 		Mockito.when(xxGroupUserDao.findByGroupId(vXGroup.getId())).thenReturn(grpUsers);
 		VXGroup dbvxGroup = xUserMgr.updateXGroup(vXGroup);
-		Assert.assertNotNull(dbvxGroup);
+			Assertions.assertNotNull(dbvxGroup);
 		userId = dbvxGroup.getId();
-		Assert.assertEquals(userId, dbvxGroup.getId());
-		Assert.assertEquals(vXGroup.getDescription(),dbvxGroup.getDescription());
-		Assert.assertEquals(vXGroup.getName(), dbvxGroup.getName());
+			Assertions.assertEquals(userId, dbvxGroup.getId());
+			Assertions.assertEquals(vXGroup.getDescription(), dbvxGroup.getDescription());
+			Assertions.assertEquals(vXGroup.getName(), dbvxGroup.getName());
 		Mockito.verify(daoManager).getXXGroup();
 		Mockito.verify(daoManager).getXXGroupUser();
 		Mockito.verify(xGroupService).updateResource(vXGroup);
 		Mockito.verify(xxGroupUserDao).findByGroupId(vXGroup.getId());
 		Mockito.when(restErrorUtil.createRESTException("group name updates are not allowed.",MessageEnums.INVALID_INPUT_DATA)).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		vXGroup.setName("UnknownGroup");
 		xUserMgr.updateXGroup(vXGroup);
+		});
 	}
 
 	@Test
@@ -928,8 +932,8 @@ public class TestXUserMgr {
 		Mockito.when(xGroupService.populateViewBean(xxGroup)).thenReturn(vXGroup);
 		Mockito.when(xGroupService.updateResource(vXGroup)).thenReturn(vXGroup);
 		xUserMgr.modifyGroupsVisibility(groupVisibilityMap);
-		Assert.assertEquals(value, vXGroup.getIsVisible());
-		Assert.assertEquals(userId, vXGroup.getId());
+		Assertions.assertEquals(value, vXGroup.getIsVisible());
+		Assertions.assertEquals(userId, vXGroup.getId());
 		Mockito.verify(daoManager).getXXGroup();
 		Mockito.verify(xGroupService).populateViewBean(xxGroup);
 		Mockito.verify(xGroupService).updateResource(vXGroup);
@@ -949,8 +953,8 @@ public class TestXUserMgr {
 		Mockito.when(xGroupService.populateViewBean(xxGroup)).thenReturn(vXGroup);
 		Mockito.when(xGroupService.updateResource(vXGroup)).thenReturn(vXGroup);
 		xUserMgr.modifyGroupsVisibility(groupVisibilityMap);
-		Assert.assertEquals(value, vXGroup.getIsVisible());
-		Assert.assertEquals(userId, vXGroup.getId());
+		Assertions.assertEquals(value, vXGroup.getIsVisible());
+		Assertions.assertEquals(userId, vXGroup.getId());
 		Mockito.verify(daoManager).getXXGroup();
 		Mockito.verify(xGroupService).populateViewBean(xxGroup);
 		Mockito.verify(xGroupService).updateResource(vXGroup);
@@ -969,8 +973,8 @@ public class TestXUserMgr {
 		Mockito.when(xGroupService.populateViewBean(xxGroup)).thenReturn(vXGroup);
 		Mockito.when(xGroupService.updateResource(vXGroup)).thenReturn(vXGroup);
 		xUserMgr.modifyGroupsVisibility(groupVisibilityMap);
-		Assert.assertEquals(emptyValue, vXGroup.getIsVisible());
-		Assert.assertEquals(userId, vXGroup.getId());
+		Assertions.assertEquals(emptyValue, vXGroup.getIsVisible());
+		Assertions.assertEquals(userId, vXGroup.getId());
 		Mockito.verify(daoManager).getXXGroup();
 		Mockito.verify(xGroupService).populateViewBean(xxGroup);
 		Mockito.verify(xGroupService).updateResource(vXGroup);
@@ -982,23 +986,23 @@ public class TestXUserMgr {
 		VXGroupUser vxGroupUser = vxGroupUser();
 		Mockito.when(xGroupUserService.createXGroupUserWithOutLogin(vxGroupUser)).thenReturn(vxGroupUser);
 		VXGroupUser dbVXGroupUser = xUserMgr.createXGroupUser(vxGroupUser);
-		Assert.assertNotNull(dbVXGroupUser);
+		Assertions.assertNotNull(dbVXGroupUser);
 		userId = dbVXGroupUser.getId();
-		Assert.assertEquals(userId, dbVXGroupUser.getId());
-		Assert.assertEquals(dbVXGroupUser.getOwner(), vxGroupUser.getOwner());
-		Assert.assertEquals(dbVXGroupUser.getName(), vxGroupUser.getName());
-		Assert.assertEquals(dbVXGroupUser.getUserId(), vxGroupUser.getUserId());
-		Assert.assertEquals(dbVXGroupUser.getUpdatedBy(),vxGroupUser.getUpdatedBy());
+		Assertions.assertEquals(userId, dbVXGroupUser.getId());
+		Assertions.assertEquals(dbVXGroupUser.getOwner(), vxGroupUser.getOwner());
+		Assertions.assertEquals(dbVXGroupUser.getName(), vxGroupUser.getName());
+		Assertions.assertEquals(dbVXGroupUser.getUserId(), vxGroupUser.getUserId());
+		Assertions.assertEquals(dbVXGroupUser.getUpdatedBy(),vxGroupUser.getUpdatedBy());
 		Mockito.verify(xGroupUserService).createXGroupUserWithOutLogin(vxGroupUser);
 		Mockito.when(xGroupUserService.readResourceWithOutLogin(userId)).thenReturn(vxGroupUser);
 		VXGroupUser dbvxGroupUser = xUserMgr.getXGroupUser(userId);
-		Assert.assertNotNull(dbvxGroupUser);
+		Assertions.assertNotNull(dbvxGroupUser);
 		userId = dbvxGroupUser.getId();
-		Assert.assertEquals(userId, dbvxGroupUser.getId());
-		Assert.assertEquals(dbvxGroupUser.getOwner(), vxGroupUser.getOwner());
-		Assert.assertEquals(dbvxGroupUser.getName(), vxGroupUser.getName());
-		Assert.assertEquals(dbvxGroupUser.getUserId(), vxGroupUser.getUserId());
-		Assert.assertEquals(dbvxGroupUser.getUpdatedBy(),vxGroupUser.getUpdatedBy());
+		Assertions.assertEquals(userId, dbvxGroupUser.getId());
+		Assertions.assertEquals(dbvxGroupUser.getOwner(), vxGroupUser.getOwner());
+		Assertions.assertEquals(dbvxGroupUser.getName(), vxGroupUser.getName());
+		Assertions.assertEquals(dbvxGroupUser.getUserId(), vxGroupUser.getUserId());
+		Assertions.assertEquals(dbvxGroupUser.getUpdatedBy(),vxGroupUser.getUpdatedBy());
 		Mockito.verify(xGroupUserService).readResourceWithOutLogin(userId);
 	}
 
@@ -1014,22 +1018,23 @@ public class TestXUserMgr {
 		VXGroupUserList vxGroupUserList = vxGroupUserList();
 		Mockito.when(xGroupUserService.searchXGroupUsers((SearchCriteria) Mockito.any())).thenReturn(vxGroupUserList);
 		VXGroupList dbVXGroupList = xUserMgr.getXUserGroups(userId);
-		Assert.assertNotNull(dbVXGroupList);
+		Assertions.assertNotNull(dbVXGroupList);
 	}
 
 	@Test
 	public void test16GetXGroupUsers() {
+		assertThrows(WebApplicationException.class, () -> {
 		SearchCriteria testSearchCriteria = createsearchCriteria();
 		testSearchCriteria.addParam("xGroupId", userId);
 		VXGroupUserList vxGroupUserList = vxGroupUserList();
 		Mockito.when(xGroupUserService.searchXGroupUsers((SearchCriteria) Mockito.any())).thenReturn(vxGroupUserList);
 		Mockito.when(msBizUtil.hasModuleAccess(RangerConstants.MODULE_USER_GROUPS)).thenReturn(true);
 		VXUserList dbVXUserList = xUserMgr.getXGroupUsers(testSearchCriteria);
-		Assert.assertNotNull(dbVXUserList);
+			Assertions.assertNotNull(dbVXUserList);
 		Mockito.when(msBizUtil.hasModuleAccess(Mockito.anyString())).thenReturn(false);
 		Mockito.when(restErrorUtil.createRESTException(HttpServletResponse.SC_FORBIDDEN, "User is not having permissions on the "+RangerConstants.MODULE_USER_GROUPS+" module.", true)).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.getXGroupUsers(testSearchCriteria);
+		});
 	}
 
 	@Test
@@ -1040,11 +1045,11 @@ public class TestXUserMgr {
 		XXModuleDefDao xxModuleDefDao = Mockito.mock(XXModuleDefDao.class);
 		Mockito.when(daoManager.getXXModuleDef()).thenReturn(xxModuleDefDao);
 		VXUser dbVXUser = xUserMgr.getXUserByUserName(vxUser.getName());
-		Assert.assertNotNull(dbVXUser);
+		Assertions.assertNotNull(dbVXUser);
 		userId = dbVXUser.getId();
-		Assert.assertEquals(userId, dbVXUser.getId());
-		Assert.assertEquals(dbVXUser.getName(), vxUser.getName());
-		Assert.assertEquals(dbVXUser.getOwner(), vxUser.getOwner());
+		Assertions.assertEquals(userId, dbVXUser.getId());
+		Assertions.assertEquals(dbVXUser.getName(), vxUser.getName());
+		Assertions.assertEquals(dbVXUser.getOwner(), vxUser.getOwner());
 		Mockito.verify(xUserService, Mockito.atLeast(2)).getXUserByUserName(vxUser.getName());
 	}
 
@@ -1054,13 +1059,13 @@ public class TestXUserMgr {
 		VXUser vxUser = vxUser();
 		Mockito.when(xUserService.createXUserWithOutLogin(vxUser)).thenReturn(vxUser);
 		VXUser dbUser = xUserMgr.createXUserWithOutLogin(vxUser);
-		Assert.assertNotNull(dbUser);
+		Assertions.assertNotNull(dbUser);
 		userId = dbUser.getId();
-		Assert.assertEquals(userId, dbUser.getId());
-		Assert.assertEquals(dbUser.getDescription(), vxUser.getDescription());
-		Assert.assertEquals(dbUser.getName(), vxUser.getName());
-		Assert.assertEquals(dbUser.getUserRoleList(), vxUser.getUserRoleList());
-		Assert.assertEquals(dbUser.getGroupNameList(),vxUser.getGroupNameList());
+		Assertions.assertEquals(userId, dbUser.getId());
+		Assertions.assertEquals(dbUser.getDescription(), vxUser.getDescription());
+		Assertions.assertEquals(dbUser.getName(), vxUser.getName());
+		Assertions.assertEquals(dbUser.getUserRoleList(), vxUser.getUserRoleList());
+		Assertions.assertEquals(dbUser.getGroupNameList(),vxUser.getGroupNameList());
 		Mockito.verify(xUserService).createXUserWithOutLogin(vxUser);
 	}
 
@@ -1070,11 +1075,11 @@ public class TestXUserMgr {
 		VXGroup vXGroup = vxGroup();
 		Mockito.when(xGroupService.createXGroupWithOutLogin(vXGroup)).thenReturn(vXGroup);
 		VXGroup dbVXGroup = xUserMgr.createXGroupWithoutLogin(vXGroup);
-		Assert.assertNotNull(dbVXGroup);
+		Assertions.assertNotNull(dbVXGroup);
 		userId = dbVXGroup.getId();
-		Assert.assertEquals(userId, dbVXGroup.getId());
-		Assert.assertEquals(vXGroup.getDescription(),dbVXGroup.getDescription());
-		Assert.assertEquals(vXGroup.getName(), dbVXGroup.getName());
+		Assertions.assertEquals(userId, dbVXGroup.getId());
+		Assertions.assertEquals(vXGroup.getDescription(),dbVXGroup.getDescription());
+		Assertions.assertEquals(vXGroup.getName(), dbVXGroup.getName());
 		Mockito.verify(xGroupService).createXGroupWithOutLogin(vXGroup);
 	}
 
@@ -1332,12 +1337,12 @@ public class TestXUserMgr {
 		Mockito.when(xUserPermissionService.createResource((VXUserPermission) Mockito.any())).thenReturn(userPermission);
 		Mockito.when(sessionMgr.getActiveUserSessionsForPortalUserId(userId)).thenReturn(userSessions);
 		VXUserGroupInfo vxUserGroupTest = xUserMgr.createXUserGroupFromMap(vXUserGroupInfo);
-		Assert.assertEquals(userLoginID, vxUserGroupTest.getXuserInfo().getName());
+		Assertions.assertEquals(userLoginID, vxUserGroupTest.getXuserInfo().getName());
 		List<VXGroup> result = vxUserGroupTest.getXgroupInfo();
 		List<VXGroup> expected = new ArrayList<VXGroup>();
 		expected.add(vXGroup1);
 		expected.add(vXGroup2);
-		Assert.assertTrue(result.containsAll(expected));
+		Assertions.assertTrue(result.containsAll(expected));
 		Mockito.verify(portalUser).findByLoginId(vXUser.getName());
 		Mockito.verify(userDao).findXPortalUserRolebyXPortalUserId(
 		Mockito.anyLong());
@@ -1350,17 +1355,17 @@ public class TestXUserMgr {
 		XXModuleDefDao obj = Mockito.mock(XXModuleDefDao.class);
 		Mockito.when(daoManager.getXXModuleDef()).thenReturn(obj);
 		VXModuleDef dbMuduleDef = xUserMgr.createXModuleDefPermission(vXModuleDef);
-		Assert.assertNotNull(dbMuduleDef);
-		Assert.assertEquals(dbMuduleDef, vXModuleDef);
-		Assert.assertEquals(dbMuduleDef.getId(), vXModuleDef.getId());
-		Assert.assertEquals(dbMuduleDef.getOwner(), vXModuleDef.getOwner());
-		Assert.assertEquals(dbMuduleDef.getUpdatedBy(),vXModuleDef.getUpdatedBy());
-		Assert.assertEquals(dbMuduleDef.getUrl(), vXModuleDef.getUrl());
-		Assert.assertEquals(dbMuduleDef.getAddedById(),vXModuleDef.getAddedById());
-		Assert.assertEquals(dbMuduleDef.getCreateDate(),vXModuleDef.getCreateDate());
-		Assert.assertEquals(dbMuduleDef.getCreateTime(),vXModuleDef.getCreateTime());
-		Assert.assertEquals(dbMuduleDef.getUserPermList(),vXModuleDef.getUserPermList());
-		Assert.assertEquals(dbMuduleDef.getGroupPermList(),vXModuleDef.getGroupPermList());
+		Assertions.assertNotNull(dbMuduleDef);
+		Assertions.assertEquals(dbMuduleDef, vXModuleDef);
+		Assertions.assertEquals(dbMuduleDef.getId(), vXModuleDef.getId());
+		Assertions.assertEquals(dbMuduleDef.getOwner(), vXModuleDef.getOwner());
+		Assertions.assertEquals(dbMuduleDef.getUpdatedBy(),vXModuleDef.getUpdatedBy());
+		Assertions.assertEquals(dbMuduleDef.getUrl(), vXModuleDef.getUrl());
+		Assertions.assertEquals(dbMuduleDef.getAddedById(),vXModuleDef.getAddedById());
+		Assertions.assertEquals(dbMuduleDef.getCreateDate(),vXModuleDef.getCreateDate());
+		Assertions.assertEquals(dbMuduleDef.getCreateTime(),vXModuleDef.getCreateTime());
+		Assertions.assertEquals(dbMuduleDef.getUserPermList(),vXModuleDef.getUserPermList());
+		Assertions.assertEquals(dbMuduleDef.getGroupPermList(),vXModuleDef.getGroupPermList());
 		Mockito.verify(xModuleDefService).createResource(vXModuleDef);
 	}
 
@@ -1369,22 +1374,23 @@ public class TestXUserMgr {
 		VXModuleDef vXModuleDef = vxModuleDef();
 		Mockito.when(xModuleDefService.readResource(1L)).thenReturn(vXModuleDef);
 		VXModuleDef dbMuduleDef = xUserMgr.getXModuleDefPermission(1L);
-		Assert.assertNotNull(dbMuduleDef);
-		Assert.assertEquals(dbMuduleDef, vXModuleDef);
-		Assert.assertEquals(dbMuduleDef.getId(), vXModuleDef.getId());
-		Assert.assertEquals(dbMuduleDef.getOwner(), vXModuleDef.getOwner());
-		Assert.assertEquals(dbMuduleDef.getUpdatedBy(),vXModuleDef.getUpdatedBy());
-		Assert.assertEquals(dbMuduleDef.getUrl(), vXModuleDef.getUrl());
-		Assert.assertEquals(dbMuduleDef.getAddedById(),vXModuleDef.getAddedById());
-		Assert.assertEquals(dbMuduleDef.getCreateDate(),vXModuleDef.getCreateDate());
-		Assert.assertEquals(dbMuduleDef.getCreateTime(),vXModuleDef.getCreateTime());
-		Assert.assertEquals(dbMuduleDef.getUserPermList(),vXModuleDef.getUserPermList());
-		Assert.assertEquals(dbMuduleDef.getGroupPermList(),vXModuleDef.getGroupPermList());
+		Assertions.assertNotNull(dbMuduleDef);
+		Assertions.assertEquals(dbMuduleDef, vXModuleDef);
+		Assertions.assertEquals(dbMuduleDef.getId(), vXModuleDef.getId());
+		Assertions.assertEquals(dbMuduleDef.getOwner(), vXModuleDef.getOwner());
+		Assertions.assertEquals(dbMuduleDef.getUpdatedBy(),vXModuleDef.getUpdatedBy());
+		Assertions.assertEquals(dbMuduleDef.getUrl(), vXModuleDef.getUrl());
+		Assertions.assertEquals(dbMuduleDef.getAddedById(),vXModuleDef.getAddedById());
+		Assertions.assertEquals(dbMuduleDef.getCreateDate(),vXModuleDef.getCreateDate());
+		Assertions.assertEquals(dbMuduleDef.getCreateTime(),vXModuleDef.getCreateTime());
+		Assertions.assertEquals(dbMuduleDef.getUserPermList(),vXModuleDef.getUserPermList());
+		Assertions.assertEquals(dbMuduleDef.getGroupPermList(),vXModuleDef.getGroupPermList());
 		Mockito.verify(xModuleDefService).readResource(1L);
 	}
 
 	@Test
 	public void test26updateXModuleDefPermission() {
+		assertThrows(WebApplicationException.class, () -> {
 		XXModuleDefDao xModuleDefDao = Mockito.mock(XXModuleDefDao.class);
 		XXModuleDef xModuleDef = xxModuleDef();
 		VXModuleDef vXModuleDef = vxModuleDef();
@@ -1420,26 +1426,26 @@ public class TestXUserMgr {
 		Set<UserSessionBase> userSessions = new HashSet<UserSessionBase>();
 		userSessions.add(userSession);
 		VXModuleDef dbMuduleDef = xUserMgr.updateXModuleDefPermission(vXModuleDef);
-		Assert.assertEquals(dbMuduleDef, vXModuleDef);
-		Assert.assertNotNull(dbMuduleDef);
-		Assert.assertEquals(dbMuduleDef, vXModuleDef);
-		Assert.assertEquals(dbMuduleDef.getId(), vXModuleDef.getId());
-		Assert.assertEquals(dbMuduleDef.getOwner(), vXModuleDef.getOwner());
-		Assert.assertEquals(dbMuduleDef.getUpdatedBy(),vXModuleDef.getUpdatedBy());
-		Assert.assertEquals(dbMuduleDef.getUrl(), vXModuleDef.getUrl());
-		Assert.assertEquals(dbMuduleDef.getAddedById(),vXModuleDef.getAddedById());
-		Assert.assertEquals(dbMuduleDef.getCreateDate(),vXModuleDef.getCreateDate());
-		Assert.assertEquals(dbMuduleDef.getCreateTime(),vXModuleDef.getCreateTime());
-		Assert.assertEquals(dbMuduleDef.getUserPermList(),vXModuleDef.getUserPermList());
-		Assert.assertEquals(dbMuduleDef.getGroupPermList(),vXModuleDef.getGroupPermList());
+			Assertions.assertEquals(dbMuduleDef, vXModuleDef);
+			Assertions.assertNotNull(dbMuduleDef);
+			Assertions.assertEquals(dbMuduleDef, vXModuleDef);
+			Assertions.assertEquals(dbMuduleDef.getId(), vXModuleDef.getId());
+			Assertions.assertEquals(dbMuduleDef.getOwner(), vXModuleDef.getOwner());
+			Assertions.assertEquals(dbMuduleDef.getUpdatedBy(), vXModuleDef.getUpdatedBy());
+			Assertions.assertEquals(dbMuduleDef.getUrl(), vXModuleDef.getUrl());
+			Assertions.assertEquals(dbMuduleDef.getAddedById(), vXModuleDef.getAddedById());
+			Assertions.assertEquals(dbMuduleDef.getCreateDate(), vXModuleDef.getCreateDate());
+			Assertions.assertEquals(dbMuduleDef.getCreateTime(), vXModuleDef.getCreateTime());
+			Assertions.assertEquals(dbMuduleDef.getUserPermList(), vXModuleDef.getUserPermList());
+			Assertions.assertEquals(dbMuduleDef.getGroupPermList(), vXModuleDef.getGroupPermList());
 		Mockito.verify(xModuleDefService).updateResource(vXModuleDef);
 		Mockito.verify(daoManager).getXXModuleDef();
 		Mockito.verify(xModuleDefService).populateViewBean(xModuleDef,xXUserMap,xXGroupNameMap,true);
 		vXModuleDef.setModule("UnknownModule");
 		Mockito.when(xModuleDefDao.getById(userId)).thenReturn(xModuleDef);
 		Mockito.when(restErrorUtil.createRESTException("Module name change is not allowed!",MessageEnums.DATA_NOT_UPDATABLE)).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		dbMuduleDef = xUserMgr.updateXModuleDefPermission(vXModuleDef);
+		});
 	}
 
 	@Test
@@ -1461,17 +1467,17 @@ public class TestXUserMgr {
 		VXUserPermission vXUserPermission = vxUserPermission();
 		Mockito.when(xUserPermissionService.createResource(vXUserPermission)).thenReturn(vXUserPermission);
 		VXUserPermission dbUserPermission = xUserMgr.createXUserPermission(vXUserPermission);
-		Assert.assertNotNull(dbUserPermission);
-		Assert.assertEquals(dbUserPermission, vXUserPermission);
-		Assert.assertEquals(dbUserPermission.getId(), vXUserPermission.getId());
-		Assert.assertEquals(dbUserPermission.getOwner(),vXUserPermission.getOwner());
-		Assert.assertEquals(dbUserPermission.getUpdatedBy(),vXUserPermission.getUpdatedBy());
-		Assert.assertEquals(dbUserPermission.getUserName(),vXUserPermission.getUserName());
-		Assert.assertEquals(dbUserPermission.getCreateDate(),vXUserPermission.getCreateDate());
-		Assert.assertEquals(dbUserPermission.getIsAllowed(),vXUserPermission.getIsAllowed());
-		Assert.assertEquals(dbUserPermission.getModuleId(),vXUserPermission.getModuleId());
-		Assert.assertEquals(dbUserPermission.getUpdateDate(),vXUserPermission.getUpdateDate());
-		Assert.assertEquals(dbUserPermission.getUserId(),vXUserPermission.getUserId());
+		Assertions.assertNotNull(dbUserPermission);
+		Assertions.assertEquals(dbUserPermission, vXUserPermission);
+		Assertions.assertEquals(dbUserPermission.getId(), vXUserPermission.getId());
+		Assertions.assertEquals(dbUserPermission.getOwner(),vXUserPermission.getOwner());
+		Assertions.assertEquals(dbUserPermission.getUpdatedBy(),vXUserPermission.getUpdatedBy());
+		Assertions.assertEquals(dbUserPermission.getUserName(),vXUserPermission.getUserName());
+		Assertions.assertEquals(dbUserPermission.getCreateDate(),vXUserPermission.getCreateDate());
+		Assertions.assertEquals(dbUserPermission.getIsAllowed(),vXUserPermission.getIsAllowed());
+		Assertions.assertEquals(dbUserPermission.getModuleId(),vXUserPermission.getModuleId());
+		Assertions.assertEquals(dbUserPermission.getUpdateDate(),vXUserPermission.getUpdateDate());
+		Assertions.assertEquals(dbUserPermission.getUserId(),vXUserPermission.getUserId());
 		Mockito.verify(xUserPermissionService).createResource(vXUserPermission);
 	}
 
@@ -1480,17 +1486,17 @@ public class TestXUserMgr {
 		VXUserPermission vXUserPermission = vxUserPermission();
 		Mockito.when(xUserPermissionService.readResource(1L)).thenReturn(vXUserPermission);
 		VXUserPermission dbUserPermission = xUserMgr.getXUserPermission(1L);
-		Assert.assertNotNull(dbUserPermission);
-		Assert.assertEquals(dbUserPermission, vXUserPermission);
-		Assert.assertEquals(dbUserPermission.getId(), vXUserPermission.getId());
-		Assert.assertEquals(dbUserPermission.getOwner(),vXUserPermission.getOwner());
-		Assert.assertEquals(dbUserPermission.getUpdatedBy(),vXUserPermission.getUpdatedBy());
-		Assert.assertEquals(dbUserPermission.getUserName(),vXUserPermission.getUserName());
-		Assert.assertEquals(dbUserPermission.getCreateDate(),vXUserPermission.getCreateDate());
-		Assert.assertEquals(dbUserPermission.getIsAllowed(),vXUserPermission.getIsAllowed());
-		Assert.assertEquals(dbUserPermission.getModuleId(),vXUserPermission.getModuleId());
-		Assert.assertEquals(dbUserPermission.getUpdateDate(),vXUserPermission.getUpdateDate());
-		Assert.assertEquals(dbUserPermission.getUserId(),vXUserPermission.getUserId());
+		Assertions.assertNotNull(dbUserPermission);
+		Assertions.assertEquals(dbUserPermission, vXUserPermission);
+		Assertions.assertEquals(dbUserPermission.getId(), vXUserPermission.getId());
+		Assertions.assertEquals(dbUserPermission.getOwner(),vXUserPermission.getOwner());
+		Assertions.assertEquals(dbUserPermission.getUpdatedBy(),vXUserPermission.getUpdatedBy());
+		Assertions.assertEquals(dbUserPermission.getUserName(),vXUserPermission.getUserName());
+		Assertions.assertEquals(dbUserPermission.getCreateDate(),vXUserPermission.getCreateDate());
+		Assertions.assertEquals(dbUserPermission.getIsAllowed(),vXUserPermission.getIsAllowed());
+		Assertions.assertEquals(dbUserPermission.getModuleId(),vXUserPermission.getModuleId());
+		Assertions.assertEquals(dbUserPermission.getUpdateDate(),vXUserPermission.getUpdateDate());
+		Assertions.assertEquals(dbUserPermission.getUserId(),vXUserPermission.getUserId());
 		Mockito.verify(xUserPermissionService).readResource(1L);
 	}
 
@@ -1499,17 +1505,17 @@ public class TestXUserMgr {
 		VXUserPermission vXUserPermission = vxUserPermission();
 		Mockito.when(xUserPermissionService.updateResource(vXUserPermission)).thenReturn(vXUserPermission);
 		VXUserPermission dbUserPermission = xUserMgr.updateXUserPermission(vXUserPermission);
-		Assert.assertNotNull(dbUserPermission);
-		Assert.assertEquals(dbUserPermission, vXUserPermission);
-		Assert.assertEquals(dbUserPermission.getId(), vXUserPermission.getId());
-		Assert.assertEquals(dbUserPermission.getOwner(),vXUserPermission.getOwner());
-		Assert.assertEquals(dbUserPermission.getUpdatedBy(),vXUserPermission.getUpdatedBy());
-		Assert.assertEquals(dbUserPermission.getUserName(),vXUserPermission.getUserName());
-		Assert.assertEquals(dbUserPermission.getCreateDate(),vXUserPermission.getCreateDate());
-		Assert.assertEquals(dbUserPermission.getIsAllowed(),vXUserPermission.getIsAllowed());
-		Assert.assertEquals(dbUserPermission.getModuleId(),vXUserPermission.getModuleId());
-		Assert.assertEquals(dbUserPermission.getUpdateDate(),vXUserPermission.getUpdateDate());
-		Assert.assertEquals(dbUserPermission.getUserId(),vXUserPermission.getUserId());
+		Assertions.assertNotNull(dbUserPermission);
+		Assertions.assertEquals(dbUserPermission, vXUserPermission);
+		Assertions.assertEquals(dbUserPermission.getId(), vXUserPermission.getId());
+		Assertions.assertEquals(dbUserPermission.getOwner(),vXUserPermission.getOwner());
+		Assertions.assertEquals(dbUserPermission.getUpdatedBy(),vXUserPermission.getUpdatedBy());
+		Assertions.assertEquals(dbUserPermission.getUserName(),vXUserPermission.getUserName());
+		Assertions.assertEquals(dbUserPermission.getCreateDate(),vXUserPermission.getCreateDate());
+		Assertions.assertEquals(dbUserPermission.getIsAllowed(),vXUserPermission.getIsAllowed());
+		Assertions.assertEquals(dbUserPermission.getModuleId(),vXUserPermission.getModuleId());
+		Assertions.assertEquals(dbUserPermission.getUpdateDate(),vXUserPermission.getUpdateDate());
+		Assertions.assertEquals(dbUserPermission.getUserId(),vXUserPermission.getUserId());
 		Mockito.verify(xUserPermissionService).updateResource(vXUserPermission);
 	}
 
@@ -1548,17 +1554,17 @@ public class TestXUserMgr {
 		userSessions.add(userSession);
 		Mockito.when(sessionMgr.getActiveUserSessionsForXUserId(xXGroupUser.getUserId())).thenReturn(userSessions);
 		VXGroupPermission dbGroupPermission = xUserMgr.createXGroupPermission(vXGroupPermission);
-		Assert.assertNotNull(dbGroupPermission);
-		Assert.assertEquals(dbGroupPermission, vXGroupPermission);
-		Assert.assertEquals(dbGroupPermission.getId(),vXGroupPermission.getId());
-		Assert.assertEquals(dbGroupPermission.getGroupName(),vXGroupPermission.getGroupName());
-		Assert.assertEquals(dbGroupPermission.getOwner(),vXGroupPermission.getOwner());
-		Assert.assertEquals(dbGroupPermission.getUpdatedBy(),vXGroupPermission.getUpdatedBy());
-		Assert.assertEquals(dbGroupPermission.getCreateDate(),vXGroupPermission.getCreateDate());
-		Assert.assertEquals(dbGroupPermission.getGroupId(),vXGroupPermission.getGroupId());
-		Assert.assertEquals(dbGroupPermission.getIsAllowed(),vXGroupPermission.getIsAllowed());
-		Assert.assertEquals(dbGroupPermission.getModuleId(),vXGroupPermission.getModuleId());
-		Assert.assertEquals(dbGroupPermission.getUpdateDate(),vXGroupPermission.getUpdateDate());
+		Assertions.assertNotNull(dbGroupPermission);
+		Assertions.assertEquals(dbGroupPermission, vXGroupPermission);
+		Assertions.assertEquals(dbGroupPermission.getId(),vXGroupPermission.getId());
+		Assertions.assertEquals(dbGroupPermission.getGroupName(),vXGroupPermission.getGroupName());
+		Assertions.assertEquals(dbGroupPermission.getOwner(),vXGroupPermission.getOwner());
+		Assertions.assertEquals(dbGroupPermission.getUpdatedBy(),vXGroupPermission.getUpdatedBy());
+		Assertions.assertEquals(dbGroupPermission.getCreateDate(),vXGroupPermission.getCreateDate());
+		Assertions.assertEquals(dbGroupPermission.getGroupId(),vXGroupPermission.getGroupId());
+		Assertions.assertEquals(dbGroupPermission.getIsAllowed(),vXGroupPermission.getIsAllowed());
+		Assertions.assertEquals(dbGroupPermission.getModuleId(),vXGroupPermission.getModuleId());
+		Assertions.assertEquals(dbGroupPermission.getUpdateDate(),vXGroupPermission.getUpdateDate());
 		Mockito.verify(xGroupPermissionService).createResource(vXGroupPermission);
 	}
 
@@ -1567,17 +1573,17 @@ public class TestXUserMgr {
 		VXGroupPermission vXGroupPermission = vxGroupPermission();
 		Mockito.when(xGroupPermissionService.readResource(1L)).thenReturn(vXGroupPermission);
 		VXGroupPermission dbGroupPermission = xUserMgr.getXGroupPermission(1L);
-		Assert.assertNotNull(dbGroupPermission);
-		Assert.assertEquals(dbGroupPermission, vXGroupPermission);
-		Assert.assertEquals(dbGroupPermission.getId(),vXGroupPermission.getId());
-		Assert.assertEquals(dbGroupPermission.getGroupName(),vXGroupPermission.getGroupName());
-		Assert.assertEquals(dbGroupPermission.getOwner(),vXGroupPermission.getOwner());
-		Assert.assertEquals(dbGroupPermission.getUpdatedBy(),vXGroupPermission.getUpdatedBy());
-		Assert.assertEquals(dbGroupPermission.getCreateDate(),vXGroupPermission.getCreateDate());
-		Assert.assertEquals(dbGroupPermission.getGroupId(),vXGroupPermission.getGroupId());
-		Assert.assertEquals(dbGroupPermission.getIsAllowed(),vXGroupPermission.getIsAllowed());
-		Assert.assertEquals(dbGroupPermission.getModuleId(),vXGroupPermission.getModuleId());
-		Assert.assertEquals(dbGroupPermission.getUpdateDate(),vXGroupPermission.getUpdateDate());
+		Assertions.assertNotNull(dbGroupPermission);
+		Assertions.assertEquals(dbGroupPermission, vXGroupPermission);
+		Assertions.assertEquals(dbGroupPermission.getId(),vXGroupPermission.getId());
+		Assertions.assertEquals(dbGroupPermission.getGroupName(),vXGroupPermission.getGroupName());
+		Assertions.assertEquals(dbGroupPermission.getOwner(),vXGroupPermission.getOwner());
+		Assertions.assertEquals(dbGroupPermission.getUpdatedBy(),vXGroupPermission.getUpdatedBy());
+		Assertions.assertEquals(dbGroupPermission.getCreateDate(),vXGroupPermission.getCreateDate());
+		Assertions.assertEquals(dbGroupPermission.getGroupId(),vXGroupPermission.getGroupId());
+		Assertions.assertEquals(dbGroupPermission.getIsAllowed(),vXGroupPermission.getIsAllowed());
+		Assertions.assertEquals(dbGroupPermission.getModuleId(),vXGroupPermission.getModuleId());
+		Assertions.assertEquals(dbGroupPermission.getUpdateDate(),vXGroupPermission.getUpdateDate());
 		Mockito.verify(xGroupPermissionService).readResource(1L);
 	}
 
@@ -1602,17 +1608,17 @@ public class TestXUserMgr {
 		xXGroupUserList.add(xXGroupUser);
 		Mockito.when(xGrpUserDao.findByGroupId(vXGroupPermission.getGroupId())).thenReturn(xXGroupUserList);
 		VXGroupPermission dbGroupPermission = xUserMgr.updateXGroupPermission(vXGroupPermission);
-		Assert.assertNotNull(dbGroupPermission);
-		Assert.assertEquals(dbGroupPermission, vXGroupPermission);
-		Assert.assertEquals(dbGroupPermission.getId(),vXGroupPermission.getId());
-		Assert.assertEquals(dbGroupPermission.getGroupName(),vXGroupPermission.getGroupName());
-		Assert.assertEquals(dbGroupPermission.getOwner(),vXGroupPermission.getOwner());
-		Assert.assertEquals(dbGroupPermission.getUpdatedBy(),vXGroupPermission.getUpdatedBy());
-		Assert.assertEquals(dbGroupPermission.getCreateDate(),vXGroupPermission.getCreateDate());
-		Assert.assertEquals(dbGroupPermission.getGroupId(),vXGroupPermission.getGroupId());
-		Assert.assertEquals(dbGroupPermission.getIsAllowed(),vXGroupPermission.getIsAllowed());
-		Assert.assertEquals(dbGroupPermission.getModuleId(),vXGroupPermission.getModuleId());
-		Assert.assertEquals(dbGroupPermission.getUpdateDate(),vXGroupPermission.getUpdateDate());
+		Assertions.assertNotNull(dbGroupPermission);
+		Assertions.assertEquals(dbGroupPermission, vXGroupPermission);
+		Assertions.assertEquals(dbGroupPermission.getId(),vXGroupPermission.getId());
+		Assertions.assertEquals(dbGroupPermission.getGroupName(),vXGroupPermission.getGroupName());
+		Assertions.assertEquals(dbGroupPermission.getOwner(),vXGroupPermission.getOwner());
+		Assertions.assertEquals(dbGroupPermission.getUpdatedBy(),vXGroupPermission.getUpdatedBy());
+		Assertions.assertEquals(dbGroupPermission.getCreateDate(),vXGroupPermission.getCreateDate());
+		Assertions.assertEquals(dbGroupPermission.getGroupId(),vXGroupPermission.getGroupId());
+		Assertions.assertEquals(dbGroupPermission.getIsAllowed(),vXGroupPermission.getIsAllowed());
+		Assertions.assertEquals(dbGroupPermission.getModuleId(),vXGroupPermission.getModuleId());
+		Assertions.assertEquals(dbGroupPermission.getUpdateDate(),vXGroupPermission.getUpdateDate());
 		Mockito.verify(xGroupPermissionService).updateResource(vXGroupPermission);
 	}
 
@@ -1660,17 +1666,17 @@ public class TestXUserMgr {
 		Mockito.when(modDef.findAccessibleModulesByUserId(Mockito.anyLong(),
 		Mockito.anyLong())).thenReturn(lstModule);
 		Set<String> list = xUserMgr.getGroupsForUser(userName);
-		Assert.assertNotNull(list);
+		Assertions.assertNotNull(list);
 		Mockito.verify(xUserService, Mockito.atLeast(2)).getXUserByUserName(userName);
 		Mockito.verify(modDef).findAccessibleModulesByUserId(Mockito.anyLong(),Mockito.anyLong());
 		Mockito.when(xUserService.getXUserByUserName(userName)).thenReturn(null);
 		list = xUserMgr.getGroupsForUser(userName);
-		Assert.assertTrue(list.isEmpty());
+		Assertions.assertTrue(list.isEmpty());
 		Mockito.verify(xUserService, Mockito.atLeast(2)).getXUserByUserName(userName);
 		Mockito.verify(modDef).findAccessibleModulesByUserId(Mockito.anyLong(),Mockito.anyLong());
 		Mockito.when(xUserService.getXUserByUserName(userName)).thenReturn(null);
 		list = xUserMgr.getGroupsForUser(userName);
-		Assert.assertTrue(list.isEmpty());
+		Assertions.assertTrue(list.isEmpty());
 		Mockito.verify(xUserService, Mockito.atLeast(2)).getXUserByUserName(userName);
 		Mockito.verify(modDef).findAccessibleModulesByUserId(Mockito.anyLong(),Mockito.anyLong());
 	}
@@ -1721,11 +1727,12 @@ public class TestXUserMgr {
 		Mockito.when(mockxxModuleDefDao.findAccessibleModulesByUserId(8L, 8L)).thenReturn(permissionList);
 		
 		VXStringList vXStringList = xUserMgr.setUserRolesByExternalID(userId,vStringRolesList);
-		Assert.assertNotNull(vXStringList);
+		Assertions.assertNotNull(vXStringList);
 	}
 
 	@Test
 	public void test38setUserRolesByExternalID() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setup();
 		VXUser vXUser = vxUser();
@@ -1767,12 +1774,13 @@ public class TestXUserMgr {
 		Mockito.when(mockxxModuleDefDao.findAccessibleModulesByUserId(8L, 8L)).thenReturn(permissionList);
 		
 		Mockito.when(restErrorUtil.createRESTException("User ID doesn't exist.",MessageEnums.INVALID_INPUT_DATA)).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.setUserRolesByExternalID(userId, vStringRolesList);
+		});
 	}
 
 	@Test
 	public void test39setUserRolesByExternalID() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setup();
 		VXUser vXUser = vxUser();
@@ -1798,12 +1806,13 @@ public class TestXUserMgr {
 		Mockito.when(xUserMgr.getXUser(userId)).thenReturn(vXUser);
 		Mockito.when(xUserMgr.getXUser(0L)).thenReturn(null);
 		Mockito.when(restErrorUtil.createRESTException("User ID doesn't exist.",MessageEnums.INVALID_INPUT_DATA)).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.setUserRolesByExternalID(0L, vStringRolesList);
+		});
 	}
 
 	@Test
 	public void test40setUserRolesByName() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setup();
 		XXPortalUserRoleDao xPortalUserRoleDao = Mockito.mock(XXPortalUserRoleDao.class);
@@ -1831,14 +1840,15 @@ public class TestXUserMgr {
 		Mockito.when(xPortalUserRoleDao.findByUserId(userId)).thenReturn(xPortalUserRoleList);
 		Mockito.when(userMgr.getUserProfileByLoginId(userProfile.getLoginId())).thenReturn(userProfile);
 		VXStringList vXStringList = xUserMgr.setUserRolesByName(userProfile.getLoginId(), vStringRolesList);
-		Assert.assertNotNull(vXStringList);
+			Assertions.assertNotNull(vXStringList);
 		Mockito.when(restErrorUtil.createRESTException("Login ID doesn't exist.",MessageEnums.INVALID_INPUT_DATA)).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.setUserRolesByName(null, vStringRolesList);
+		});
 	}
 
 	@Test
 	public void test41setUserRolesByName() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setup();
 		XXPortalUserRoleDao xPortalUserRoleDao = Mockito.mock(XXPortalUserRoleDao.class);
@@ -1866,14 +1876,15 @@ public class TestXUserMgr {
 		Mockito.when(xPortalUserRoleDao.findByUserId(userId)).thenReturn(xPortalUserRoleList);
 		Mockito.when(userMgr.getUserProfileByLoginId(userProfile.getLoginId())).thenReturn(userProfile);
 		VXStringList vXStringList = xUserMgr.setUserRolesByName(userProfile.getLoginId(), vStringRolesList);
-		Assert.assertNotNull(vXStringList);
+			Assertions.assertNotNull(vXStringList);
 		Mockito.when(restErrorUtil.createRESTException("Login ID doesn't exist.",MessageEnums.INVALID_INPUT_DATA)).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.setUserRolesByName(null, vStringRolesList);
+		});
 	}
 
 	@Test
 	public void test42getUserRolesByExternalID() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setup();
 		XXPortalUserRoleDao xPortalUserRoleDao = Mockito.mock(XXPortalUserRoleDao.class);
@@ -1919,15 +1930,16 @@ public class TestXUserMgr {
 		Mockito.when(mockxxModuleDefDao.findAccessibleModulesByUserId(8L, 8L)).thenReturn(permissionList);
 		
 		VXStringList vXStringList = xUserMgr.getUserRolesByExternalID(userId);
-		Assert.assertNotNull(vXStringList);
+			Assertions.assertNotNull(vXStringList);
 		Mockito.when(restErrorUtil.createRESTException("Please provide a valid ID",MessageEnums.INVALID_INPUT_DATA)).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		Mockito.when(xUserService.readResourceWithOutLogin((Long)Mockito.any())).thenReturn(null);
 		xUserMgr.getUserRolesByExternalID(userId);
+		});
 	}
 
 	@Test
 	public void test43getUserRolesByExternalID() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setup();
 		XXPortalUserRoleDao xPortalUserRoleDao = Mockito.mock(XXPortalUserRoleDao.class);
@@ -1973,15 +1985,16 @@ public class TestXUserMgr {
 		Mockito.when(mockxxModuleDefDao.findAccessibleModulesByUserId(8L, 8L)).thenReturn(permissionList);
 		
 		VXStringList vXStringList = xUserMgr.getUserRolesByExternalID(userId);
-		Assert.assertNotNull(vXStringList);
+			Assertions.assertNotNull(vXStringList);
 		Mockito.when(restErrorUtil.createRESTException("User ID doesn't exist.",MessageEnums.INVALID_INPUT_DATA)).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		Mockito.when(userMgr.getUserProfileByLoginId((String)Mockito.anyString())).thenReturn(null);
 		xUserMgr.getUserRolesByExternalID(userId);
+		});
 	}
 
 	@Test
 	public void test44getUserRolesByName() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setup();
 		XXPortalUserRoleDao xPortalUserRoleDao = Mockito.mock(XXPortalUserRoleDao.class);
@@ -2012,15 +2025,16 @@ public class TestXUserMgr {
 		Mockito.when(xPortalUserRoleDao.findByUserId(userId)).thenReturn(xPortalUserRoleList);
 		Mockito.when(userMgr.getUserProfileByLoginId(userProfile.getLoginId())).thenReturn(userProfile);
 		VXStringList vXStringList = xUserMgr.getUserRolesByName(userProfile.getLoginId());
-		Assert.assertNotNull(vXStringList);
+			Assertions.assertNotNull(vXStringList);
 		Mockito.when(restErrorUtil.createRESTException("Please provide a valid userName",MessageEnums.INVALID_INPUT_DATA)).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		Mockito.when(userMgr.getUserProfileByLoginId((String) Mockito.anyString())).thenReturn(null);
 		xUserMgr.getUserRolesByName(userProfile.getLoginId());
+		});
 	}
 
 	@Test
 	public void test45getUserRolesByName() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setup();
 		XXPortalUserRoleDao xPortalUserRoleDao = Mockito.mock(XXPortalUserRoleDao.class);
@@ -2051,10 +2065,10 @@ public class TestXUserMgr {
 		Mockito.when(xPortalUserRoleDao.findByUserId(userId)).thenReturn(xPortalUserRoleList);
 		Mockito.when(userMgr.getUserProfileByLoginId(userProfile.getLoginId())).thenReturn(userProfile);
 		VXStringList vXStringList = xUserMgr.getUserRolesByName(userProfile.getLoginId());
-		Assert.assertNotNull(vXStringList);
+			Assertions.assertNotNull(vXStringList);
 		Mockito.when(restErrorUtil.createRESTException("Please provide a valid userName",MessageEnums.INVALID_INPUT_DATA)).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.getUserRolesByName("");
+		});
 	}
 
 	@Test
@@ -2082,10 +2096,10 @@ public class TestXUserMgr {
 		VXGroup group = vxGroup();
 		Mockito.when(xGroupService.readResource(Mockito.anyLong())).thenReturn(group);
 		VXUserList dbVXUserList = xUserMgr.searchXUsers(testSearchCriteria);
-		Assert.assertNotNull(dbVXUserList);
+		Assertions.assertNotNull(dbVXUserList);
 		testSearchCriteria.addParam("isvisible", "true");
 		dbVXUserList = xUserMgr.searchXUsers(testSearchCriteria);
-		Assert.assertNotNull(dbVXUserList);
+		Assertions.assertNotNull(dbVXUserList);
 		testSearchCriteria = createsearchCriteria();
 		testSearchCriteria.addParam("name", userName);
 		testSearchCriteria.addParam("usersource", vxUser.getUserSource());
@@ -2098,7 +2112,7 @@ public class TestXUserMgr {
 		vXGroupList.add(vXGroup1);
 		testSearchCriteria.addParam("xUserId", userId);
 		dbVXUserList = xUserMgr.searchXUsers(testSearchCriteria);
-		Assert.assertNotNull(dbVXUserList);
+		Assertions.assertNotNull(dbVXUserList);
 		testSearchCriteria = createsearchCriteria();
 		testSearchCriteria.addParam("name", userName);
 		testSearchCriteria.addParam("emailaddress", vxUser.getEmailAddress());
@@ -2123,13 +2137,13 @@ public class TestXUserMgr {
 		VXGroupList vXGroupList = xUserMgr.searchXGroups(testSearchCriteria);
 		testSearchCriteria.addParam("isvisible", "true");
 		vXGroupList = xUserMgr.searchXGroups(testSearchCriteria);
-		Assert.assertNotNull(vXGroupList);
+		Assertions.assertNotNull(vXGroupList);
 		testSearchCriteria = createsearchCriteria();
 		testSearchCriteria.addParam("name", groupName);
 		testSearchCriteria.addParam("groupsource", 1L);
 		Mockito.when(xGroupService.searchXGroups(testSearchCriteria)).thenReturn(vXGroupListSort);
 		vXGroupList = xUserMgr.searchXGroups(testSearchCriteria);
-		Assert.assertNotNull(vXGroupList);
+		Assertions.assertNotNull(vXGroupList);
 		testSearchCriteria = createsearchCriteria();
 		testSearchCriteria.addParam("name", groupName);
 		testSearchCriteria.addParam("userid", userId);
@@ -2171,8 +2185,8 @@ public class TestXUserMgr {
 		Mockito.when(xxUserDao.findByUserName(vxUser.getName())).thenReturn(xXUser);
 		Mockito.when(xUserService.populateViewBean(xXUser)).thenReturn(vxUser);
 		VXUser serviceConfigUser=xUserMgr.createServiceConfigUser(vxUser.getName());
-		Assert.assertNotNull(serviceConfigUser);
-		Assert.assertEquals(xXUser.getName(), serviceConfigUser.getName());
+		Assertions.assertNotNull(serviceConfigUser);
+		Assertions.assertEquals(xXUser.getName(), serviceConfigUser.getName());
 		Mockito.when(daoManager.getXXUser()).thenReturn(xxUserDao);
 		Mockito.when(xxUserDao.findByUserName(vxUser.getName())).thenReturn(null, xXUser);
 		Mockito.when(daoManager.getXXUser()).thenReturn(xxUserDao);
@@ -2194,17 +2208,18 @@ public class TestXUserMgr {
 		xUserPermissionsList.add(xUserPermissionObj2);
 
 		serviceConfigUser=xUserMgr.createServiceConfigUser(vxUser.getName());
-		Assert.assertNotNull(serviceConfigUser);
-		Assert.assertEquals(xXUser.getName(), serviceConfigUser.getName());
+		Assertions.assertNotNull(serviceConfigUser);
+		Assertions.assertEquals(xXUser.getName(), serviceConfigUser.getName());
 	}
 
 	@Test
 	public void test50createServiceConfigUser_WithBlankName() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setup();
 		Mockito.when(restErrorUtil.createRESTException("Please provide a valid username.",MessageEnums.INVALID_INPUT_DATA)).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.createServiceConfigUser(null);
+		});
 	}
 
 	@Test
@@ -2257,7 +2272,7 @@ public class TestXUserMgr {
 		userRoleList.add("ROLE_ADMIN_AUDITOR");
 		vXPortalUser.setUserRoleList(userRoleList);
 		xUserMgr.assignPermissionToUser(vXPortalUser,true);
-		Assert.assertNotNull(xXModuleDefs);
+		Assertions.assertNotNull(xXModuleDefs);
 	}
 
 	@Test
@@ -2291,7 +2306,7 @@ public class TestXUserMgr {
 		Mockito.when(daoManager.getXXModuleDef()).thenReturn(xXModuleDefDao);
 		Mockito.when(xXModuleDefDao.getAll()).thenReturn(xXModuleDefs);
 		VXGroupUserInfo vxGUInfoObj=xUserMgr.createXGroupUserFromMap(vxGUInfo);
-		Assert.assertNotNull(vxGUInfoObj);
+		Assertions.assertNotNull(vxGUInfoObj);
 	}
 
 	@Test
@@ -2325,7 +2340,7 @@ public class TestXUserMgr {
 		searchCriteria.addParam("xGroupId", xxGroup.getId());
 		Mockito.when(xxGroupDao.findByGroupName("")).thenReturn(null);
 		VXGroupUserInfo vxGUInfoObjNull=xUserMgr.getXGroupUserFromMap("");
-		Assert.assertNull(vxGUInfoObjNull.getXgroupInfo());
+		Assertions.assertNull(vxGUInfoObjNull.getXgroupInfo());
 		Mockito.when(xxGroupDao.findByGroupName(Mockito.anyString())).thenReturn(xxGroup);
 		Mockito.when(xGroupService.populateViewBean(xxGroup)).thenReturn(vxGroup);
 		Mockito.when(xGroupUserService.searchXGroupUsers((SearchCriteria) Mockito.any())).thenReturn(vxGroupUserList);
@@ -2367,9 +2382,9 @@ public class TestXUserMgr {
 		VXGroupUser vxGroupUser = vxGroupUser();
 		Mockito.when(xGroupUserService.updateResource((VXGroupUser) Mockito.any())).thenReturn(vxGroupUser);
 		VXGroupUser dbvxUser = xUserMgr.updateXGroupUser(vxGroupUser);
-		Assert.assertNotNull(dbvxUser);
-		Assert.assertEquals(dbvxUser.getId(), vxGroupUser.getId());
-		Assert.assertEquals(dbvxUser.getName(), vxGroupUser.getName());
+		Assertions.assertNotNull(dbvxUser);
+		Assertions.assertEquals(dbvxUser.getId(), vxGroupUser.getId());
+		Assertions.assertEquals(dbvxUser.getName(), vxGroupUser.getName());
 		Mockito.verify(xGroupUserService).updateResource((VXGroupUser) Mockito.any());
 	}
 
@@ -2381,9 +2396,9 @@ public class TestXUserMgr {
 		VXGroupGroup vXGroupGroup = vxGroupGroup();
 		Mockito.when(xGroupGroupService.createResource((VXGroupGroup) Mockito.any())).thenReturn(vXGroupGroup);
 		VXGroupGroup dbvXGroupGroup = xUserMgr.createXGroupGroup(vXGroupGroup);
-		Assert.assertNotNull(dbvXGroupGroup);
-		Assert.assertEquals(dbvXGroupGroup.getId(), vXGroupGroup.getId());
-		Assert.assertEquals(dbvXGroupGroup.getName(), vXGroupGroup.getName());
+		Assertions.assertNotNull(dbvXGroupGroup);
+		Assertions.assertEquals(dbvXGroupGroup.getId(), vXGroupGroup.getId());
+		Assertions.assertEquals(dbvXGroupGroup.getName(), vXGroupGroup.getName());
 		Mockito.verify(xGroupGroupService).createResource((VXGroupGroup) Mockito.any());
 	}
 
@@ -2395,9 +2410,9 @@ public class TestXUserMgr {
 		VXGroupGroup vXGroupGroup = vxGroupGroup();
 		Mockito.when(xGroupGroupService.updateResource((VXGroupGroup) Mockito.any())).thenReturn(vXGroupGroup);
 		VXGroupGroup dbvXGroupGroup = xUserMgr.updateXGroupGroup(vXGroupGroup);
-		Assert.assertNotNull(dbvXGroupGroup);
-		Assert.assertEquals(dbvXGroupGroup.getId(), vXGroupGroup.getId());
-		Assert.assertEquals(dbvXGroupGroup.getName(), vXGroupGroup.getName());
+		Assertions.assertNotNull(dbvXGroupGroup);
+		Assertions.assertEquals(dbvXGroupGroup.getId(), vXGroupGroup.getId());
+		Assertions.assertEquals(dbvXGroupGroup.getName(), vXGroupGroup.getName());
 		Mockito.verify(xGroupGroupService).updateResource((VXGroupGroup) Mockito.any());
 	}
 
@@ -2430,8 +2445,8 @@ public class TestXUserMgr {
 		vxUgsyncAuditInfo.setId(userId);
 		Mockito.when(xUgsyncAuditInfoService.createUgsyncAuditInfo((VXUgsyncAuditInfo) Mockito.any())).thenReturn(vxUgsyncAuditInfo);
 		VXUgsyncAuditInfo dbVXUgsyncAuditInfo = xUserMgr.postUserGroupAuditInfo(vxUgsyncAuditInfo);
-		Assert.assertNotNull(dbVXUgsyncAuditInfo);
-		Assert.assertEquals(dbVXUgsyncAuditInfo.getId(), vxUgsyncAuditInfo.getId());
+		Assertions.assertNotNull(dbVXUgsyncAuditInfo);
+		Assertions.assertEquals(dbVXUgsyncAuditInfo.getId(), vxUgsyncAuditInfo.getId());
 		Mockito.verify(xUgsyncAuditInfoService).createUgsyncAuditInfo((VXUgsyncAuditInfo) Mockito.any());
 	}
 
@@ -2443,9 +2458,9 @@ public class TestXUserMgr {
 		VXGroupUser vxGroupUser = vxGroupUser();
 		Mockito.when(xGroupUserService.createXGroupUserWithOutLogin((VXGroupUser) Mockito.any())).thenReturn(vxGroupUser);
 		VXGroupUser dbvxUser = xUserMgr.createXGroupUser(vxGroupUser);
-		Assert.assertNotNull(dbvxUser);
-		Assert.assertEquals(dbvxUser.getId(), vxGroupUser.getId());
-		Assert.assertEquals(dbvxUser.getName(), vxGroupUser.getName());
+		Assertions.assertNotNull(dbvxUser);
+		Assertions.assertEquals(dbvxUser.getId(), vxGroupUser.getId());
+		Assertions.assertEquals(dbvxUser.getName(), vxGroupUser.getName());
 		Mockito.verify(xGroupUserService).createXGroupUserWithOutLogin((VXGroupUser) Mockito.any());
 	}
 
@@ -2457,12 +2472,12 @@ public class TestXUserMgr {
 		Mockito.when(xGroupService.readResource(userId)).thenReturn(vxGroup);
 		Mockito.when(xGroupUserService.createResource((VXGroupUser) Mockito.any())).thenReturn(vXGroupUser);
 		VXGroupUser dbVXGroupUser = xUserMgr.createXGroupUser(userId,vxGroup.getId());
-		Assert.assertNotNull(dbVXGroupUser);
-		Assert.assertEquals(userId, dbVXGroupUser.getId());
-		Assert.assertEquals(dbVXGroupUser.getOwner(), vXGroupUser.getOwner());
-		Assert.assertEquals(dbVXGroupUser.getName(), vXGroupUser.getName());
-		Assert.assertEquals(dbVXGroupUser.getUserId(), vXGroupUser.getUserId());
-		Assert.assertEquals(dbVXGroupUser.getUpdatedBy(),vXGroupUser.getUpdatedBy());
+		Assertions.assertNotNull(dbVXGroupUser);
+		Assertions.assertEquals(userId, dbVXGroupUser.getId());
+		Assertions.assertEquals(dbVXGroupUser.getOwner(), vXGroupUser.getOwner());
+		Assertions.assertEquals(dbVXGroupUser.getName(), vXGroupUser.getName());
+		Assertions.assertEquals(dbVXGroupUser.getUserId(), vXGroupUser.getUserId());
+		Assertions.assertEquals(dbVXGroupUser.getUpdatedBy(),vXGroupUser.getUpdatedBy());
 	}
 
 	@Test
@@ -2482,77 +2497,81 @@ public class TestXUserMgr {
 		VXGroup vXGroup = vxGroup();
 		Mockito.when(xGroupService.readResource(Mockito.anyLong())).thenReturn(vXGroup);
 		VXUserList dbVXUserList = xUserMgr.searchXUsers(testSearchCriteria);
-		Assert.assertNotNull(dbVXUserList);
+		Assertions.assertNotNull(dbVXUserList);
 		testSearchCriteria.addParam("isvisible", "true");
 		dbVXUserList = xUserMgr.searchXUsers(testSearchCriteria);
-		Assert.assertNotNull(dbVXUserList);
+		Assertions.assertNotNull(dbVXUserList);
 		testSearchCriteria = createsearchCriteria();
 		testSearchCriteria.addParam("name", userName);
 		testSearchCriteria.addParam("status", RangerCommonEnums.USER_EXTERNAL);
 		Mockito.when(xUserService.searchXUsers(testSearchCriteria)).thenReturn(vXUserListSort);
 		dbVXUserList = xUserMgr.searchXUsers(testSearchCriteria);
-		Assert.assertNotNull(dbVXUserList);
+		Assertions.assertNotNull(dbVXUserList);
 		testSearchCriteria = createsearchCriteria();
 		testSearchCriteria.addParam("name", userName);
 		testSearchCriteria.addParam("usersource", 1L);
 		Mockito.when(xUserService.searchXUsers(testSearchCriteria)).thenReturn(vXUserListSort);
 		dbVXUserList = xUserMgr.searchXUsers(testSearchCriteria);
-		Assert.assertNotNull(dbVXUserList);
+		Assertions.assertNotNull(dbVXUserList);
 		testSearchCriteria = createsearchCriteria();
 		testSearchCriteria.addParam("name", userName);
 		testSearchCriteria.addParam("emailaddress", "new"+vxUser.getEmailAddress());
 		Mockito.when(xUserService.searchXUsers(testSearchCriteria)).thenReturn(vXUserListSort);
 		dbVXUserList = xUserMgr.searchXUsers(testSearchCriteria);
-		Assert.assertNotNull(dbVXUserList);
+		Assertions.assertNotNull(dbVXUserList);
 		testSearchCriteria = createsearchCriteria();
 		testSearchCriteria.addParam("name", userName);
 		testSearchCriteria.addParam("userrole", RangerConstants.ROLE_USER);
 		Mockito.when(xUserService.searchXUsers(testSearchCriteria)).thenReturn(vXUserListSort);
 		dbVXUserList = xUserMgr.searchXUsers(testSearchCriteria);
-		Assert.assertNotNull(dbVXUserList);
+		Assertions.assertNotNull(dbVXUserList);
 		testSearchCriteria = createsearchCriteria();
 		testSearchCriteria.addParam("name", userName);
 		testSearchCriteria.addParam("userrolelist", vxUser.getUserRoleList());
 		Mockito.when(xUserService.searchXUsers(testSearchCriteria)).thenReturn(vXUserListSort);
 		dbVXUserList = xUserMgr.searchXUsers(testSearchCriteria);
-		Assert.assertNotNull(dbVXUserList);
+		Assertions.assertNotNull(dbVXUserList);
 	}
 
 	@Test
 	public void test64checkAccessRolesAdmin() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setup();
 		List<String> userRoleList = new ArrayList<String>();
 		userRoleList.add("ROLE_KEY_ADMIN");
 		Mockito.when(restErrorUtil.create403RESTException(Mockito.anyString())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.checkAccessRoles(userRoleList);
+		});
 	}
 
 	@Test
 	public void test65checkAccessRolesKeyAdmin() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		List<String> userRoleList = new ArrayList<String>();
 		setupKeyAdmin();
 		userRoleList.add("ROLE_SYS_ADMIN");
 		Mockito.when(restErrorUtil.create403RESTException(Mockito.anyString())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.checkAccessRoles(userRoleList);
+		});
 	}
 
 	@Test
 	public void test66checkAccessRolesUser() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setupUser();
 		List<String> userRoleList = new ArrayList<String>();
 		userRoleList.add("ROLE_USER");
 		Mockito.when(restErrorUtil.create403RESTException(Mockito.anyString())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.checkAccessRoles(userRoleList);
+		});
 	}
 
 	@Test
 	public void test67checkAccessRolesUser() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		List<String> userRoleList = new ArrayList<String>();
 		userRoleList.add("ROLE_USER");
@@ -2560,53 +2579,58 @@ public class TestXUserMgr {
 		vXResponse.setStatusCode(HttpServletResponse.SC_UNAUTHORIZED);
 		vXResponse.setMsgDesc("Bad Credentials");
 		Mockito.when(restErrorUtil.generateRESTException((VXResponse) Mockito.any())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.checkAccessRoles(userRoleList);
+		});
 	}
 
 	@Test
 	public void test68getGroupByGroupName() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		VXGroup vxGroup=vxGroup();
 		Mockito.when(xGroupService.getGroupByGroupName(vxGroup.getName())).thenReturn(vxGroup);
 		VXGroup vxGroup1=xUserMgr.getGroupByGroupName(vxGroup.getName());
-		Assert.assertNotNull(vxGroup1);
+			Assertions.assertNotNull(vxGroup1);
 		Mockito.when(xGroupService.getGroupByGroupName(Mockito.anyString())).thenReturn(null);
 		Mockito.when(restErrorUtil.createRESTException(vxGroup.getName() + " is Not Found", MessageEnums.DATA_NOT_FOUND)).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		VXGroup vxGroup2=xUserMgr.getGroupByGroupName(vxGroup.getName());
-		Assert.assertNull(vxGroup2);
+			Assertions.assertNull(vxGroup2);
+		});
 	}
 
 	@Test
 	public void test69denySelfRoleChange() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setupUser();
 		Mockito.when(restErrorUtil.create403RESTException(Mockito.anyString())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.denySelfRoleChange(userProfile().getLoginId());
+		});
 	}
 
 	@Test
 	public void test70denySelfRoleChange() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setup();
 		Mockito.when(restErrorUtil.create403RESTException(Mockito.anyString())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.denySelfRoleChange(adminLoginID);
+		});
 	}
 
 	@Test
 	public void test71denySelfRoleChange() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setupKeyAdmin();
 		Mockito.when(restErrorUtil.create403RESTException(Mockito.anyString())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.denySelfRoleChange(keyadminLoginID);
+		});
 	}
 
 	@Test
 	public void test72UpdateXUser() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setup();
 		Collection<String> existingRoleList = new ArrayList<String>();
@@ -2648,10 +2672,10 @@ public class TestXUserMgr {
 		Set<UserSessionBase> userSessions = new HashSet<UserSessionBase>();
 		userSessions.add(userSession);
 		VXUser dbvxUser = xUserMgr.updateXUser(vxUser);
-		Assert.assertNotNull(dbvxUser);
-		Assert.assertEquals(dbvxUser.getId(), vxUser.getId());
-		Assert.assertEquals(dbvxUser.getDescription(), vxUser.getDescription());
-		Assert.assertEquals(dbvxUser.getName(), vxUser.getName());
+			Assertions.assertNotNull(dbvxUser);
+			Assertions.assertEquals(dbvxUser.getId(), vxUser.getId());
+			Assertions.assertEquals(dbvxUser.getDescription(), vxUser.getDescription());
+			Assertions.assertEquals(dbvxUser.getName(), vxUser.getName());
 		Mockito.verify(xUserService).updateResource(vxUser);
 
 		groupIdList.clear();
@@ -2666,48 +2690,52 @@ public class TestXUserMgr {
 		VXGroupUser vXGroupUser = vxGroupUser();
 		Mockito.when(xGroupUserService.createResource((VXGroupUser) Mockito.any())).thenReturn(vXGroupUser);
 		dbvxUser = xUserMgr.updateXUser(vxUser);
-		Assert.assertNotNull(dbvxUser);
+			Assertions.assertNotNull(dbvxUser);
 
 		Mockito.when(userMgr.getUserProfileByLoginId(Mockito.anyString())).thenReturn(null);
 		Mockito.when(restErrorUtil.createRESTException("user " + vxUser.getName() + " does not exist.",MessageEnums.INVALID_INPUT_DATA)).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		vxUser=xUserMgr.updateXUser(vxUser);
-		Assert.assertNull(vxUser);
+			Assertions.assertNull(vxUser);
+		});
 	}
 
 	@Test
 	public void test73restrictSelfAccountDeletion() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setupUser();
 		Mockito.when(restErrorUtil.generateRESTException((VXResponse)Mockito.any())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.restrictSelfAccountDeletion(userProfile().getLoginId());
+		});
 	}
 
 	@Test
 	public void test74restrictSelfAccountDeletion() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setup();
 		Mockito.when(restErrorUtil.generateRESTException((VXResponse)Mockito.any())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.restrictSelfAccountDeletion(adminLoginID);
+		});
 	}
 
 	@Test
 	public void test75restrictSelfAccountDeletion() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setupKeyAdmin();
 		Mockito.when(restErrorUtil.generateRESTException((VXResponse)Mockito.any())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.restrictSelfAccountDeletion(keyadminLoginID);
+		});
 	}
 
 	@Test
 	public void test76restrictSelfAccountDeletion() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		Mockito.when(restErrorUtil.generateRESTException((VXResponse)Mockito.any())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.restrictSelfAccountDeletion(userProfile().getLoginId());
+		});
 	}
 
 	@Test
@@ -2775,37 +2803,41 @@ public class TestXUserMgr {
 
 	@Test
 	public void test78checkAccess() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setupUser();
 		Mockito.when(restErrorUtil.create403RESTException(Mockito.anyString())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.checkAccess("testuser2");
+		});
 	}
 
 	@Test
 	public void test79checkAccess() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		Mockito.when(restErrorUtil.generateRESTException((VXResponse)Mockito.any())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		VXPortalUser vXPortalUser = userProfile();
 		xUserMgr.checkAccess(vXPortalUser.getLoginId());
+		});
 	}
 
 	@Test
 	public void test80checkAdminAccess() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setupUser();
 		Mockito.when(restErrorUtil.generateRESTException((VXResponse)Mockito.any())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.checkAdminAccess();
+		});
 	}
 
 	@Test
 	public void test81checkAdminAccess() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		Mockito.when(restErrorUtil.generateRESTException((VXResponse)Mockito.any())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.checkAdminAccess();
+		});
 	}
 
 	@Test
@@ -2831,13 +2863,14 @@ public class TestXUserMgr {
 
 	@Test
 	public void test83validatePassword() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setup();
 		VXUser vxUser = vxUser();
 		vxUser.setPassword(null);
 		Mockito.when(restErrorUtil.createRESTException("serverMsg.xuserMgrValidatePassword", MessageEnums.INVALID_PASSWORD, null, "Password cannot be blank/null", null)).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.validatePassword(vxUser);
+		});
 	}
 
 	@Test
@@ -2849,13 +2882,14 @@ public class TestXUserMgr {
 
 	@Test
 	public void test85validatePassword() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setup();
 		VXUser vxUser = vxUser();
 		vxUser.setPassword("password");
 		Mockito.when(restErrorUtil.createRESTException("serverMsg.xuserMgrValidatePassword", MessageEnums.INVALID_PASSWORD, null, "Password should be minimum 8 characters, at least one uppercase letter, one lowercase letter and one numeric.", null)).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.validatePassword(vxUser);
+		});
 	}
 
 	@Test
@@ -2876,6 +2910,7 @@ public class TestXUserMgr {
 
 	@Test
 	public void test87deleteXPermMap() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setup();
 		VXResource vxresource=new VXResource();
@@ -2889,12 +2924,13 @@ public class TestXUserMgr {
 		Mockito.when(xResourceService.readResource(xXPermMap1.getResourceId())).thenReturn(vxresource);
 		Mockito.when(xResourceService.readResource(xXPermMap1.getResourceId())).thenReturn(null);
 		Mockito.when(restErrorUtil.createRESTException("Invalid Input Data - No resource found with Id: " + xXPermMap1.getResourceId(), MessageEnums.INVALID_INPUT_DATA)).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.deleteXPermMap(vXPermMap1.getId(),true);
+		});
 	}
 
 	@Test
 	public void test88deleteXPermMap() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setup();
 		VXPermMap vXPermMap1=getVXPermMap();
@@ -2902,12 +2938,13 @@ public class TestXUserMgr {
 		xXPermMap1.setId(vXPermMap1.getId());
 		xXPermMap1.setResourceId(vXPermMap1.getResourceId());
 		Mockito.when(restErrorUtil.createRESTException("serverMsg.modelMgrBaseDeleteModel", MessageEnums.OPER_NOT_ALLOWED_FOR_ENTITY)).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.deleteXPermMap(vXPermMap1.getId(),false);
+		});
 	}
 
 	@Test
 	public void test89deleteXAuditMap() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setup();
 		VXResource vxresource=new VXResource();
@@ -2923,8 +2960,8 @@ public class TestXUserMgr {
 		xUserMgr.deleteXAuditMap(vXAuditMap.getId(),true);
 		Mockito.when(xResourceService.readResource(xXAuditMap.getResourceId())).thenReturn(null);
 		Mockito.when(restErrorUtil.createRESTException("Invalid Input Data - No resource found with Id: " + xXAuditMap.getResourceId(), MessageEnums.INVALID_INPUT_DATA)).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.deleteXAuditMap(vXAuditMap.getId(),true);
+		});
 	}
 
 	@Test
@@ -2940,7 +2977,7 @@ public class TestXUserMgr {
 		VXLong vXLong = new VXLong();
 		vXLong.setValue(permMapList.getListSize());
 		VXLong vXLong1=xUserMgr.getXPermMapSearchCount(testSearchCriteria);
-		Assert.assertEquals(vXLong.getValue(), vXLong1.getValue());
+		Assertions.assertEquals(vXLong.getValue(), vXLong1.getValue());
 	}
 
 	@Test
@@ -2956,7 +2993,7 @@ public class TestXUserMgr {
 		VXLong vXLong = new VXLong();
 		vXLong.setValue(auditMapList.getListSize());
 		VXLong vXLong1=xUserMgr.getXAuditMapSearchCount(testSearchCriteria);
-		Assert.assertEquals(vXLong.getValue(), vXLong1.getValue());
+		Assertions.assertEquals(vXLong.getValue(), vXLong1.getValue());
 	}
 
 	@Test
@@ -2985,8 +3022,8 @@ public class TestXUserMgr {
 		vXResponse.setStatusCode(VXResponse.STATUS_SUCCESS);
 		Mockito.when(msBizUtil.hasPermission(vxresource, AppConstants.XA_PERM_TYPE_ADMIN)).thenReturn(vXResponse);
 		VXPermMapList returnList=xUserMgr.searchXPermMaps(testSearchCriteria);
-		Assert.assertNotNull(returnList);
-		Assert.assertEquals(permMapList.getListSize(), returnList.getListSize());
+		Assertions.assertNotNull(returnList);
+		Assertions.assertEquals(permMapList.getListSize(), returnList.getListSize());
 	}
 
 	@Test
@@ -3015,12 +3052,13 @@ public class TestXUserMgr {
 		vXResponse.setStatusCode(VXResponse.STATUS_SUCCESS);
 		Mockito.when(msBizUtil.hasPermission(vxresource, AppConstants.XA_PERM_TYPE_ADMIN)).thenReturn(vXResponse);
 		VXAuditMapList returnList=xUserMgr.searchXAuditMaps(testSearchCriteria);
-		Assert.assertNotNull(returnList);
-		Assert.assertEquals(auditMapList.getListSize(), returnList.getListSize());
+		Assertions.assertNotNull(returnList);
+		Assertions.assertEquals(auditMapList.getListSize(), returnList.getListSize());
 	}
 
 	@Test
 	public void test94DeleteXUser() {
+		assertThrows(NullPointerException.class, () -> {
 		setup();
 		boolean force = false;
 		VXUser vXUser = vxUser();
@@ -3107,12 +3145,13 @@ public class TestXUserMgr {
 		vXUser.setName("");
 		Mockito.when(xXUserDao.getById(vXUser.getId())).thenReturn(xXUser);
 		Mockito.when(xUserService.populateViewBean(xXUser)).thenReturn(vXUser);
-		thrown.expect(NullPointerException.class);
 		xUserMgr.deleteXUser(vXUser.getId(), force);
+		});
 	}
 
 	@Test
 	public void test95DeleteXGroup() {
+		assertThrows(WebApplicationException.class, () -> {
 		setup();
 		boolean force = false;
 		VXGroup vXGroup = vxGroup();
@@ -3185,8 +3224,8 @@ public class TestXUserMgr {
 		xUserMgr.deleteXGroup(vXGroup.getId(), force);
 		Mockito.when(xGroupService.populateViewBean(xXGroup)).thenReturn(null);
 		Mockito.when(restErrorUtil.createRESTException("Group ID doesn't exist.",MessageEnums.INVALID_INPUT_DATA)).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.deleteXGroup(vXGroup.getId(), force);
+		});
 	}
 
 	@Test
@@ -3239,18 +3278,18 @@ public class TestXUserMgr {
 		Mockito.when(xUserPermissionService.updateResource(vxUserPermission)).thenReturn(vxUserPermission);
 		Mockito.when(sessionMgr.getActiveUserSessionsForPortalUserId(vxUserPermission.getUserId())).thenReturn(userSessions);
 		VXModuleDef dbMuduleDef = xUserMgr.updateXModuleDefPermission(vXModuleDef);
-		Assert.assertEquals(dbMuduleDef, vXModuleDef);
-		Assert.assertNotNull(dbMuduleDef);
-		Assert.assertEquals(dbMuduleDef, vXModuleDef);
-		Assert.assertEquals(dbMuduleDef.getId(), vXModuleDef.getId());
-		Assert.assertEquals(dbMuduleDef.getOwner(), vXModuleDef.getOwner());
-		Assert.assertEquals(dbMuduleDef.getUpdatedBy(),vXModuleDef.getUpdatedBy());
-		Assert.assertEquals(dbMuduleDef.getUrl(), vXModuleDef.getUrl());
-		Assert.assertEquals(dbMuduleDef.getAddedById(),vXModuleDef.getAddedById());
-		Assert.assertEquals(dbMuduleDef.getCreateDate(),vXModuleDef.getCreateDate());
-		Assert.assertEquals(dbMuduleDef.getCreateTime(),vXModuleDef.getCreateTime());
-		Assert.assertEquals(dbMuduleDef.getUserPermList(),vXModuleDef.getUserPermList());
-		Assert.assertEquals(dbMuduleDef.getGroupPermList(),vXModuleDef.getGroupPermList());
+		Assertions.assertEquals(dbMuduleDef, vXModuleDef);
+		Assertions.assertNotNull(dbMuduleDef);
+		Assertions.assertEquals(dbMuduleDef, vXModuleDef);
+		Assertions.assertEquals(dbMuduleDef.getId(), vXModuleDef.getId());
+		Assertions.assertEquals(dbMuduleDef.getOwner(), vXModuleDef.getOwner());
+		Assertions.assertEquals(dbMuduleDef.getUpdatedBy(),vXModuleDef.getUpdatedBy());
+		Assertions.assertEquals(dbMuduleDef.getUrl(), vXModuleDef.getUrl());
+		Assertions.assertEquals(dbMuduleDef.getAddedById(),vXModuleDef.getAddedById());
+		Assertions.assertEquals(dbMuduleDef.getCreateDate(),vXModuleDef.getCreateDate());
+		Assertions.assertEquals(dbMuduleDef.getCreateTime(),vXModuleDef.getCreateTime());
+		Assertions.assertEquals(dbMuduleDef.getUserPermList(),vXModuleDef.getUserPermList());
+		Assertions.assertEquals(dbMuduleDef.getGroupPermList(),vXModuleDef.getGroupPermList());
 		Mockito.verify(xModuleDefService).populateViewBean(xModuleDef,xXUserMap,xXGroupNameMap,true);
 		Mockito.verify(xModuleDefService).updateResource(vXModuleDef);
 		Mockito.verify(daoManager).getXXModuleDef();
@@ -3296,18 +3335,18 @@ public class TestXUserMgr {
 		Mockito.when(xGroupPermissionService.createResource((VXGroupPermission) Mockito.any())).thenReturn(vXGroupPermission);
 		Mockito.when(xUserPermissionService.createResource((VXUserPermission) Mockito.any())).thenReturn(vxUserPermission);
 		VXModuleDef dbMuduleDef = xUserMgr.updateXModuleDefPermission(vXModuleDef);
-		Assert.assertEquals(dbMuduleDef, vXModuleDef);
-		Assert.assertNotNull(dbMuduleDef);
-		Assert.assertEquals(dbMuduleDef, vXModuleDef);
-		Assert.assertEquals(dbMuduleDef.getId(), vXModuleDef.getId());
-		Assert.assertEquals(dbMuduleDef.getOwner(), vXModuleDef.getOwner());
-		Assert.assertEquals(dbMuduleDef.getUpdatedBy(),vXModuleDef.getUpdatedBy());
-		Assert.assertEquals(dbMuduleDef.getUrl(), vXModuleDef.getUrl());
-		Assert.assertEquals(dbMuduleDef.getAddedById(),vXModuleDef.getAddedById());
-		Assert.assertEquals(dbMuduleDef.getCreateDate(),vXModuleDef.getCreateDate());
-		Assert.assertEquals(dbMuduleDef.getCreateTime(),vXModuleDef.getCreateTime());
-		Assert.assertEquals(dbMuduleDef.getUserPermList(),vXModuleDef.getUserPermList());
-		Assert.assertEquals(dbMuduleDef.getGroupPermList(),vXModuleDef.getGroupPermList());
+		Assertions.assertEquals(dbMuduleDef, vXModuleDef);
+		Assertions.assertNotNull(dbMuduleDef);
+		Assertions.assertEquals(dbMuduleDef, vXModuleDef);
+		Assertions.assertEquals(dbMuduleDef.getId(), vXModuleDef.getId());
+		Assertions.assertEquals(dbMuduleDef.getOwner(), vXModuleDef.getOwner());
+		Assertions.assertEquals(dbMuduleDef.getUpdatedBy(),vXModuleDef.getUpdatedBy());
+		Assertions.assertEquals(dbMuduleDef.getUrl(), vXModuleDef.getUrl());
+		Assertions.assertEquals(dbMuduleDef.getAddedById(),vXModuleDef.getAddedById());
+		Assertions.assertEquals(dbMuduleDef.getCreateDate(),vXModuleDef.getCreateDate());
+		Assertions.assertEquals(dbMuduleDef.getCreateTime(),vXModuleDef.getCreateTime());
+		Assertions.assertEquals(dbMuduleDef.getUserPermList(),vXModuleDef.getUserPermList());
+		Assertions.assertEquals(dbMuduleDef.getGroupPermList(),vXModuleDef.getGroupPermList());
 		Mockito.verify(xModuleDefService).updateResource(vXModuleDef);
 		Mockito.verify(daoManager).getXXModuleDef();
 		Mockito.verify(xModuleDefService).populateViewBean(xModuleDef,xXUserMap,xXGroupNameMap,true);
@@ -3346,8 +3385,8 @@ public class TestXUserMgr {
 		Mockito.when(xxUserDao.findByUserName(vxUser.getName())).thenReturn(xXUser);
 		Mockito.when(xUserService.populateViewBean(xXUser)).thenReturn(vxUser);
 		VXUser serviceConfigUser=xUserMgr.createServiceConfigUser(vxUser.getName());
-		Assert.assertNotNull(serviceConfigUser);
-		Assert.assertEquals(xXUser.getName(), serviceConfigUser.getName());
+		Assertions.assertNotNull(serviceConfigUser);
+		Assertions.assertEquals(xXUser.getName(), serviceConfigUser.getName());
 		Mockito.when(daoManager.getXXUser()).thenReturn(xxUserDao);
 		Mockito.when(xxUserDao.findByUserName(vxUser.getName())).thenReturn(null);
 		Mockito.when(daoManager.getXXUser()).thenReturn(xxUserDao);
@@ -3355,19 +3394,20 @@ public class TestXUserMgr {
 		Set<UserSessionBase> userSessions = new HashSet<UserSessionBase>();
 		userSessions.add(userSession);
 		serviceConfigUser=xUserMgr.createServiceConfigUser(vxUser.getName());
-		Assert.assertNull(serviceConfigUser);
+		Assertions.assertNull(serviceConfigUser);
 	}
 
 	@Test
 	public void test100getStringListFromUserRoleList() {
 		destroySession();
 		VXStringList vXStringList=xUserMgr.getStringListFromUserRoleList(null);
-		Assert.assertNull(vXStringList);
+		Assertions.assertNull(vXStringList);
 	}
 	
 	
 	@Test
 	public void test101getAdminUserDetailsWithUserHavingUSER_ROLE() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		
 		RangerSecurityContext context = new RangerSecurityContext();
@@ -3397,12 +3437,13 @@ public class TestXUserMgr {
 		Mockito.when(xUserService.readResourceWithOutLogin(5L)).thenReturn(vxUser);
 		Mockito.when(xUserService.getXUserByUserName("testuser")).thenReturn(loggedInUser);
 		Mockito.when(restErrorUtil.create403RESTException("Logged-In user is not allowed to access requested user data.")).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.getXUser(5L);
+		});
 	}
 	
 	@Test
 	public void test102getKeyAdminUserDetailsWithUserHavingUSER_ROLE() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		
 		RangerSecurityContext context = new RangerSecurityContext();
@@ -3432,12 +3473,13 @@ public class TestXUserMgr {
 		Mockito.when(xUserService.readResourceWithOutLogin(5L)).thenReturn(vxUser);
 		Mockito.when(xUserService.getXUserByUserName("testuser")).thenReturn(loggedInUser);
 		Mockito.when(restErrorUtil.create403RESTException("Logged-In user is not allowed to access requested user data.")).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.getXUser(5L);
+		});
 	}
 	
 	@Test
 	public void test103getAdminAuditorUserDetailsWithUserHavingUSER_ROLE() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		
 		RangerSecurityContext context = new RangerSecurityContext();
@@ -3467,12 +3509,13 @@ public class TestXUserMgr {
 		Mockito.when(xUserService.readResourceWithOutLogin(5L)).thenReturn(vxUser);
 		Mockito.when(xUserService.getXUserByUserName("testuser")).thenReturn(loggedInUser);
 		Mockito.when(restErrorUtil.create403RESTException("Logged-In user is not allowed to access requested user data.")).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.getXUser(5L);
+		});
 	}
 
 	@Test
 	public void test104getKeyAdminAuditorUserDetailsWithUserHavingUSER_ROLE() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		
 		RangerSecurityContext context = new RangerSecurityContext();
@@ -3502,12 +3545,13 @@ public class TestXUserMgr {
 		Mockito.when(xUserService.readResourceWithOutLogin(5L)).thenReturn(vxUser);
 		Mockito.when(xUserService.getXUserByUserName("testuser")).thenReturn(loggedInUser);
 		Mockito.when(restErrorUtil.create403RESTException("Logged-In user is not allowed to access requested user data.")).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.getXUser(5L);
+		});
 	}
 
 	@Test
 	public void test105getUserDetailsOfItsOwn() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		
 		RangerSecurityContext context = new RangerSecurityContext();
@@ -3543,16 +3587,17 @@ public class TestXUserMgr {
 		Mockito.when(daoManager.getXXModuleDef()).thenReturn(mockxxModuleDefDao);
 		Mockito.when(mockxxModuleDefDao.findAccessibleModulesByUserId(8L, 8L)).thenReturn(permissionList);
 		VXUser expectedVXUser = xUserMgr.getXUser(8L);
-		Assert.assertNotNull(expectedVXUser);
-		Assert.assertEquals(expectedVXUser.getName(), vxUser.getName());
+			Assertions.assertNotNull(expectedVXUser);
+			Assertions.assertEquals(expectedVXUser.getName(), vxUser.getName());
 		destroySession();
 		Mockito.when(restErrorUtil.create403RESTException("Logged-In user is not allowed to access requested user data.")).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.getXUser(8L);
+		});
 	}
 	
 	@Test
 	public void test106getErrorWhenRoleUserFetchAnotherUserGroupInfo() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		
 		RangerSecurityContext context = new RangerSecurityContext();
@@ -3594,8 +3639,8 @@ public class TestXUserMgr {
 		Mockito.when(mockxxGroupUserDao.findGroupIdListByUserId(loggedInUser.getId())).thenReturn(groupIdList);
 
 		Mockito.when(restErrorUtil.create403RESTException("Logged-In user is not allowed to access requested group data.")).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		xUserMgr.getXGroup(5L);
+		});
 	}
 	
 	@Test
@@ -3639,9 +3684,9 @@ public class TestXUserMgr {
 		Mockito.when(xGroupService.readResourceWithOutLogin(5L)).thenReturn(expectedVXGroup);
 
 		VXGroup rcvVXGroup = xUserMgr.getXGroup(5L);
-		Assert.assertNotNull(rcvVXGroup);
-		Assert.assertEquals(expectedVXGroup.getId(), rcvVXGroup.getId());
-		Assert.assertEquals(expectedVXGroup.getName(), rcvVXGroup.getName());
+		Assertions.assertNotNull(rcvVXGroup);
+		Assertions.assertEquals(expectedVXGroup.getId(), rcvVXGroup.getId());
+		Assertions.assertEquals(expectedVXGroup.getName(), rcvVXGroup.getName());
 	}
 	
 	@Test
@@ -3698,10 +3743,10 @@ public class TestXUserMgr {
 		Mockito.when(mockxxModuleDefDao.findAccessibleModulesByUserId(8L, 8L)).thenReturn(permissionList);
 
 		VXGroupList rcvVXGroupList = xUserMgr.searchXGroups(testSearchCriteria);
-		Assert.assertNotNull(rcvVXGroupList);
+		Assertions.assertNotNull(rcvVXGroupList);
 		
-		Assert.assertEquals(rcvVXGroupList.getList().get(0).getId(),expectedVXGroup.getId());
-		Assert.assertEquals(rcvVXGroupList.getList().get(0).getName(),expectedVXGroup.getName());
+		Assertions.assertEquals(rcvVXGroupList.getList().get(0).getId(),expectedVXGroup.getId());
+		Assertions.assertEquals(rcvVXGroupList.getList().get(0).getName(),expectedVXGroup.getName());
 	}
 
 	@Test
@@ -3864,7 +3909,7 @@ public class TestXUserMgr {
 		Mockito.when(xUserPermissionService.populateViewBean(xUserPermissionObj)).thenReturn(userPermission);
 		Mockito.when(xUserPermissionService.updateResource((VXUserPermission) Mockito.any())).thenReturn(userPermission);
 		int createdOrUpdatedUserCount = xUserMgr.createOrUpdateXUsers(users);
-		Assert.assertEquals(createdOrUpdatedUserCount, 1);
+		Assertions.assertEquals(createdOrUpdatedUserCount, 1);
 	}
 
 	@Test
@@ -4139,8 +4184,8 @@ public class TestXUserMgr {
 		Mockito.when(daoManager.getXXUser()).thenReturn(xxUserDao);
 		Mockito.when(xxUserDao.findGroupsByUserIds()).thenReturn(userGroupMap);
 		Map<String, Set<String>> userGroupMap1 = xUserMgr.getUserGroups();
-		Assert.assertNotNull(userGroupMap1);
-		Assert.assertEquals(userGroupMap, userGroupMap1);
+		Assertions.assertNotNull(userGroupMap1);
+		Assertions.assertEquals(userGroupMap, userGroupMap1);
 	}
 
 	@Test
@@ -4157,11 +4202,11 @@ public class TestXUserMgr {
 		List<XXUser> resultList = new ArrayList<XXUser>();
 		resultList.add(xxUser);
 		Set<UserInfo> userInfoSet1 = xUserMgr.getUsers();
-		Assert.assertNotNull(userInfoSet1);
+		Assertions.assertNotNull(userInfoSet1);
 		Mockito.when(xUserService.getUsers()).thenReturn(userInfoList);
 		Set<UserInfo> userInfoSet2 = xUserMgr.getUsers();
-		Assert.assertNotNull(userInfoSet2);
-		Assert.assertEquals(userInfoSet, userInfoSet2);
+		Assertions.assertNotNull(userInfoSet2);
+		Assertions.assertEquals(userInfoSet, userInfoSet2);
 	}
 
 	@Test
@@ -4184,8 +4229,8 @@ public class TestXUserMgr {
 		Long lastKnownUserStoreVersion=Long.valueOf(1);
 		Mockito.when(xxGlobalStateDao.getAppDataVersion(RANGER_USER_GROUP_GLOBAL_STATE_NAME)).thenReturn(lastKnownUserStoreVersion);
 		Long userStoreVersion = xUserMgr.getUserStoreVersion();
-		Assert.assertNotNull(userStoreVersion);
-		Assert.assertEquals(lastKnownUserStoreVersion, userStoreVersion);
+		Assertions.assertNotNull(userStoreVersion);
+		Assertions.assertEquals(lastKnownUserStoreVersion, userStoreVersion);
 	}
 
 	@Test
@@ -4202,8 +4247,8 @@ public class TestXUserMgr {
 		Mockito.when(xUserService.populateViewBean(xXUser)).thenReturn(vxUser);
 		Mockito.when(xUserService.updateResource(vxUser)).thenReturn(vxUser);
 		int count = xUserMgr.updateDeletedUsers(delUsers);
-		Assert.assertNotNull(count);
-		Assert.assertEquals(count, 1);
+		Assertions.assertNotNull(count);
+		Assertions.assertEquals(count, 1);
 	}
 
 	@Test
@@ -4224,8 +4269,8 @@ public class TestXUserMgr {
 		Mockito.when(xGroupService.populateViewBean(xxGroup)).thenReturn(vxGroup);
 		Mockito.when(xGroupService.updateResource(vxGroup)).thenReturn(vxGroup);
 		int count = xUserMgr.updateDeletedGroups(delGroups);
-		Assert.assertNotNull(count);
-		Assert.assertEquals(count, 1);
+		Assertions.assertNotNull(count);
+		Assertions.assertEquals(count, 1);
 	}
 
 	@Test
@@ -4245,23 +4290,23 @@ public class TestXUserMgr {
 		VXGroupList vXGroupList = xUserMgr.searchXGroups(testSearchCriteria);
 		testSearchCriteria.addParam("isvisible", "true");
 		vXGroupList = xUserMgr.lookupXGroups(testSearchCriteria);
-		Assert.assertNotNull(vXGroupList);
+		Assertions.assertNotNull(vXGroupList);
 		testSearchCriteria = createsearchCriteria();
 		testSearchCriteria.addParam("name", groupName);
 		testSearchCriteria.addParam("groupsource", 1L);
 		vXGroupList = xUserMgr.lookupXGroups(testSearchCriteria);
-		Assert.assertNotNull(vXGroupList);
+		Assertions.assertNotNull(vXGroupList);
 		testSearchCriteria = createsearchCriteria();
 		testSearchCriteria.setSortBy("");
 		testSearchCriteria.addParam("name", groupName);
 		Mockito.when(xGroupService.getGroupByGroupName(Mockito.anyString())).thenReturn(vXGroup);
 		vXGroupList = xUserMgr.lookupXGroups(testSearchCriteria);
-		Assert.assertNotNull(vXGroupList);
+		Assertions.assertNotNull(vXGroupList);
 
 		SearchCriteria emptyCriteria = new SearchCriteria();
 		Mockito.when(xGroupService.searchXGroups((SearchCriteria) Mockito.any())).thenReturn(null);
 		vXGroupList = xUserMgr.lookupXGroups(emptyCriteria);
-		Assert.assertNull(vXGroupList);
+		Assertions.assertNull(vXGroupList);
 	}
 
 	@Test
@@ -4279,16 +4324,17 @@ public class TestXUserMgr {
 		searchCriteria.addParam("isvisible", "true");
 		Mockito.when(xUserService.lookupXUsers((SearchCriteria) Mockito.any(), (VXUserList) Mockito.any())).thenReturn(vXUserList1);
 		VXUserList vXUserList2 = xUserMgr.lookupXUsers(searchCriteria);
-		Assert.assertNotNull(vXUserList2);
-		Assert.assertEquals(vXUserList1, vXUserList2);
+		Assertions.assertNotNull(vXUserList2);
+		Assertions.assertEquals(vXUserList1, vXUserList2);
 		searchCriteria.setSortBy("");
 		vXUserList2 = xUserMgr.lookupXUsers(searchCriteria);
-		Assert.assertNotNull(vXUserList2);
-		Assert.assertEquals(vXUserList1, vXUserList2);
+		Assertions.assertNotNull(vXUserList2);
+		Assertions.assertEquals(vXUserList1, vXUserList2);
 	}
 
 	@Test
 	public void test125DeleteXUser() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setup();
 		boolean force = true;
@@ -4368,15 +4414,16 @@ public class TestXUserMgr {
 		vXResponse.setStatusCode(HttpServletResponse.SC_BAD_REQUEST);
 		vXResponse.setMsgDesc("Can Not Delete User '" + vXUser.getName().trim() + "' as its present in " + RangerConstants.ROLE_FIELD);
 		Mockito.when(restErrorUtil.generateRESTException((VXResponse) Mockito.any())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 
 		xUserMgr.deleteXUser(vXUser.getId(), force);
 		force=false;
 		xUserMgr.deleteXUser(vXUser.getId(), force);
+		});
 	}
 
 	@Test
 	public void test126DeleteXGroup() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setup();
 		boolean force = true;
@@ -4446,13 +4493,14 @@ public class TestXUserMgr {
 		vXResponse.setStatusCode(HttpServletResponse.SC_BAD_REQUEST);
 		vXResponse.setMsgDesc("Can Not Delete Group '" + vXGroup.getName().trim() + "' as its present in " + RangerConstants.ROLE_FIELD);
 		Mockito.when(restErrorUtil.generateRESTException((VXResponse) Mockito.any())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 
 		xUserMgr.deleteXGroup(vXGroup.getId(), force);
+		});
 	}
 
 	@Test
 	public void test127DeleteXUser() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setup();
 		boolean force = true;
@@ -4521,15 +4569,16 @@ public class TestXUserMgr {
 		vXResponse.setStatusCode(HttpServletResponse.SC_BAD_REQUEST);
 		vXResponse.setMsgDesc("Can Not Delete User '" + vXUser.getName().trim() + "' as its present in " + RangerConstants.ROLE_FIELD);
 		Mockito.when(restErrorUtil.generateRESTException((VXResponse) Mockito.any())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 
 		xUserMgr.deleteXUser(vXUser.getId(), force);
 		force=false;
 		xUserMgr.deleteXUser(vXUser.getId(), force);
+		});
 	}
 
 	@Test
 	public void test128DeleteXGroup() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setup();
 		boolean force = true;
@@ -4588,9 +4637,9 @@ public class TestXUserMgr {
 		vXResponse.setStatusCode(HttpServletResponse.SC_BAD_REQUEST);
 		vXResponse.setMsgDesc("Can Not Delete Group '" + vXGroup.getName().trim() + "' as its present in " + RangerConstants.ROLE_FIELD);
 		Mockito.when(restErrorUtil.generateRESTException((VXResponse) Mockito.any())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 
 		xUserMgr.deleteXGroup(vXGroup.getId(), force);
+		});
 	}
 
 	@Test
@@ -4641,13 +4690,14 @@ public class TestXUserMgr {
 
 	@Test
 	public void test130UpdateXUser() {
+		assertThrows(WebApplicationException.class, () -> {
 		destroySession();
 		setup();
 		VXUser vxUser = vxUser();
 		Mockito.when(restErrorUtil.createRESTException("Please provide a valid username.",MessageEnums.INVALID_INPUT_DATA)).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		vxUser = xUserMgr.updateXUser(null);
-		Assert.assertNull(vxUser);
+			Assertions.assertNull(vxUser);
+		});
 	}
 
 	@Test
@@ -4656,7 +4706,7 @@ public class TestXUserMgr {
 		setup();
 		destroySession();
 		boolean access = xUserMgr.hasAccess("test");
-		Assert.assertEquals(access, false);
+		Assertions.assertEquals(access, false);
 	}
 
 	@Test
@@ -4688,7 +4738,7 @@ public class TestXUserMgr {
 		xUserPermissionsList.add(xUserPermissionObj);
 
 		createdXUser = xUserMgr.createExternalUser(vXUser.getName());
-		Assert.assertNotNull(createdXUser);
-		Assert.assertEquals(createdXUser.getName(), vXUser.getName());
+		Assertions.assertNotNull(createdXUser);
+		Assertions.assertEquals(createdXUser.getName(), vXUser.getName());
 	}
 }

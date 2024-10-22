@@ -48,9 +48,11 @@ public class ServiceKafkaClient {
 
 	String serviceName;
 	Map<String,String > configs;
-	private static final String errMessage = " You can still save the repository and start creating "
-			+ "policies, but you would not be able to use autocomplete for "
-			+ "resource names. Check server logs for more info.";
+	private static final String errMessage = """
+			 You can still save the repository and start creating \
+			policies, but you would not be able to use autocomplete for \
+			resource names. Check server logs for more info.\
+			""";
 
 	private static final String TOPIC_KEY				= "topic";
 	private static final long   LOOKUP_TIMEOUT_SEC		= 5;

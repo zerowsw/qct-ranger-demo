@@ -19,12 +19,11 @@ package org.apache.ranger.biz;
 
 import java.util.*;
 
-import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.common.MessageEnums;
 import org.apache.ranger.common.RESTErrorUtil;
 import org.apache.ranger.db.RangerDaoManager;
@@ -45,6 +44,8 @@ import org.apache.ranger.plugin.store.SecurityZoneStore;
 import org.apache.ranger.plugin.util.SearchFilter;
 import org.apache.ranger.service.RangerBaseModelService;
 import org.apache.ranger.service.RangerSecurityZoneServiceService;
+
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

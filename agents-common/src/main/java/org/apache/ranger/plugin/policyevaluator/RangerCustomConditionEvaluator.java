@@ -19,8 +19,8 @@
 
 package org.apache.ranger.plugin.policyevaluator;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.plugin.conditionevaluator.RangerConditionEvaluator;
 import org.apache.ranger.plugin.model.RangerPolicy;
 import org.apache.ranger.plugin.model.RangerPolicy.RangerPolicyItemCondition;
@@ -36,6 +36,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.lang.reflect.ReflectiveOperationException;
 
 
 //
@@ -180,9 +181,11 @@ public class RangerCustomConditionEvaluator {
             @SuppressWarnings("unchecked")
             Class<RangerConditionEvaluator> evaluatorClass = (Class<RangerConditionEvaluator>)Class.forName(className);
 
-            evaluator = evaluatorClass.newInstance();
+            evaluator = evaluatorClass.getDeclaredConstructor().newInstance();
+        } catch (ReflectiveOperationException e) {
+            LOG.error("RangerCustomConditionEvaluator.newConditionEvaluator(" + className + "): error instantiating evaluator", e);
         } catch (Throwable t) {
-            LOG.error("RangerCustomConditionEvaluator.newConditionEvaluator(" + className + "): error instantiating evaluator", t);
+            LOG.error("RangerCustomConditionEvaluator.newConditionEvaluator(" + className + "): unexpected error", t);
         }
 
         if (LOG.isDebugEnabled()) {

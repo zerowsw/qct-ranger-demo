@@ -16,12 +16,10 @@
  */
 package org.apache.ranger.rest;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Response;
 
 import org.apache.ranger.biz.RangerBizUtil;
 import org.apache.ranger.biz.SessionMgr;
@@ -89,17 +87,16 @@ import org.apache.ranger.entity.XXGroupPermission;
 import org.apache.ranger.entity.XXPermMap;
 import org.apache.ranger.entity.XXPortalUser;
 import org.apache.ranger.service.XPermMapService;
-import org.junit.After;
-import org.junit.FixMethodOrder;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.MethodOrderer.MethodName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import org.apache.ranger.entity.XXGroup;
 import org.apache.ranger.db.XXGroupPermissionDao;
 import org.apache.ranger.db.XXResourceDao;
@@ -117,13 +114,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
-@RunWith(MockitoJUnitRunner.class)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@ExtendWith(MockitoExtension.class)
+@TestMethodOrder(MethodName.class)
 public class TestXUserREST {
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
 	
 	@InjectMocks
 	XUserREST xUserRest = new XUserREST();
@@ -734,12 +729,12 @@ public class TestXUserREST {
 	}
 	@Test
 	public void test38getXPermMapVXResourceNull() throws Exception{
+		assertThrows(WebApplicationException.class, () -> {
 		VXPermMap permMap = testcreateXPermMap();
 		
 		Mockito.when(xUserMgr.getXPermMap(id)).thenReturn(permMap);
 		
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums)Mockito.any())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		
 		VXPermMap retVxGroup= xUserRest.getXPermMap(id);
 		
@@ -751,6 +746,9 @@ public class TestXUserREST {
 		assertNotNull(retVxGroup);
 		
 	
+		});
+
+
 	}
 	@Test
 	public void test39getXPermMapNotNull() throws Exception{
@@ -778,12 +776,12 @@ public class TestXUserREST {
 	
 	@Test
 	public void test41createXPermMap() {
+		assertThrows(WebApplicationException.class, () -> {
 
 		VXPermMap permMap = testcreateXPermMap();
 		permMap.setResourceId(null);
 		Mockito.when(xResourceService.readResource(permMap.getResourceId())).thenReturn(null);
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums)Mockito.any())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		
 		VXPermMap retVxGroup=xUserRest.createXPermMap(permMap);
 		
@@ -794,6 +792,7 @@ public class TestXUserREST {
 		Mockito.verify(xUserMgr).createXPermMap(permMap);
 		Mockito.verify(xResourceService).readResource(permMap.getResourceId());
 		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyString(), (MessageEnums)Mockito.any());
+		});
 	}
 	
 	@Test
@@ -849,11 +848,11 @@ public class TestXUserREST {
 	}
 	@Test
 	public void test46updateXPermMap() {
+		assertThrows(WebApplicationException.class, () -> {
 		VXPermMap permMap = testcreateXPermMap();
 		
 		Mockito.when(xResourceService.readResource(permMap.getResourceId())).thenReturn(null);
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyString())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		
 		VXPermMap retVxGroup=xUserRest.updateXPermMap(permMap);
 		
@@ -865,6 +864,8 @@ public class TestXUserREST {
 		Mockito.verify(xResourceService).readResource(permMap.getResourceId());
 		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyString());
 		
+		});
+
 	}
 	@Test
 	public void test47deleteXPermMap() {
@@ -915,11 +916,11 @@ public class TestXUserREST {
 	}
 	@Test
 	public void test50getXAuditMapVXAuditMapNull() {
+		assertThrows(WebApplicationException.class, () -> {
 		VXAuditMap testvXAuditMap =  createVXAuditMapObj();
 		Mockito.when(xUserMgr.getXAuditMap(testvXAuditMap.getResourceId())).thenReturn(testvXAuditMap);
 
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums)Mockito.any())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		
 		VXAuditMap retVXAuditMap=xUserRest.getXAuditMap(testvXAuditMap.getResourceId());
 		
@@ -931,6 +932,8 @@ public class TestXUserREST {
 		Mockito.verify(xResourceService).readResource(null);
 		Mockito.verify(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums)Mockito.any()));
 		
+		});
+
 	}
 	@Test
 	public void test51getXAuditMapNull() {
@@ -985,6 +988,7 @@ public class TestXUserREST {
 	
 	@Test
 	public void test54createXAuditMapVxResourceNull() {
+		assertThrows(WebApplicationException.class, () -> {
 
 		VXAuditMap testvXAuditMap =  createVXAuditMapObj();
 		testvXAuditMap.setResourceId(null);
@@ -992,7 +996,6 @@ public class TestXUserREST {
 		Mockito.when(xResourceService.readResource(testvXAuditMap.getResourceId())).thenReturn(null);
 
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums)Mockito.any())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		
 		VXAuditMap retvXAuditMap= xUserRest.createXAuditMap(testvXAuditMap);
 		assertEquals(testvXAuditMap.getId(),retvXAuditMap.getId());
@@ -1003,6 +1006,8 @@ public class TestXUserREST {
 		Mockito.verify(xResourceService).readResource(testvXAuditMap.getResourceId());
 		Mockito.verify(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums)Mockito.any()));
 		
+		});
+
 	}@Test
 	public void test55createXAuditMapNull() {
 		VXAuditMap testvXAuditMap =  createVXAuditMapObj();
@@ -1033,16 +1038,17 @@ public class TestXUserREST {
 	}
 	@Test
 	public void test57updateXAuditMapNull() {
+		assertThrows(WebApplicationException.class, () -> {
 		VXAuditMap testvXAuditMap =  createVXAuditMapObj();
 		
 		
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums)Mockito.any())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		VXAuditMap retvXAuditMap=xUserRest.updateXAuditMap(testvXAuditMap);
 		assertNull(retvXAuditMap);
 		Mockito.verify(xUserMgr).updateXAuditMap(testvXAuditMap);
 		Mockito.verify(xResourceService).readResource(null);
 		Mockito.verify(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums)Mockito.any()));
+		});
 	}
 	@Test
 	public void test58updateXAuditMapVXResourceNull() {
@@ -1980,6 +1986,7 @@ public class TestXUserREST {
 	@SuppressWarnings({ "unchecked", "static-access" })
 	@Test
 	public void test113ErrorWhenRoleUserIsTryingToFetchAnotherUserDetails() {
+		assertThrows(WebApplicationException.class, () -> {
 	
 		destroySession();
 		String userLoginID = "testuser";
@@ -2017,9 +2024,9 @@ public class TestXUserREST {
 		Mockito.when(searchUtil.extractRoleString(request, testSearchCriteria, "userRole", "Role", null)).thenReturn("");
 		Mockito.when(xUserService.getXUserByUserName("testuser")).thenReturn(loggedInUser);
 		Mockito.when(restErrorUtil.create403RESTException("Logged-In user is not allowed to access requested user data.")).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		
 		xUserRest.searchXUsers(request);
+		});
 	}
 
 	@SuppressWarnings({ "unchecked", "static-access" })
@@ -2078,16 +2085,18 @@ public class TestXUserREST {
 
 	@Test
 	public void test115updateXGroupPermissionWithInvalidPermissionId() {
+		assertThrows(WebApplicationException.class, () -> {
 
 		VXGroupPermission testVXGroupPermission = createVXGroupPermission();
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		VXGroupPermission retVXGroupPermission=xUserRest.updateXGroupPermission(-1L, testVXGroupPermission);
 		Mockito.verify(xUserMgr).updateXGroupPermission(testVXGroupPermission);
 		Mockito.verify(xUserMgr).checkAdminAccess();
 		assertNotNull(retVXGroupPermission);
 		assertEquals(retVXGroupPermission.getId(), testVXGroupPermission.getId());
 		assertEquals(retVXGroupPermission.getClass(), testVXGroupPermission.getClass());
+
+		});
 
 	}
 
@@ -2108,7 +2117,7 @@ public class TestXUserREST {
 
 	}
 	
-	@After
+	@AfterEach
 	public void destroySession() {
 		RangerSecurityContext context = new RangerSecurityContext();
 		context.setUserSession(null);

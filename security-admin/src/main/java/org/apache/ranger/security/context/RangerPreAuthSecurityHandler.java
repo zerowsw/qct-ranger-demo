@@ -22,9 +22,9 @@ package org.apache.ranger.security.context;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.ranger.biz.SessionMgr;
 import org.apache.ranger.common.ContextUtil;
 import org.apache.ranger.common.RESTErrorUtil;
@@ -66,8 +66,10 @@ public class RangerPreAuthSecurityHandler {
 
 		if (userSession.isUserAdmin()) {
 			if (logger.isDebugEnabled()) {
-				logger.debug("WARNING: Logged in user is System Admin, System Admin is allowed to access all the tabs except Key Manager."
-						+ "Reason for returning true is, In few cases system admin needs to have access on Key Manager tabs as well.");
+				logger.debug("""
+						WARNING: Logged in user is System Admin, System Admin is allowed to access all the tabs except Key Manager.\
+						Reason for returning true is, In few cases system admin needs to have access on Key Manager tabs as well.\
+						""");
 			}
 			return true;
 		}

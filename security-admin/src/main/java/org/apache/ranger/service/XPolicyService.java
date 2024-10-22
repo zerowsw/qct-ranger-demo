@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.common.AppConstants;
 import org.apache.ranger.common.DateUtil;
 import org.apache.ranger.common.MessageEnums;
@@ -163,8 +163,10 @@ public class XPolicyService extends PublicAPIServiceBase<VXResource, VXPolicy> {
 		XXAsset xAsset = xaDaoMgr.getXXAsset().findByAssetName(
 				vXPolicy.getRepositoryName());
 		if (xAsset == null) {
-			throw restErrorUtil.createRESTException("The repository for which "
-					+ "you're updating policy, doesn't exist.",
+			throw restErrorUtil.createRESTException("""
+					The repository for which \
+					you're updating policy, doesn't exist.\
+					""",
 					MessageEnums.INVALID_INPUT_DATA);
 		}
 		vXResource.setAssetId(xAsset.getId());
@@ -692,10 +694,10 @@ public class XPolicyService extends PublicAPIServiceBase<VXResource, VXPolicy> {
 
 		VXPolicy vXPolicy = null;
 		VXResource vXResource = null;
-		if (vObj instanceof VXPolicy) {
-			vXPolicy = (VXPolicy) vObj;
-		} else if (vObj instanceof VXResource) {
-			vXResource = (VXResource) vObj;
+		if (vObj instanceof VXPolicy policy) {
+			vXPolicy = policy;
+		} else if (vObj instanceof VXResource resource) {
+			vXResource = resource;
 		} else {
 			return resourceType;
 		}

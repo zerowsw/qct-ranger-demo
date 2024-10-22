@@ -35,7 +35,7 @@ import org.apache.atlas.model.discovery.AtlasSearchResult;
 import org.apache.atlas.model.instance.AtlasEntityHeader;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOCase;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.plugin.client.BaseClient;
 import org.apache.ranger.plugin.client.HadoopException;
 import org.apache.ranger.plugin.model.RangerPolicy;
@@ -51,8 +51,8 @@ import org.apache.ranger.plugin.util.PasswordUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.security.auth.Subject;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.NewCookie;
+import jakarta.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.NewCookie;
 
 public class RangerServiceAtlas extends RangerBaseService {
 	private static final Logger LOG = LoggerFactory.getLogger(RangerServiceAtlas.class);
@@ -106,9 +106,11 @@ public class RangerServiceAtlas extends RangerBaseService {
 	private static final String URl_ENTITY_SEARCH        = "v2/search/attribute?attrName=qualifiedName";
 
 	private static final String WEB_RESOURCE_CONTENT_TYPE = "application/x-www-form-urlencoded";
-	private static final String CONNECTION_ERROR_MSG      =   " You can still save the repository and start creating"
-	                                                        + " policies, but you would not be able to use autocomplete for"
-	                                                        + " resource names. Check ranger_admin.log for more info.";
+	private static final String CONNECTION_ERROR_MSG      =   """
+	                                                         You can still save the repository and start creating\
+	                                                         policies, but you would not be able to use autocomplete for\
+	                                                         resource names. Check ranger_admin.log for more info.\
+	                                                        """;
 
 	public RangerServiceAtlas() {
 		super();
@@ -486,8 +488,7 @@ public class RangerServiceAtlas extends RangerBaseService {
 								ret = new HashMap<>();
 
 								for (Object type : types) {
-									if (type instanceof Map) {
-										Map    typeDef  = (Map) type;
+									if (type instanceof Map<?,?> typeDef) {
 										Object name     = typeDef.get("name");
 										Object category = typeDef.get("category");
 

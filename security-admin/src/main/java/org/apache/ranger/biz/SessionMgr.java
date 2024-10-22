@@ -27,12 +27,12 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.ranger.common.DateUtil;
 import org.apache.ranger.common.HTTPUtil;
 import org.apache.ranger.common.MessageEnums;
@@ -446,8 +446,10 @@ public class SessionMgr {
 				.getAuthSessionBySessionId(authSessionId);
 		
 		if(xXAuthSession==null){
-			throw restErrorUtil.createRESTException("Please provide a valid "
-					+ "session id.", MessageEnums.INVALID_INPUT_DATA);
+			throw restErrorUtil.createRESTException("""
+					Please provide a valid \
+					session id.\
+					""", MessageEnums.INVALID_INPUT_DATA);
 		}
 		
 		VXAuthSession vXAuthSession = authSessionService.populateViewBean(xXAuthSession);

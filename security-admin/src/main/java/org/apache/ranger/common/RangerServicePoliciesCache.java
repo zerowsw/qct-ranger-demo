@@ -19,8 +19,8 @@
 
 package org.apache.ranger.common;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.authorization.hadoop.config.RangerAdminConfig;
 import org.apache.ranger.authorization.utils.JsonUtils;
 import org.apache.ranger.plugin.model.RangerPolicy;
@@ -206,7 +206,7 @@ public class RangerServicePoliciesCache {
 				if (cacheDir != null) {
 					String appId = policies.getServiceDef().getName();
 					String serviceName = policies.getServiceName();
-					String cacheFileName = String.format("%s_%s.json", appId, serviceName);
+					String cacheFileName = "%s_%s.json".formatted(appId, serviceName);
 
 					cacheFileName = cacheFileName.replace(File.separatorChar, '_');
 					cacheFileName = cacheFileName.replace(File.pathSeparatorChar, '_');

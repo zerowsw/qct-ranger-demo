@@ -309,7 +309,7 @@ public class KeyAuthorizationKeyProvider extends KeyProviderCryptoExtension {
     }
 
     if (!success) {
-      throw new AuthorizationException(String.format("User [%s] is not authorized to create key !!", ugi.getShortUserName()));
+      throw new AuthorizationException("User [%s] is not authorized to create key !!".formatted(ugi.getShortUserName()));
     }
   }
 
@@ -321,7 +321,7 @@ public class KeyAuthorizationKeyProvider extends KeyProviderCryptoExtension {
         (acls.hasAccessToKey(aclName, ugi, opType) || acls.hasAccessToKey(aclName, ugi, KeyOpType.ALL))) {
       return;
     } else {
-      throw new AuthorizationException(String.format("User [%s] is not authorized to perform [%s] on key with ACL name [%s]!!", ugi.getShortUserName(), opType, aclName));
+      throw new AuthorizationException("User [%s] is not authorized to perform [%s] on key with ACL name [%s]!!".formatted(ugi.getShortUserName(), opType, aclName));
     }
   }
 
@@ -331,11 +331,11 @@ public class KeyAuthorizationKeyProvider extends KeyProviderCryptoExtension {
     KeyVersion kv  = provider.getKeyVersion(kvn);
 
     if (kv == null) {
-      throw new IllegalArgumentException(String.format("'%s' not found", kvn));
+      throw new IllegalArgumentException("'%s' not found".formatted(kvn));
     }
 
     if (!kv.getName().equals(kn)) {
-      throw new IllegalArgumentException(String.format("KeyVersion '%s' does not belong to the key '%s'", kvn, kn));
+      throw new IllegalArgumentException("KeyVersion '%s' does not belong to the key '%s'".formatted(kvn, kn));
     }
   }
 

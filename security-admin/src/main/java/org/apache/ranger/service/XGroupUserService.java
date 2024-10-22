@@ -22,7 +22,7 @@
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.ranger.common.MessageEnums;
 import org.apache.ranger.common.PropertiesUtil;
 import org.apache.ranger.common.SearchField;
@@ -225,8 +225,8 @@ public class XGroupUserService extends
 					xxGroupUser = getDao().create(xxGroupUser);
 				}
 				if (logger.isDebugEnabled()) {
-					logger.debug(String.format("createOrDeleteXGroupUsers(): Create or update group user mapping with groupname =  " + groupName
-							+ " username = %s userId = %d", userName, xxGroupUser.getUserId()));
+					logger.debug(("createOrDeleteXGroupUsers(): Create or update group user mapping with groupname =  " + groupName
+							+ " username = %s userId = %d").formatted(userName, xxGroupUser.getUserId()));
 				}
 			}
 			if (logger.isDebugEnabled()) {

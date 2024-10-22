@@ -31,7 +31,7 @@ import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
 import org.apache.commons.configuration2.ex.ConfigurationException;
-import org.apache.commons.lang.NullArgumentException;
+import org.apache.commons.lang3.NullArgumentException;
 
 public class LdapConfig {
 

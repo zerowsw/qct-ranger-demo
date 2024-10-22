@@ -19,8 +19,8 @@
 
 package org.apache.ranger.biz;
 
-import org.apache.http.HttpStatus;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.hc.core5.http.HttpStatus;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.biz.ServiceDBStore.REMOVE_REF_TYPE;
 import org.apache.ranger.common.*;
@@ -41,12 +41,12 @@ import org.apache.ranger.service.*;
 import org.apache.ranger.validation.RangerGdsValidationDBProvider;
 import org.apache.ranger.validation.RangerGdsValidator;
 import org.apache.ranger.view.RangerGdsVList.*;
+
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
 
 import java.util.*;
 import java.util.function.Function;
@@ -2001,7 +2001,7 @@ public class GdsDBStore extends AbstractGdsStore {
     private DataShareInDatasetSummary toDshInDsSummary(RangerDataShare dataShare, List<RangerDataShareInDataset> dshInDsList) {
         Optional<RangerDataShareInDataset> dshInDs = dshInDsList.stream().filter(d -> d.getDataShareId().equals(dataShare.getId())).findFirst();
 
-        if (!dshInDs.isPresent()) {
+        if (dshInDs.isEmpty()) {
             throw restErrorUtil.createRESTException("DataShareInDataset not found", MessageEnums.DATA_NOT_FOUND, dataShare.getId(), "SharedResourceId", null, HttpStatus.SC_NOT_FOUND);
         }
 
@@ -2032,7 +2032,7 @@ public class GdsDBStore extends AbstractGdsStore {
     private DataShareInDatasetSummary toDshInDsSummary(RangerDataset dataset, List<RangerDataShareInDataset> dshInDsList) {
         Optional<RangerDataShareInDataset> dshInDs = dshInDsList.stream().filter(d -> d.getDatasetId().equals(dataset.getId())).findFirst();
 
-        if (!dshInDs.isPresent()) {
+        if (dshInDs.isEmpty()) {
             throw restErrorUtil.createRESTException("DataShareInDataset not found", MessageEnums.DATA_NOT_FOUND, dataset.getId(), "DatasetId", null, HttpStatus.SC_NOT_FOUND);
         }
 

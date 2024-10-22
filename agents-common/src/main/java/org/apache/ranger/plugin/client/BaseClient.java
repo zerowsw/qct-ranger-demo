@@ -26,7 +26,7 @@ import java.util.Map;
 
 import javax.security.auth.Subject;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.security.SecureClientLogin;
 import org.apache.ranger.plugin.util.PasswordUtils;
 import org.slf4j.Logger;
@@ -37,9 +37,11 @@ public abstract class BaseClient {
 
 
 	private static final String DEFAULT_NAME_RULE = "DEFAULT";
-	protected static final String DEFAULT_ERROR_MESSAGE = " You can still save the repository and start creating "
-				+ "policies, but you would not be able to use autocomplete for "
-				+ "resource names. Check ranger_admin.log for more info.";
+	protected static final String DEFAULT_ERROR_MESSAGE = """
+				 You can still save the repository and start creating \
+				policies, but you would not be able to use autocomplete for \
+				resource names. Check ranger_admin.log for more info.\
+				""";
 
 
 	private String serviceName;

@@ -17,13 +17,13 @@
 
 package org.apache.ranger.db;
 
-import org.apache.commons.collections.ListUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.ListUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.common.db.BaseDao;
 import org.apache.ranger.entity.XXRole;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.NoResultException;
+import jakarta.persistence.NoResultException;
 import java.util.ArrayList;
 import java.util.List;
 

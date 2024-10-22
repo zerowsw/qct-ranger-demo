@@ -25,7 +25,7 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.client.urlconnection.HTTPSProperties;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.plugin.client.BaseClient;
 import org.apache.ranger.plugin.service.ResourceLookupContext;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -37,7 +37,7 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.net.ssl.SSLSession;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
@@ -174,8 +174,7 @@ public class NiFiRegistryClient {
         public boolean verify(final String hostname, final SSLSession ssls) {
             try {
                 for (final Certificate peerCertificate : ssls.getPeerCertificates()) {
-                    if (peerCertificate instanceof X509Certificate) {
-                        final X509Certificate x509Cert = (X509Certificate) peerCertificate;
+                    if (peerCertificate instanceof X509Certificate x509Cert) {
                         final List<String> subjectAltNames = getSubjectAlternativeNames(x509Cert);
                         if (subjectAltNames.contains(hostname.toLowerCase())) {
                             return true;
@@ -204,8 +203,8 @@ public class NiFiRegistryClient {
                  */
 				if (generalName.size() > 1) {
 					final Object value = generalName.get(1);
-					if (value instanceof String) {
-						result.add(((String) value).toLowerCase());
+					if (value instanceof String string) {
+						result.add(string.toLowerCase());
 					}
 				}
 

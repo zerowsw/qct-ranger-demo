@@ -17,6 +17,7 @@
 
 package org.apache.ranger.authorization.sqoop.authorizer;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -26,7 +27,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.sqoop.common.SqoopException;
 import org.apache.sqoop.core.ConfigurationConstants;
 import org.apache.sqoop.core.SqoopConfiguration;
@@ -36,11 +37,11 @@ import org.apache.sqoop.repository.Repository;
 import org.apache.sqoop.repository.RepositoryManager;
 import org.apache.sqoop.security.AuthorizationManager;
 import org.apache.sqoop.security.authorization.AuthorizationEngine;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer.MethodName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 /**
 *
@@ -57,7 +58,7 @@ import org.junit.runners.MethodSorters;
 * e) A user "yuwen" can do "read" and "write" on the job "oracle2hdfs-job";
 *
 */
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@TestMethodOrder(MethodName.class)
 public class RangerSqoopAuthorizerTest {
 	private static final List<String> allConnectors = new ArrayList<>();
 
@@ -87,7 +88,7 @@ public class RangerSqoopAuthorizerTest {
 
 	private static final String ORACLE2HDFS_JOB = "oracle2hdfs-job";
 
-	@BeforeClass
+	@BeforeAll
 	public static void setup() throws Exception {
 		// init sqoop all connectors
 		addAllConnectors();
@@ -96,7 +97,7 @@ public class RangerSqoopAuthorizerTest {
 		initSqoopAuth();
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void cleanup() throws Exception {
 		// do nothing
 	}
@@ -186,11 +187,13 @@ public class RangerSqoopAuthorizerTest {
 	/**
 	 * zhangqiang read hdfs-connector failed
 	 */
-	@Test(expected = SqoopException.class)
+	@Test
 	public void readConnectorHdfsWithoutPermission() {
+		assertThrows(SqoopException.class, () -> {
 		String user = ZHANGQIANG;
 		String connector = HDFS_CONNECTOR;
 		AuthorizationEngine.readConnector(user, connector);
+		});
 	}
 
 	/**
@@ -216,11 +219,13 @@ public class RangerSqoopAuthorizerTest {
 	/**
 	 * yuwen read kafka-connector failed
 	 */
-	@Test(expected = SqoopException.class)
+	@Test
 	public void readConnectorKafkaWithoutPermission() {
+		assertThrows(SqoopException.class, () -> {
 		String user = YUWEN;
 		String connector = KAFKA_CONNECTOR;
 		AuthorizationEngine.readConnector(user, connector);
+		});
 	}
 
 	// No.1 readConnector test end
@@ -269,11 +274,13 @@ public class RangerSqoopAuthorizerTest {
 	/**
 	 * yuwen read any link failed
 	 */
-	@Test(expected = SqoopException.class)
+	@Test
 	public void readLinkAnyWithoutPermission() {
+		assertThrows(SqoopException.class, () -> {
 		String user = YUWEN;
 		String link = getRandomLinkName();
 		AuthorizationEngine.readLink(user, link);
+		});
 	}
 
 	// No.2 readLink test end
@@ -303,11 +310,13 @@ public class RangerSqoopAuthorizerTest {
 	/**
 	 * zhangqiang create link by hdfs-connector failed
 	 */
-	@Test(expected = SqoopException.class)
+	@Test
 	public void createLinkByHdfsConnectorWithoutPermission() {
+		assertThrows(SqoopException.class, () -> {
 		String user = ZHANGQIANG;
 		String connector = HDFS_CONNECTOR;
 		AuthorizationEngine.createLink(user, connector);
+		});
 	}
 
 	/**
@@ -333,11 +342,13 @@ public class RangerSqoopAuthorizerTest {
 	/**
 	 * yuwen create link by kafka-connector failed
 	 */
-	@Test(expected = SqoopException.class)
+	@Test
 	public void createLinkByKafkaConnectorWithoutPermission() {
+		assertThrows(SqoopException.class, () -> {
 		String user = YUWEN;
 		String connector = KAFKA_CONNECTOR;
 		AuthorizationEngine.createLink(user, connector);
+		});
 	}
 
 	// No.3 createLink test end
@@ -369,12 +380,14 @@ public class RangerSqoopAuthorizerTest {
 	/**
 	 * zhangqiang update any link created by hdfs-connector failed
 	 */
-	@Test(expected = SqoopException.class)
+	@Test
 	public void updateLinkAnyByHdfsConnectorWithoutPermission() {
+		assertThrows(SqoopException.class, () -> {
 		String user = ZHANGQIANG;
 		String connector = HDFS_CONNECTOR;
 		String link = getRandomLinkName();
 		AuthorizationEngine.updateLink(user, connector, link);
+		});
 	}
 
 	/**
@@ -402,12 +415,14 @@ public class RangerSqoopAuthorizerTest {
 	/**
 	 * yuwen update link created by kafka-connector failed
 	 */
-	@Test(expected = SqoopException.class)
+	@Test
 	public void updateLinkByKafkaConnectorWithoutPermission() {
+		assertThrows(SqoopException.class, () -> {
 		String user = YUWEN;
 		String connector = KAFKA_CONNECTOR;
 		String link = getRandomLinkName();
 		AuthorizationEngine.updateLink(user, connector, link);
+		});
 	}
 
 	// No.4 updateLink test end
@@ -456,11 +471,13 @@ public class RangerSqoopAuthorizerTest {
 	/**
 	 * yuwen delete any link failed
 	 */
-	@Test(expected = SqoopException.class)
+	@Test
 	public void deleteLinkAnyWithoutPermission() {
+		assertThrows(SqoopException.class, () -> {
 		String user = YUWEN;
 		String link = getRandomLinkName();
 		AuthorizationEngine.deleteLink(user, link);
+		});
 	}
 
 	// No.5 deleteLink test end
@@ -509,11 +526,13 @@ public class RangerSqoopAuthorizerTest {
 	/**
 	 * yuwen enable disable any link failed
 	 */
-	@Test(expected = SqoopException.class)
+	@Test
 	public void enableDisableLinkAnyWithoutPermission() {
+		assertThrows(SqoopException.class, () -> {
 		String user = YUWEN;
 		String link = getRandomLinkName();
 		AuthorizationEngine.enableDisableLink(user, link);
+		});
 	}
 
 	// No.6 enableDisableLink test end
@@ -552,11 +571,13 @@ public class RangerSqoopAuthorizerTest {
 	/**
 	 * yuwen read any job failed
 	 */
-	@Test(expected = SqoopException.class)
+	@Test
 	public void readJobAnyWithoutPermission() {
+		assertThrows(SqoopException.class, () -> {
 		String user = YUWEN;
 		String job = getRandomJobName();
 		AuthorizationEngine.readJob(user, job);
+		});
 	}
 
 	// No.7 readJob test end
@@ -598,23 +619,27 @@ public class RangerSqoopAuthorizerTest {
 	/**
 	 * yuwen create job from oracle-link to any link failed
 	 */
-	@Test(expected = SqoopException.class)
+	@Test
 	public void createJobFromOracle2AnyLinkWithoutPermission() {
+		assertThrows(SqoopException.class, () -> {
 		String user = YUWEN;
 		String link1 = ORACLE_LINK;
 		String link2 = getRandomLinkName();
 		AuthorizationEngine.createJob(user, link1, link2);
+		});
 	}
 
 	/**
 	 * yuwen create job by any two links failed
 	 */
-	@Test(expected = SqoopException.class)
+	@Test
 	public void createJobByAnyTwoLinksWithoutPermission() {
+		assertThrows(SqoopException.class, () -> {
 		String user = YUWEN;
 		String link1 = getRandomLinkName();
 		String link2 = getRandomLinkName();
 		AuthorizationEngine.createJob(user, link1, link2);
+		});
 	}
 
 	// No.8 createJob test end
@@ -661,37 +686,43 @@ public class RangerSqoopAuthorizerTest {
 	 * yuwen update oracle2hdfs-job created from new_oracle-link to hdfs-link
 	 * failed
 	 */
-	@Test(expected = SqoopException.class)
+	@Test
 	public void updateJobOracle2HdfsByTwoLinksWithoutPermission() {
+		assertThrows(SqoopException.class, () -> {
 		String user = YUWEN;
 		String link1 = "new_" + ORACLE_LINK;
 		String link2 = HDFS_LINK;
 		String job = ORACLE2HDFS_JOB;
 		AuthorizationEngine.updateJob(user, link1, link2, job);
+		});
 	}
 
 	/**
 	 * yuwen update any job created from oracle-link to hdfs-link failed
 	 */
-	@Test(expected = SqoopException.class)
+	@Test
 	public void updateJobAnyByTwoLinksWithoutPermission() {
+		assertThrows(SqoopException.class, () -> {
 		String user = YUWEN;
 		String link1 = ORACLE_LINK;
 		String link2 = HDFS_LINK;
 		String job = getRandomJobName();
 		AuthorizationEngine.updateJob(user, link1, link2, job);
+		});
 	}
 
 	/**
 	 * yuwen update any job created from oracle-link to hdfs-link failed
 	 */
-	@Test(expected = SqoopException.class)
+	@Test
 	public void updateJobAnyByAnyLinksWithoutPermission() {
+		assertThrows(SqoopException.class, () -> {
 		String user = YUWEN;
 		String link1 = getRandomLinkName();
 		String link2 = getRandomLinkName();
 		String job = getRandomJobName();
 		AuthorizationEngine.updateJob(user, link1, link2, job);
+		});
 	}
 
 	// No.9 updateJob test end
@@ -730,11 +761,13 @@ public class RangerSqoopAuthorizerTest {
 	/**
 	 * yuwen delete any job failed
 	 */
-	@Test(expected = SqoopException.class)
+	@Test
 	public void deleteJobAnyWithoutPermission() {
+		assertThrows(SqoopException.class, () -> {
 		String user = YUWEN;
 		String job = getRandomJobName();
 		AuthorizationEngine.deleteJob(user, job);
+		});
 	}
 
 	// No.10 deleteJob test end
@@ -773,11 +806,13 @@ public class RangerSqoopAuthorizerTest {
 	/**
 	 * yuwen enable disable any job failed
 	 */
-	@Test(expected = SqoopException.class)
+	@Test
 	public void enableDisableJobAnyWithoutPermission() {
+		assertThrows(SqoopException.class, () -> {
 		String user = YUWEN;
 		String job = getRandomJobName();
 		AuthorizationEngine.enableDisableJob(user, job);
+		});
 	}
 
 	// No.11 enableDisableJob test end
@@ -816,11 +851,13 @@ public class RangerSqoopAuthorizerTest {
 	/**
 	 * yuwen start any job failed
 	 */
-	@Test(expected = SqoopException.class)
+	@Test
 	public void startJobAnyWithoutPermission() {
+		assertThrows(SqoopException.class, () -> {
 		String user = YUWEN;
 		String job = getRandomJobName();
 		AuthorizationEngine.startJob(user, job);
+		});
 	}
 
 	// No.12 startJob test end
@@ -859,11 +896,13 @@ public class RangerSqoopAuthorizerTest {
 	/**
 	 * yuwen stop any job failed
 	 */
-	@Test(expected = SqoopException.class)
+	@Test
 	public void stopJobAnyWithoutPermission() {
+		assertThrows(SqoopException.class, () -> {
 		String user = YUWEN;
 		String job = getRandomJobName();
 		AuthorizationEngine.stopJob(user, job);
+		});
 	}
 
 	// No.13 stopJob test end
@@ -902,11 +941,13 @@ public class RangerSqoopAuthorizerTest {
 	/**
 	 * yuwen status status job failed
 	 */
-	@Test(expected = SqoopException.class)
+	@Test
 	public void statusJobAnyWithoutPermission() {
+		assertThrows(SqoopException.class, () -> {
 		String user = YUWEN;
 		String job = getRandomJobName();
 		AuthorizationEngine.statusJob(user, job);
+		});
 	}
 
 	// No.14 statusJob test end

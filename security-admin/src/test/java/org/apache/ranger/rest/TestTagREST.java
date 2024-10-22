@@ -21,8 +21,8 @@ import static org.mockito.ArgumentMatchers.eq;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.WebApplicationException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.ws.rs.WebApplicationException;
 
 import org.apache.ranger.biz.AssetMgr;
 import org.apache.ranger.biz.RangerBizUtil;
@@ -51,20 +51,18 @@ import org.apache.ranger.service.RangerServiceResourceWithTagsService;
 import org.apache.ranger.service.RangerTagDefService;
 import org.apache.ranger.service.RangerTagService;
 import org.apache.ranger.view.RangerServiceResourceWithTagsList;
-import org.junit.Assert;
-import org.junit.FixMethodOrder;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.MethodOrderer.MethodName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@ExtendWith(MockitoExtension.class)
+@TestMethodOrder(MethodName.class)
 public class TestTagREST {
 	private static Long id = 1L;
 	private static String gId = "1427365526516_835_0";
@@ -116,9 +114,6 @@ public class TestTagREST {
 	@Mock
 	RangerServiceResourceWithTagsService serviceResourceWithTagsService;
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 	private static String capabilityVector;
 
 	static {
@@ -142,9 +137,9 @@ public class TestTagREST {
 		}
 		RangerTagDef rangerTagDef = tagREST.createTagDef(oldTagDef, false);
 
-		Assert.assertEquals(rangerTagDef.getId(), newTagDef.getId());
-		Assert.assertNotNull(rangerTagDef);
-		Assert.assertEquals(rangerTagDef.getName(), newTagDef.getName());
+		Assertions.assertEquals(rangerTagDef.getId(), newTagDef.getId());
+		Assertions.assertNotNull(rangerTagDef);
+		Assertions.assertEquals(rangerTagDef.getName(), newTagDef.getName());
 
 		try {
 			Mockito.verify(validator).preCreateTagDef(oldTagDef, false);
@@ -175,9 +170,9 @@ public class TestTagREST {
 		}
 
 		RangerTagDef rangerTagDef = tagREST.createTagDef(oldTagDef, true);
-		Assert.assertEquals(rangerTagDef.getName(), newTagDef.getName());
-		Assert.assertEquals(rangerTagDef.getId(), newTagDef.getId());
-		Assert.assertNotEquals(oldTagDef.getName(), rangerTagDef.getName());
+		Assertions.assertEquals(rangerTagDef.getName(), newTagDef.getName());
+		Assertions.assertEquals(rangerTagDef.getId(), newTagDef.getId());
+		Assertions.assertNotEquals(oldTagDef.getName(), rangerTagDef.getName());
 
 		try {
 			Mockito.verify(validator).preCreateTagDef(oldTagDef, true);
@@ -208,10 +203,10 @@ public class TestTagREST {
 
 		RangerTagDef rangerTagDef = tagREST.createTagDef(oldTagDef, true);
 		
-		Assert.assertNotNull(rangerTagDef);
-		Assert.assertEquals(rangerTagDef.getId(), newTagDef.getId());
-		Assert.assertEquals(rangerTagDef.getName(), newTagDef.getName());
-		Assert.assertNotEquals(rangerTagDef.getName(), oldTagDef.getName());
+		Assertions.assertNotNull(rangerTagDef);
+		Assertions.assertEquals(rangerTagDef.getId(), newTagDef.getId());
+		Assertions.assertEquals(rangerTagDef.getName(), newTagDef.getName());
+		Assertions.assertNotEquals(rangerTagDef.getName(), oldTagDef.getName());
 		
 		try {
 			Mockito.verify(validator).preCreateTagDef(oldTagDef, true);
@@ -225,6 +220,7 @@ public class TestTagREST {
 	 
 	@Test
 	public void test4createTagDef() {
+		assertThrows(WebApplicationException.class, () -> {
 		RangerTagDef oldtagDef = new RangerTagDef();
 		oldtagDef.setId(id);
 		
@@ -237,7 +233,6 @@ public class TestTagREST {
 				restErrorUtil.createRESTException(Mockito.anyInt(),
 						Mockito.anyString(), Mockito.anyBoolean())).thenThrow(
 				new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		tagREST.createTagDef(oldtagDef, false);
 
 		try {
@@ -246,6 +241,7 @@ public class TestTagREST {
 		}
 		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(),
 				Mockito.anyString(), Mockito.anyBoolean());
+		});
 	}
 	
 	@Test
@@ -277,8 +273,8 @@ public class TestTagREST {
 		}
 		
 		tagREST.deleteTagDefByGuid(oldTagDef.getGuid());
-		Assert.assertNotNull(oldTagDef.getId());
-		Assert.assertNotNull(oldTagDef.getGuid());
+		Assertions.assertNotNull(oldTagDef.getId());
+		Assertions.assertNotNull(oldTagDef.getGuid());
 		
 		try {
 			Mockito.verify(tagStore).getTagDefByGuid(oldTagDef.getGuid());
@@ -315,9 +311,9 @@ public class TestTagREST {
 		}
 		
 		RangerTagDef rangerTagDef = tagREST.getTagDef(id);
-		Assert.assertNotNull(rangerTagDef.getId());
-		Assert.assertEquals(rangerTagDef.getId(), oldTagDef.getId());
-		Assert.assertEquals(rangerTagDef.getName(), oldTagDef.getName());
+		Assertions.assertNotNull(rangerTagDef.getId());
+		Assertions.assertEquals(rangerTagDef.getId(), oldTagDef.getId());
+		Assertions.assertEquals(rangerTagDef.getName(), oldTagDef.getName());
 		
 		try {
 			Mockito.verify(tagStore).getTagDef(id);
@@ -327,12 +323,12 @@ public class TestTagREST {
 	
 	@Test
 	public void test9getTagDef() {
+		assertThrows(WebApplicationException.class, () -> {
 		try {
 			Mockito.when(tagStore.getTagDef(id)).thenReturn(null);
 		} catch (Exception e) {
 		}
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		tagREST.getTagDef(id);
 		
 		try {
@@ -341,6 +337,7 @@ public class TestTagREST {
 		}
 		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(),
 				Mockito.anyString(), Mockito.anyBoolean());
+		});
 	}
 	
 	@Test
@@ -355,9 +352,9 @@ public class TestTagREST {
 		}
 		
 		RangerTagDef rangerTagDef = tagREST.getTagDefByGuid(gId);
-		Assert.assertNotNull(oldTagDef.getGuid());
-		Assert.assertEquals(rangerTagDef.getGuid(), oldTagDef.getGuid());
-		Assert.assertEquals(rangerTagDef.getId(), oldTagDef.getId());
+		Assertions.assertNotNull(oldTagDef.getGuid());
+		Assertions.assertEquals(rangerTagDef.getGuid(), oldTagDef.getGuid());
+		Assertions.assertEquals(rangerTagDef.getId(), oldTagDef.getId());
 		
 		try {
 			Mockito.verify(tagStore).getTagDefByGuid(gId);
@@ -367,12 +364,12 @@ public class TestTagREST {
 	
 	@Test
 	public void test11getTagDefByGuid() {
+		assertThrows(WebApplicationException.class, () -> {
 		try {
 			Mockito.when(tagStore.getTagDefByGuid(gId)).thenReturn(null);
 		} catch (Exception e) {
 		}
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		tagREST.getTagDefByGuid(gId);
 		
 		try {
@@ -381,6 +378,7 @@ public class TestTagREST {
 		}
 		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(),
 				Mockito.anyString(), Mockito.anyBoolean());
+		});
 	}
 	
 	@Test
@@ -395,9 +393,9 @@ public class TestTagREST {
 		}
 		
 		RangerTagDef rangerTagDef = tagREST.getTagDefByName(name);
-		Assert.assertNotNull(rangerTagDef.getName());
-		Assert.assertEquals(rangerTagDef.getName(), oldTagDef.getName());
-		Assert.assertEquals(rangerTagDef.getId(), oldTagDef.getId());
+		Assertions.assertNotNull(rangerTagDef.getName());
+		Assertions.assertEquals(rangerTagDef.getName(), oldTagDef.getName());
+		Assertions.assertEquals(rangerTagDef.getId(), oldTagDef.getId());
 		
 		try {
 			Mockito.verify(tagStore).getTagDefByName(name);
@@ -407,12 +405,12 @@ public class TestTagREST {
 	
 	@Test
 	public void test13getTagDefByName() {
+		assertThrows(WebApplicationException.class, () -> {
 		try {
 			Mockito.when(tagStore.getTagDefByName(name)).thenReturn(null);
 		} catch (Exception e) {
 		}
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		tagREST.getTagDefByName(name);
 		
 		try {
@@ -421,6 +419,7 @@ public class TestTagREST {
 		}
 		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(),
 				Mockito.anyString(), Mockito.anyBoolean());
+		});
 	}
 	
 	@Test
@@ -437,9 +436,9 @@ public class TestTagREST {
 		}
 		List<RangerTagDef> result = tagREST.getAllTagDefs();
 		
-		Assert.assertNotNull(result);
-		Assert.assertEquals(result.get(0).getId(), ret.get(0).getId());
-		Assert.assertEquals(result.get(0).getVersion(), ret.get(0).getVersion());
+		Assertions.assertNotNull(result);
+		Assertions.assertEquals(result.get(0).getId(), ret.get(0).getId());
+		Assertions.assertEquals(result.get(0).getVersion(), ret.get(0).getVersion());
 		
 		try {
 			Mockito.verify(tagStore).getTagDefs((SearchFilter)Mockito.any());
@@ -469,9 +468,9 @@ public class TestTagREST {
 		}
 		PList<RangerTagDef> result = tagREST.getTagDefs(request);
 
-		Assert.assertNotNull(result);
-		Assert.assertEquals(result.getList().get(0).getId(), tagDefList.get(0).getId());
-		Assert.assertEquals(result.getList().get(0).getVersion(), tagDefList.get(0).getVersion());
+		Assertions.assertNotNull(result);
+		Assertions.assertEquals(result.getList().get(0).getId(), tagDefList.get(0).getId());
+		Assertions.assertEquals(result.getList().get(0).getVersion(), tagDefList.get(0).getVersion());
 
 		try {
 			Mockito.verify(tagStore).getPaginatedTagDefs((SearchFilter) Mockito.any());
@@ -481,12 +480,12 @@ public class TestTagREST {
 
 	@Test
 	public void test15getAllTagDefs() {
+		assertThrows(WebApplicationException.class, () -> {
 		try {
 			Mockito.when(tagStore.getTagDefs((SearchFilter)Mockito.any())).thenReturn(null);
 		} catch (Exception e) {
 		}
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		tagREST.getAllTagDefs();
 		
 		try {
@@ -495,6 +494,7 @@ public class TestTagREST {
 		}
 		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(),
 				Mockito.anyString(), Mockito.anyBoolean());
+		});
 	}
 	
 	@Test
@@ -507,7 +507,7 @@ public class TestTagREST {
 		} catch (Exception e) {
 		}
 		List<String> result = tagREST.getTagTypes();
-		Assert.assertNotNull(result);
+		Assertions.assertNotNull(result);
 		
 		try {
 			Mockito.verify(tagStore).getTagTypes();
@@ -532,8 +532,8 @@ public class TestTagREST {
 		}
 		RangerTag rangerTag = tagREST.createTag(oldTag, false);
 		
-		Assert.assertEquals(rangerTag.getId(),newTag.getId());
-		Assert.assertEquals(rangerTag.getGuid(), newTag.getGuid());
+		Assertions.assertEquals(rangerTag.getId(),newTag.getId());
+		Assertions.assertEquals(rangerTag.getGuid(), newTag.getGuid());
 		
 		try {
 			Mockito.verify(validator).preCreateTag(oldTag);
@@ -567,10 +567,10 @@ public class TestTagREST {
 		}
 		
 		RangerTag rangerTag = tagREST.createTag(oldTag,true);
-		Assert.assertEquals(rangerTag.getVersion(), newTag.getVersion());
-		Assert.assertNotNull(newTag.getVersion());
-		Assert.assertNotEquals(oldTag.getVersion(), newTag.getVersion());
-		Assert.assertEquals(oldTag.getId(), newTag.getId());
+		Assertions.assertEquals(rangerTag.getVersion(), newTag.getVersion());
+		Assertions.assertNotNull(newTag.getVersion());
+		Assertions.assertNotEquals(oldTag.getVersion(), newTag.getVersion());
+		Assertions.assertEquals(oldTag.getId(), newTag.getId());
 		
 		try {
 			Mockito.verify(validator).preCreateTag(oldTag);
@@ -588,6 +588,7 @@ public class TestTagREST {
 	
 	@Test
 	public void test19createTag(){
+		assertThrows(WebApplicationException.class, () -> {
 		RangerTag oldTag = new RangerTag();
 		oldTag.setId(id);
 		
@@ -596,7 +597,6 @@ public class TestTagREST {
 		} catch (Exception e) {
 		}
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		tagREST.createTag(oldTag,false);
 		
 		try {
@@ -604,6 +604,7 @@ public class TestTagREST {
 		} catch (Exception e) {
 		}
 		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean());
+		});
 	}
 	
 	@Test
@@ -624,9 +625,9 @@ public class TestTagREST {
 		}
 				
 		RangerTag rangerTag = tagREST.updateTagByGuid(gId, oldTag);
-		Assert.assertEquals(oldTag.getGuid(), newTag.getGuid());
-		Assert.assertNotEquals(rangerTag.getVersion(), oldTag.getVersion());
-		Assert.assertEquals(rangerTag.getVersion(), newTag.getVersion());
+		Assertions.assertEquals(oldTag.getGuid(), newTag.getGuid());
+		Assertions.assertNotEquals(rangerTag.getVersion(), oldTag.getVersion());
+		Assertions.assertEquals(rangerTag.getVersion(), newTag.getVersion());
 		
 		try {
 			Mockito.verify(validator).preUpdateTagByGuid(gId, oldTag);
@@ -653,7 +654,7 @@ public class TestTagREST {
 		}
 		
 		tagREST.deleteTag(id);
-		Assert.assertNotNull(oldTag.getId());
+		Assertions.assertNotNull(oldTag.getId());
 		
 		try {
 			Mockito.verify(validator).preDeleteTag(id);
@@ -681,8 +682,8 @@ public class TestTagREST {
 		}
 		
 		tagREST.deleteTagByGuid(gId);
-		Assert.assertNotNull(oldTag.getId());
-		Assert.assertNotNull(oldTag.getGuid());
+		Assertions.assertNotNull(oldTag.getId());
+		Assertions.assertNotNull(oldTag.getGuid());
 		
 		try {
 			Mockito.verify(validator).preDeleteTagByGuid(gId);
@@ -705,9 +706,9 @@ public class TestTagREST {
 		} catch (Exception e) {
 		}
 		RangerTag rangerTag = tagREST.getTag(id);
-		Assert.assertNotNull(oldTag.getId());
-		Assert.assertEquals(rangerTag.getId(), oldTag.getId());
-		Assert.assertEquals(rangerTag.getGuid(), oldTag.getGuid());
+		Assertions.assertNotNull(oldTag.getId());
+		Assertions.assertEquals(rangerTag.getId(), oldTag.getId());
+		Assertions.assertEquals(rangerTag.getGuid(), oldTag.getGuid());
 		
 		try {
 			Mockito.verify(tagStore).getTag(id);
@@ -726,10 +727,10 @@ public class TestTagREST {
 		} catch (Exception e) {
 		}
 		RangerTag rangerTag = tagREST.getTagByGuid(gId);
-		Assert.assertNotNull(oldTag.getGuid());
-		Assert.assertEquals(rangerTag.getGuid(), oldTag.getGuid());
-		Assert.assertEquals(rangerTag.getId(), oldTag.getId());
-		Assert.assertNotNull(rangerTag.getId());
+		Assertions.assertNotNull(oldTag.getGuid());
+		Assertions.assertEquals(rangerTag.getGuid(), oldTag.getGuid());
+		Assertions.assertEquals(rangerTag.getId(), oldTag.getId());
+		Assertions.assertNotNull(rangerTag.getId());
 		
 		try {
 			Mockito.verify(tagStore).getTagByGuid(gId);
@@ -750,7 +751,7 @@ public class TestTagREST {
 		} catch (Exception e) {
 		}
 		List<RangerTag> rangerTag = tagREST.getTagsByType(type);
-		Assert.assertEquals(rangerTag.get(0).getType(), tag.get(0).getType());
+		Assertions.assertEquals(rangerTag.get(0).getType(), tag.get(0).getType());
 		
 		try {
 			Mockito.verify(tagStore).getTagsByType(type);
@@ -772,9 +773,9 @@ public class TestTagREST {
 		}
 		
 		List<RangerTag> result = tagREST.getAllTags();
-		Assert.assertEquals(result.get(0).getId(), ret.get(0).getId());
-		Assert.assertEquals(result.get(0).getVersion(), ret.get(0).getVersion());
-		Assert.assertNotNull(result.get(0).getId());
+		Assertions.assertEquals(result.get(0).getId(), ret.get(0).getId());
+		Assertions.assertEquals(result.get(0).getVersion(), ret.get(0).getVersion());
+		Assertions.assertNotNull(result.get(0).getId());
 		
 		try {
 			Mockito.verify(tagStore).getTags((SearchFilter)Mockito.any());
@@ -792,7 +793,7 @@ public class TestTagREST {
 		}
 		
 		List<RangerTag> result = tagREST.getAllTags();
-		Assert.assertNotNull(result);
+		Assertions.assertNotNull(result);
 		
 		try {
 			Mockito.verify(tagStore).getTags((SearchFilter)Mockito.any());
@@ -823,8 +824,8 @@ public class TestTagREST {
 
 		PList<RangerTag> result = tagREST.getTags(request);
 
-		Assert.assertNotNull(result);
-		Assert.assertEquals(result.getList().get(0).getType(), tagList.get(0).getType());
+		Assertions.assertNotNull(result);
+		Assertions.assertEquals(result.getList().get(0).getType(), tagList.get(0).getType());
 
 		try {
 			Mockito.verify(tagStore).getPaginatedTags((SearchFilter) Mockito.any());
@@ -849,9 +850,9 @@ public class TestTagREST {
 		}
 		
 		RangerServiceResource rangerServiceResource = tagREST.createServiceResource(oldRSR, false);
-		Assert.assertNotNull(rangerServiceResource.getId());
-		Assert.assertEquals(rangerServiceResource.getId(), newRSR.getId());
-		Assert.assertEquals(rangerServiceResource.getGuid(), newRSR.getGuid());
+		Assertions.assertNotNull(rangerServiceResource.getId());
+		Assertions.assertEquals(rangerServiceResource.getId(), newRSR.getId());
+		Assertions.assertEquals(rangerServiceResource.getGuid(), newRSR.getGuid());
 		
 		try {
 			Mockito.verify(validator).preCreateServiceResource(oldRSR);
@@ -885,9 +886,9 @@ public class TestTagREST {
 		}
 		
 		RangerServiceResource rangerServiceResource = tagREST.createServiceResource(oldRSR, true);
-		Assert.assertNotEquals(oldRSR.getVersion(), newRSR.getVersion());
-		Assert.assertEquals(rangerServiceResource.getId(), newRSR.getId());
-		Assert.assertEquals(rangerServiceResource.getId(), oldRSR.getId());
+		Assertions.assertNotEquals(oldRSR.getVersion(), newRSR.getVersion());
+		Assertions.assertEquals(rangerServiceResource.getId(), newRSR.getId());
+		Assertions.assertEquals(rangerServiceResource.getId(), oldRSR.getId());
 		
 		try {
 			Mockito.verify(validator).preCreateServiceResource(oldRSR);
@@ -905,6 +906,7 @@ public class TestTagREST {
 	
 	@Test
 	public void test29createServiceResource(){
+		assertThrows(WebApplicationException.class, () -> {
 		RangerServiceResource oldRSR = new RangerServiceResource();
 		
 		try {
@@ -912,7 +914,6 @@ public class TestTagREST {
 		} catch (Exception e) {
 		}
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		tagREST.createServiceResource(oldRSR, false);
 		
 		try {
@@ -920,6 +921,7 @@ public class TestTagREST {
 		} catch (Exception e) {
 		}
 		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean());
+		});
 	}
 	
 	@Test
@@ -942,10 +944,10 @@ public class TestTagREST {
 		}
 		
 		RangerServiceResource rangerServiceResource = tagREST.updateServiceResourceByGuid(gId, oldSRS);
-		Assert.assertEquals(oldSRS.getId(), newSRS.getId());
-		Assert.assertEquals(oldSRS.getGuid(), newSRS.getGuid());
-		Assert.assertNotEquals(oldSRS.getVersion(), newSRS.getVersion());
-		Assert.assertEquals(rangerServiceResource.getVersion(), newSRS.getVersion());
+		Assertions.assertEquals(oldSRS.getId(), newSRS.getId());
+		Assertions.assertEquals(oldSRS.getGuid(), newSRS.getGuid());
+		Assertions.assertNotEquals(oldSRS.getVersion(), newSRS.getVersion());
+		Assertions.assertEquals(rangerServiceResource.getVersion(), newSRS.getVersion());
 		
 		try {
 			Mockito.verify(validator).preUpdateServiceResourceByGuid(gId, oldSRS);
@@ -972,7 +974,7 @@ public class TestTagREST {
 		}
 		
 		tagREST.deleteServiceResource(id);
-		Assert.assertNotNull(oldSRS.getId());
+		Assertions.assertNotNull(oldSRS.getId());
 		
 		try {
 			Mockito.verify(validator).preDeleteServiceResource(id);
@@ -996,9 +998,9 @@ public class TestTagREST {
 		}
 		RangerServiceResource rangerServiceResource = tagREST.getServiceResource(id);
 		
-		Assert.assertNotNull(rangerServiceResource);
-		Assert.assertEquals(rangerServiceResource.getId(), oldSRS.getId());
-		Assert.assertEquals(rangerServiceResource.getGuid(), oldSRS.getGuid());
+		Assertions.assertNotNull(rangerServiceResource);
+		Assertions.assertEquals(rangerServiceResource.getId(), oldSRS.getId());
+		Assertions.assertEquals(rangerServiceResource.getGuid(), oldSRS.getGuid());
 		try {
 			Mockito.verify(tagStore).getServiceResource(id);
 		} catch (Exception e) {
@@ -1017,9 +1019,9 @@ public class TestTagREST {
 		}
 		RangerServiceResource rangerServiceResource = tagREST.getServiceResourceByGuid(gId);
 		
-		Assert.assertNotNull(rangerServiceResource);
-		Assert.assertEquals(rangerServiceResource.getGuid(), oldSRS.getGuid());
-		Assert.assertEquals(rangerServiceResource.getId(), oldSRS.getId());
+		Assertions.assertNotNull(rangerServiceResource);
+		Assertions.assertEquals(rangerServiceResource.getGuid(), oldSRS.getGuid());
+		Assertions.assertEquals(rangerServiceResource.getId(), oldSRS.getId());
 		try {
 			Mockito.verify(tagStore).getServiceResourceByGuid(gId);
 		} catch (Exception e) {
@@ -1040,9 +1042,9 @@ public class TestTagREST {
 		}
 		
 		List<RangerServiceResource> reslut = tagREST.getServiceResourcesByService(serviceName);
-		Assert.assertNotNull(reslut.get(0).getId());
-		Assert.assertEquals(reslut.get(0).getId(), ret.get(0).getId());
-		Assert.assertEquals(reslut.get(0).getServiceName(), ret.get(0).getServiceName());
+		Assertions.assertNotNull(reslut.get(0).getId());
+		Assertions.assertEquals(reslut.get(0).getId(), ret.get(0).getId());
+		Assertions.assertEquals(reslut.get(0).getServiceName(), ret.get(0).getServiceName());
 	
 		try {
 			Mockito.verify(tagStore).getServiceResourcesByService(serviceName);
@@ -1064,10 +1066,10 @@ public class TestTagREST {
 		}
 		
 		List<RangerServiceResource> result = tagREST.getServiceResourcesByService(serviceName);
-		Assert.assertNotNull(result);
-		Assert.assertEquals(result.size(), 1);
-		Assert.assertEquals(result.get(0).getId(), id);
-		Assert.assertEquals(result.get(0).getServiceName(), serviceName);
+		Assertions.assertNotNull(result);
+		Assertions.assertEquals(result.size(), 1);
+		Assertions.assertEquals(result.get(0).getId(), id);
+		Assertions.assertEquals(result.get(0).getServiceName(), serviceName);
 	
 		try {
 			Mockito.verify(tagStore).getServiceResourcesByService(serviceName);
@@ -1085,7 +1087,7 @@ public class TestTagREST {
 		}
 		
 		List<RangerServiceResource> result = tagREST.getServiceResourcesByService(serviceName);
-		Assert.assertNotNull(result);
+		Assertions.assertNotNull(result);
 	
 		try {
 			Mockito.verify(tagStore).getServiceResourcesByService(serviceName);
@@ -1106,9 +1108,9 @@ public class TestTagREST {
 		}
 		
 		RangerServiceResource rangerServiceResource = tagREST.getServiceResourceByServiceAndResourceSignature(serviceName, resourceSignature);
-		Assert.assertEquals(rangerServiceResource.getId(), oldSRS.getId());
-		Assert.assertEquals(rangerServiceResource.getServiceName(), oldSRS.getServiceName());
-		Assert.assertEquals(rangerServiceResource.getResourceSignature(), oldSRS.getResourceSignature());
+		Assertions.assertEquals(rangerServiceResource.getId(), oldSRS.getId());
+		Assertions.assertEquals(rangerServiceResource.getServiceName(), oldSRS.getServiceName());
+		Assertions.assertEquals(rangerServiceResource.getResourceSignature(), oldSRS.getResourceSignature());
 		
 		try {
 			Mockito.verify(tagStore).getServiceResourceByServiceAndResourceSignature(serviceName, resourceSignature);
@@ -1129,9 +1131,9 @@ public class TestTagREST {
 		} catch (Exception e) {
 		}
 		List<RangerServiceResource> result = tagREST.getAllServiceResources();
-		Assert.assertNotNull(result.get(0).getId());
-		Assert.assertEquals(result.get(0).getId(), ret.get(0).getId());
-		Assert.assertEquals(result.get(0).getServiceName(), ret.get(0).getServiceName());
+		Assertions.assertNotNull(result.get(0).getId());
+		Assertions.assertEquals(result.get(0).getId(), ret.get(0).getId());
+		Assertions.assertEquals(result.get(0).getServiceName(), ret.get(0).getServiceName());
 		
 		try {
 			Mockito.verify(tagStore).getServiceResources((SearchFilter)Mockito.any());
@@ -1169,11 +1171,11 @@ public class TestTagREST {
 
 		RangerServiceResourceWithTagsList result = tagREST.getServiceResourcesWithTags(request);
 
-		Assert.assertNotNull(result.getResourceList().get(0).getId());
-		Assert.assertEquals(result.getResourceList().get(0).getId(), serviceResourceList.get(0).getId());
-		Assert.assertEquals(result.getResourceList().get(0).getServiceName(), serviceResourceList.get(0).getServiceName());
-		Assert.assertEquals(result.getResourceList().get(0).getAssociatedTags().size(), 1);
-		Assert.assertEquals(result.getResourceList().get(0).getAssociatedTags().get(0).getType(), name);
+		Assertions.assertNotNull(result.getResourceList().get(0).getId());
+		Assertions.assertEquals(result.getResourceList().get(0).getId(), serviceResourceList.get(0).getId());
+		Assertions.assertEquals(result.getResourceList().get(0).getServiceName(), serviceResourceList.get(0).getServiceName());
+		Assertions.assertEquals(result.getResourceList().get(0).getAssociatedTags().size(), 1);
+		Assertions.assertEquals(result.getResourceList().get(0).getAssociatedTags().get(0).getType(), name);
 
 		try {
 			Mockito.verify(tagStore).getPaginatedServiceResourcesWithTags((SearchFilter) Mockito.any());
@@ -1204,8 +1206,8 @@ public class TestTagREST {
 		
 		RangerTagResourceMap rangerTagResourceMap = tagREST.createTagResourceMap(tagGuid, resourceGuid, false);
 
-		Assert.assertEquals(rangerTagResourceMap.getTagId(), newTagResourceMap.getTagId());
-		Assert.assertEquals(rangerTagResourceMap.getResourceId(), newTagResourceMap.getResourceId());
+		Assertions.assertEquals(rangerTagResourceMap.getTagId(), newTagResourceMap.getTagId());
+		Assertions.assertEquals(rangerTagResourceMap.getResourceId(), newTagResourceMap.getResourceId());
 		
 		try {
 			Mockito.verify(tagStore).getTagResourceMapForTagAndResourceGuid(tagGuid, resourceGuid);
@@ -1225,6 +1227,7 @@ public class TestTagREST {
 	
 	@Test
 	public void test39createTagResourceMap() {
+		assertThrows(WebApplicationException.class, () -> {
 		RangerTagResourceMap oldTagResourceMap = new RangerTagResourceMap();
 		
 		try {
@@ -1233,8 +1236,6 @@ public class TestTagREST {
 		}
 
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(),Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
-
-		thrown.expect(WebApplicationException.class);
 		tagREST.createTagResourceMap(tagGuid, resourceGuid, false);
 		
 		try {
@@ -1242,6 +1243,7 @@ public class TestTagREST {
 		} catch (Exception e) {
 		}
 		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(),Mockito.anyString(), Mockito.anyBoolean());
+		});
 	}
 	
 	@Test
@@ -1268,10 +1270,10 @@ public class TestTagREST {
 		} catch (Exception e1) {
 		}
 		RangerTagResourceMap result = tagREST.createTagResourceMap(tagGuid, resourceGuid, true);
-		Assert.assertNotNull(result.getId());
-		Assert.assertEquals(result.getGuid(), finalTagResourceMap.getGuid());
-		Assert.assertEquals(result.getId(), finalTagResourceMap.getId());
-		Assert.assertEquals(result.getVersion(), finalTagResourceMap.getVersion());
+		Assertions.assertNotNull(result.getId());
+		Assertions.assertEquals(result.getGuid(), finalTagResourceMap.getGuid());
+		Assertions.assertEquals(result.getId(), finalTagResourceMap.getId());
+		Assertions.assertEquals(result.getVersion(), finalTagResourceMap.getVersion());
 		
 		try {
 			Mockito.verify(tagStore).getTagResourceMapForTagAndResourceGuid(tagGuid, resourceGuid);
@@ -1301,7 +1303,7 @@ public class TestTagREST {
 		}
 		
 		tagREST.deleteTagResourceMap(id);
-		Assert.assertNotNull(oldTagResourceMap.getId());
+		Assertions.assertNotNull(oldTagResourceMap.getId());
 		try {
 			Mockito.verify(validator).preDeleteTagResourceMap(id);
 		} catch (Exception e) {
@@ -1327,8 +1329,8 @@ public class TestTagREST {
 		}
 		
 		tagREST.deleteTagResourceMapByGuid(gId);
-		Assert.assertNotNull(oldTagResourceMap.getId());
-		Assert.assertNotNull(oldTagResourceMap.getGuid());
+		Assertions.assertNotNull(oldTagResourceMap.getId());
+		Assertions.assertNotNull(oldTagResourceMap.getGuid());
 		
 		try {
 			Mockito.verify(validator).preDeleteTagResourceMapByGuid(gId);
@@ -1373,9 +1375,9 @@ public class TestTagREST {
 		}
 		
 		RangerTagResourceMap rangerTagResourceMap = tagREST.getTagResourceMap(id);
-		Assert.assertNotNull(rangerTagResourceMap.getId());
-		Assert.assertEquals(rangerTagResourceMap.getId(), oldTagResourceMap.getId());
-		Assert.assertEquals(rangerTagResourceMap.getGuid(), oldTagResourceMap.getGuid());
+		Assertions.assertNotNull(rangerTagResourceMap.getId());
+		Assertions.assertEquals(rangerTagResourceMap.getId(), oldTagResourceMap.getId());
+		Assertions.assertEquals(rangerTagResourceMap.getGuid(), oldTagResourceMap.getGuid());
 		try {
 			Mockito.verify(tagStore).getTagResourceMap(id);
 		} catch (Exception e) {
@@ -1394,9 +1396,9 @@ public class TestTagREST {
 		}
 		
 		RangerTagResourceMap rangerTagResourceMap = tagREST.getTagResourceMapByGuid(gId);
-		Assert.assertNotNull(rangerTagResourceMap.getId());
-		Assert.assertEquals(rangerTagResourceMap.getId(), oldTagResourceMap.getId());
-		Assert.assertEquals(rangerTagResourceMap.getGuid(), oldTagResourceMap.getGuid());
+		Assertions.assertNotNull(rangerTagResourceMap.getId());
+		Assertions.assertEquals(rangerTagResourceMap.getId(), oldTagResourceMap.getId());
+		Assertions.assertEquals(rangerTagResourceMap.getGuid(), oldTagResourceMap.getGuid());
 		try {
 			Mockito.verify(tagStore).getTagResourceMapByGuid(gId);
 		} catch (Exception e) {
@@ -1414,9 +1416,9 @@ public class TestTagREST {
 		} catch (Exception e) {
 		}
 		RangerTagResourceMap rangerTagResourceMap = tagREST.getTagResourceMap(tagGuid, resourceGuid);
-		Assert.assertNotNull(rangerTagResourceMap.getId());
-		Assert.assertEquals(rangerTagResourceMap.getId(), oldTagResourceMap.getId());
-		Assert.assertEquals(rangerTagResourceMap.getTagId(), oldTagResourceMap.getTagId());
+		Assertions.assertNotNull(rangerTagResourceMap.getId());
+		Assertions.assertEquals(rangerTagResourceMap.getId(), oldTagResourceMap.getId());
+		Assertions.assertEquals(rangerTagResourceMap.getTagId(), oldTagResourceMap.getTagId());
 		try {
 			Mockito.verify(tagStore).getTagResourceMapForTagAndResourceGuid(tagGuid, resourceGuid);
 		} catch (Exception e) {
@@ -1437,9 +1439,9 @@ public class TestTagREST {
 		}
 		
 		List<RangerTagResourceMap> result = tagREST.getAllTagResourceMaps();
-		Assert.assertNotNull(result.get(0).getId());
-		Assert.assertEquals(result.get(0).getId(), ret.get(0).getId());
-		Assert.assertEquals(result.get(0).getTagId(), ret.get(0).getTagId());
+		Assertions.assertNotNull(result.get(0).getId());
+		Assertions.assertEquals(result.get(0).getId(), ret.get(0).getId());
+		Assertions.assertEquals(result.get(0).getTagId(), ret.get(0).getTagId());
 		
 		try {
 			Mockito.verify(tagStore).getTagResourceMaps((SearchFilter)Mockito.any());
@@ -1457,7 +1459,7 @@ public class TestTagREST {
 		}
 		
 		List<RangerTagResourceMap> result = tagREST.getAllTagResourceMaps();
-		Assert.assertNotNull(result);
+		Assertions.assertNotNull(result);
 		
 		try {
 			Mockito.verify(tagStore).getTagResourceMaps((SearchFilter)Mockito.any());
@@ -1548,6 +1550,7 @@ public class TestTagREST {
 	
 	@Test
 	public void test50getServiceTagsIfUpdated() {
+		assertThrows(WebApplicationException.class, () -> {
 		ServiceTags oldServiceTag = null;
 		
 		try {
@@ -1555,7 +1558,6 @@ public class TestTagREST {
 		} catch (Exception e) {
 		}
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(),Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		
 		tagREST.getServiceTagsIfUpdated(serviceName, lastKnownVersion, 0L, pluginId, false, capabilityVector, null);
 		
@@ -1564,6 +1566,7 @@ public class TestTagREST {
 		} catch (Exception e) {
 		}
 		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(),Mockito.anyString(), Mockito.anyBoolean());
+		});
 	}
 	
 	@Test
@@ -1577,8 +1580,8 @@ public class TestTagREST {
 		} catch (Exception e) {
 		}
 		ServiceTags serviceTags = tagREST.getServiceTagsIfUpdated(serviceName, lastKnownVersion, 0L, pluginId, false, capabilityVector, null);
-		Assert.assertEquals(serviceTags.getServiceName(), oldServiceTag.getServiceName());
-		Assert.assertEquals(serviceTags.getTagVersion(), oldServiceTag.getTagVersion());
+		Assertions.assertEquals(serviceTags.getServiceName(), oldServiceTag.getServiceName());
+		Assertions.assertEquals(serviceTags.getTagVersion(), oldServiceTag.getTagVersion());
 		
 		try {
 			Mockito.verify(tagStore).getServiceTagsIfUpdated(serviceName, lastKnownVersion, true);
@@ -1629,9 +1632,9 @@ public class TestTagREST {
 		}
 		
 		ServiceTags result = tagREST.getSecureServiceTagsIfUpdated(serviceName, lastKnownVersion, 0L, pluginId, false, capabilityVector, null);
-		Assert.assertNotNull(result.getServiceName());
-		Assert.assertEquals(result.getServiceName(), oldServiceTag.getServiceName());
-		Assert.assertEquals(result.getTagVersion(), oldServiceTag.getTagVersion());
+		Assertions.assertNotNull(result.getServiceName());
+		Assertions.assertEquals(result.getServiceName(), oldServiceTag.getServiceName());
+		Assertions.assertEquals(result.getTagVersion(), oldServiceTag.getTagVersion());
 		
 		Mockito.verify(bizUtil).isAdmin();
 		Mockito.verify(bizUtil).isKeyAdmin();
@@ -1691,9 +1694,9 @@ public class TestTagREST {
 		}
 		
 		ServiceTags result = tagREST.getSecureServiceTagsIfUpdated(serviceName, lastKnownVersion, 0L, pluginId, false, capabilityVector, null);
-		Assert.assertNotNull(result.getServiceName());
-		Assert.assertEquals(result.getServiceName(), oldServiceTag.getServiceName());
-		Assert.assertEquals(result.getTagVersion(), oldServiceTag.getTagVersion());
+		Assertions.assertNotNull(result.getServiceName());
+		Assertions.assertEquals(result.getServiceName(), oldServiceTag.getServiceName());
+		Assertions.assertEquals(result.getTagVersion(), oldServiceTag.getTagVersion());
 		
 		Mockito.verify(bizUtil).isAdmin();
 		Mockito.verify(bizUtil).isKeyAdmin();
@@ -1756,9 +1759,9 @@ public class TestTagREST {
 		}
 		
 		ServiceTags result = tagREST.getSecureServiceTagsIfUpdated(serviceName, lastKnownVersion, 0L, pluginId, false, capabilityVector, null);
-		Assert.assertNotNull(result.getServiceName());
-		Assert.assertEquals(result.getServiceName(), oldServiceTag.getServiceName());
-		Assert.assertEquals(result.getTagVersion(), oldServiceTag.getTagVersion());
+		Assertions.assertNotNull(result.getServiceName());
+		Assertions.assertEquals(result.getServiceName(), oldServiceTag.getServiceName());
+		Assertions.assertEquals(result.getTagVersion(), oldServiceTag.getTagVersion());
 		
 		Mockito.verify(bizUtil).isAdmin();
 		Mockito.verify(bizUtil).isKeyAdmin();
@@ -1821,9 +1824,9 @@ public class TestTagREST {
 		}
 		
 		ServiceTags result = tagREST.getSecureServiceTagsIfUpdated(serviceName, lastKnownVersion, 0L, pluginId, false, capabilityVector, null);
-		Assert.assertNotNull(result.getServiceName());
-		Assert.assertEquals(result.getServiceName(), oldServiceTag.getServiceName());
-		Assert.assertEquals(result.getTagVersion(), oldServiceTag.getTagVersion());
+		Assertions.assertNotNull(result.getServiceName());
+		Assertions.assertEquals(result.getServiceName(), oldServiceTag.getServiceName());
+		Assertions.assertEquals(result.getTagVersion(), oldServiceTag.getTagVersion());
 		
 		Mockito.verify(bizUtil).isAdmin();
 		Mockito.verify(bizUtil).isKeyAdmin();
@@ -1844,6 +1847,7 @@ public class TestTagREST {
 	
 	@Test
 	public void test56getSecureServiceTagsIfUpdatedIsAllowedFalse() {
+		assertThrows(WebApplicationException.class, () -> {
 		boolean isAdmin = false;
 		boolean isKeyAdmin = false;
 		boolean isAllowed = false;
@@ -1881,7 +1885,6 @@ public class TestTagREST {
 		
 		Mockito.when(bizUtil.isUserAllowed(rangerService, Allowed_User_List_For_Tag_Download)).thenReturn(isAllowed);
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		
 		tagREST.getSecureServiceTagsIfUpdated(serviceName, lastKnownVersion, 0L, pluginId, false, capabilityVector, null);
 		
@@ -1897,10 +1900,12 @@ public class TestTagREST {
 		}
 		Mockito.verify(bizUtil).isUserAllowed(rangerService, Allowed_User_List_For_Tag_Download);
 		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean());
+		});
 	}
 	
 	@Test
 	public void test57getSecureServiceTagsIfUpdated() {
+		assertThrows(WebApplicationException.class, () -> {
 		boolean isAdmin = false;
 		boolean isKeyAdmin = false;
 		boolean isAllowed = true;
@@ -1940,7 +1945,6 @@ public class TestTagREST {
 		} catch (Exception e) {
 		}
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		
 		tagREST.getSecureServiceTagsIfUpdated(serviceName, lastKnownVersion, 0L, pluginId, false, capabilityVector, null);
 		
@@ -1960,6 +1964,7 @@ public class TestTagREST {
 		} catch (Exception e) {
 		}
 		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean());
+		});
 	}
 
 	@Test
@@ -1998,13 +2003,14 @@ public class TestTagREST {
 	}
 	@Test
 	public void test59resetTagCacheWhenServiceNameIsInvalid() {
+		assertThrows(WebApplicationException.class, () -> {
 		try {
 			Mockito.when(svcStore.getServiceByName(serviceName)).thenReturn(null);
 		} catch (Exception e) {
 		}
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
-		thrown.expect(WebApplicationException.class);
 		tagREST.resetTagCache(serviceName);
 		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean());
+		});
 	}
 }

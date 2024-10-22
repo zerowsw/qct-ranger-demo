@@ -24,10 +24,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOCase;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.plugin.model.RangerPolicy.RangerPolicyResource;
 import org.apache.ranger.plugin.model.RangerServiceDef.RangerResourceDef;
 import org.apache.ranger.plugin.policyengine.RangerAccessRequest.ResourceElementMatchType;
@@ -303,8 +303,8 @@ public abstract class RangerAbstractResourceMatcher implements RangerResourceMat
 
 		if (resource == null) {
 			result = true;
-		} else if (resource instanceof String) {
-			result = StringUtils.isEmpty((String) resource) || WILDCARD_ASTERISK.equals(resource);
+		} else if (resource instanceof String string) {
+			result = StringUtils.isEmpty(string) || WILDCARD_ASTERISK.equals(resource);
 		} else { // return false for any other type of resourceValue
 			result = false;
 		}

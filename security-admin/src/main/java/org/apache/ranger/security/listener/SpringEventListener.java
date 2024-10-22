@@ -48,14 +48,14 @@ public class SpringEventListener implements
     @Override
     public void onApplicationEvent(AbstractAuthenticationEvent event) {
 	try {
-	    if (event instanceof AuthenticationSuccessEvent) {
-		process((AuthenticationSuccessEvent) event);
-	    } else if (event instanceof AuthenticationFailureBadCredentialsEvent) {
-		process((AuthenticationFailureBadCredentialsEvent) event);
-	    } else if (event instanceof AuthenticationFailureLockedEvent) {
-		process((AuthenticationFailureLockedEvent) event);
-	    } else if (event instanceof AuthenticationFailureDisabledEvent) {
-		process((AuthenticationFailureDisabledEvent) event);
+	    if (event instanceof AuthenticationSuccessEvent successEvent) {
+		process(successEvent);
+	    } else if (event instanceof AuthenticationFailureBadCredentialsEvent credentialsEvent) {
+		process(credentialsEvent);
+	    } else if (event instanceof AuthenticationFailureLockedEvent lockedEvent) {
+		process(lockedEvent);
+	    } else if (event instanceof AuthenticationFailureDisabledEvent disabledEvent) {
+		process(disabledEvent);
 	    }
 	    // igonre all other events
 

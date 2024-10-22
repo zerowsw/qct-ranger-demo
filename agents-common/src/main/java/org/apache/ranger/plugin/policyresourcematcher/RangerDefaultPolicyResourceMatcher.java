@@ -26,9 +26,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.plugin.model.RangerPolicy;
 import org.apache.ranger.plugin.model.RangerPolicy.RangerPolicyResource;
 import org.apache.ranger.plugin.model.RangerServiceDef.RangerResourceDef;
@@ -304,8 +304,7 @@ public class RangerDefaultPolicyResourceMatcher implements RangerPolicyResourceM
 
                 if (resourceValue == null) {
                     ret = matcher == null || matcher.isCompleteMatch(null, evalContext);
-                } else if (resourceValue instanceof String) {
-                    String strValue = (String) resourceValue;
+                } else if (resourceValue instanceof String strValue) {
 
                     if (StringUtils.isEmpty(strValue)) {
                         ret = matcher == null || matcher.isCompleteMatch(strValue, evalContext);
@@ -491,8 +490,7 @@ public class RangerDefaultPolicyResourceMatcher implements RangerPolicyResourceM
         for (RangerResourceDef resourceDef : serviceDef.getResources()) {
             String resourceName = resourceDef.getName();
             Object resourceValue = resource.getValue(resourceName);
-            if (resourceValue instanceof String) {
-                String strValue = (String) resourceValue;
+            if (resourceValue instanceof String strValue) {
 
                 if (policyResources == null) {
                     policyResources = new HashMap<>();

@@ -24,8 +24,8 @@ import org.apache.ranger.entity.XXRangerKeyStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 
 public class RangerKMSDao extends BaseDao<XXRangerKeyStore> {
     private static final Logger logger = LoggerFactory.getLogger(RangerKMSDao.class);

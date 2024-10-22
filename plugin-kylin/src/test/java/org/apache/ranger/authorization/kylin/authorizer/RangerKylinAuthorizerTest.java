@@ -17,6 +17,7 @@
 
 package org.apache.ranger.authorization.kylin.authorizer;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -26,27 +27,25 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.kylin.common.KylinConfig;
 import org.apache.kylin.metadata.project.ProjectInstance;
 import org.apache.kylin.metadata.project.ProjectManager;
 import org.apache.kylin.metadata.project.RealizationEntry;
 import org.apache.kylin.rest.util.AclEvaluate;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.FixMethodOrder;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.MethodOrderer.MethodName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.util.ReflectionTestUtils;
 
 /**
@@ -66,10 +65,9 @@ import org.springframework.test.util.ReflectionTestUtils;
 * and the others have role "ROLE_USER" by mock for test.
 *
 */
-@Ignore
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath*:applicationContext.xml", "classpath*:kylinSecurity.xml" })
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@Disabled
+@SpringJUnitConfig(locations = {"classpath*:applicationContext.xml", "classpath*:kylinSecurity.xml"})
+@TestMethodOrder(MethodName.class)
 public class RangerKylinAuthorizerTest {
 	private static final Map<String, ProjectInstance> uuid2Projects = new HashMap<>();
 
@@ -98,7 +96,7 @@ public class RangerKylinAuthorizerTest {
 	@Autowired
 	private AclEvaluate aclEvaluate;
 
-	@BeforeClass
+	@BeforeAll
 	public static void setup() throws Exception {
 		// set kylin conf path
 		System.setProperty(KylinConfig.KYLIN_CONF, "src/test/resources");
@@ -110,7 +108,7 @@ public class RangerKylinAuthorizerTest {
 		mockKylinProjects();
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void cleanup() throws Exception {
 		// do nothing
 	}
@@ -178,10 +176,12 @@ public class RangerKylinAuthorizerTest {
 	/**
 	 * no credentials read any project failed
 	 */
-	@Test(expected = AuthenticationCredentialsNotFoundException.class)
+	@Test
 	public void readProjectAnyWithoutCredentials() {
+		assertThrows(AuthenticationCredentialsNotFoundException.class, () -> {
 		ProjectInstance project = getRandomProjectInstance();
 		aclEvaluate.hasProjectReadPermission(project);
+		});
 	}
 
 	/**
@@ -192,7 +192,7 @@ public class RangerKylinAuthorizerTest {
 	public void readProjectAllAsRoleAdmin() {
 		for (ProjectInstance project : uuid2Projects.values()) {
 			boolean result = aclEvaluate.hasProjectReadPermission(project);
-			Assert.assertTrue(result);
+			Assertions.assertTrue(result);
 		}
 	}
 
@@ -204,7 +204,7 @@ public class RangerKylinAuthorizerTest {
 	public void readProjectAllWithAdminPermission() {
 		for (ProjectInstance project : uuid2Projects.values()) {
 			boolean result = aclEvaluate.hasProjectReadPermission(project);
-			Assert.assertTrue(result);
+			Assertions.assertTrue(result);
 		}
 	}
 
@@ -216,7 +216,7 @@ public class RangerKylinAuthorizerTest {
 	public void readProjectTestWithAdminPermission() {
 		ProjectInstance project = name2Projects.get(TEST_PROJECT);
 		boolean result = aclEvaluate.hasProjectReadPermission(project);
-		Assert.assertTrue(result);
+		Assertions.assertTrue(result);
 	}
 
 	/**
@@ -227,7 +227,7 @@ public class RangerKylinAuthorizerTest {
 	public void readProjectKylinWithOperationPermission() {
 		ProjectInstance project = name2Projects.get(KYLIN_PROJECT);
 		boolean result = aclEvaluate.hasProjectReadPermission(project);
-		Assert.assertTrue(result);
+		Assertions.assertTrue(result);
 	}
 
 	/**
@@ -238,7 +238,7 @@ public class RangerKylinAuthorizerTest {
 	public void readProjectTestWithManagementPermission() {
 		ProjectInstance project = name2Projects.get(TEST_PROJECT);
 		boolean result = aclEvaluate.hasProjectReadPermission(project);
-		Assert.assertTrue(result);
+		Assertions.assertTrue(result);
 	}
 
 	/**
@@ -249,7 +249,7 @@ public class RangerKylinAuthorizerTest {
 	public void readProjectKylinWithQueryPermission() {
 		ProjectInstance project = name2Projects.get(KYLIN_PROJECT);
 		boolean result = aclEvaluate.hasProjectReadPermission(project);
-		Assert.assertTrue(result);
+		Assertions.assertTrue(result);
 	}
 
 	/**
@@ -260,7 +260,7 @@ public class RangerKylinAuthorizerTest {
 	public void readProjectLearnWithoutPermission() {
 		ProjectInstance project = name2Projects.get(LEARN_PROJECT);
 		boolean result = aclEvaluate.hasProjectReadPermission(project);
-		Assert.assertFalse(result);
+		Assertions.assertFalse(result);
 	}
 
 	// No.1 hasProjectReadPermission test end
@@ -269,10 +269,12 @@ public class RangerKylinAuthorizerTest {
 	/**
 	 * no credentials operation any project failed
 	 */
-	@Test(expected = AuthenticationCredentialsNotFoundException.class)
+	@Test
 	public void operationProjectAnyWithoutCredentials() {
+		assertThrows(AuthenticationCredentialsNotFoundException.class, () -> {
 		ProjectInstance project = getRandomProjectInstance();
 		aclEvaluate.hasProjectOperationPermission(project);
+		});
 	}
 
 	/**
@@ -283,7 +285,7 @@ public class RangerKylinAuthorizerTest {
 	public void operationProjectAllAsRoleAdmin() {
 		for (ProjectInstance project : uuid2Projects.values()) {
 			boolean result = aclEvaluate.hasProjectOperationPermission(project);
-			Assert.assertTrue(result);
+			Assertions.assertTrue(result);
 		}
 	}
 
@@ -295,7 +297,7 @@ public class RangerKylinAuthorizerTest {
 	public void operationProjectAllWithAdminPermission() {
 		for (ProjectInstance project : uuid2Projects.values()) {
 			boolean result = aclEvaluate.hasProjectOperationPermission(project);
-			Assert.assertTrue(result);
+			Assertions.assertTrue(result);
 		}
 	}
 
@@ -307,7 +309,7 @@ public class RangerKylinAuthorizerTest {
 	public void operationProjectTestWithAdminPermission() {
 		ProjectInstance project = name2Projects.get(TEST_PROJECT);
 		boolean result = aclEvaluate.hasProjectOperationPermission(project);
-		Assert.assertTrue(result);
+		Assertions.assertTrue(result);
 	}
 
 	/**
@@ -318,7 +320,7 @@ public class RangerKylinAuthorizerTest {
 	public void operationProjectKylinWithOperationPermission() {
 		ProjectInstance project = name2Projects.get(KYLIN_PROJECT);
 		boolean result = aclEvaluate.hasProjectOperationPermission(project);
-		Assert.assertTrue(result);
+		Assertions.assertTrue(result);
 	}
 
 	/**
@@ -329,7 +331,7 @@ public class RangerKylinAuthorizerTest {
 	public void operationProjectTestWithManagementPermission() {
 		ProjectInstance project = name2Projects.get(TEST_PROJECT);
 		boolean result = aclEvaluate.hasProjectOperationPermission(project);
-		Assert.assertTrue(result);
+		Assertions.assertTrue(result);
 	}
 
 	/**
@@ -340,7 +342,7 @@ public class RangerKylinAuthorizerTest {
 	public void operationProjectKylinWithoutPermission() {
 		ProjectInstance project = name2Projects.get(KYLIN_PROJECT);
 		boolean result = aclEvaluate.hasProjectOperationPermission(project);
-		Assert.assertFalse(result);
+		Assertions.assertFalse(result);
 	}
 
 	/**
@@ -351,7 +353,7 @@ public class RangerKylinAuthorizerTest {
 	public void operationProjectLearnWithoutPermission() {
 		ProjectInstance project = name2Projects.get(LEARN_PROJECT);
 		boolean result = aclEvaluate.hasProjectOperationPermission(project);
-		Assert.assertFalse(result);
+		Assertions.assertFalse(result);
 	}
 
 	// No.2 hasProjectOperationPermission test end
@@ -360,10 +362,12 @@ public class RangerKylinAuthorizerTest {
 	/**
 	 * no credentials write any project failed
 	 */
-	@Test(expected = AuthenticationCredentialsNotFoundException.class)
+	@Test
 	public void writeProjectAnyWithoutCredentials() {
+		assertThrows(AuthenticationCredentialsNotFoundException.class, () -> {
 		ProjectInstance project = getRandomProjectInstance();
 		aclEvaluate.hasProjectWritePermission(project);
+		});
 	}
 
 	/**
@@ -374,7 +378,7 @@ public class RangerKylinAuthorizerTest {
 	public void writeProjectAllAsRoleAdmin() {
 		for (ProjectInstance project : uuid2Projects.values()) {
 			boolean result = aclEvaluate.hasProjectWritePermission(project);
-			Assert.assertTrue(result);
+			Assertions.assertTrue(result);
 		}
 	}
 
@@ -386,7 +390,7 @@ public class RangerKylinAuthorizerTest {
 	public void writeProjectAllWithAdminPermission() {
 		for (ProjectInstance project : uuid2Projects.values()) {
 			boolean result = aclEvaluate.hasProjectWritePermission(project);
-			Assert.assertTrue(result);
+			Assertions.assertTrue(result);
 		}
 	}
 
@@ -398,7 +402,7 @@ public class RangerKylinAuthorizerTest {
 	public void writeProjectTestWithAdminPermission() {
 		ProjectInstance project = name2Projects.get(TEST_PROJECT);
 		boolean result = aclEvaluate.hasProjectWritePermission(project);
-		Assert.assertTrue(result);
+		Assertions.assertTrue(result);
 	}
 
 	/**
@@ -409,7 +413,7 @@ public class RangerKylinAuthorizerTest {
 	public void writeProjectKylinWithoutPermission() {
 		ProjectInstance project = name2Projects.get(KYLIN_PROJECT);
 		boolean result = aclEvaluate.hasProjectWritePermission(project);
-		Assert.assertFalse(result);
+		Assertions.assertFalse(result);
 	}
 
 	/**
@@ -420,7 +424,7 @@ public class RangerKylinAuthorizerTest {
 	public void writeProjectTestWithManagementPermission() {
 		ProjectInstance project = name2Projects.get(TEST_PROJECT);
 		boolean result = aclEvaluate.hasProjectWritePermission(project);
-		Assert.assertTrue(result);
+		Assertions.assertTrue(result);
 	}
 
 	/**
@@ -431,7 +435,7 @@ public class RangerKylinAuthorizerTest {
 	public void writeProjectKylinWithoutPermission2() {
 		ProjectInstance project = name2Projects.get(KYLIN_PROJECT);
 		boolean result = aclEvaluate.hasProjectWritePermission(project);
-		Assert.assertFalse(result);
+		Assertions.assertFalse(result);
 	}
 
 	/**
@@ -442,7 +446,7 @@ public class RangerKylinAuthorizerTest {
 	public void writeProjectLearnWithoutPermission() {
 		ProjectInstance project = name2Projects.get(LEARN_PROJECT);
 		boolean result = aclEvaluate.hasProjectWritePermission(project);
-		Assert.assertFalse(result);
+		Assertions.assertFalse(result);
 	}
 
 	// No.3 hasProjectWritePermission test end
@@ -451,10 +455,12 @@ public class RangerKylinAuthorizerTest {
 	/**
 	 * no credentials admin any project failed
 	 */
-	@Test(expected = AuthenticationCredentialsNotFoundException.class)
+	@Test
 	public void adminProjectAnyWithoutCredentials() {
+		assertThrows(AuthenticationCredentialsNotFoundException.class, () -> {
 		ProjectInstance project = getRandomProjectInstance();
 		aclEvaluate.hasProjectAdminPermission(project);
+		});
 	}
 
 	/**
@@ -465,7 +471,7 @@ public class RangerKylinAuthorizerTest {
 	public void adminProjectAllAsRoleAdmin() {
 		for (ProjectInstance project : uuid2Projects.values()) {
 			boolean result = aclEvaluate.hasProjectAdminPermission(project);
-			Assert.assertTrue(result);
+			Assertions.assertTrue(result);
 		}
 	}
 
@@ -477,7 +483,7 @@ public class RangerKylinAuthorizerTest {
 	public void adminProjectAllWithAdminPermission() {
 		for (ProjectInstance project : uuid2Projects.values()) {
 			boolean result = aclEvaluate.hasProjectAdminPermission(project);
-			Assert.assertTrue(result);
+			Assertions.assertTrue(result);
 		}
 	}
 
@@ -489,7 +495,7 @@ public class RangerKylinAuthorizerTest {
 	public void adminProjectTestWithAdminPermission() {
 		ProjectInstance project = name2Projects.get(TEST_PROJECT);
 		boolean result = aclEvaluate.hasProjectAdminPermission(project);
-		Assert.assertTrue(result);
+		Assertions.assertTrue(result);
 	}
 
 	/**
@@ -500,7 +506,7 @@ public class RangerKylinAuthorizerTest {
 	public void adminProjectKylinWithoutPermission() {
 		ProjectInstance project = name2Projects.get(KYLIN_PROJECT);
 		boolean result = aclEvaluate.hasProjectAdminPermission(project);
-		Assert.assertFalse(result);
+		Assertions.assertFalse(result);
 	}
 
 	/**
@@ -511,7 +517,7 @@ public class RangerKylinAuthorizerTest {
 	public void adminProjectTestWithoutPermission() {
 		ProjectInstance project = name2Projects.get(TEST_PROJECT);
 		boolean result = aclEvaluate.hasProjectAdminPermission(project);
-		Assert.assertFalse(result);
+		Assertions.assertFalse(result);
 	}
 
 	/**
@@ -522,7 +528,7 @@ public class RangerKylinAuthorizerTest {
 	public void adminProjectKylinWithoutPermission2() {
 		ProjectInstance project = name2Projects.get(KYLIN_PROJECT);
 		boolean result = aclEvaluate.hasProjectAdminPermission(project);
-		Assert.assertFalse(result);
+		Assertions.assertFalse(result);
 	}
 
 	/**
@@ -533,7 +539,7 @@ public class RangerKylinAuthorizerTest {
 	public void adminProjectLearnWithoutPermission() {
 		ProjectInstance project = name2Projects.get(LEARN_PROJECT);
 		boolean result = aclEvaluate.hasProjectAdminPermission(project);
-		Assert.assertFalse(result);
+		Assertions.assertFalse(result);
 	}
 	// No.4 hasProjectAdminPermission test end
 }

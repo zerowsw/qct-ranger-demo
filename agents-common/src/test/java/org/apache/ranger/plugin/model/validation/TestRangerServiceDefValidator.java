@@ -20,8 +20,8 @@
 package org.apache.ranger.plugin.model.validation;
 
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -38,12 +38,12 @@ import org.apache.ranger.plugin.model.RangerServiceDef.RangerResourceDef;
 import org.apache.ranger.plugin.model.RangerServiceDef.RangerServiceConfigDef;
 import org.apache.ranger.plugin.model.validation.RangerValidator.Action;
 import org.apache.ranger.plugin.store.ServiceStore;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class TestRangerServiceDefValidator {
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		_store = mock(ServiceStore.class);
 		_validator = new RangerServiceDefValidator(_store);
@@ -488,7 +488,7 @@ public class TestRangerServiceDefValidator {
 
         resourceDefs = _utils.createResourceDefs(data_cycles);
         when(_serviceDef.getResources()).thenReturn(resourceDefs);
-        _failures.clear(); assertFalse("Graph was valid!", _validator.isValidResourceGraph(_serviceDef, _failures));
+        _failures.clear(); assertFalse(_validator.isValidResourceGraph(_serviceDef, _failures), "Graph was valid!");
         assertFalse(_failures.isEmpty());
         _utils.checkFailureForSemanticError(_failures, "resource graph");
 

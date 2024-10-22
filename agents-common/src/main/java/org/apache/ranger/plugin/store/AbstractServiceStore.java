@@ -19,8 +19,8 @@
 
 package org.apache.ranger.plugin.store;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.authorization.hadoop.config.RangerAdminConfig;
 import org.apache.ranger.plugin.model.RangerBaseModelObject;
 import org.apache.ranger.plugin.model.RangerPolicy;
@@ -127,14 +127,13 @@ public abstract class AbstractServiceStore implements ServiceStore {
 	}
 
 	protected void postCreate(RangerBaseModelObject obj) throws Exception {
-		if (obj instanceof RangerServiceDef) {
-			updateTagServiceDefForUpdatingAccessTypes((RangerServiceDef) obj);
+		if (obj instanceof RangerServiceDef def) {
+			updateTagServiceDefForUpdatingAccessTypes(def);
 		}
 	}
 
 	protected void postUpdate(RangerBaseModelObject obj) throws Exception {
-		if (obj instanceof RangerServiceDef) {
-			RangerServiceDef serviceDef = (RangerServiceDef) obj;
+		if (obj instanceof RangerServiceDef serviceDef) {
 
 			updateTagServiceDefForUpdatingAccessTypes(serviceDef);
 			updateServicesForServiceDefUpdate(serviceDef);
@@ -142,8 +141,8 @@ public abstract class AbstractServiceStore implements ServiceStore {
 	}
 
 	protected void postDelete(RangerBaseModelObject obj) throws Exception {
-		if (obj instanceof RangerServiceDef) {
-			updateTagServiceDefForDeletingAccessTypes(((RangerServiceDef) obj).getName());
+		if (obj instanceof RangerServiceDef def) {
+			updateTagServiceDefForDeletingAccessTypes(def.getName());
 		}
 	}
 

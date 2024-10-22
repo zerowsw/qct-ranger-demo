@@ -19,7 +19,7 @@
 
 package org.apache.ranger.service;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 import org.apache.ranger.common.SearchCriteria;
 
@@ -29,17 +29,17 @@ import org.apache.ranger.common.db.BaseDao;
 import org.apache.ranger.entity.XXAuthSession;
 import org.apache.ranger.view.VXAuthSession;
 
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.MethodOrderer.MethodName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@ExtendWith(MockitoExtension.class)
+@TestMethodOrder(MethodName.class)
 public class TestAuthSessionService {
 	@InjectMocks
 	AuthSessionService authSessionService = new AuthSessionService();

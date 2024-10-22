@@ -22,7 +22,7 @@ package org.apache.ranger.ha;
 import org.apache.hadoop.thirdparty.com.google.common.base.Charsets;
 import org.apache.hadoop.thirdparty.com.google.common.base.Preconditions;
 import org.apache.zookeeper.data.ACL;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.curator.framework.AuthInfo;
 import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.data.Id;
@@ -55,11 +55,11 @@ public class ZookeeperSecurityProperties {
 
 	private static String[] getComponents(String securityString, String variableName, String formatExample) {
 		Preconditions.checkArgument(!StringUtils.isEmpty(securityString),
-				String.format("%s cannot be null or empty. " + "Needs to be of form %s", variableName, formatExample));
+				("%s cannot be null or empty. " + "Needs to be of form %s").formatted(variableName, formatExample));
 		String[] aclComponents = securityString.split(":", 2);
 		if (aclComponents.length != 2) {
 			throw new IllegalArgumentException(
-					String.format("Invalid %s string. " + "Needs to be of form %s", variableName, formatExample));
+					("Invalid %s string. " + "Needs to be of form %s").formatted(variableName, formatExample));
 		}
 		return aclComponents;
 	}

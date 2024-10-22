@@ -232,16 +232,15 @@ public class AzureKeyVaultClientAuthenticator extends KeyVaultCredentials {
             while (object != null) {
                 JcaPEMKeyConverter converter = new JcaPEMKeyConverter().setProvider("BC");
 
-                if (object instanceof X509CertificateHolder) {
-                    cert = new JcaX509CertificateConverter().getCertificate((X509CertificateHolder) object);
-                } else if (object instanceof PKCS8EncryptedPrivateKeyInfo) {
-                    PKCS8EncryptedPrivateKeyInfo pinfo    = (PKCS8EncryptedPrivateKeyInfo) object;
+                if (object instanceof X509CertificateHolder holder) {
+                    cert = new JcaX509CertificateConverter().getCertificate(holder);
+                } else if (object instanceof PKCS8EncryptedPrivateKeyInfo pinfo) {
                     InputDecryptorProvider       provider = new JceOpenSSLPKCS8DecryptorProviderBuilder().build(password.toCharArray());
                     PrivateKeyInfo               info     = pinfo.decryptPrivateKeyInfo(provider);
 
                     privateKey = converter.getPrivateKey(info);
-                } else if (object instanceof PrivateKeyInfo) {
-                    privateKey = converter.getPrivateKey((PrivateKeyInfo) object);
+                } else if (object instanceof PrivateKeyInfo info) {
+                    privateKey = converter.getPrivateKey(info);
                 }
 
                 object = pemParser.readObject();

@@ -20,9 +20,9 @@
 package org.apache.ranger.tagsync.process;
 
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.util.Properties;
@@ -32,7 +32,7 @@ public class TestTagSynchronizer {
 
 	private static TagSynchronizer tagSynchronizer;
 
-	@BeforeClass
+	@BeforeAll
 	public static void setUpBeforeClass() throws Exception {
 		System.out.println("setUpBeforeClass() called");
 
@@ -47,7 +47,7 @@ public class TestTagSynchronizer {
 
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void tearDownAfterClass() throws Exception {
 		System.out.println("tearDownAfterClass() called");
 

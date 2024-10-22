@@ -68,9 +68,11 @@ public class KnoxClient {
 		LOG.debug("Getting Knox topology list for topologyNameMatching : " +
 				topologyNameMatching);
 		List<String> topologyList = new ArrayList<String>();
-		String errMsg = " You can still save the repository and start creating "
-				+ "policies, but you would not be able to use autocomplete for "
-				+ "resource names. Check ranger_admin.log for more info.";
+		String errMsg = """
+				 You can still save the repository and start creating \
+				policies, but you would not be able to use autocomplete for \
+				resource names. Check ranger_admin.log for more info.\
+				""";
 		if (topologyNameMatching == null ||  topologyNameMatching.trim().isEmpty()) {
 			topologyNameMatching = "";
 		}
@@ -173,9 +175,11 @@ public class KnoxClient {
 			LOG.debug("==> KnoxClient.getServiceList() Service Name: " + serviceNameMatching );
 		}
 		List<String> serviceList = new ArrayList<String>();
-		String errMsg = " You can still save the repository and start creating "
-				+ "policies, but you would not be able to use autocomplete for "
-				+ "resource names. Check ranger_admin.log for more info.";
+		String errMsg = """
+				 You can still save the repository and start creating \
+				policies, but you would not be able to use autocomplete for \
+				resource names. Check ranger_admin.log for more info.\
+				""";
 		if (serviceNameMatching == null ||  serviceNameMatching.trim().isEmpty()) {
 			serviceNameMatching = "";
 		}
@@ -301,9 +305,11 @@ public class KnoxClient {
 	public static Map<String, Object> connectionTest(String serviceName,
 										  		Map<String, String> configs) {
 
-		String errMsg = " You can still save the repository and start creating "
-				+ "policies, but you would not be able to use autocomplete for "
-				+ "resource names. Check ranger_admin.log for more info.";
+		String errMsg = """
+				 You can still save the repository and start creating \
+				policies, but you would not be able to use autocomplete for \
+				resource names. Check ranger_admin.log for more info.\
+				""";
 		boolean connectivityStatus = false;
 		Map<String, Object> responseData = new HashMap<String, Object>();
 
@@ -334,9 +340,11 @@ public class KnoxClient {
 			LOG.debug("Getting knoxClient for ServiceName: " + serviceName);
 			LOG.debug("configMap: " + configs);
 		}
-		String errMsg = " You can still save the repository and start creating "
-				+ "policies, but you would not be able to use autocomplete for "
-				+ "resource names. Check ranger_admin.log for more info.";
+		String errMsg = """
+				 You can still save the repository and start creating \
+				policies, but you would not be able to use autocomplete for \
+				resource names. Check ranger_admin.log for more info.\
+				""";
 		if ( configs != null && !configs.isEmpty()) {
 			String knoxUrl = configs.get("knox.url");
 			String knoxAdminUser = configs.get("username");
@@ -362,9 +370,11 @@ public class KnoxClient {
 		}
 
 		List<String> resultList = new ArrayList<String>();
-		String errMsg = " You can still save the repository and start creating "
-				+ "policies, but you would not be able to use autocomplete for "
-				+ "resource names. Check ranger_admin.log for more info.";
+		String errMsg = """
+				 You can still save the repository and start creating \
+				policies, but you would not be able to use autocomplete for \
+				resource names. Check ranger_admin.log for more info.\
+				""";
 
 		try {
 			if (knoxClient == null) {

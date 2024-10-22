@@ -19,9 +19,9 @@
 
 package org.apache.ranger.db;
 
-import javax.persistence.NoResultException;
+import jakarta.persistence.NoResultException;
 
-import org.apache.commons.collections.ListUtils;
+import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.authorization.utils.JsonUtils;
 import org.apache.ranger.common.RangerCommonEnums;

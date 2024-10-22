@@ -18,8 +18,8 @@
 package org.apache.ranger.db;
 
 import com.google.gson.Gson;
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.common.DateUtil;
 import org.apache.ranger.common.db.BaseDao;
 import org.apache.ranger.entity.XXGlobalState;
@@ -27,8 +27,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.NoResultException;
-import javax.persistence.OptimisticLockException;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.OptimisticLockException;
 
 import java.util.Date;
 import java.util.HashMap;

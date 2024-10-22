@@ -77,7 +77,7 @@ public class ValidationFailureDetails {
 	@Override
 	public String toString() {
 		LOG.debug("ValidationFailureDetails.toString()");
-		return String.format(" %s: error code[%d], reason[%s], field[%s], subfield[%s], type[%s]", "Validation failure",
+		return " %s: error code[%d], reason[%s], field[%s], subfield[%s], type[%s]".formatted("Validation failure",
 				_errorCode, _reason, _fieldName, _subFieldName, getType());
 	}
 

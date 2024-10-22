@@ -19,8 +19,8 @@
 
 package org.apache.ranger.plugin.policyengine;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.ranger.authorization.utils.JsonUtils;
 import org.apache.ranger.authorization.utils.StringUtil;
@@ -227,8 +227,8 @@ public final class RangerRequestScriptEvaluator {
 			ret = getResult();
 		}
 
-		if (ret instanceof Boolean) {
-			result = (Boolean) ret;
+		if (ret instanceof Boolean boolean1) {
+			result = boolean1;
 		}
 
 		return ret;

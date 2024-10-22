@@ -60,8 +60,10 @@ public class RangerDataHistService {
 	public void createObjectDataHistory(RangerBaseModelObject baseModelObj, String action) {
 		if(baseModelObj == null || action == null) {
 			throw restErrorUtil
-					.createRESTException("Error while creating DataHistory. "
-							+ "Object or Action can not be null.",
+					.createRESTException("""
+							Error while creating DataHistory. \
+							Object or Action can not be null.\
+							""",
 							MessageEnums.DATA_NOT_FOUND);
 		}
 		
@@ -84,54 +86,45 @@ public class RangerDataHistService {
 		xDataHist.setUpdateTime(currentDate);
 		xDataHist.setFromTime(currentDate);
 
-		if(baseModelObj instanceof RangerServiceDef) {
-			RangerServiceDef serviceDef = (RangerServiceDef) baseModelObj;
+		if(baseModelObj instanceof RangerServiceDef serviceDef) {
 			objectName = serviceDef.getName();
 			classType = AppConstants.CLASS_TYPE_XA_SERVICE_DEF;
 			content = jsonUtil.writeObjectAsString(serviceDef);
-		} else if(baseModelObj instanceof RangerService) {
-			RangerService service = (RangerService) baseModelObj;
+		} else if(baseModelObj instanceof RangerService service) {
 			objectName = service.getName();
 			classType = AppConstants.CLASS_TYPE_XA_SERVICE;
 			content = jsonUtil.writeObjectAsString(service);
-		} else if(baseModelObj instanceof RangerPolicy) {
-			RangerPolicy policy = (RangerPolicy) baseModelObj;
+		} else if(baseModelObj instanceof RangerPolicy policy) {
 			objectName = policy.getName();
 			classType = AppConstants.CLASS_TYPE_RANGER_POLICY;
 			policy.setServiceType(policy.getServiceType());
 			content = jsonUtil.writeObjectAsString(policy);
-		} else if (baseModelObj instanceof RangerDataset) {
-			RangerDataset dataset = (RangerDataset) baseModelObj;
+		} else if (baseModelObj instanceof RangerDataset dataset) {
 
 			objectName = dataset.getName();
 			classType  = AppConstants.CLASS_TYPE_GDS_DATASET;
 			content    = jsonUtil.writeObjectAsString(dataset);
-		} else if (baseModelObj instanceof RangerProject) {
-			RangerProject project = (RangerProject) baseModelObj;
+		} else if (baseModelObj instanceof RangerProject project) {
 
 			objectName = project.getName();
 			classType  = AppConstants.CLASS_TYPE_GDS_PROJECT;
 			content    = jsonUtil.writeObjectAsString(project);
-		} else if (baseModelObj instanceof RangerDataShare) {
-			RangerDataShare dataShare = (RangerDataShare) baseModelObj;
+		} else if (baseModelObj instanceof RangerDataShare dataShare) {
 
 			objectName = dataShare.getName();
 			classType  = AppConstants.CLASS_TYPE_GDS_DATA_SHARE;
 			content    = jsonUtil.writeObjectAsString(dataShare);
-		} else if (baseModelObj instanceof RangerSharedResource) {
-			RangerSharedResource sharedResource = (RangerSharedResource) baseModelObj;
+		} else if (baseModelObj instanceof RangerSharedResource sharedResource) {
 
 			objectName = sharedResource.getName();
 			classType  = AppConstants.CLASS_TYPE_GDS_SHARED_RESOURCE;
 			content    = jsonUtil.writeObjectAsString(sharedResource);
-		} else if (baseModelObj instanceof RangerDataShareInDataset) {
-			RangerDataShareInDataset dataShareInDataset = (RangerDataShareInDataset) baseModelObj;
+		} else if (baseModelObj instanceof RangerDataShareInDataset dataShareInDataset) {
 
 			objectName = dataShareInDataset.getGuid();
 			classType  = AppConstants.CLASS_TYPE_GDS_DATA_SHARE_IN_DATASET;
 			content    = jsonUtil.writeObjectAsString(dataShareInDataset);
-		} else if (baseModelObj instanceof RangerDatasetInProject) {
-			RangerDatasetInProject datasetInProject = (RangerDatasetInProject) baseModelObj;
+		} else if (baseModelObj instanceof RangerDatasetInProject datasetInProject) {
 
 			objectName = datasetInProject.getGuid();
 			classType  = AppConstants.CLASS_TYPE_GDS_DATASET_IN_PROJECT;

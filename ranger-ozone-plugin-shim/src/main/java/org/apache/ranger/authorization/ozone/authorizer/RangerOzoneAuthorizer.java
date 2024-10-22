@@ -19,6 +19,7 @@
 
 package org.apache.ranger.authorization.ozone.authorizer;
 
+import java.lang.reflect.InvocationTargetException;
 import org.apache.hadoop.ozone.om.exceptions.OMException;
 import org.apache.hadoop.ozone.security.acl.IAccessAuthorizer;
 import org.apache.hadoop.ozone.security.acl.IOzoneObj;
@@ -63,7 +64,10 @@ public class RangerOzoneAuthorizer implements IAccessAuthorizer {
 
             activatePluginClassLoader();
 
-            ozoneAuthorizationProviderImpl = cls.newInstance();
+            ozoneAuthorizationProviderImpl = cls.getDeclaredConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+            // check what need to be done
+            LOG.error("Error Enabling RangerOzonePlugin", e);
         } catch (Exception e) {
             // check what need to be done
             LOG.error("Error Enabling RangerOzonePlugin", e);

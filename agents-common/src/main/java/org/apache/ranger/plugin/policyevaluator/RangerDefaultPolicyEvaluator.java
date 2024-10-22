@@ -29,8 +29,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.plugin.conditionevaluator.RangerAbstractConditionEvaluator;
 import org.apache.ranger.plugin.conditionevaluator.RangerConditionEvaluator;
 import org.apache.ranger.plugin.model.RangerPolicy;
@@ -1476,8 +1476,8 @@ public class RangerDefaultPolicyEvaluator extends RangerAbstractPolicyEvaluator 
 				if(RangerPerfTracer.isPerfTraceEnabled(PERF_POLICYCONDITION_REQUEST_LOG)) {
 
 					String conditionType = null;
-					if (conditionEvaluator instanceof RangerAbstractConditionEvaluator) {
-						conditionType = ((RangerAbstractConditionEvaluator)conditionEvaluator).getPolicyItemCondition().getType();
+					if (conditionEvaluator instanceof RangerAbstractConditionEvaluator evaluator) {
+						conditionType = evaluator.getPolicyItemCondition().getType();
 					}
 
 					perf = RangerPerfTracer.getPerfTracer(PERF_POLICYCONDITION_REQUEST_LOG, "RangerConditionEvaluator.matchPolicyCustomConditions(policyId=" + getPolicyId() +  ",policyConditionType=" + conditionType + ")");

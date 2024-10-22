@@ -18,8 +18,9 @@
  */
 package org.apache.ranger.patch;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.log4j.Logger;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.ranger.biz.ServiceDBStore;
 import org.apache.ranger.common.GUIDUtil;
 import org.apache.ranger.common.RangerValidatorFactory;
@@ -69,7 +70,7 @@ public class PatchForTrinoSvcDefUpdate_J10062 extends BaseLoader {
     public static final String ACCESS_TYPE_REVOKE = "revoke";
     public static final String ACCESS_TYPE_EXECUTE = "execute";
     public static final String ACCESS_TYPE_SELECT = "select";
-    private static final Logger logger = Logger.getLogger(PatchForTrinoSvcDefUpdate_J10062.class);
+    private static final Logger logger = LogManager.getLogger(PatchForTrinoSvcDefUpdate_J10062.class);
     private static final String TRINO_SVC_DEF_NAME = EmbeddedServiceDefsUtil.EMBEDDED_SERVICEDEF_TRINO_NAME;
     @Autowired
     GUIDUtil guidUtil;
@@ -124,7 +125,7 @@ public class PatchForTrinoSvcDefUpdate_J10062 extends BaseLoader {
                         try {
                             embeddedTrinoServiceDef = EmbeddedServiceDefsUtil.instance().getEmbeddedServiceDef(TRINO_SVC_DEF_NAME);
                         } catch (Exception ex) {
-                            logger.error("Error while loading service-def: " + TRINO_SVC_DEF_NAME, ex);
+                            logger.error("Error while loading service-def: {}", TRINO_SVC_DEF_NAME, ex);
                         }
                         if (embeddedTrinoServiceDef == null) {
                             logger.error("The embedded Trino service-definition does not exist.");
@@ -147,18 +148,18 @@ public class PatchForTrinoSvcDefUpdate_J10062 extends BaseLoader {
                             try {
                                 createDefaultPolicies(dbRangerServiceDef);
                             } catch (Exception e) {
-                                logger.error("Error while creating default ranger policies for " + TRINO_SVC_DEF_NAME + " service-def");
+                                logger.error("Error while creating default ranger policies for {} service-def", TRINO_SVC_DEF_NAME);
                                 throw new RuntimeException("Error while creating default ranger policies for " + TRINO_SVC_DEF_NAME + " service-def");
                             }
                         } else {
-                            logger.error("Error while updating " + TRINO_SVC_DEF_NAME + " service-def");
+                            logger.error("Error while updating {} service-def", TRINO_SVC_DEF_NAME);
                             throw new RuntimeException("Error while updating " + TRINO_SVC_DEF_NAME + " service-def");
                         }
                         return null;
                     }
                 });
             } catch (Throwable ex) {
-                logger.error("Error while updating " + TRINO_SVC_DEF_NAME + " service-def");
+                logger.error("Error while updating {} service-def", TRINO_SVC_DEF_NAME);
                 throw new RuntimeException(ex.getMessage());
             }
         } catch (Exception e) {
@@ -178,9 +179,9 @@ public class PatchForTrinoSvcDefUpdate_J10062 extends BaseLoader {
             RangerServiceDefValidator validator = validatorFactory.getServiceDefValidator(this.svcDBStore);
             validator.validate(dbRangerServiceDef, Action.UPDATE);
             ret = this.svcDBStore.updateServiceDef(dbRangerServiceDef);
-            logger.info(TRINO_SVC_DEF_NAME + " service-def has been updated");
+            logger.info("{} service-def has been updated", TRINO_SVC_DEF_NAME);
         } catch (Exception e) {
-            logger.error("Error while updating" + TRINO_SVC_DEF_NAME + " service-def", e);
+            logger.error("Error while updating{} service-def", TRINO_SVC_DEF_NAME, e);
             throw new RuntimeException(e);
         }
         logger.info("<== PatchForTrinoSvcDefUpdate_J10062.updateTrinoSvcDef()");
@@ -197,7 +198,7 @@ public class PatchForTrinoSvcDefUpdate_J10062 extends BaseLoader {
     }
 
     private void addDefaultPolicies(String serviceName, String zoneName) throws Exception {
-        logger.info("===> addDefaultPolicies ServiceName : " + serviceName + " ZoneName : " + zoneName);
+        logger.info("===> addDefaultPolicies ServiceName : {} ZoneName : {}", serviceName, zoneName);
         List<String> resources = new ArrayList<>();
         resources.add(RESOURCE_SYSINFO);
         RangerPolicy allSysInfoPolicy = getPolicy(serviceName, zoneName, POlICY_NAME_FOR_ALL_SYSINFO, resources);
@@ -264,8 +265,8 @@ public class PatchForTrinoSvcDefUpdate_J10062 extends BaseLoader {
         policy.setPolicyItems(policyItems);
         policy.setResourceSignature(new RangerPolicyResourceSignature(policy).getSignature());
         if (logger.isDebugEnabled()) {
-            logger.debug("===> getPolicy policy ResourceSignature  " + policy.getResourceSignature());
-            logger.debug("===> getPolicy policy : " + policy);
+            logger.debug("===> getPolicy policy ResourceSignature  {}", policy.getResourceSignature());
+            logger.debug("===> getPolicy policy : {}", policy);
         }
         logger.info("<=== getPolicy ");
         return policy;

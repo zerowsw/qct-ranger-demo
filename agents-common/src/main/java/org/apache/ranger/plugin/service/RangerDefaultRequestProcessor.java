@@ -19,8 +19,8 @@
 
 package org.apache.ranger.plugin.service;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.authorization.hadoop.config.RangerPluginConfig;
 import org.apache.ranger.plugin.contextenricher.RangerContextEnricher;
 import org.apache.ranger.plugin.policyengine.PolicyEngine;
@@ -87,8 +87,8 @@ public class RangerDefaultRequestProcessor implements RangerAccessRequestProcess
         RangerPluginContext     pluginContext = policyEngine.getPluginContext();
         RangerAccessRequestImpl reqImpl       = null;
 
-        if (request instanceof RangerAccessRequestImpl) {
-            reqImpl = (RangerAccessRequestImpl) request;
+        if (request instanceof RangerAccessRequestImpl impl) {
+            reqImpl = impl;
 
             if (reqImpl.getClientIPAddress() == null) {
                 reqImpl.extractAndSetClientIPAddress(policyEngine.getUseForwardedIPAddress(), policyEngine.getTrustedProxyAddresses());
@@ -170,8 +170,7 @@ public class RangerDefaultRequestProcessor implements RangerAccessRequestProcess
         RangerAccessResource resource = request.getResource();
 
         if (resource.getServiceDef() == null) {
-            if (resource instanceof RangerMutableResource) {
-                RangerMutableResource mutable = (RangerMutableResource) resource;
+            if (resource instanceof RangerMutableResource mutable) {
                 mutable.setServiceDef(policyEngine.getServiceDef());
             }
         }

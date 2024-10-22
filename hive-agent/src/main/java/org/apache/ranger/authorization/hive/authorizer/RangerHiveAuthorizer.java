@@ -33,10 +33,10 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -870,7 +870,7 @@ public class RangerHiveAuthorizer extends RangerHiveAuthorizerBase {
             } catch (IOException e) {
               LOG.error("Error getting permissions for " + path, e);
               throw new HiveAccessControlException(
-                  String.format("Permission denied: user [%s] does not have [%s] privilege on [%s]", user,
+					  "Permission denied: user [%s] does not have [%s] privilege on [%s]".formatted(user,
                       permission.name(), path),
                   e);
             }
@@ -889,7 +889,7 @@ public class RangerHiveAuthorizer extends RangerHiveAuthorizerBase {
             if (shouldCheckAccess) {
               if (!isURIAccessAllowed(user, permission, path, fs)) {
                 throw new HiveAccessControlException(
-                    String.format("Permission denied: user [%s] does not have [%s] privilege on [%s]", user,
+						"Permission denied: user [%s] does not have [%s] privilege on [%s]".formatted(user,
                         permission.name(), path));
               }
               continue;
@@ -964,7 +964,7 @@ public class RangerHiveAuthorizer extends RangerHiveAuthorizerBase {
 					if (request != null) {
 						requests.add(request);
 					} else {
-						throw new HiveAccessControlException(String.format("Permission denied: user [%s] does not have privilege for [%s] command",
+						throw new HiveAccessControlException("Permission denied: user [%s] does not have privilege for [%s] command".formatted(
 								user, hiveOpType.name()));
 					}
 				} else {
@@ -996,7 +996,7 @@ public class RangerHiveAuthorizer extends RangerHiveAuthorizerBase {
             } catch (IOException e) {
               LOG.error("Error getting permissions for " + path, e);
               throw new HiveAccessControlException(
-                  String.format("Permission denied: user [%s] does not have [%s] privilege on [%s]", user,
+					  "Permission denied: user [%s] does not have [%s] privilege on [%s]".formatted(user,
                       permission.name(), path),
                   e);
             }
@@ -1015,7 +1015,7 @@ public class RangerHiveAuthorizer extends RangerHiveAuthorizerBase {
             if (shouldCheckAccess) {
               if (!isURIAccessAllowed(user, permission, path, fs)) {
                 throw new HiveAccessControlException(
-                    String.format("Permission denied: user [%s] does not have [%s] privilege on [%s]", user,
+						"Permission denied: user [%s] does not have [%s] privilege on [%s]".formatted(user,
                         permission.name(), path));
               }
               continue;
@@ -1152,7 +1152,7 @@ public class RangerHiveAuthorizer extends RangerHiveAuthorizerBase {
 				if(result == null || !result.getIsAllowed()) {
 					String path = resource.getAsString();
 					path = (path == null) ? "Unknown resource!!" : buildPathForException(path, hiveOpType);
-					throw new HiveAccessControlException(String.format("Permission denied: user [%s] does not have [%s] privilege on [%s]",
+					throw new HiveAccessControlException("Permission denied: user [%s] does not have [%s] privilege on [%s]".formatted(
 														 user, request.getHiveAccessType().name(), path));
 				}
 			}
@@ -1176,7 +1176,7 @@ public class RangerHiveAuthorizer extends RangerHiveAuthorizerBase {
 		      throws HiveAuthzPluginException, HiveAccessControlException {
 		
 		if (LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> filterListCmdObjects(%s, %s)", objs, context));
+			LOG.debug("==> filterListCmdObjects(%s, %s)".formatted(objs, context));
 		}
 
 		RangerPerfTracer perf = null;
@@ -1214,7 +1214,7 @@ public class RangerHiveAuthorizer extends RangerHiveAuthorizerBase {
 			Map<String, String> objOwners = new HashMap<>();
 
 			if (LOG.isDebugEnabled()) {
-				LOG.debug(String.format("filterListCmdObjects: user[%s], groups[%s], roles[%s] ", user, groups, roles));
+				LOG.debug("filterListCmdObjects: user[%s], groups[%s], roles[%s] ".formatted(user, groups, roles));
 			}
 			
 			if (ret == null) { // if we got any items to filter then we can't return back a null.  We must return back a list even if its empty.
@@ -1232,7 +1232,7 @@ public class RangerHiveAuthorizer extends RangerHiveAuthorizerBase {
 					String ipAddress = context == null ? null : context.getIpAddress();
 
 					final String format = "filterListCmdObjects: actionType[%s], objectType[%s], objectName[%s], dbName[%s], columns[%s], partitionKeys[%s]; context: commandString[%s], ipAddress[%s]";
-					LOG.debug(String.format(format, actionType, objectType, objectName, dbName, columns, partitionKeys, commandString, ipAddress));
+					LOG.debug(format.formatted(actionType, objectType, objectName, dbName, columns, partitionKeys, commandString, ipAddress));
 				}
 				
 				RangerHiveResource resource = createHiveResourceForFiltering(privilegeObject, objOwners);
@@ -1246,12 +1246,12 @@ public class RangerHiveAuthorizer extends RangerHiveAuthorizerBase {
 					} else if (!result.getIsAllowed()) {
 						if (LOG.isDebugEnabled()) {
 							String path = resource.getAsString();
-							LOG.debug(String.format("filterListCmdObjects: Permission denied: user [%s] does not have [%s] privilege on [%s]. resource[%s], request[%s], result[%s]",
+							LOG.debug("filterListCmdObjects: Permission denied: user [%s] does not have [%s] privilege on [%s]. resource[%s], request[%s], result[%s]".formatted(
 									user, request.getHiveAccessType().name(), path, resource, request, result));
 						}
 					} else {
 						if (LOG.isDebugEnabled()) {
-							LOG.debug(String.format("filterListCmdObjects: access allowed. resource[%s], request[%s], result[%s]", resource, request, result));
+							LOG.debug("filterListCmdObjects: access allowed. resource[%s], request[%s], result[%s]".formatted(resource, request, result));
 						}
 						ret.add(privilegeObject);
 					}
@@ -1265,7 +1265,7 @@ public class RangerHiveAuthorizer extends RangerHiveAuthorizerBase {
 
 		if (LOG.isDebugEnabled()) {
 			int count = ret == null ? 0 : ret.size();
-			LOG.debug(String.format("<== filterListCmdObjects: count[%d], ret[%s]", count, ret));
+			LOG.debug("<== filterListCmdObjects: count[%d], ret[%s]".formatted(count, ret));
 		}
 		return ret;
 	}
@@ -2292,7 +2292,7 @@ public class RangerHiveAuthorizer extends RangerHiveAuthorizerBase {
 
 		auditHandler.logAuditEventForDfs(user, dfsCommandParams, false, serviceType, serviceName);
 
-		throw new HiveAccessControlException(String.format("Permission denied: user [%s] does not have privilege for [%s] command",
+		throw new HiveAccessControlException("Permission denied: user [%s] does not have privilege for [%s] command".formatted(
 											 user, hiveOpType.name()));
 	}
 
@@ -2937,9 +2937,9 @@ public class RangerHiveAuthorizer extends RangerHiveAuthorizerBase {
 
 		String				serviceName	= hivePlugin.getServiceName();
 		RangerServiceDef    serviceDef	= hivePlugin.getServiceDef();
-		String				reason		= String.format("%s is not an Admin", userOrGrantor);
+		String				reason		= "%s is not an Admin".formatted(userOrGrantor);
 		if (result) {
-			reason = String.format("%s is Admin", userOrGrantor);
+			reason = "%s is Admin".formatted(userOrGrantor);
 		}
 		ret = new RangerAccessResult(RangerPolicy.POLICY_TYPE_ACCESS, serviceName, serviceDef, rangerHiveAccessRequest);
 		ret.setIsAccessDetermined(true);
@@ -2951,7 +2951,7 @@ public class RangerHiveAuthorizer extends RangerHiveAuthorizerBase {
 		ret.setZoneName(null);
 		ret.setPolicyVersion(null);
 		ret.setReason(reason);
-		ret.setAdditionalInfo(MapUtils.EMPTY_MAP);
+		ret.setAdditionalInfo(Collections.emptyMap());
 
 		return ret;
 	}
@@ -2961,28 +2961,28 @@ public class RangerHiveAuthorizer extends RangerHiveAuthorizerBase {
 
 		switch (hiveOperationType) {
 			case CREATEROLE:
-				ret = String.format(CMD_CREATE_ROLE, roleName);
+				ret = CMD_CREATE_ROLE.formatted(roleName);
 				break;
 			case DROPROLE:
-				ret = String.format(CMD_DROP_ROLE, roleName);
+				ret = CMD_DROP_ROLE.formatted(roleName);
 				break;
 			case SHOW_ROLES:
 				ret = CMD_SHOW_ROLES;
 				break;
 			case SHOW_ROLE_GRANT:
-				ret = String.format(CMD_SHOW_ROLE_GRANT, roleName);
+				ret = CMD_SHOW_ROLE_GRANT.formatted(roleName);
 				break;
 			case SHOW_ROLE_PRINCIPALS:
-				ret = String.format(CMD_SHOW_PRINCIPALS, roleName);
+				ret = CMD_SHOW_PRINCIPALS.formatted(roleName);
 				break;
 			case GRANT_ROLE:
-				ret = String.format(CMD_GRANT_ROLE, roleName, user);
+				ret = CMD_GRANT_ROLE.formatted(roleName, user);
 				break;
 			case REVOKE_ROLE:
-				ret = String.format(CMD_REVOKE_ROLE, roleName, user);
+				ret = CMD_REVOKE_ROLE.formatted(roleName, user);
 				break;
 			case SET:
-				ret = String.format(CMD_SET_ROLE, roleName);
+				ret = CMD_SET_ROLE.formatted(roleName);
 		}
 
 		return ret;

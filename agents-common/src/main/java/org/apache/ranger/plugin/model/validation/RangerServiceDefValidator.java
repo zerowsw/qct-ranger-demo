@@ -28,8 +28,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.HashMap;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.thirdparty.com.google.common.collect.ImmutableSet;
 import org.apache.hadoop.thirdparty.com.google.common.collect.Sets;
 import org.apache.ranger.plugin.errors.ValidationErrorCode;
@@ -58,13 +58,13 @@ public class RangerServiceDefValidator extends RangerValidator {
 
 	public void validate(final RangerServiceDef serviceDef, final Action action) throws Exception {
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerServiceDefValidator.validate(%s, %s)", serviceDef, action));
+			LOG.debug("==> RangerServiceDefValidator.validate(%s, %s)".formatted(serviceDef, action));
 		}
 
 		RangerServiceDef normalizedServiceDef = ServiceDefUtil.normalize(serviceDef);
 
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("Normalized Service Definition being validated: (%s, %s)", serviceDef, action));
+			LOG.debug("Normalized Service Definition being validated: (%s, %s)".formatted(serviceDef, action));
 		}
 
 		List<ValidationFailureDetails> failures = new ArrayList<>();
@@ -77,7 +77,7 @@ public class RangerServiceDefValidator extends RangerValidator {
 			}
 		} finally {
 			if(LOG.isDebugEnabled()) {
-				LOG.debug(String.format("<== RangerServiceDefValidator.validate(%s, %s): %s, reason[%s]", normalizedServiceDef, action, valid, message));
+				LOG.debug("<== RangerServiceDefValidator.validate(%s, %s): %s, reason[%s]".formatted(normalizedServiceDef, action, valid, message));
 			}
 		}
 	}
@@ -166,7 +166,7 @@ public class RangerServiceDefValidator extends RangerValidator {
 
 	boolean isValidServiceDefId(Long id, final Action action, final List<ValidationFailureDetails> failures) {
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerServiceDefValidator.isValidServiceDefId(%s, %s, %s)", id, action, failures));
+			LOG.debug("==> RangerServiceDefValidator.isValidServiceDefId(%s, %s, %s)".formatted(id, action, failures));
 		}
 		boolean valid = true;
 
@@ -193,14 +193,14 @@ public class RangerServiceDefValidator extends RangerValidator {
 		}
 
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== RangerServiceDefValidator.isValidServiceDefId(%s, %s, %s): %s", id, action, failures, valid));
+			LOG.debug("<== RangerServiceDefValidator.isValidServiceDefId(%s, %s, %s): %s".formatted(id, action, failures, valid));
 		}
 		return valid;
 	}
 	
 	boolean isValidServiceDefName(String name, Long id, final Action action, final List<ValidationFailureDetails> failures) {
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerServiceDefValidator.isValidServiceDefName(%s, %s, %s, %s)", name, id, action, failures));
+			LOG.debug("==> RangerServiceDefValidator.isValidServiceDefName(%s, %s, %s, %s)".formatted(name, id, action, failures));
 		}
 		boolean valid = true;
 
@@ -237,7 +237,7 @@ public class RangerServiceDefValidator extends RangerValidator {
 		}
 
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== RangerServiceDefValidator.isValidServiceDefName(%s, %s, %s, %s): %s", name, id, action, failures, valid));
+			LOG.debug("<== RangerServiceDefValidator.isValidServiceDefName(%s, %s, %s, %s): %s".formatted(name, id, action, failures, valid));
 		}
 		return valid;
 	}
@@ -252,7 +252,7 @@ public class RangerServiceDefValidator extends RangerValidator {
 	 */
 	boolean isValidServiceDefDisplayName(final String displayName, Long id, final Action action, final List<ValidationFailureDetails> failures) {
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerServiceDefValidator.isValidServiceDefDisplayName(%s, %s, %s, %s)", displayName, id, action, failures));
+			LOG.debug("==> RangerServiceDefValidator.isValidServiceDefDisplayName(%s, %s, %s, %s)".formatted(displayName, id, action, failures));
 		}
 		boolean valid = true;
 
@@ -289,7 +289,7 @@ public class RangerServiceDefValidator extends RangerValidator {
 		}
 
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== RangerServiceDefValidator.isValidServiceDefName(%s, %s, %s, %s): %s", displayName, id, action, failures, valid));
+			LOG.debug("<== RangerServiceDefValidator.isValidServiceDefName(%s, %s, %s, %s): %s".formatted(displayName, id, action, failures, valid));
 		}
 		return valid;
 	}
@@ -297,7 +297,7 @@ public class RangerServiceDefValidator extends RangerValidator {
 	boolean isValidAccessTypes(final Long serviceDefId, final List<RangerAccessTypeDef> accessTypeDefs,
 							   final List<ValidationFailureDetails> failures, final Action action) {
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerServiceDefValidator.isValidAccessTypes(%s, %s)", accessTypeDefs, failures));
+			LOG.debug("==> RangerServiceDefValidator.isValidAccessTypes(%s, %s)".formatted(accessTypeDefs, failures));
 		}
 		
 		boolean valid = true;
@@ -333,7 +333,7 @@ public class RangerServiceDefValidator extends RangerValidator {
 					if (existingAccessTypeIDNameMap.get(itemId) != null && !existingAccessTypeIDNameMap.get(itemId).equals(name)) {
 						ValidationErrorCode error;
 						error = ValidationErrorCode.SERVICE_DEF_VALIDATION_ERR_SERVICE_DEF_NAME_CONFICT;
-						failures.add((new ValidationFailureDetailsBuilder()).field("access type name").isSemanticallyIncorrect().errorCode(error.getErrorCode()).becauseOf(String.format("changing %s[%s] in %s is not supported", "access type name", name, "access types")).build());
+						failures.add((new ValidationFailureDetailsBuilder()).field("access type name").isSemanticallyIncorrect().errorCode(error.getErrorCode()).becauseOf("changing %s[%s] in %s is not supported".formatted("access type name", name, "access types")).build());
 						valid = false;
 					}
 				}
@@ -373,7 +373,7 @@ public class RangerServiceDefValidator extends RangerValidator {
 		}
 		
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== RangerServiceDefValidator.isValidAccessTypes(%s, %s): %s", accessTypeDefs, failures, valid));
+			LOG.debug("<== RangerServiceDefValidator.isValidAccessTypes(%s, %s): %s".formatted(accessTypeDefs, failures, valid));
 		}
 		return valid;
 	}
@@ -381,7 +381,7 @@ public class RangerServiceDefValidator extends RangerValidator {
 	boolean isValidPolicyConditions(Long serviceDefId, List<RangerPolicyConditionDef> policyConditions,
 									List<ValidationFailureDetails> failures, final Action action) {
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerServiceDefValidator.isValidPolicyConditions(%s, %s)", policyConditions, failures));
+			LOG.debug("==> RangerServiceDefValidator.isValidPolicyConditions(%s, %s)".formatted(policyConditions, failures));
 		}
 		boolean valid = true;
 
@@ -409,7 +409,7 @@ public class RangerServiceDefValidator extends RangerValidator {
 					if (existingPolicyCondIDNameMap.get(itemId) != null && !existingPolicyCondIDNameMap.get(itemId).equals(name)) {
 						ValidationErrorCode error;
 						error = ValidationErrorCode.SERVICE_DEF_VALIDATION_ERR_SERVICE_DEF_NAME_CONFICT;
-						failures.add((new ValidationFailureDetailsBuilder()).field("policy condition def name").isSemanticallyIncorrect().errorCode(error.getErrorCode()).becauseOf(String.format("changing %s[%s] in %s is not supported", "policy condition def name", name, "policy condition defs")).build());
+						failures.add((new ValidationFailureDetailsBuilder()).field("policy condition def name").isSemanticallyIncorrect().errorCode(error.getErrorCode()).becauseOf("changing %s[%s] in %s is not supported".formatted("policy condition def name", name, "policy condition defs")).build());
 						valid = false;
 					}
 				}
@@ -428,14 +428,14 @@ public class RangerServiceDefValidator extends RangerValidator {
 		}
 
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== RangerServiceDefValidator.isValidPolicyConditions(%s, %s): %s", policyConditions, failures, valid));
+			LOG.debug("<== RangerServiceDefValidator.isValidPolicyConditions(%s, %s): %s".formatted(policyConditions, failures, valid));
 		}
 		return valid;
 	}
 
 	boolean isValidConfigs(List<RangerServiceConfigDef> configs, List<RangerEnumDef> enumDefs, List<ValidationFailureDetails> failures) {
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerServiceDefValidator.isValidConfigs(%s, %s, %s)", configs, enumDefs, failures));
+			LOG.debug("==> RangerServiceDefValidator.isValidConfigs(%s, %s, %s)".formatted(configs, enumDefs, failures));
 		}
 		boolean valid = true;
 
@@ -457,14 +457,14 @@ public class RangerServiceDefValidator extends RangerValidator {
 		}
 
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== RangerServiceDefValidator.isValidConfigs(%s, %s, %s): %s", configs, enumDefs, failures, valid));
+			LOG.debug("<== RangerServiceDefValidator.isValidConfigs(%s, %s, %s): %s".formatted(configs, enumDefs, failures, valid));
 		}
 		return valid;
 	}
 	
 	boolean isValidConfigOfEnumType(RangerServiceConfigDef configDef, List<RangerEnumDef> enumDefs, List<ValidationFailureDetails> failures) {
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerServiceDefValidator.isValidConfigOfEnumType(%s, %s, %s)", configDef, enumDefs, failures));
+			LOG.debug("==> RangerServiceDefValidator.isValidConfigOfEnumType(%s, %s, %s)".formatted(configDef, enumDefs, failures));
 		}
 		boolean valid = true;
 
@@ -508,14 +508,14 @@ public class RangerServiceDefValidator extends RangerValidator {
 		}
 
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== RangerServiceDefValidator.isValidConfigOfEnumType(%s, %s, %s): %s", configDef, enumDefs, failures, valid));
+			LOG.debug("<== RangerServiceDefValidator.isValidConfigOfEnumType(%s, %s, %s): %s".formatted(configDef, enumDefs, failures, valid));
 		}
 		return valid;
 	}
 	
 	boolean isValidConfigType(String type, String configName, List<ValidationFailureDetails> failures) {
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerServiceDefValidator.isValidConfigType(%s, %s, %s)", type, configName, failures));
+			LOG.debug("==> RangerServiceDefValidator.isValidConfigType(%s, %s, %s)".formatted(type, configName, failures));
 		}
 		boolean valid = true;
 
@@ -543,14 +543,14 @@ public class RangerServiceDefValidator extends RangerValidator {
 		}
 
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== RangerServiceDefValidator.isValidConfigType(%s, %s, %s): %s", type, configName, failures, valid));
+			LOG.debug("<== RangerServiceDefValidator.isValidConfigType(%s, %s, %s): %s".formatted(type, configName, failures, valid));
 		}
 		return valid;
 	}
 
 	public boolean isValidResources(RangerServiceDef serviceDef, List<ValidationFailureDetails> failures, final Action action) {
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerServiceDefValidator.isValidResources(%s, %s)", serviceDef, failures));
+			LOG.debug("==> RangerServiceDefValidator.isValidResources(%s, %s)".formatted(serviceDef, failures));
 		}
 		boolean valid = true;
 
@@ -592,7 +592,7 @@ public class RangerServiceDefValidator extends RangerValidator {
 					if (existingResourceIDNameMap.get(itemId) != null && !existingResourceIDNameMap.get(itemId).equals(name)) {
 						ValidationErrorCode error;
 						error = ValidationErrorCode.SERVICE_DEF_VALIDATION_ERR_SERVICE_DEF_NAME_CONFICT;
-						failures.add((new ValidationFailureDetailsBuilder()).field("resource name").isSemanticallyIncorrect().errorCode(error.getErrorCode()).becauseOf(String.format("changing %s[%s] in %s is not supported", "resource name", name, "resources")).build());
+						failures.add((new ValidationFailureDetailsBuilder()).field("resource name").isSemanticallyIncorrect().errorCode(error.getErrorCode()).becauseOf("changing %s[%s] in %s is not supported".formatted("resource name", name, "resources")).build());
 						valid = false;
 					}
 				}
@@ -600,14 +600,14 @@ public class RangerServiceDefValidator extends RangerValidator {
 		}
 
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== RangerServiceDefValidator.isValidResources(%s, %s): %s", serviceDef, failures, valid));
+			LOG.debug("<== RangerServiceDefValidator.isValidResources(%s, %s): %s".formatted(serviceDef, failures, valid));
 		}
 		return valid;
 	}
 
 	boolean isValidResourceGraph(RangerServiceDef serviceDef, List<ValidationFailureDetails> failures) {
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerServiceDefValidator.isValidResourceGraph(%s, %s)", serviceDef, failures));
+			LOG.debug("==> RangerServiceDefValidator.isValidResourceGraph(%s, %s)".formatted(serviceDef, failures));
 		}
 		boolean valid = true;
 		// We don't want this helper to get into the cache or to use what is in the cache!!
@@ -686,14 +686,14 @@ public class RangerServiceDefValidator extends RangerValidator {
 		}
 
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== RangerServiceDefValidator.isValidResourceGraph(%s, %s): %s", serviceDef, failures, valid));
+			LOG.debug("<== RangerServiceDefValidator.isValidResourceGraph(%s, %s): %s".formatted(serviceDef, failures, valid));
 		}
 		return valid;
 	}
 
 	boolean isValidEnums(List<RangerEnumDef> enumDefs, List<ValidationFailureDetails> failures) {
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerServiceDefValidator.isValidEnums(%s, %s)", enumDefs, failures));
+			LOG.debug("==> RangerServiceDefValidator.isValidEnums(%s, %s)".formatted(enumDefs, failures));
 		}
 		
 		boolean valid = true;
@@ -749,14 +749,14 @@ public class RangerServiceDefValidator extends RangerValidator {
 		}
 		
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== RangerServiceDefValidator.isValidEnums(%s, %s): %s", enumDefs, failures, valid));
+			LOG.debug("<== RangerServiceDefValidator.isValidEnums(%s, %s): %s".formatted(enumDefs, failures, valid));
 		}
 		return valid;
 	}
 
 	boolean isValidEnumElements(List<RangerEnumElementDef> enumElementsDefs, List<ValidationFailureDetails> failures, String enumName) {
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerServiceDefValidator.isValidEnumElements(%s, %s)", enumElementsDefs, failures));
+			LOG.debug("==> RangerServiceDefValidator.isValidEnumElements(%s, %s)".formatted(enumElementsDefs, failures));
 		}
 		
 		boolean valid = true;
@@ -785,14 +785,14 @@ public class RangerServiceDefValidator extends RangerValidator {
 		}
 		
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== RangerServiceDefValidator.isValidEnumElements(%s, %s): %s", enumElementsDefs, failures, valid));
+			LOG.debug("<== RangerServiceDefValidator.isValidEnumElements(%s, %s): %s".formatted(enumElementsDefs, failures, valid));
 		}
 		return valid;
 	}
 
 	boolean isValidDataMaskTypes(Long serviceDefId, List<RangerDataMaskTypeDef> dataMaskTypes, List<ValidationFailureDetails> failures, final Action action) {
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerServiceDefValidator.isValidDataMaskTypes(%s, %s)", dataMaskTypes, failures));
+			LOG.debug("==> RangerServiceDefValidator.isValidDataMaskTypes(%s, %s)".formatted(dataMaskTypes, failures));
 		}
 		boolean valid = true;
 
@@ -821,7 +821,7 @@ public class RangerServiceDefValidator extends RangerValidator {
 					if (existingDataMaskTypeIDNameMap.get(itemId) != null && !existingDataMaskTypeIDNameMap.get(itemId).equals(name)) {
 						ValidationErrorCode error;
 						error = ValidationErrorCode.SERVICE_DEF_VALIDATION_ERR_SERVICE_DEF_NAME_CONFICT;
-						failures.add((new ValidationFailureDetailsBuilder()).field("data mask type def name").isSemanticallyIncorrect().errorCode(error.getErrorCode()).becauseOf(String.format("changing %s[%s] in %s is not supported", "data mask type def name", name, "data mask type defs")).build());
+						failures.add((new ValidationFailureDetailsBuilder()).field("data mask type def name").isSemanticallyIncorrect().errorCode(error.getErrorCode()).becauseOf("changing %s[%s] in %s is not supported".formatted("data mask type def name", name, "data mask type defs")).build());
 						valid = false;
 					}
 				}
@@ -829,7 +829,7 @@ public class RangerServiceDefValidator extends RangerValidator {
 		}
 
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== RangerServiceDefValidator.isValidDataMaskTypes(%s, %s): %s", dataMaskTypes, failures, valid));
+			LOG.debug("<== RangerServiceDefValidator.isValidDataMaskTypes(%s, %s): %s".formatted(dataMaskTypes, failures, valid));
 		}
 		return valid;
 	}

@@ -23,8 +23,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.common.RESTErrorUtil;
 import org.apache.ranger.common.RangerCommonEnums;
 import org.apache.ranger.common.db.RangerTransactionSynchronizationAdapter;
@@ -63,7 +63,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import static org.apache.ranger.service.RangerBaseModelService.OPERATION_CREATE_CONTEXT;
 
@@ -144,8 +144,8 @@ public class PolicyRefUpdater {
 					}
 				}
 
-				if (policyItem instanceof RangerDataMaskPolicyItem) {
-					RangerPolicyItemDataMaskInfo dataMaskInfo = ((RangerDataMaskPolicyItem) policyItem).getDataMaskInfo();
+				if (policyItem instanceof RangerDataMaskPolicyItem item) {
+					RangerPolicyItemDataMaskInfo dataMaskInfo = item.getDataMaskInfo();
 
 					dataMaskTypes.add(dataMaskInfo.getDataMaskType());
 				}

@@ -85,9 +85,11 @@ public class HBaseClient extends BaseClient {
 													  Map<String, String> configs) throws Exception {
 
 		Map<String, Object> responseData = new HashMap<String, Object>();
-		final String errMsg = " You can still save the repository and start creating "
-				+ "policies, but you would not be able to use autocomplete for "
-				+ "resource names. Check ranger_admin.log for more info.";
+		final String errMsg = """
+				 You can still save the repository and start creating \
+				policies, but you would not be able to use autocomplete for \
+				resource names. Check ranger_admin.log for more info.\
+				""";
 		boolean connectivityStatus = false;
 
 		HBaseClient connectionObj = new HBaseClient(dataSource, configs);
@@ -115,9 +117,11 @@ public class HBaseClient extends BaseClient {
 	public boolean getHBaseStatus() throws HadoopException{
 		boolean hbaseStatus = false;
 		subj = getLoginSubject();
-		final String errMsg = " You can still save the repository and start creating "
-				+ "policies, but you would not be able to use autocomplete for "
-				+ "resource names. Check ranger_admin.log for more info.";
+		final String errMsg = """
+				 You can still save the repository and start creating \
+				policies, but you would not be able to use autocomplete for \
+				resource names. Check ranger_admin.log for more info.\
+				""";
 		if (subj != null) {
 			try {
 
@@ -135,8 +139,10 @@ public class HBaseClient extends BaseClient {
 							LOG.info("getHBaseStatus: no exception: HbaseAvailability true");
 							hbaseStatus1 = true;
 						} catch (ZooKeeperConnectionException zce) {
-							String msgDesc = "getHBaseStatus: Unable to connect to `ZooKeeper` "
-									+ "using given config parameters.";
+							String msgDesc = """
+									getHBaseStatus: Unable to connect to `ZooKeeper` \
+									using given config parameters.\
+									""";
 							HadoopException hdpException = new HadoopException(msgDesc, zce);
 							hdpException.generateResponseDataMap(false, getMessage(zce),
 									msgDesc + errMsg, null, null);
@@ -145,9 +151,11 @@ public class HBaseClient extends BaseClient {
 							throw hdpException;
 
 						} catch (MasterNotRunningException mnre) {
-							String msgDesc = "getHBaseStatus: Looks like `Master` is not running, "
-									+ "so couldn't check that running HBase is available or not, "
-									+ "Please try again later.";
+							String msgDesc = """
+									getHBaseStatus: Looks like `Master` is not running, \
+									so couldn't check that running HBase is available or not, \
+									Please try again later.\
+									""";
 							HadoopException hdpException = new HadoopException(
 									msgDesc, mnre);
 							hdpException.generateResponseDataMap(false,
@@ -213,9 +221,11 @@ public class HBaseClient extends BaseClient {
 		}
 
 		List<String> ret = null;
-		final String errMsg = " You can still save the repository and start creating "
-				+ "policies, but you would not be able to use autocomplete for "
-				+ "resource names. Check ranger_admin.log for more info.";
+		final String errMsg = """
+				 You can still save the repository and start creating \
+				policies, but you would not be able to use autocomplete for \
+				resource names. Check ranger_admin.log for more info.\
+				""";
 
 		subj = getLoginSubject();
 
@@ -249,8 +259,10 @@ public class HBaseClient extends BaseClient {
 							}
 						}
 					} catch (ZooKeeperConnectionException zce) {
-						String msgDesc = "getTableList: Unable to connect to `ZooKeeper` "
-								+ "using given config parameters.";
+						String msgDesc = """
+								getTableList: Unable to connect to `ZooKeeper` \
+								using given config parameters.\
+								""";
 						HadoopException hdpException = new HadoopException(msgDesc, zce);
 						hdpException.generateResponseDataMap(false, getMessage(zce),
 								msgDesc + errMsg, null, null);
@@ -258,9 +270,11 @@ public class HBaseClient extends BaseClient {
 						throw hdpException;
 
 					} catch (MasterNotRunningException mnre) {
-						String msgDesc = "getTableList: Looks like `Master` is not running, "
-								+ "so couldn't check that running HBase is available or not, "
-								+ "Please try again later.";
+						String msgDesc = """
+								getTableList: Looks like `Master` is not running, \
+								so couldn't check that running HBase is available or not, \
+								Please try again later.\
+								""";
 						HadoopException hdpException = new HadoopException(
 								msgDesc, mnre);
 						hdpException.generateResponseDataMap(false,
@@ -314,9 +328,11 @@ public class HBaseClient extends BaseClient {
 		}
 
 		List<String> ret = null;
-		final String errMsg = " You can still save the repository and start creating "
-				+ "policies, but you would not be able to use autocomplete for "
-				+ "resource names. Check ranger_admin.log for more info.";
+		final String errMsg = """
+				 You can still save the repository and start creating \
+				policies, but you would not be able to use autocomplete for \
+				resource names. Check ranger_admin.log for more info.\
+				""";
 
 		subj = getLoginSubject();
 		if (subj != null) {
@@ -356,8 +372,10 @@ public class HBaseClient extends BaseClient {
 								}
 							}
 						} catch (ZooKeeperConnectionException zce) {
-							String msgDesc = "getColumnFamilyList: Unable to connect to `ZooKeeper` "
-									+ "using given config parameters.";
+							String msgDesc = """
+									getColumnFamilyList: Unable to connect to `ZooKeeper` \
+									using given config parameters.\
+									""";
 							HadoopException hdpException = new HadoopException(msgDesc, zce);
 							hdpException.generateResponseDataMap(false, getMessage(zce),
 									msgDesc + errMsg, null, null);
@@ -365,9 +383,11 @@ public class HBaseClient extends BaseClient {
 							throw hdpException;
 
 						} catch (MasterNotRunningException mnre) {
-							String msgDesc = "getColumnFamilyList: Looks like `Master` is not running, "
-									+ "so couldn't check that running HBase is available or not, "
-									+ "Please try again later.";
+							String msgDesc = """
+									getColumnFamilyList: Looks like `Master` is not running, \
+									so couldn't check that running HBase is available or not, \
+									Please try again later.\
+									""";
 							HadoopException hdpException = new HadoopException(
 									msgDesc, mnre);
 							hdpException.generateResponseDataMap(false,

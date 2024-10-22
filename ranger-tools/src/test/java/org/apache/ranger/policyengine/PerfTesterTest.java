@@ -25,8 +25,8 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.Charset;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit test for simple App.
@@ -53,7 +53,7 @@ public class PerfTesterTest {
         if (args != null) {
             CommandLineParser commandLineParser = new CommandLineParser();
             PerfTestOptions parseResult = commandLineParser.parse(args);
-            Assert.assertNotNull(parseResult);
+            Assertions.assertNotNull(parseResult);
         }
     }
 

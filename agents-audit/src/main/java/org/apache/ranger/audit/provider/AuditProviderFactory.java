@@ -197,8 +197,7 @@ public class AuditProviderFactory {
 					AuditHandler queueProvider = getProviderFromConfig(props,
 							queuePropPrefix, queueName, destProvider);
 					if (queueProvider != null) {
-						if (queueProvider instanceof AuditQueue) {
-							AuditQueue qProvider = (AuditQueue) queueProvider;
+						if (queueProvider instanceof AuditQueue qProvider) {
 							qProvider.init(props, queuePropPrefix);
 							providers.add(queueProvider);
 						} else {

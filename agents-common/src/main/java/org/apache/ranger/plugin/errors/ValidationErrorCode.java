@@ -184,14 +184,14 @@ public enum ValidationErrorCode {
 
     public String getMessage(Object... items) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug(String.format("<== ValidationErrorCode.getMessage(%s)", Arrays.toString(items)));
+            LOG.debug("<== ValidationErrorCode.getMessage(%s)".formatted(Arrays.toString(items)));
         }
 
         MessageFormat mf = new MessageFormat(_template);
         String result = mf.format(items);
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug(String.format("<== ValidationErrorCode.getMessage(%s): %s", Arrays.toString(items), result));
+            LOG.debug("<== ValidationErrorCode.getMessage(%s): %s".formatted(Arrays.toString(items), result));
         }
         return result;
     }
@@ -202,6 +202,6 @@ public enum ValidationErrorCode {
 
     @Override
     public String toString() {
-        return String.format("Code: %d, template: %s", _errorCode, _template);
+        return "Code: %d, template: %s".formatted(_errorCode, _template);
     }
 }

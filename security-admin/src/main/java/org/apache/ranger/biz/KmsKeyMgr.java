@@ -33,14 +33,14 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.security.auth.Subject;
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.core.MediaType;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.ws.rs.core.MediaType;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.collections.Predicate;
-import org.apache.commons.collections.PredicateUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.collections4.Predicate;
+import org.apache.commons.collections4.PredicateUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.security.ProviderUtils;
 import org.apache.hadoop.security.SecureClientLogin;
@@ -647,8 +647,7 @@ public class KmsKeyMgr {
 
 					boolean ret = false;
 
-					if(object instanceof VXKmsKey) {
-						VXKmsKey vXKmsKey = (VXKmsKey)object;
+					if(object instanceof VXKmsKey vXKmsKey) {
 						if(StringUtils.isEmpty(vXKmsKey.getName())) {
 							ret = true;
 						}else{

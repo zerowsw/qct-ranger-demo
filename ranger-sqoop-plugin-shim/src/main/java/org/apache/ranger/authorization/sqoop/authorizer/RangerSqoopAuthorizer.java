@@ -20,6 +20,7 @@
 package org.apache.ranger.authorization.sqoop.authorizer;
 
 import java.util.List;
+import java.lang.reflect.InvocationTargetException;
 
 import org.apache.ranger.plugin.classloader.RangerPluginClassLoader;
 import org.apache.sqoop.common.SqoopException;
@@ -65,7 +66,9 @@ public class RangerSqoopAuthorizer extends AuthorizationValidator {
 
 			activatePluginClassLoader();
 
-			authorizationValidator = cls.newInstance();
+			authorizationValidator = cls.getDeclaredConstructor().newInstance();
+		} catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+			LOG.error("Error Enabling RangerSqoopAuthorizer", e);
 		} catch (Exception e) {
 			LOG.error("Error Enabling RangerSqoopAuthorizer", e);
 		} finally {

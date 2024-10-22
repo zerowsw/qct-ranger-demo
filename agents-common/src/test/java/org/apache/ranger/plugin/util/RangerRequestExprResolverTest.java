@@ -25,8 +25,8 @@ import org.apache.ranger.plugin.policyengine.RangerAccessRequest;
 import org.apache.ranger.plugin.policyengine.RangerAccessRequestImpl;
 import org.apache.ranger.plugin.policyengine.RangerAccessResource;
 import org.apache.ranger.plugin.policyresourcematcher.RangerPolicyResourceMatcher;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
@@ -101,7 +101,7 @@ public class RangerRequestExprResolverTest {
             RangerRequestExprResolver resolver    = new RangerRequestExprResolver(expr, null);
             String                    resolvedVal = resolver.resolveExpressions(request);
 
-            Assert.assertEquals(expr, value, resolvedVal);
+            Assertions.assertEquals(value, resolvedVal, expr);
         }
     }
 

@@ -33,7 +33,7 @@ import com.amazonaws.services.logs.model.PutLogEventsRequest;
 import com.amazonaws.services.logs.model.PutLogEventsResult;
 import com.amazonaws.services.logs.model.ResourceNotFoundException;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.audit.model.AuditEventBase;
 import org.apache.ranger.audit.provider.MiscUtil;
 import org.slf4j.Logger;
@@ -173,7 +173,7 @@ public class AmazonCloudWatchAuditDestination extends AuditDestination {
                 .withLogGroupName(logGroupName)
                 .withLogStreamName(logStreamName);
 
-        LOG.info(String.format("Creating Log Stream `%s` in Log Group `%s`", logStreamName, logGroupName));
+        LOG.info("Creating Log Stream `%s` in Log Group `%s`".formatted(logStreamName, logGroupName));
         client.createLogStream(req);
     }
 

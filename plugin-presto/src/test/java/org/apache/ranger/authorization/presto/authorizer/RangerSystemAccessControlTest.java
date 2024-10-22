@@ -28,13 +28,13 @@ import io.prestosql.spi.security.SystemSecurityContext;
 
 import static io.prestosql.spi.security.PrincipalType.USER;
 import static io.prestosql.spi.security.Privilege.SELECT;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import io.prestosql.spi.security.ViewExpression;
 import io.prestosql.spi.type.VarcharType;
 import org.apache.hadoop.thirdparty.com.google.common.collect.ImmutableSet;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import javax.security.auth.kerberos.KerberosPrincipal;
 import java.util.HashMap;
@@ -64,7 +64,7 @@ public class RangerSystemAccessControlTest {
   private static final CatalogSchemaRoutineName aliceProcedure = new CatalogSchemaRoutineName("alice-catalog", "schema", "procedure");
   private static final String functionName = new String("function");
 
-  @BeforeClass
+  @BeforeAll
   public static void setUpBeforeClass() throws Exception {
     Map<String, String> config = new HashMap<>();
     accessControlManager = new RangerSystemAccessControl(config);

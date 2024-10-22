@@ -18,17 +18,17 @@
  */
 package org.apache.ranger.rest;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.Context;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -107,8 +107,10 @@ public class XKeyREST {
 		try{
 			String name = vXKey.getName();
 			if (name == null || name.isEmpty()) {
-				throw restErrorUtil.createRESTException("Please provide a valid "
-						+ "alias.", MessageEnums.INVALID_INPUT_DATA);
+				throw restErrorUtil.createRESTException("""
+						Please provide a valid \
+						alias.\
+						""", MessageEnums.INVALID_INPUT_DATA);
 			}
 			if(vXKey.getCipher() == null || vXKey.getCipher().trim().isEmpty()){
 				vXKey.setCipher(null);
@@ -131,8 +133,10 @@ public class XKeyREST {
 	public void deleteKey(@PathParam("alias") String name, @QueryParam("provider") String provider, @Context HttpServletRequest request) {
 		try{
 			if (name == null || name.isEmpty()) {
-				throw restErrorUtil.createRESTException("Please provide a valid "
-						+ "alias.", MessageEnums.INVALID_INPUT_DATA);
+				throw restErrorUtil.createRESTException("""
+						Please provide a valid \
+						alias.\
+						""", MessageEnums.INVALID_INPUT_DATA);
 			}
 			keyMgr.deleteKey(provider, name);
 		}catch(Exception e){
@@ -155,8 +159,10 @@ public class XKeyREST {
 		try{
 			String name = vXKey.getName();
 			if (name == null || name.isEmpty()) {
-				throw restErrorUtil.createRESTException("Please provide a valid "
-						+ "alias.", MessageEnums.INVALID_INPUT_DATA);
+				throw restErrorUtil.createRESTException("""
+						Please provide a valid \
+						alias.\
+						""", MessageEnums.INVALID_INPUT_DATA);
 			}
 			if(vXKey.getCipher() == null || vXKey.getCipher().trim().isEmpty()){
 				vXKey.setCipher(null);
@@ -182,8 +188,10 @@ public class XKeyREST {
 		VXKmsKey vxKmsKey = new VXKmsKey();
 		try{
 			if (name == null || name.isEmpty()) {
-				throw restErrorUtil.createRESTException("Please provide a valid "
-						+ "alias.", MessageEnums.INVALID_INPUT_DATA);
+				throw restErrorUtil.createRESTException("""
+						Please provide a valid \
+						alias.\
+						""", MessageEnums.INVALID_INPUT_DATA);
 			}
 			vxKmsKey = keyMgr.getKey(provider, name);
 		}catch(Exception e){
@@ -194,8 +202,7 @@ public class XKeyREST {
 	
 	private void handleError(Exception e) {
 		String message = e.getMessage();
-		if (e instanceof UniformInterfaceException){
-			 UniformInterfaceException uie=(UniformInterfaceException)e;
+		if (e instanceof UniformInterfaceException uie){
 			 message = uie.getResponse().getEntity(String.class);
 			 logger.error(message);
 			 try {

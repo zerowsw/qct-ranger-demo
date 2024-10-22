@@ -23,20 +23,22 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
-import javax.annotation.PostConstruct;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.ranger.authz.handler.RangerAuth;
 import org.apache.ranger.authz.handler.jwt.RangerDefaultJwtAuthHandler;
 import org.apache.ranger.authz.handler.jwt.RangerJwtAuthHandler;
 import org.apache.ranger.common.PropertiesUtil;
+
+import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -52,7 +54,7 @@ import org.springframework.stereotype.Component;
 @Lazy(true)
 @Component
 public class RangerJwtAuthFilter extends RangerDefaultJwtAuthHandler implements Filter {
-    private static final Logger LOG                 = Logger.getLogger(RangerJwtAuthFilter.class);
+    private static final Logger LOG                 = LogManager.getLogger(RangerJwtAuthFilter.class);
     private static final String DEFAULT_RANGER_ROLE = "ROLE_USER";
 
     @PostConstruct
@@ -113,7 +115,7 @@ public class RangerJwtAuthFilter extends RangerDefaultJwtAuthHandler implements 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("<<<=== RangerJwtAuthFilter.doFilter() - user=[" + auth.getPrincipal() + "], isUserAuthenticated? [" + auth.isAuthenticated() + "]");
+                LOG.debug("<<<=== RangerJwtAuthFilter.doFilter() - user=[{}], isUserAuthenticated? [{}]", auth.getPrincipal(), auth.isAuthenticated());
             }
         } else {
             LOG.warn("<<<=== RangerJwtAuthFilter.doFilter() - Failed to authenticate request using Ranger JWT authentication framework.");

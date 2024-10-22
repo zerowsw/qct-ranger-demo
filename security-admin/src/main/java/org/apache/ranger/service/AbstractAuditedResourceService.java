@@ -30,11 +30,12 @@ import org.apache.ranger.util.RangerEnumUtil;
 import org.apache.ranger.view.VXDataObject;
 import org.apache.ranger.view.VXTrxLogV2.AttributeChangeInfo;
 import org.apache.ranger.view.VXTrxLogV2.ObjectChangeInfo;
+
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
 
 import static org.apache.ranger.service.RangerBaseModelService.OPERATION_CREATE_CONTEXT;

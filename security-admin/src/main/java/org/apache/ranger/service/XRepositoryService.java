@@ -22,7 +22,7 @@ package org.apache.ranger.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.ranger.common.AppConstants;
 import org.apache.ranger.common.MessageEnums;
@@ -101,8 +101,10 @@ public class XRepositoryService extends
 			statusList.add(RangerCommonEnums.STATUS_ENABLED);
 		} else {
 			Boolean status = restErrorUtil.parseBoolean(
-					request.getParameter("status"), "Invalid value for "
-							+ "status", MessageEnums.INVALID_INPUT_DATA, null,
+					request.getParameter("status"), """
+							Invalid value for \
+							status\
+							""", MessageEnums.INVALID_INPUT_DATA, null,
 					"status");
 			int statusEnum = (status == null || status == false) ? AppConstants.STATUS_DISABLED
 					: AppConstants.STATUS_ENABLED;

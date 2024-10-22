@@ -19,8 +19,8 @@
 
 package org.apache.ranger.plugin.policyevaluator;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.plugin.model.RangerBaseModelObject;
 import org.apache.ranger.plugin.model.RangerPolicy;
 import org.apache.ranger.plugin.model.RangerServiceDef;
@@ -132,8 +132,8 @@ public class RangerOptimizedPolicyEvaluator extends RangerDefaultPolicyEvaluator
         @Override
         public boolean equals(Object other) {
             boolean ret = false;
-            if (other != null && (other instanceof LevelResourceNames)) {
-                ret = this == other || compareTo((LevelResourceNames) other) == 0;
+            if (other != null && (other instanceof LevelResourceNames names)) {
+                ret = this == other || compareTo(names) == 0;
             }
             return ret;
         }

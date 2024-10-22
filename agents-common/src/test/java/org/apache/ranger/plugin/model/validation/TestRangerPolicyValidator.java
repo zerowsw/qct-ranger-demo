@@ -19,7 +19,7 @@
 
 package org.apache.ranger.plugin.model.validation;
 
-import static org.mockito.Matchers.argThat;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -45,9 +45,9 @@ import org.apache.ranger.plugin.model.RangerServiceDef.RangerResourceDef;
 import org.apache.ranger.plugin.model.validation.RangerValidator.Action;
 import org.apache.ranger.plugin.store.ServiceStore;
 import org.apache.ranger.plugin.util.RangerObjectFactory;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatcher;
 
 
@@ -73,7 +73,7 @@ public class TestRangerPolicyValidator {
 			return super.isValid(policy, action, isAdmin, failures);
 		}
 	}
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		_store = mock(ServiceStore.class);
 		_policy = mock(RangerPolicy.class);
@@ -166,11 +166,11 @@ public class TestRangerPolicyValidator {
 	@Test
 	public final void testIsValid_long() throws Exception {
 		// this validation should be removed if we start supporting other than delete action
-		Assert.assertFalse(_validator.isValid(3L, Action.CREATE, _failures));
+		Assertions.assertFalse(_validator.isValid(3L, Action.CREATE, _failures));
 		_utils.checkFailureForInternalError(_failures);
 		
 		// should fail with appropriate error message if id is null
-		_failures.clear(); _failures.clear(); Assert.assertFalse(_validator.isValid((Long)null, Action.DELETE, _failures));
+		_failures.clear(); _failures.clear(); Assertions.assertFalse(_validator.isValid((Long)null, Action.DELETE, _failures));
 		_utils.checkFailureForMissingValue(_failures, "id");
 		
 		// should not fail if policy can't be found for the specified id
@@ -178,14 +178,14 @@ public class TestRangerPolicyValidator {
 		when(_store.getPolicy(2L)).thenThrow(new Exception());
 		RangerPolicy existingPolicy = mock(RangerPolicy.class);
 		when(_store.getPolicy(3L)).thenReturn(existingPolicy);
-		_failures.clear(); Assert.assertTrue(_validator.isValid(1L, Action.DELETE, _failures));
-		Assert.assertTrue(_failures.isEmpty());
-		_failures.clear(); Assert.assertTrue(_validator.isValid(2L, Action.DELETE, _failures));
-		Assert.assertTrue(_failures.isEmpty());
+		_failures.clear(); Assertions.assertTrue(_validator.isValid(1L, Action.DELETE, _failures));
+		Assertions.assertTrue(_failures.isEmpty());
+		_failures.clear(); Assertions.assertTrue(_validator.isValid(2L, Action.DELETE, _failures));
+		Assertions.assertTrue(_failures.isEmpty());
 
 		// if policy exists then delete validation should pass, too!
-		_failures.clear(); Assert.assertTrue(_validator.isValid(3L, Action.DELETE, _failures));
-		Assert.assertTrue(_failures.isEmpty());
+		_failures.clear(); Assertions.assertTrue(_validator.isValid(3L, Action.DELETE, _failures));
+		Assertions.assertTrue(_failures.isEmpty());
 	}
 
 	@Test
@@ -197,7 +197,7 @@ public class TestRangerPolicyValidator {
 		when(_policy.getService()).thenReturn("non-existing-service-name");
 		when(_store.getServiceByName("non-existing-service-name")).thenReturn(null);
 
-		Assert.assertFalse(action.toString(), _validator.isValid(_policy, action, isAdmin, _failures));
+		Assertions.assertFalse(_validator.isValid(_policy, action, isAdmin, _failures), action.toString());
 
 		// 2. update a policy to change the service-name
 		RangerPolicy existingPolicy = mock(RangerPolicy.class);
@@ -224,7 +224,7 @@ public class TestRangerPolicyValidator {
 		when(_store.getServiceByName("service-name2")).thenReturn(service2);
 		action = Action.UPDATE;
 
-		Assert.assertFalse(action.toString(), _validator.isValid(_policy, action, isAdmin, _failures));
+		Assertions.assertFalse(_validator.isValid(_policy, action, isAdmin, _failures), action.toString());
 
 		// 3. update a policy to change the policy-type
 		when(existingPolicy.getId()).thenReturn(8L);
@@ -235,7 +235,7 @@ public class TestRangerPolicyValidator {
 		when(_policy.getService()).thenReturn("service-name");
 		when(_policy.getPolicyType()).thenReturn(Integer.valueOf(1));
 
-		Assert.assertFalse(action.toString(), _validator.isValid(_policy, action, isAdmin, _failures));
+		Assertions.assertFalse(_validator.isValid(_policy, action, isAdmin, _failures), action.toString());
 	}
 
 	@Test
@@ -270,19 +270,19 @@ public class TestRangerPolicyValidator {
 						when(_policy.getId()).thenReturn(7L);
 						when(_policy.getName()).thenReturn("policy-name-1");
 						when(_store.getPolicyId(service.getId(), _policy.getName(), _zoneId)).thenReturn(null);
-						Assert.assertTrue("" + action + ", " + auditEnabled, _validator.isValid(_policy, action, isAdmin, _failures));
-						Assert.assertTrue(_failures.isEmpty());
+						Assertions.assertTrue(_validator.isValid(_policy, action, isAdmin, _failures), "" + action + ", " + auditEnabled);
+						Assertions.assertTrue(_failures.isEmpty());
 					} else {
 						// update should work both when by-name is found or not, since nothing found by-name means name is being updated.
 						when(_policy.getId()).thenReturn(8L);
 						when(_policy.getName()).thenReturn("policy-name-1");
-						Assert.assertTrue("" + action + ", " + auditEnabled, _validator.isValid(_policy, action, isAdmin, _failures));
-						Assert.assertTrue(_failures.isEmpty());
+						Assertions.assertTrue(_validator.isValid(_policy, action, isAdmin, _failures), "" + action + ", " + auditEnabled);
+						Assertions.assertTrue(_failures.isEmpty());
 	
 						when(_policy.getName()).thenReturn("policy-name-2");
 						when(_store.getPolicyId(service.getId(), _policy.getName(), _zoneId)).thenReturn(null);
-						Assert.assertTrue("" + action + ", " + auditEnabled, _validator.isValid(_policy, action, isAdmin, _failures));
-						Assert.assertTrue(_failures.isEmpty());
+						Assertions.assertTrue(_validator.isValid(_policy, action, isAdmin, _failures), "" + action + ", " + auditEnabled);
+						Assertions.assertTrue(_failures.isEmpty());
 					}
 				}
 			}
@@ -300,8 +300,8 @@ public class TestRangerPolicyValidator {
 					when(_policy.getId()).thenReturn(8L);
 					when(_policy.getName()).thenReturn("policy-name-2");
 				}
-				Assert.assertTrue("" + action , _validator.isValid(_policy, action, isAdmin, _failures));
-				Assert.assertTrue(_failures.isEmpty());
+				Assertions.assertTrue(_validator.isValid(_policy, action, isAdmin, _failures), "" + action);
+				Assertions.assertTrue(_failures.isEmpty());
 			}
 		}
 		
@@ -327,8 +327,8 @@ public class TestRangerPolicyValidator {
 				when(_policy.getId()).thenReturn(8L);
 				when(_policy.getName()).thenReturn("policy-name-2");
 			}
-			Assert.assertTrue("" + action , _validator.isValid(_policy, action, true, _failures)); // since policy resource has excludes admin privilages would be required
-			Assert.assertTrue(_failures.isEmpty());
+			Assertions.assertTrue(_validator.isValid(_policy, action, true, _failures), "" + action); // since policy resource has excludes admin privilages would be required
+			Assertions.assertTrue(_failures.isEmpty());
 		}
 	}
 	
@@ -340,7 +340,7 @@ public class TestRangerPolicyValidator {
 		
 		for (boolean isAdmin : new boolean[] { true, false}) {
 			_failures.clear();
-			Assert.assertFalse(_validator.isValid(_policy, action, isAdmin, _failures));
+			Assertions.assertFalse(_validator.isValid(_policy, action, isAdmin, _failures));
 			switch (errorType) {
 			case "missing":
 				_utils.checkFailureForMissingValue(_failures, field, subField);
@@ -352,7 +352,7 @@ public class TestRangerPolicyValidator {
 				_utils.checkFailureForInternalError(_failures);
 				break;
 			default:
-				Assert.fail("Unsupported errorType[" + errorType + "]");
+				Assertions.fail("Unsupported errorType[" + errorType + "]");
 				break;
 			}
 		}
@@ -417,11 +417,11 @@ public class TestRangerPolicyValidator {
 		for (Action action : cu) {
 			for (boolean isAdmin : new boolean[] { true, false }) {
 				when(_policy.getService()).thenReturn(null);
-				_failures.clear(); Assert.assertFalse(_validator.isValid(_policy, action, isAdmin, _failures));
+				_failures.clear(); Assertions.assertFalse(_validator.isValid(_policy, action, isAdmin, _failures));
 				_utils.checkFailureForMissingValue(_failures, "service name");
 	
 				when(_policy.getService()).thenReturn("");
-				_failures.clear(); Assert.assertFalse(_validator.isValid(_policy, action, isAdmin, _failures));
+				_failures.clear(); Assertions.assertFalse(_validator.isValid(_policy, action, isAdmin, _failures));
 				_utils.checkFailureForMissingValue(_failures, "service name");
 			}
 		}
@@ -432,19 +432,19 @@ public class TestRangerPolicyValidator {
 		for (Action action : cu) {
 			for (boolean isAdmin : new boolean[] { true, false }) {
 				when(_policy.getService()).thenReturn(null);
-				_failures.clear(); Assert.assertFalse(_validator.isValid(_policy, action, isAdmin, _failures));
+				_failures.clear(); Assertions.assertFalse(_validator.isValid(_policy, action, isAdmin, _failures));
 				_utils.checkFailureForMissingValue(_failures, "service name");
 	
 				when(_policy.getService()).thenReturn(null);
-				_failures.clear(); Assert.assertFalse(_validator.isValid(_policy, action, isAdmin, _failures));
+				_failures.clear(); Assertions.assertFalse(_validator.isValid(_policy, action, isAdmin, _failures));
 				_utils.checkFailureForMissingValue(_failures, "service name");
 	
 				when(_policy.getService()).thenReturn("service-name");
-				_failures.clear(); Assert.assertFalse(_validator.isValid(_policy, action, isAdmin, _failures));
+				_failures.clear(); Assertions.assertFalse(_validator.isValid(_policy, action, isAdmin, _failures));
 				_utils.checkFailureForSemanticError(_failures, "service name");
 	
 				when(_policy.getService()).thenReturn("another-service-name");
-				_failures.clear(); Assert.assertFalse(_validator.isValid(_policy, action, isAdmin, _failures));
+				_failures.clear(); Assertions.assertFalse(_validator.isValid(_policy, action, isAdmin, _failures));
 				_utils.checkFailureForSemanticError(_failures, "service name");
 			}
 		}
@@ -455,11 +455,11 @@ public class TestRangerPolicyValidator {
 			for (boolean isAdmin : new boolean[] { true, false }) {
 				// when it is null
 				when(_policy.getPolicyItems()).thenReturn(null);
-				_failures.clear(); Assert.assertFalse(_validator.isValid(_policy, action, isAdmin, _failures));
+				_failures.clear(); Assertions.assertFalse(_validator.isValid(_policy, action, isAdmin, _failures));
 				_utils.checkFailureForMissingValue(_failures, "policy items");
 				// or when it is not null but empty.
 				when(_policy.getPolicyItems()).thenReturn(policyItems);
-				_failures.clear(); Assert.assertFalse(_validator.isValid(_policy, action, isAdmin, _failures));
+				_failures.clear(); Assertions.assertFalse(_validator.isValid(_policy, action, isAdmin, _failures));
 				_utils.checkFailureForMissingValue(_failures, "policy items");
 			}
 		}
@@ -474,7 +474,7 @@ public class TestRangerPolicyValidator {
 			for (boolean isAdmin : new boolean[] { true, false }) {
 				when(_policy.getService()).thenReturn("service-name");
 				when(_store.getServiceByName("service-name")).thenReturn(service);
-				_failures.clear(); Assert.assertFalse(_validator.isValid(_policy, action, isAdmin, _failures));
+				_failures.clear(); Assertions.assertFalse(_validator.isValid(_policy, action, isAdmin, _failures));
 				_utils.checkFailureForInternalError(_failures, "policy service def");
 			}
 		}
@@ -484,7 +484,7 @@ public class TestRangerPolicyValidator {
 		when(_store.getServiceDefByName("service-type")).thenReturn(_serviceDef);
 		for (Action action : cu) {
 			for (boolean isAdmin : new boolean[] { true, false }) {
-				_failures.clear(); Assert.assertFalse(_validator.isValid(_policy, action, isAdmin, _failures));
+				_failures.clear(); Assertions.assertFalse(_validator.isValid(_policy, action, isAdmin, _failures));
 				_utils.checkFailureForSemanticError(_failures, "policy item access type");
 			}
 		}
@@ -506,7 +506,7 @@ public class TestRangerPolicyValidator {
 		when(_store.getPoliciesByResourceSignature("service-name", "hash-1", true)).thenReturn(null); // store does not have any policies for that signature hash
 		for (Action action : cu) {
 			for (boolean isAdmin : new boolean[] { true, false }) {
-				_failures.clear(); Assert.assertFalse(_validator.isValid(_policy, action, isAdmin, _failures));
+				_failures.clear(); Assertions.assertFalse(_validator.isValid(_policy, action, isAdmin, _failures));
 				_utils.checkFailureForSemanticError(_failures, "resource-values", "col"); // for spurious resource: "extra"
 				_utils.checkFailureForSemanticError(_failures, "isRecursive", "db"); // for specifying it as true when def did not allow it
 				_utils.checkFailureForSemanticError(_failures, "isExcludes", "col"); // for specifying it as true when def did not allow it
@@ -517,7 +517,7 @@ public class TestRangerPolicyValidator {
 		when(_store.getPoliciesByResourceSignature("service-name", "hash-1", true)).thenReturn(existingPolicies);
 		for (Action action : cu) {
 			for (boolean isAdmin : new boolean[] { true, false }) {
-				_failures.clear(); Assert.assertFalse(_validator.isValid(_policy, action, isAdmin, _failures));
+				_failures.clear(); Assertions.assertFalse(_validator.isValid(_policy, action, isAdmin, _failures));
 				_utils.checkFailureForSemanticError(_failures, "policy resources");
 			}
 		}
@@ -538,34 +538,34 @@ public class TestRangerPolicyValidator {
 		List<RangerResourceDef> resourceDefs = _utils.createResourceDefs(resourceDefData);
 		when(_serviceDef.getResources()).thenReturn(resourceDefs);
 		Map<String, RangerPolicyResource> policyResources = _utils.createPolicyResourceMap(policyResourceMap_bad);
-		Assert.assertFalse(_validator.isValidResourceValues(policyResources, _failures, _serviceDef));
+		Assertions.assertFalse(_validator.isValidResourceValues(policyResources, _failures, _serviceDef));
 		_utils.checkFailureForSemanticError(_failures, "resource-values", "col");
 		
 		policyResources = _utils.createPolicyResourceMap(policyResourceMap_good);
-		Assert.assertTrue(_validator.isValidResourceValues(policyResources, _failures, _serviceDef));
+		Assertions.assertTrue(_validator.isValidResourceValues(policyResources, _failures, _serviceDef));
 
 		policyResources = _utils.createPolicyResourceMap(policyResourceMap_bad_duplicate_values);
-		Assert.assertFalse(_validator.isValidResourceValues(policyResources, _failures, _serviceDef));
+		Assertions.assertFalse(_validator.isValidResourceValues(policyResources, _failures, _serviceDef));
 		_utils.checkFailureForSemanticError(_failures, "resource-values", "tbl");
 
 		policyResources = _utils.createPolicyResourceMap(policyResourceMap_good_duplicate_values);
-		Assert.assertTrue(_validator.isValidResourceValues(policyResources, _failures, _serviceDef));
+		Assertions.assertTrue(_validator.isValidResourceValues(policyResources, _failures, _serviceDef));
 
 	}
 	
 	@Test
 	public void test_isValidPolicyItems_failures() {
 		// null/empty list is good because there is nothing
-		Assert.assertTrue(_validator.isValidPolicyItems(null, _failures, _serviceDef));
+		Assertions.assertTrue(_validator.isValidPolicyItems(null, _failures, _serviceDef));
 		_failures.isEmpty();
 
 		List<RangerPolicyItem> policyItems = new ArrayList<>();
-		Assert.assertTrue(_validator.isValidPolicyItems(policyItems, _failures, _serviceDef));
+		Assertions.assertTrue(_validator.isValidPolicyItems(policyItems, _failures, _serviceDef));
 		_failures.isEmpty();
 		
 		// null elements in the list are flagged
 		policyItems.add(null);
-		Assert.assertFalse(_validator.isValidPolicyItems(policyItems, _failures, _serviceDef));
+		Assertions.assertFalse(_validator.isValidPolicyItems(policyItems, _failures, _serviceDef));
 		_utils.checkFailureForMissingValue(_failures, "policy item");
 	}
 	
@@ -574,12 +574,12 @@ public class TestRangerPolicyValidator {
 		// empty access collections are invalid
 		RangerPolicyItem policyItem = mock(RangerPolicyItem.class);
 		when(policyItem.getAccesses()).thenReturn(null);
-		_failures.clear(); Assert.assertFalse(_validator.isValidPolicyItem(policyItem, _failures, _serviceDef));
+		_failures.clear(); Assertions.assertFalse(_validator.isValidPolicyItem(policyItem, _failures, _serviceDef));
 		_utils.checkFailureForMissingValue(_failures, "policy item accesses");
 
 		List<RangerPolicyItemAccess> accesses = new ArrayList<>();
 		when(policyItem.getAccesses()).thenReturn(accesses);
-		_failures.clear(); Assert.assertFalse(_validator.isValidPolicyItem(policyItem, _failures, _serviceDef));
+		_failures.clear(); Assertions.assertFalse(_validator.isValidPolicyItem(policyItem, _failures, _serviceDef));
 		_utils.checkFailureForMissingValue(_failures, "policy item accesses");
 		
 		// both user and groups can't be null
@@ -587,7 +587,7 @@ public class TestRangerPolicyValidator {
 		accesses.add(access);
 		when(policyItem.getUsers()).thenReturn(null);
 		when(policyItem.getGroups()).thenReturn(new ArrayList<String>());
-		_failures.clear(); Assert.assertFalse(_validator.isValidPolicyItem(policyItem, _failures, _serviceDef));
+		_failures.clear(); Assertions.assertFalse(_validator.isValidPolicyItem(policyItem, _failures, _serviceDef));
 		_utils.checkFailureForMissingValue(_failures, "policy item users/user-groups/roles");
 	}
 	
@@ -600,8 +600,8 @@ public class TestRangerPolicyValidator {
 		// create a non-empty user-list
 		List<String> users = Arrays.asList("user1");
 		when(policyItem.getUsers()).thenReturn(users);
-		_failures.clear(); Assert.assertTrue(_validator.isValidPolicyItem(policyItem, _failures, _serviceDef));
-		Assert.assertTrue(_failures.isEmpty());
+		_failures.clear(); Assertions.assertTrue(_validator.isValidPolicyItem(policyItem, _failures, _serviceDef));
+		Assertions.assertTrue(_failures.isEmpty());
 	}
 	@Test
 	public void test_isValidItemAccesses_happyPath() {
@@ -614,8 +614,8 @@ public class TestRangerPolicyValidator {
 		};
 		List<RangerPolicyItemAccess> accesses = _utils.createItemAccess(data);
 		_serviceDef = _utils.createServiceDefWithAccessTypes(new String[] { "a", "b", "c", "d" });
-		Assert.assertTrue(_validator.isValidItemAccesses(accesses, _failures, _serviceDef));
-		Assert.assertTrue(_failures.isEmpty());
+		Assertions.assertTrue(_validator.isValidItemAccesses(accesses, _failures, _serviceDef));
+		Assertions.assertTrue(_failures.isEmpty());
 	}
 	
 	@Test
@@ -623,7 +623,7 @@ public class TestRangerPolicyValidator {
 		// null policy item access values are an error
 		List<RangerPolicyItemAccess> accesses = new ArrayList<>();
 		accesses.add(null);
-		_failures.clear(); Assert.assertFalse(_validator.isValidItemAccesses(accesses, _failures, _serviceDef));
+		_failures.clear(); Assertions.assertFalse(_validator.isValidItemAccesses(accesses, _failures, _serviceDef));
 		_utils.checkFailureForMissingValue(_failures, "policy item access");
 
 		// all items must be valid for this call to be valid
@@ -634,7 +634,7 @@ public class TestRangerPolicyValidator {
 		};
 		accesses = _utils.createItemAccess(data);
 		_serviceDef = _utils.createServiceDefWithAccessTypes(new String[] { "a", "b", "c", "d" });
-		_failures.clear(); Assert.assertFalse(_validator.isValidItemAccesses(accesses, _failures, _serviceDef));
+		_failures.clear(); Assertions.assertFalse(_validator.isValidItemAccesses(accesses, _failures, _serviceDef));
 	}
 	
 	@Test
@@ -648,8 +648,8 @@ public class TestRangerPolicyValidator {
 		// both null or true access types are the same and valid
 		for (Boolean allowed : new Boolean[] { null, true } ) {
 			when(access.getIsAllowed()).thenReturn(allowed);
-			Assert.assertTrue(_validator.isValidPolicyItemAccess(access, _failures, validAccesses));
-			Assert.assertTrue(_failures.isEmpty());
+			Assertions.assertTrue(_validator.isValidPolicyItemAccess(access, _failures, validAccesses));
+			Assertions.assertTrue(_failures.isEmpty());
 		}
 	}
 	
@@ -663,19 +663,19 @@ public class TestRangerPolicyValidator {
 		for (String type : new String[] { null, " 	"}) {
 			when(access.getType()).thenReturn(type); // invalid
 			// null/empty validAccess set skips all checks
-			Assert.assertTrue(_validator.isValidPolicyItemAccess(access, _failures, null));
-			Assert.assertTrue(_validator.isValidPolicyItemAccess(access, _failures, new HashSet<String>()));
-			_failures.clear(); Assert.assertFalse(_validator.isValidPolicyItemAccess(access, _failures, validAccesses));
+			Assertions.assertTrue(_validator.isValidPolicyItemAccess(access, _failures, null));
+			Assertions.assertTrue(_validator.isValidPolicyItemAccess(access, _failures, new HashSet<String>()));
+			_failures.clear(); Assertions.assertFalse(_validator.isValidPolicyItemAccess(access, _failures, validAccesses));
 			_utils.checkFailureForMissingValue(_failures, "policy item access type");
 		}
 		
 		when(access.getType()).thenReturn("anAccess"); // valid
 		when(access.getIsAllowed()).thenReturn(false); // invalid
-		_failures.clear();Assert.assertFalse(_validator.isValidPolicyItemAccess(access, _failures, validAccesses));
+		_failures.clear();Assertions.assertFalse(_validator.isValidPolicyItemAccess(access, _failures, validAccesses));
 		_utils.checkFailureForSemanticError(_failures, "policy item access type allowed");
 		
 		when(access.getType()).thenReturn("newAccessType"); // invalid
-		_failures.clear(); Assert.assertFalse(_validator.isValidPolicyItemAccess(access, _failures, validAccesses));
+		_failures.clear(); Assertions.assertFalse(_validator.isValidPolicyItemAccess(access, _failures, validAccesses));
 		_utils.checkFailureForSemanticError(_failures, "policy item access type");
 	}
 	
@@ -700,10 +700,10 @@ public class TestRangerPolicyValidator {
 		Map<String, RangerPolicyResource> resourceMap = _utils.createPolicyResourceMap(policyResourceMap_happyPath);
 		List<RangerResourceDef> resourceDefs = _utils.createResourceDefs(resourceDef_happyPath);
 		when(_serviceDef.getResources()).thenReturn(resourceDefs);
-		Assert.assertTrue(_validator.isValidResourceFlags(resourceMap, _failures, resourceDefs, "a-service-def", "a-policy", true));
+		Assertions.assertTrue(_validator.isValidResourceFlags(resourceMap, _failures, resourceDefs, "a-service-def", "a-policy", true));
 
 		// Since one of the resource has excludes set to true, without admin privilages it should fail and contain appropriate error messages
-		Assert.assertFalse(_validator.isValidResourceFlags(resourceMap, _failures, resourceDefs, "a-service-def", "a-policy", false));
+		Assertions.assertFalse(_validator.isValidResourceFlags(resourceMap, _failures, resourceDefs, "a-service-def", "a-policy", false));
 		_utils.checkFailureForSemanticError(_failures, "isExcludes", "isAdmin");
 	}
 
@@ -722,7 +722,7 @@ public class TestRangerPolicyValidator {
 		Map<String, RangerPolicyResource> resourceMap = _utils.createPolicyResourceMap(policyResourceMap_failures);
 		when(_serviceDef.getResources()).thenReturn(resourceDefs);
 		// should not error out on
-		Assert.assertFalse(_validator.isValidResourceFlags(resourceMap, _failures, resourceDefs, "a-service-def", "a-policy", false));
+		Assertions.assertFalse(_validator.isValidResourceFlags(resourceMap, _failures, resourceDefs, "a-service-def", "a-policy", false));
 		_utils.checkFailureForSemanticError(_failures, "isExcludes", "tbl");
 		_utils.checkFailureForSemanticError(_failures, "isRecursive", "col");
 		_utils.checkFailureForSemanticError(_failures, "isExcludes", "isAdmin");
@@ -741,8 +741,8 @@ public class TestRangerPolicyValidator {
 		when(_store.getPoliciesByResourceSignature("service-name", hash, true)).thenReturn(policies);
 		policies = new ArrayList<>();
 		for (Action action : cu) {
-			Assert.assertTrue(_validator.isPolicyResourceUnique(_policy, _failures, action));
-			Assert.assertTrue(_validator.isPolicyResourceUnique(_policy, _failures, action));
+			Assertions.assertTrue(_validator.isPolicyResourceUnique(_policy, _failures, action));
+			Assertions.assertTrue(_validator.isPolicyResourceUnique(_policy, _failures, action));
 		}
 		/*
 		 * If store has a policy with matching signature then the check should fail with appropriate error message.
@@ -752,26 +752,26 @@ public class TestRangerPolicyValidator {
 		RangerPolicy policy1 = mock(RangerPolicy.class); policies.add(policy1);
 		when(_store.getPoliciesByResourceSignature("service-name", hash, true)).thenReturn(policies);
 		when(_policy.getIsEnabled()).thenReturn(true); // ensure policy is enabled
-		_failures.clear(); Assert.assertFalse(_validator.isPolicyResourceUnique(_policy, _failures, Action.CREATE));
+		_failures.clear(); Assertions.assertFalse(_validator.isPolicyResourceUnique(_policy, _failures, Action.CREATE));
 		_utils.checkFailureForSemanticError(_failures, "resources");
 		// same check should fail even if the policy is disabled
 		when(_policy.getIsEnabled()).thenReturn(false);
-		_failures.clear(); Assert.assertFalse(_validator.isPolicyResourceUnique(_policy, _failures, Action.CREATE));
+		_failures.clear(); Assertions.assertFalse(_validator.isPolicyResourceUnique(_policy, _failures, Action.CREATE));
 		_utils.checkFailureForSemanticError(_failures, "resources");
 
 		// For Update match with itself is not a problem as long as it isn't itself, i.e. same id.
 		when(_policy.getIsEnabled()).thenReturn(true); // ensure policy is enabled
 		when(policy1.getId()).thenReturn(103L);
 		when(_policy.getId()).thenReturn(103L);
-		Assert.assertTrue(_validator.isPolicyResourceUnique(_policy, _failures, Action.UPDATE));
+		Assertions.assertTrue(_validator.isPolicyResourceUnique(_policy, _failures, Action.UPDATE));
 
 		// matching policy can't be some other policy (i.e. different id) because that implies a conflict.
 		when(policy1.getId()).thenReturn(104L);
-		Assert.assertFalse(_validator.isPolicyResourceUnique(_policy, _failures, Action.UPDATE));
+		Assertions.assertFalse(_validator.isPolicyResourceUnique(_policy, _failures, Action.UPDATE));
 		_utils.checkFailureForSemanticError(_failures, "resources");
 		// same check should pass if the policy is disabled
 		when(_policy.getIsEnabled()).thenReturn(false);
-		_failures.clear(); Assert.assertFalse(_validator.isPolicyResourceUnique(_policy, _failures, Action.UPDATE));
+		_failures.clear(); Assertions.assertFalse(_validator.isPolicyResourceUnique(_policy, _failures, Action.UPDATE));
 		_utils.checkFailureForSemanticError(_failures, "resources");
 
 		// And validation should never pass if there are more than one policies with matching signature, regardless of their ID!!
@@ -779,11 +779,11 @@ public class TestRangerPolicyValidator {
 		when(policy2.getId()).thenReturn(103L);  // has same id as the policy being tested (_policy)
 		policies.add(policy2);
 		when(_policy.getIsEnabled()).thenReturn(true); // ensure policy is enabled
-		Assert.assertFalse(_validator.isPolicyResourceUnique(_policy, _failures, Action.UPDATE));
+		Assertions.assertFalse(_validator.isPolicyResourceUnique(_policy, _failures, Action.UPDATE));
 		_utils.checkFailureForSemanticError(_failures, "resources");
 		// same check should pass if the policy is disabled
 		when(_policy.getIsEnabled()).thenReturn(false);
-		_failures.clear(); Assert.assertFalse(_validator.isPolicyResourceUnique(_policy, _failures, Action.UPDATE));
+		_failures.clear(); Assertions.assertFalse(_validator.isPolicyResourceUnique(_policy, _failures, Action.UPDATE));
 		_utils.checkFailureForSemanticError(_failures, "resources");
 	}
 	
@@ -799,7 +799,7 @@ public class TestRangerPolicyValidator {
 		// setup policy
 		Map<String, RangerPolicyResource> policyResources = _utils.createPolicyResourceMap(policyResourceMap_goodMultipleHierarchies);				
 		when(_policy.getResources()).thenReturn(policyResources);
-		Assert.assertTrue(_validator.isValidResourceNames(_policy, _failures, _serviceDef));
+		Assertions.assertTrue(_validator.isValidResourceNames(_policy, _failures, _serviceDef));
 	}
 	
 	@Test
@@ -814,19 +814,19 @@ public class TestRangerPolicyValidator {
 		// setup policy
 		Map<String, RangerPolicyResource> policyResources = _utils.createPolicyResourceMap(policyResourceMap_bad);
 		when(_policy.getResources()).thenReturn(policyResources);
-		Assert.assertFalse("Missing required resource and unknown resource", _validator.isValidResourceNames(_policy, _failures, _serviceDef));
+		Assertions.assertFalse(_validator.isValidResourceNames(_policy, _failures, _serviceDef), "Missing required resource and unknown resource");
 		_utils.checkFailureForSemanticError(_failures, "policy resources");
 
 		// another bad resource map that straddles multiple hierarchies
 		policyResources = _utils.createPolicyResourceMap(policyResourceMap_bad_multiple_hierarchies);
 		when(_policy.getResources()).thenReturn(policyResources);
-		_failures.clear(); Assert.assertFalse("Policy with resources for multiple hierarchies", _validator.isValidResourceNames(_policy, _failures, _serviceDef));
+		_failures.clear(); Assertions.assertFalse(_validator.isValidResourceNames(_policy, _failures, _serviceDef), "Policy with resources for multiple hierarchies");
 		_utils.checkFailureForSemanticError(_failures, "policy resources", "incompatible");
 
 		// another bad policy resource map that could match multiple hierarchies but is short on mandatory resources for all of those matches
 		policyResources = _utils.createPolicyResourceMap(policyResourceMap_bad_multiple_hierarchies_missing_mandatory);
 		when(_policy.getResources()).thenReturn(policyResources);
-		_failures.clear(); Assert.assertFalse("Policy with resources for multiple hierarchies missing mandatory resources for all pontential matches", _validator.isValidResourceNames(_policy, _failures, _serviceDef));
+		_failures.clear(); Assertions.assertFalse(_validator.isValidResourceNames(_policy, _failures, _serviceDef), "Policy with resources for multiple hierarchies missing mandatory resources for all pontential matches");
 		_utils.checkFailureForSemanticError(_failures, "policy resources", "missing mandatory");
 	}
 
@@ -844,13 +844,13 @@ public class TestRangerPolicyValidator {
 		when(_policy.getResources()).thenReturn(resources);
 		when(_policy.getAdditionalResources()).thenReturn(additionalResources);
 
-		Assert.assertTrue("valid resources and empty additionalResources", _validator.isValidResourceNames(_policy, _failures, _serviceDef));
+		Assertions.assertTrue(_validator.isValidResourceNames(_policy, _failures, _serviceDef), "valid resources and empty additionalResources");
 
 		additionalResources.add(_utils.createPolicyResourceMap(policyResourceMap_good));
-		Assert.assertTrue("valid resources and additionalResources[0]", _validator.isValidResourceNames(_policy, _failures, _serviceDef));
+		Assertions.assertTrue(_validator.isValidResourceNames(_policy, _failures, _serviceDef), "valid resources and additionalResources[0]");
 
 		additionalResources.add(_utils.createPolicyResourceMap(policyResourceMap_bad));
-		Assert.assertFalse("valid resources and invalid additionalResources[1]", _validator.isValidResourceNames(_policy, _failures, _serviceDef));
+		Assertions.assertFalse(_validator.isValidResourceNames(_policy, _failures, _serviceDef), "valid resources and invalid additionalResources[1]");
 	}
 
 	@Test
@@ -881,7 +881,7 @@ public class TestRangerPolicyValidator {
 		when(_store.getServiceDefByName("service-type")).thenReturn(svcDef);
 		RangerPolicyResourceSignature policySignature = mock(RangerPolicyResourceSignature.class);
 		when(_factory.createPolicyResourceSignature(_policy)).thenReturn(policySignature);
-		Assert.assertTrue(_validator.isValid(_policy, action, isAdmin, _failures));
+		Assertions.assertTrue(_validator.isValid(_policy, action, isAdmin, _failures));
 	}
 
 	@Test
@@ -913,9 +913,9 @@ public class TestRangerPolicyValidator {
 		RangerPolicyResourceSignature policySignature = mock(RangerPolicyResourceSignature.class);
 		when(_factory.createPolicyResourceSignature(_policy)).thenReturn(policySignature);
 		boolean isValid = _validator.isValid(_policy, action, isAdmin, _failures);
-		Assert.assertFalse(isValid);
-		Assert.assertEquals(_failures.get(0)._errorCode, 3048);
-		Assert.assertEquals(_failures.get(0)._reason,"Service name = hdfssvc1 is not associated to Zone name = zone1");
+		Assertions.assertFalse(isValid);
+		Assertions.assertEquals(_failures.get(0)._errorCode, 3048);
+		Assertions.assertEquals(_failures.get(0)._reason,"Service name = hdfssvc1 is not associated to Zone name = zone1");
 	}
 	
 	private ValidationTestUtils _utils = new ValidationTestUtils();

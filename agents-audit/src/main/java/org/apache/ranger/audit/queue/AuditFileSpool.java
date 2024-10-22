@@ -161,8 +161,12 @@ public class AuditFileSpool implements Runnable {
 			logger.info("logFolder={}, queueName={}", logFolder, queueProvider.getName());
 
 			if (logFileNameFormat == null || logFileNameFormat.isEmpty()) {
-				logFileNameFormat = "spool_" + "%app-type%" + "_"
-						+ "%time:yyyyMMdd-HHmm.ss%.log";
+				logFileNameFormat = """
+						spool_\
+						%app-type%\
+						_\
+						%time:yyyyMMdd-HHmm.ss%.log\
+						""";
 			}
 			logger.info("logFileNameFormat={}, queueName={}", logFileNameFormat, queueProvider.getName());
 

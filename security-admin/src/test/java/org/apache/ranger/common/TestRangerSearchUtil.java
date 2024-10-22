@@ -16,8 +16,8 @@
  */
 package org.apache.ranger.common;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -57,7 +57,7 @@ public class TestRangerSearchUtil {
 		SearchCriteria criteria    = new SearchCriteria();
 		String         whereClause = searchUtil.buildWhereClause(criteria, searchFields).toString();
 
-		Assert.assertEquals(WHERE_PREFIX, whereClause);
+		Assertions.assertEquals(WHERE_PREFIX, whereClause);
 	}
 
 	@Test
@@ -65,7 +65,7 @@ public class TestRangerSearchUtil {
 		SearchCriteria criteria    = new SearchCriteria(SEARCH_PARAM_ID, 1);
 		String         whereClause = searchUtil.buildWhereClause(criteria, searchFields).toString();
 
-		Assert.assertEquals(WHERE_PREFIX_AND + "obj.id = :id", whereClause);
+		Assertions.assertEquals(WHERE_PREFIX_AND + "obj.id = :id", whereClause);
 	}
 
 	@Test
@@ -73,7 +73,7 @@ public class TestRangerSearchUtil {
 		SearchCriteria criteria    = new SearchCriteria(SEARCH_PARAM_NAME, "test-name");
 		String         whereClause = searchUtil.buildWhereClause(criteria, searchFields).toString();
 
-		Assert.assertEquals(WHERE_PREFIX_AND + "LOWER(obj.name) = :name", whereClause);
+		Assertions.assertEquals(WHERE_PREFIX_AND + "LOWER(obj.name) = :name", whereClause);
 	}
 
 	@Test
@@ -81,7 +81,7 @@ public class TestRangerSearchUtil {
 		SearchCriteria criteria    = new SearchCriteria(SEARCH_PARAM_IS_ENABLED, false);
 		String         whereClause = searchUtil.buildWhereClause(criteria, searchFields).toString();
 
-		Assert.assertEquals(WHERE_PREFIX_AND + "obj.isEnabled = :isEnabled", whereClause);
+		Assertions.assertEquals(WHERE_PREFIX_AND + "obj.isEnabled = :isEnabled", whereClause);
 	}
 
 	@Test
@@ -89,7 +89,7 @@ public class TestRangerSearchUtil {
 		SearchCriteria criteria    = new SearchCriteria(SEARCH_PARAM_CREATED_TIME, new Date());
 		String         whereClause = searchUtil.buildWhereClause(criteria, searchFields).toString();
 
-		Assert.assertEquals(WHERE_PREFIX_AND + "obj.createdTime = :createdTime", whereClause);
+		Assertions.assertEquals(WHERE_PREFIX_AND + "obj.createdTime = :createdTime", whereClause);
 	}
 
 	@Test
@@ -97,7 +97,7 @@ public class TestRangerSearchUtil {
 		SearchCriteria criteria    = new SearchCriteria(SEARCH_PARAM_NAME_CONTAINS, "test-name");
 		String         whereClause = searchUtil.buildWhereClause(criteria, searchFields).toString();
 
-		Assert.assertEquals(WHERE_PREFIX_AND + "LOWER(obj.name) like :nameContains", whereClause);
+		Assertions.assertEquals(WHERE_PREFIX_AND + "LOWER(obj.name) like :nameContains", whereClause);
 	}
 
 	@Test
@@ -105,7 +105,7 @@ public class TestRangerSearchUtil {
 		SearchCriteria criteria    = new SearchCriteria(SEARCH_PARAM_CREATED_TIME_FROM, new Date());
 		String         whereClause = searchUtil.buildWhereClause(criteria, searchFields).toString();
 
-		Assert.assertEquals(WHERE_PREFIX_AND + "obj.createdTime >= :createdTimeFrom", whereClause);
+		Assertions.assertEquals(WHERE_PREFIX_AND + "obj.createdTime >= :createdTimeFrom", whereClause);
 	}
 
 	@Test
@@ -113,7 +113,7 @@ public class TestRangerSearchUtil {
 		SearchCriteria criteria    = new SearchCriteria(SEARCH_PARAM_CREATED_TIME_TO, new Date());
 		String         whereClause = searchUtil.buildWhereClause(criteria, searchFields).toString();
 
-		Assert.assertEquals(WHERE_PREFIX_AND + "obj.createdTime < :createdTimeTo", whereClause);
+		Assertions.assertEquals(WHERE_PREFIX_AND + "obj.createdTime < :createdTimeTo", whereClause);
 	}
 
 	@Test
@@ -121,7 +121,7 @@ public class TestRangerSearchUtil {
 		SearchCriteria criteria    = new SearchCriteria(SEARCH_PARAM_EXCLUDE_ID, 1);
 		String         whereClause = searchUtil.buildWhereClause(criteria, searchFields).toString();
 
-		Assert.assertEquals(WHERE_PREFIX_AND + "obj.id != :excludeId", whereClause);
+		Assertions.assertEquals(WHERE_PREFIX_AND + "obj.id != :excludeId", whereClause);
 	}
 
 	@Test
@@ -129,6 +129,6 @@ public class TestRangerSearchUtil {
 		SearchCriteria criteria    = new SearchCriteria(SEARCH_PARAM_EXCLUDE_NAME, "test-name");
 		String         whereClause = searchUtil.buildWhereClause(criteria, searchFields).toString();
 
-		Assert.assertEquals(WHERE_PREFIX_AND + "LOWER(obj.name) != :excludeName", whereClause);
+		Assertions.assertEquals(WHERE_PREFIX_AND + "LOWER(obj.name) != :excludeName", whereClause);
 	}
 }

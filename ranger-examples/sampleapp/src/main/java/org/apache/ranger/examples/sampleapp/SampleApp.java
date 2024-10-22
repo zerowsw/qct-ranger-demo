@@ -25,6 +25,7 @@ import java.util.Set;
 import java.nio.charset.StandardCharsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.lang.reflect.InvocationTargetException;
 
 public class SampleApp {
 	private static final Logger LOG = LoggerFactory.getLogger(SampleApp.class);
@@ -104,9 +105,11 @@ public class SampleApp {
 			try {
 				Class<IAuthorizer> clz = (Class<IAuthorizer>) Class.forName(authzClassName);
 
-				ret = clz.newInstance();
-			} catch(Exception excp) {
+				ret = clz.getDeclaredConstructor().newInstance();
+			} catch(InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException excp) {
 				LOG.warn("Failed to create authorizer of type '" + authzClassName + "'", excp);
+			} catch(ClassNotFoundException excp) {
+				LOG.warn("Failed to find authorizer class '" + authzClassName + "'", excp);
 			}
 		}
 

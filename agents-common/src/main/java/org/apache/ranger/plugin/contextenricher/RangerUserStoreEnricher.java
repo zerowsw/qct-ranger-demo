@@ -19,7 +19,7 @@
 
 package org.apache.ranger.plugin.contextenricher;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.plugin.policyengine.RangerAccessRequest;
 import org.apache.ranger.plugin.service.RangerAuthContext;
 import org.apache.ranger.plugin.util.DownloaderTask;
@@ -84,7 +84,7 @@ public class RangerUserStoreEnricher extends RangerAbstractContextEnricher {
             if (userStoreRetriever != null) {
                 disableCacheIfServiceNotFound = getBooleanConfig(propertyPrefix + ".disable.cache.if.servicenotfound", true);
                 String cacheDir      = getConfig(propertyPrefix + ".policy.cache.dir", null);
-                String cacheFilename = String.format("%s_%s_userstore.json", appId, serviceName);
+                String cacheFilename = "%s_%s_userstore.json".formatted(appId, serviceName);
 
                 cacheFilename = cacheFilename.replace(File.separatorChar,  '_');
                 cacheFilename = cacheFilename.replace(File.pathSeparatorChar,  '_');
@@ -154,8 +154,8 @@ public class RangerUserStoreEnricher extends RangerAbstractContextEnricher {
         }
         final RangerUserStore rangerUserStore;
 
-        if (dataStore instanceof RangerUserStore) {
-            rangerUserStore = (RangerUserStore) dataStore;
+        if (dataStore instanceof RangerUserStore store) {
+            rangerUserStore = store;
         } else {
             rangerUserStore = this.rangerUserStore;
 

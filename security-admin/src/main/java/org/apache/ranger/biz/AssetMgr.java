@@ -31,14 +31,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
 import javax.naming.InvalidNameException;
 import javax.naming.ldap.LdapName;
 import javax.naming.ldap.Rdn;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.amazon.cloudwatch.CloudWatchAccessAuditsService;
 import org.apache.ranger.authorization.hadoop.config.RangerAdminConfig;
 import org.apache.ranger.common.AppConstants;
@@ -70,6 +69,7 @@ import org.apache.ranger.view.VXTrxLogV2.AttributeChangeInfo;
 import org.apache.ranger.view.VXTrxLogV2.ObjectChangeInfo;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -255,8 +255,10 @@ public class AssetMgr extends AssetMgrBase {
 						.setHttpRetCode(HttpServletResponse.SC_BAD_REQUEST);
 				createPolicyAudit(policyExportAudit);
 
-				throw restErrorUtil.createRESTException("Unauthorized access -"
-						+ " only https allowed",
+				throw restErrorUtil.createRESTException("""
+						Unauthorized access -\
+						 only https allowed\
+						""",
 						MessageEnums.OPER_NOT_ALLOWED_FOR_ENTITY);
 			}
 
@@ -266,14 +268,18 @@ public class AssetMgr extends AssetMgrBase {
 						.setHttpRetCode(HttpServletResponse.SC_BAD_REQUEST);
 				createPolicyAudit(policyExportAudit);
 
-				throw restErrorUtil.createRESTException("Unauthorized access -"
-						+ " unable to get client certificate",
+				throw restErrorUtil.createRESTException("""
+						Unauthorized access -\
+						 unable to get client certificate\
+						""",
 						MessageEnums.OPER_NOT_ALLOWED_FOR_ENTITY);
 			}
 		}
 
-		Long policyCount = restErrorUtil.parseLong(count, "Invalid value for "
-				+ "policyCount", MessageEnums.INVALID_INPUT_DATA, null,
+		Long policyCount = restErrorUtil.parseLong(count, """
+				Invalid value for \
+				policyCount\
+				""", MessageEnums.INVALID_INPUT_DATA, null,
 				"policyCount");
 
 		String commonName = null;

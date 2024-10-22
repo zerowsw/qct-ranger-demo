@@ -75,7 +75,7 @@ public class RangerGdsEnricher extends RangerAbstractContextEnricher {
 
         if (gdsInfoRetriever != null) {
             String cacheDir      = getConfig(propertyPrefix + ".policy.cache.dir", null);
-            String cacheFilename = String.format("%s_%s_gds.json", appId, serviceName);
+            String cacheFilename = "%s_%s_gds.json".formatted(appId, serviceName);
 
             cacheFilename = cacheFilename.replace(File.separatorChar, '_');
             cacheFilename = cacheFilename.replace(File.pathSeparatorChar,  '_');
@@ -142,7 +142,7 @@ public class RangerGdsEnricher extends RangerAbstractContextEnricher {
     public void enrich(RangerAccessRequest request, Object dataStore) {
         LOG.debug("==> RangerGdsEnricher.enrich({}, {})", request, dataStore);
 
-        GdsPolicyEngine policyEngine = (dataStore instanceof GdsPolicyEngine) ? (GdsPolicyEngine) dataStore : this.gdsPolicyEngine;
+        GdsPolicyEngine policyEngine = (dataStore instanceof GdsPolicyEngine gpe) ? gpe : this.gdsPolicyEngine;
 
         LOG.debug("RangerGdsEnricher.enrich(): using policyEngine={}", policyEngine);
 
@@ -313,7 +313,7 @@ public class RangerGdsEnricher extends RangerAbstractContextEnricher {
             LOG.debug("==> RangerGdsInfoRefresher(serviceName={}).loadFromCache()", getServiceName());
 
             ServiceGdsInfo ret       = null;
-            File           cacheFile = org.apache.commons.lang.StringUtils.isEmpty(this.cacheFile) ? null : new File(this.cacheFile);
+            File           cacheFile = org.apache.commons.lang3.StringUtils.isEmpty(this.cacheFile) ? null : new File(this.cacheFile);
 
             if (cacheFile != null && cacheFile.isFile() && cacheFile.canRead()) {
                 try (Reader reader = new FileReader(cacheFile)){

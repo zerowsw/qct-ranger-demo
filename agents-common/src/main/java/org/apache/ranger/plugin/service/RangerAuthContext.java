@@ -19,9 +19,9 @@
 
 package org.apache.ranger.plugin.service;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.plugin.contextenricher.RangerContextEnricher;
 import org.apache.ranger.plugin.policyengine.RangerPolicyEngine;
 import org.apache.ranger.plugin.policyengine.RangerSecurityZoneMatcher;
@@ -62,8 +62,8 @@ public class RangerAuthContext {
         // when enrich() is called
         requestContextEnrichers.put(enricher, database != null ? database : enricher);
 
-        if (database instanceof RangerUserStore) {
-            setUserStore((RangerUserStore) database);
+        if (database instanceof RangerUserStore store) {
+            setUserStore(store);
         }
     }
 

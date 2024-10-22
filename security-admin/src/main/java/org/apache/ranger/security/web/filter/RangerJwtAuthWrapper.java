@@ -20,20 +20,22 @@ package org.apache.ranger.security.web.filter;
 
 import java.io.IOException;
 
-import javax.annotation.PostConstruct;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.ranger.common.PropertiesUtil;
 import org.apache.ranger.common.UserSessionBase;
 import org.apache.ranger.security.context.RangerContextHolder;
 import org.apache.ranger.security.context.RangerSecurityContext;
+
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
@@ -44,7 +46,7 @@ import org.springframework.web.filter.GenericFilterBean;
 @Lazy(true)
 @Component
 public class RangerJwtAuthWrapper extends GenericFilterBean {
-    private static final Logger LOG = Logger.getLogger(RangerJwtAuthWrapper.class);
+    private static final Logger LOG = LogManager.getLogger(RangerJwtAuthWrapper.class);
 
     private String[] browserUserAgents = new String[] {""}; //Initialize with empty
 
@@ -70,7 +72,7 @@ public class RangerJwtAuthWrapper extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("===>>> RangerJwtAuthWrapper.doFilter(" + request + ", " + response + ", " + filterChain + ")");
+            LOG.debug("===>>> RangerJwtAuthWrapper.doFilter({}, {}, {})", request, response, filterChain);
         }
 
         RangerSecurityContext context             = RangerContextHolder.getSecurityContext();

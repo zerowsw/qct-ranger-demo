@@ -28,11 +28,11 @@ import java.util.Map;
 
 import javax.security.auth.Subject;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.http.HttpStatus;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.hc.core5.http.HttpStatus;
 import org.apache.ranger.plugin.client.BaseClient;
 import org.apache.ranger.plugin.client.HadoopException;
 import org.apache.ranger.plugin.util.PasswordUtils;
@@ -56,9 +56,11 @@ public class KylinClient extends BaseClient {
 
 	private static final String KYLIN_LIST_API_ENDPOINT = "/kylin/api/projects";
 
-	private static final String ERROR_MESSAGE = " You can still save the repository and start creating "
-			+ "policies, but you would not be able to use autocomplete for "
-			+ "resource names. Check ranger_admin.log for more info.";
+	private static final String ERROR_MESSAGE = """
+			 You can still save the repository and start creating \
+			policies, but you would not be able to use autocomplete for \
+			resource names. Check ranger_admin.log for more info.\
+			""";
 
 	private String kylinUrl;
 	private String userName;

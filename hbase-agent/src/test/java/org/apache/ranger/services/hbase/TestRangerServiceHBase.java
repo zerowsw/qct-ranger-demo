@@ -26,9 +26,9 @@ import java.util.Map;
 import org.apache.ranger.plugin.model.RangerService;
 import org.apache.ranger.plugin.model.RangerServiceDef;
 import org.apache.ranger.plugin.service.ResourceLookupContext;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class TestRangerServiceHBase {
 	static final String 	sdName		  =  "svcDef-HBase";
@@ -41,7 +41,7 @@ public class TestRangerServiceHBase {
 	ResourceLookupContext   lookupContext =  null;
 	
 	
-	@Before
+	@BeforeEach
 	public void setup() {
 		configs 	= new HashMap<String,String>();
 		lookupContext = new ResourceLookupContext();
@@ -130,7 +130,7 @@ public class TestRangerServiceHBase {
 	}
 	
 			
-	@After
+	@AfterEach
 	public void tearDown() {
 		sd  = null;
 		svc = null;

@@ -19,8 +19,8 @@
 
 package org.apache.ranger.plugin.model.validation;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -36,13 +36,13 @@ import org.apache.ranger.plugin.model.RangerPolicy;
 import org.apache.ranger.plugin.model.RangerServiceDef;
 import org.apache.ranger.plugin.model.RangerServiceDef.RangerResourceDef;
 import org.apache.ranger.plugin.model.validation.RangerServiceDefHelper.Delegate;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 
 public class TestRangerServiceDefHelper {
 
-	@Before
+	@BeforeEach
 	public void before() {
 		_serviceDef = mock(RangerServiceDef.class);
 		when(_serviceDef.getName()).thenReturn("a-service-def");
@@ -107,7 +107,7 @@ public class TestRangerServiceDefHelper {
 		List<RangerResourceDef> resourceDefs = Lists.newArrayList(A, B, C, D);
 		when(_serviceDef.getResources()).thenReturn(resourceDefs);
 		_helper = new RangerServiceDefHelper(_serviceDef);
-		assertFalse("Graph was valid!", _helper.isResourceGraphValid());
+		assertFalse(_helper.isResourceGraphValid(), "Graph was valid!");
 	}
 
 	@Test
@@ -150,7 +150,7 @@ public class TestRangerServiceDefHelper {
 			assertTrue(expectedHierarchies.contains(resourceNames));
 			expectedHierarchies.remove(resourceNames);
 		}
-		assertTrue("Missing hierarchies: " + expectedHierarchies.toString(), expectedHierarchies.isEmpty()); // make sure we got back all hierarchies
+		assertTrue(expectedHierarchies.isEmpty(), "Missing hierarchies: " + expectedHierarchies.toString()); // make sure we got back all hierarchies
 	}
 
 	@Test
@@ -191,7 +191,7 @@ public class TestRangerServiceDefHelper {
 			assertTrue(expectedHierarchies.contains(resourceNames));
 			expectedHierarchies.remove(resourceNames);
 		}
-		assertTrue("Missing hierarchies: " + expectedHierarchies.toString(), expectedHierarchies.isEmpty()); // make sure we got back all hierarchies
+		assertTrue(expectedHierarchies.isEmpty(), "Missing hierarchies: " + expectedHierarchies.toString()); // make sure we got back all hierarchies
 	}
 	@Test
 	public final void test_cacheBehavior() {
@@ -212,7 +212,7 @@ public class TestRangerServiceDefHelper {
 		
 		// since cache has it, we should get back the one that we have added
 		_helper = new RangerServiceDefHelper(_serviceDef);
-		assertTrue("Didn't get back the same object that was put in cache", delegate == _helper._delegate);
+		assertTrue(delegate == _helper._delegate, "Didn't get back the same object that was put in cache");
 		
 		// if we change the date then that should force helper to create a new delegate instance
 		/*
@@ -221,11 +221,11 @@ public class TestRangerServiceDefHelper {
 		 */
 		when(_serviceDef.getUpdateTime()).thenReturn(getLastMonth());
 		_helper = new RangerServiceDefHelper(_serviceDef);
-		assertTrue("Didn't get a delegate different than what was put in the cache", delegate != _helper._delegate);
+		assertTrue(delegate != _helper._delegate, "Didn't get a delegate different than what was put in the cache");
 		// now that a new instance was added to the cache let's ensure that it got added to the cache
 		Delegate newDelegate = _helper._delegate;
 		_helper = new RangerServiceDefHelper(_serviceDef);
-		assertTrue("Didn't get a delegate different than what was put in the cache", newDelegate == _helper._delegate);
+		assertTrue(newDelegate == _helper._delegate, "Didn't get a delegate different than what was put in the cache");
 	}
 
     @Test

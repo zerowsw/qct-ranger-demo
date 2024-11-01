@@ -22,12 +22,12 @@ package org.apache.ranger.service;
 import org.apache.ranger.entity.XXGroupPermission;
 import org.apache.ranger.view.VXModuleDef;
 
-import org.junit.jupiter.api.MethodOrderer.MethodName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,8 +36,8 @@ import java.util.Map;
 
 import org.apache.ranger.entity.XXGroup;
 
-@ExtendWith(MockitoExtension.class)
-@TestMethodOrder(MethodName.class)
+@RunWith(MockitoJUnitRunner.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestXGroupPermissionService {
 	@Mock
 	XGroupPermissionService xGroupPermissionService;

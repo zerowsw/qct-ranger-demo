@@ -13,7 +13,7 @@
  */
 package org.apache.ranger.security.web.filter;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.classification.InterfaceAudience;
 import org.apache.hadoop.classification.InterfaceStability;
 import org.apache.hadoop.security.authentication.client.AuthenticatedURL;
@@ -29,22 +29,20 @@ import org.apache.ranger.plugin.util.RangerCommonConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.servlet.Filter;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.FilterConfig;
-import jakarta.servlet.ServletContext;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletRequestWrapper;
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
 
 import java.io.EOFException;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -175,10 +173,10 @@ public class RangerKrbFilter implements Filter {
       throws ServletException {
     try {
       Class<?> klass = Thread.currentThread().getContextClassLoader().loadClass(authHandlerClassName);
-      authHandler = (AuthenticationHandler) klass.getDeclaredConstructor().newInstance();
+      authHandler = (AuthenticationHandler) klass.newInstance();
       authHandler.init(config);
     } catch (ClassNotFoundException | InstantiationException |
-        IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
+        IllegalAccessException ex) {
       throw new ServletException(ex);
     }
   }
@@ -223,10 +221,8 @@ public class RangerKrbFilter implements Filter {
         provider.init(config, ctx, validity);
       } catch (Exception e) {
         if (!disallowFallbackToRandomSecretProvider) {
-          LOG.info("""
-                       Unable to initialize FileSignerSecretProvider, \
-                       falling back to use random secrets.\
-                       """);
+          LOG.info("Unable to initialize FileSignerSecretProvider, " +
+                       "falling back to use random secrets.");
           provider = new RandomSignerSecretProvider();
           provider.init(config, ctx, validity);
         } else {
@@ -240,9 +236,8 @@ public class RangerKrbFilter implements Filter {
       provider = new ZKSignerSecretProvider();
       provider.init(config, ctx, validity);
     } else {
-      Class<?> clazz = Thread.currentThread().getContextClassLoader().loadClass(name);
-      Constructor<?> constructor = clazz.getDeclaredConstructor();
-      provider = (SignerSecretProvider) constructor.newInstance();
+      provider = (SignerSecretProvider) Thread.currentThread().
+          getContextClassLoader().loadClass(name).newInstance();
       provider.init(config, ctx, validity);
     }
     return provider;
@@ -636,10 +631,8 @@ public class RangerKrbFilter implements Filter {
 
     if (expires >= 0) {
       Date date = new Date(expires);
-      SimpleDateFormat df = new SimpleDateFormat("""
-              EEE, \
-              dd-MMM-yyyy HH:mm:ss zzz\
-              """);
+      SimpleDateFormat df = new SimpleDateFormat("EEE, " +
+              "dd-MMM-yyyy HH:mm:ss zzz");
       df.setTimeZone(TimeZone.getTimeZone("GMT"));
       sb.append("; Expires=").append(df.format(date));
     }

@@ -31,7 +31,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Properties;
 
-import org.apache.commons.lang3.NullArgumentException;
+import org.apache.commons.lang.NullArgumentException;
 
 public class LdapConfigCheckMain {
 
@@ -209,10 +209,8 @@ public class LdapConfigCheckMain {
         }
         if ((userSyncObj.getUserSearchBase() == null || userSyncObj.getUserSearchBase().isEmpty()) &&
                 (userSyncObj.getSearchBase() == null || userSyncObj.getSearchBase().isEmpty())) {
-            msg = """
-                    ranger.usersync.ldap.user.searchbase and \
-                    ranger.usersync.ldap.searchBase \
-                    """;
+            msg = "ranger.usersync.ldap.user.searchbase and " +
+                    "ranger.usersync.ldap.searchBase ";
             throw new NullArgumentException(msg);
         }
         userSyncObj.getAllUsers(ldapContext);
@@ -234,10 +232,8 @@ public class LdapConfigCheckMain {
         }
         if ((userSyncObj.getGroupSearchBase() == null || userSyncObj.getGroupSearchBase().isEmpty()) &&
                 (userSyncObj.getSearchBase() == null || userSyncObj.getSearchBase().isEmpty())) {
-            msg = """
-                    ranger.usersync.group.searchbase and \
-                    ranger.usersync.ldap.searchBase \
-                    """;
+            msg = "ranger.usersync.group.searchbase and " +
+                    "ranger.usersync.ldap.searchBase ";
             throw new NullArgumentException(msg);
         }
         userSyncObj.getAllGroups(ldapContext);

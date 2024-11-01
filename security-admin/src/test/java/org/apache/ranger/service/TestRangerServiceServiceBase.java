@@ -36,18 +36,20 @@ import org.apache.ranger.plugin.util.SearchFilter;
 import org.apache.ranger.security.context.RangerContextHolder;
 import org.apache.ranger.security.context.RangerSecurityContext;
 import org.apache.ranger.view.RangerServiceList;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.MethodOrderer.MethodName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.Assert;
+import org.junit.FixMethodOrder;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ExtendWith(MockitoExtension.class)
-@TestMethodOrder(MethodName.class)
+@RunWith(MockitoJUnitRunner.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestRangerServiceServiceBase {
 
 	private static Long Id = 8L;
@@ -66,6 +68,9 @@ public class TestRangerServiceServiceBase {
 
 	@Mock
 	BaseDao<XXService> baseDao;
+
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
 
 	public void setup() {
 		RangerSecurityContext context = new RangerSecurityContext();
@@ -140,18 +145,18 @@ public class TestRangerServiceServiceBase {
 
 		XXService dbService = rangerServiceService.mapViewToEntityBean(
 				rangerService, service, OPERATION_CONTEXT);
-		Assertions.assertNotNull(dbService);
-		Assertions.assertEquals(dbService, service);
-		Assertions.assertEquals(dbService.getDescription(),
+		Assert.assertNotNull(dbService);
+		Assert.assertEquals(dbService, service);
+		Assert.assertEquals(dbService.getDescription(),
 				service.getDescription());
-		Assertions.assertEquals(dbService.getGuid(), service.getGuid());
-		Assertions.assertEquals(dbService.getName(), service.getName());
-		Assertions.assertEquals(dbService.getAddedByUserId(),
+		Assert.assertEquals(dbService.getGuid(), service.getGuid());
+		Assert.assertEquals(dbService.getName(), service.getName());
+		Assert.assertEquals(dbService.getAddedByUserId(),
 				service.getAddedByUserId());
-		Assertions.assertEquals(dbService.getId(), service.getId());
-		Assertions.assertEquals(dbService.getVersion(), service.getVersion());
-		Assertions.assertEquals(dbService.getType(), service.getType());
-		Assertions.assertEquals(dbService.getUpdatedByUserId(),
+		Assert.assertEquals(dbService.getId(), service.getId());
+		Assert.assertEquals(dbService.getVersion(), service.getVersion());
+		Assert.assertEquals(dbService.getType(), service.getType());
+		Assert.assertEquals(dbService.getUpdatedByUserId(),
 				service.getUpdatedByUserId());
 
 		Mockito.verify(daoManager).getXXServiceDef();
@@ -183,16 +188,16 @@ public class TestRangerServiceServiceBase {
 
 		RangerService dbRangerService = rangerServiceService
 				.mapEntityToViewBean(rangerService, service);
-		Assertions.assertNotNull(dbRangerService);
-		Assertions.assertEquals(dbRangerService, rangerService);
-		Assertions.assertEquals(dbRangerService.getDescription(),
+		Assert.assertNotNull(dbRangerService);
+		Assert.assertEquals(dbRangerService, rangerService);
+		Assert.assertEquals(dbRangerService.getDescription(),
 				rangerService.getDescription());
-		Assertions.assertEquals(dbRangerService.getGuid(), rangerService.getGuid());
-		Assertions.assertEquals(dbRangerService.getName(), rangerService.getName());
-		Assertions.assertEquals(dbRangerService.getId(), rangerService.getId());
-		Assertions.assertEquals(dbRangerService.getVersion(),
+		Assert.assertEquals(dbRangerService.getGuid(), rangerService.getGuid());
+		Assert.assertEquals(dbRangerService.getName(), rangerService.getName());
+		Assert.assertEquals(dbRangerService.getId(), rangerService.getId());
+		Assert.assertEquals(dbRangerService.getVersion(),
 				rangerService.getVersion());
-		Assertions.assertEquals(dbRangerService.getType(), rangerService.getType());
+		Assert.assertEquals(dbRangerService.getType(), rangerService.getType());
 
 		Mockito.verify(daoManager).getXXServiceDef();
 	}
@@ -205,7 +210,7 @@ public class TestRangerServiceServiceBase {
 
 		RangerServiceList dbRangerServiceList = rangerServiceService
 				.searchRangerServices(searchFilter);
-		Assertions.assertNotNull(dbRangerServiceList);
+		Assert.assertNotNull(dbRangerServiceList);
 
 	}
 }

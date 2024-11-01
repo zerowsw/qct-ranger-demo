@@ -19,15 +19,14 @@
 
 package org.apache.ranger.plugin.model.validation;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.Assert.assertEquals;
 
 import java.util.HashSet;
 
 import org.apache.hadoop.thirdparty.com.google.common.collect.Lists;
 import org.apache.hadoop.thirdparty.com.google.common.collect.Sets;
 import org.apache.ranger.plugin.model.validation.RangerServiceDefHelper.DirectedGraph;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.Test;
 
 public class TestDirectedGraph {
 

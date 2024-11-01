@@ -22,10 +22,9 @@ import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.lang.reflect.InvocationTargetException;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import org.apache.ranger.biz.RangerBizUtil;
 import org.apache.ranger.common.ContextUtil;
@@ -127,8 +126,8 @@ public abstract class RangerBaseModelService<T extends XXDBBase, V extends Range
 
 	protected T createEntityObject() {
 		try {
-			return tEntityClass.getDeclaredConstructor().newInstance();
-		} catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+			return tEntityClass.newInstance();
+		} catch (Throwable e) {
 			LOG.error("Error instantiating entity class. tEntityClass="
 					+ tEntityClass.toString(), e);
 		}
@@ -137,8 +136,8 @@ public abstract class RangerBaseModelService<T extends XXDBBase, V extends Range
 
 	protected V createViewObject() {
 		try {
-			return tViewClass.getDeclaredConstructor().newInstance();
-		} catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+			return tViewClass.newInstance();
+		} catch (Throwable e) {
 			LOG.error("Error instantiating view class. tViewClass="
 					+ tViewClass.toString(), e);
 		}

@@ -38,7 +38,8 @@ public class ConsolePromptCallbackHandler implements CallbackHandler {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		
 		for(Callback cb : callbacks) {
-			if (cb instanceof NameCallback nc) {
+			if (cb instanceof NameCallback) {
+		          NameCallback nc = (NameCallback)cb;
 		          System.out.print(nc.getPrompt());
 		          System.out.flush();
                   String line = null;
@@ -48,7 +49,8 @@ public class ConsolePromptCallbackHandler implements CallbackHandler {
                   }
 		          nc.setName(line);
 			}
-			else if (cb instanceof PasswordCallback pc) {
+			else if (cb instanceof PasswordCallback) {
+		          PasswordCallback pc = (PasswordCallback)cb;
 		          System.out.print(pc.getPrompt());
 		          System.out.flush();
 

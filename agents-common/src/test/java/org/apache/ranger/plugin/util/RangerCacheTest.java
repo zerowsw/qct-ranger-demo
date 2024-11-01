@@ -19,14 +19,13 @@ package org.apache.ranger.plugin.util;
 
 import org.apache.ranger.plugin.util.RangerCache.RefreshMode;
 import org.apache.ranger.plugin.util.RangerCache.RefreshableValue;
+import org.junit.Test;
 
 import java.util.*;
-
-import org.junit.jupiter.api.Test;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 public class RangerCacheTest {
     private static final int CACHE_THREAD_COUNT               = 25;
@@ -97,12 +96,12 @@ public class RangerCacheTest {
             futures.add(future);
         }
 
-        log("waiting for %s submitted tasks to complete".formatted(futures.size()));
+        log(String.format("waiting for %s submitted tasks to complete", futures.size()));
         for (Future<?> future : futures) {
             future.get();
         }
 
-        log("all submitted tasks completed: timeTaken=%sms".formatted((System.currentTimeMillis() - startTimeMs)));
+        log(String.format("all submitted tasks completed: timeTaken=%sms", (System.currentTimeMillis() - startTimeMs)));
 
         executor.shutdown();
 
@@ -110,9 +109,9 @@ public class RangerCacheTest {
             cache.remove(user);
         }
 
-        assertEquals(0, cache.getKeys().size(), "cache should have no users");
+        assertEquals("cache should have no users", 0, cache.getKeys().size());
 
-        log("all entries in the cache are now removed: timeTaken=%sms".formatted((System.currentTimeMillis() - startTimeMs)));
+        log(String.format("all entries in the cache are now removed: timeTaken=%sms", (System.currentTimeMillis() - startTimeMs)));
     }
 
     private void runMultiThreadedGet(String testName, UserGroupCache cache) throws Throwable {
@@ -129,7 +128,7 @@ public class RangerCacheTest {
             }
         }
 
-        log("waiting for %s submitted tasks to complete".formatted(futures.size()));
+        log(String.format("waiting for %s submitted tasks to complete", futures.size()));
         for (Future<?> future : futures) {
             future.get();
         }
@@ -179,7 +178,7 @@ public class RangerCacheTest {
             ret = USERNAME_PREFIX_VERY_LONG_REFRESH;
         }
 
-        return "%s%04d".formatted(ret, index);
+        return String.format("%s%04d", ret, index);
     }
 
     private void log(String msg) {
@@ -278,9 +277,9 @@ public class RangerCacheTest {
      *
      */
     private void printStats(String testName, long timeTakenMs, UserGroupCache cache) {
-        log("%s(): timeTaken=%sms".formatted(testName, timeTakenMs));
-        log("  cache: loaderThreads=%s, refreshMode=%s, valueValidityMs=%s, valueInitTimeoutMs=%s, valueRefreshTimeoutMs=%s".formatted(cache.getLoaderThreadsCount(), cache.getRefreshMode(), cache.getValueValidityPeriodMs(), cache.getValueInitLoadTimeoutMs(), cache.getValueRefreshLoadTimeoutMs()));
-        log("  test:  cacheKeyCount=%s, cacheClientThreads=%s, lookupCount=%s, lookupIntervalMs=%s".formatted(cache.stats.size(), CACHE_CLIENT_THREAD_COUNT, CACHE_LOOKUP_COUNT, CACHE_LOOKUP_INTERVAL_MS));
+        log(String.format("%s(): timeTaken=%sms", testName, timeTakenMs));
+        log(String.format("  cache: loaderThreads=%s, refreshMode=%s, valueValidityMs=%s, valueInitTimeoutMs=%s, valueRefreshTimeoutMs=%s", cache.getLoaderThreadsCount(), cache.getRefreshMode(), cache.getValueValidityPeriodMs(), cache.getValueInitLoadTimeoutMs(), cache.getValueRefreshLoadTimeoutMs()));
+        log(String.format("  test:  cacheKeyCount=%s, cacheClientThreads=%s, lookupCount=%s, lookupIntervalMs=%s", cache.stats.size(), CACHE_CLIENT_THREAD_COUNT, CACHE_LOOKUP_COUNT, CACHE_LOOKUP_INTERVAL_MS));
 
         printStats(cache.stats, USERNAME_PREFIX_FAILED_FIRST_INIT);
         printStats(cache.stats, USERNAME_PREFIX_FAILED_INIT);
@@ -301,7 +300,7 @@ public class RangerCacheTest {
         Collections.sort(userNames);
 
         for (String userName : userNames) {
-            log("%s".formatted(cache.stats.get(userName)));
+            log(String.format("%s", cache.stats.get(userName)));
         }
     }
 
@@ -324,7 +323,7 @@ public class RangerCacheTest {
             totalGetTime  += userStats.get.totalTime.get();
         }
 
-        log("  userPrefix=%-16s userCount=%-4s loadCount=%-5s getCount=%-7s avgLoadTime=%-9.3f avgGetTime=%-6.3f".formatted(userNamePrefix, userCount, loadCount, getCount, (totalLoadTime / (float) loadCount), (totalGetTime / (float) getCount)));
+        log(String.format("  userPrefix=%-16s userCount=%-4s loadCount=%-5s getCount=%-7s avgLoadTime=%-9.3f avgGetTime=%-6.3f", userNamePrefix, userCount, loadCount, getCount, (totalLoadTime / (float)loadCount), (totalGetTime / (float)getCount)));
     }
 
     // multiple instances of this class are used by the test to simulate simultaneous access to cache to obtain groups for users
@@ -348,7 +347,7 @@ public class RangerCacheTest {
             if (!cache.isLoaded(userName) && userStats.inProgressCount.get() > 0) {
                 if (userName.startsWith(USERNAME_PREFIX_FAILED_INIT) || userName.startsWith(USERNAME_PREFIX_LONG_INIT) || userName.startsWith(USERNAME_PREFIX_VERY_LONG_INIT)) {
                     if (IS_DEBUG_ENABLED) {
-                        log("[%s] [lookupCount=%s] get(%s): aborted, as initial loading is already in progress for this user".formatted(Thread.currentThread().getName(), lookupCount, userName));
+                        log(String.format("[%s] [lookupCount=%s] get(%s): aborted, as initial loading is already in progress for this user", Thread.currentThread().getName(), lookupCount, userName));
                     }
 
                     return;
@@ -366,21 +365,21 @@ public class RangerCacheTest {
             userStats.get.record(timeTaken);
 
             if (userName.startsWith(USERNAME_PREFIX_FAILED_INIT)) {
-                assertNull(userGroups, "userGroups should be null for user=" + userName + ", lookupCount=" + lookupCount);
+                assertNull("userGroups should be null for user=" + userName + ", lookupCount=" + lookupCount, userGroups);
             } else if (userName.startsWith(USERNAME_PREFIX_FAILED_FIRST_INIT)) {
                 if (lookupCount == 0) {
-                    assertNull(userGroups, "userGroups should be null after first lookup for user=" + userName + ", lookupCount=" + lookupCount);
+                    assertNull("userGroups should be null after first lookup for user=" + userName + ", lookupCount=" + lookupCount, userGroups);
                 } else {
-                    assertNotNull(userGroups, "userGroups should be null only after first lookup for user=" + userName + ", lookupCount=" + lookupCount);
+                    assertNotNull("userGroups should be null only after first lookup for user=" + userName + ", lookupCount=" + lookupCount, userGroups);
                 }
             } else {
-                assertNotNull(userGroups, "userGroups should not be null for user=" + userName + ", lookupCount=" + lookupCount);
+                assertNotNull("userGroups should not be null for user=" + userName + ", lookupCount=" + lookupCount, userGroups);
             }
 
             userStats.lastValue = userGroups;
 
             if (IS_DEBUG_ENABLED) {
-                log("[%s] [lookupCount=%s] get(%s): timeTaken=%s, userGroups=%s".formatted(Thread.currentThread().getName(), lookupCount, userName, timeTaken, userGroups));
+                log(String.format("[%s] [lookupCount=%s] get(%s): timeTaken=%s, userGroups=%s", Thread.currentThread().getName(), lookupCount, userName, timeTaken, userGroups));
             }
 
             sleep(CACHE_LOOKUP_INTERVAL_MS);
@@ -482,7 +481,7 @@ public class RangerCacheTest {
             long totalTime = this.totalTime.get();
             long count     = this.count.get();
 
-            return "%.3f".formatted((count != 0 ? (totalTime / (double) count) : -1));
+            return String.format("%.3f", (count != 0 ? (totalTime / (double)count) : -1));
         }
     }
 }

@@ -19,8 +19,8 @@
 
 package org.apache.ranger.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 import org.apache.ranger.common.AppConstants;
 

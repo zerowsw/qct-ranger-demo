@@ -21,9 +21,9 @@ package org.apache.ranger.authorization.hive.authorizer;
 
 import java.util.*;
 
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hive.ql.security.authorization.plugin.HiveOperationType;
 import org.apache.ranger.audit.model.AuthzAuditEvent;
@@ -99,7 +99,9 @@ public class RangerHiveAuditHandler extends RangerDefaultAuditHandler {
 		auditEvent.setResourcePath(resourcePathComputed);
 		auditEvent.setResourceType("@" + resourceType); // to be consistent with earlier release
 
-		if (request instanceof RangerHiveAccessRequest hiveAccessRequest && resource instanceof RangerHiveResource hiveResource) {
+		if (request instanceof RangerHiveAccessRequest && resource instanceof RangerHiveResource) {
+			RangerHiveAccessRequest hiveAccessRequest = (RangerHiveAccessRequest) request;
+			RangerHiveResource hiveResource = (RangerHiveResource) resource;
 			HiveAccessType hiveAccessType = hiveAccessRequest.getHiveAccessType();
 
 			if (hiveAccessType == HiveAccessType.USE && hiveResource.getObjectType() == HiveObjectType.DATABASE && StringUtils.isBlank(hiveResource.getDatabase())) {
@@ -155,7 +157,8 @@ public class RangerHiveAuditHandler extends RangerDefaultAuditHandler {
 		} else if (policyType == RangerPolicy.POLICY_TYPE_ACCESS) {
 			String accessType = null;
 
-			if (request instanceof RangerHiveAccessRequest hiveRequest) {
+			if (request instanceof RangerHiveAccessRequest) {
+				RangerHiveAccessRequest hiveRequest = (RangerHiveAccessRequest) request;
 
 				accessType = hiveRequest.getHiveAccessType().toString();
 

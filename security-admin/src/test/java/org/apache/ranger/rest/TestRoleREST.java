@@ -36,16 +36,16 @@ import org.apache.ranger.service.RangerRoleService;
 import org.apache.ranger.service.XUserService;
 import org.apache.ranger.view.RangerRoleList;
 import org.apache.ranger.view.VXUser;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.*;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import java.util.*;
 import java.io.File;
@@ -53,11 +53,10 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
 
 
-@ExtendWith(MockitoExtension.class)
+@RunWith(MockitoJUnitRunner.class)
 public class TestRoleREST {
     private static final Long userId = 8L;
     private static final Long roleId = 9L;
@@ -116,7 +115,7 @@ public class TestRoleREST {
 
     @InjectMocks private RoleREST roleRest = new RoleREST();
 
-    @BeforeEach
+    @Before
     public void setup() {
         RangerSecurityContext context = new RangerSecurityContext();
         context.setUserSession(new UserSessionBase());
@@ -129,7 +128,7 @@ public class TestRoleREST {
         currentUserSession.setXXPortalUser(xXPortalUser);
     }
 
-    @AfterEach
+    @After
     public void destroySession() {
         RangerSecurityContext context = new RangerSecurityContext();
         context.setUserSession(null);
@@ -149,10 +148,10 @@ public class TestRoleREST {
             throw new RuntimeException(e);
         }
         RangerRole createdRole = roleRest.createRole("admin", rangerRole ,createNonExistUserGroup);
-        Assertions.assertNotNull(createdRole);
-        Assertions.assertEquals(createdRole.getName(), rangerRole.getName());
-        Assertions.assertEquals(createdRole.getDescription(), rangerRole.getDescription());
-        Assertions.assertEquals(createdRole.getCreatedByUser(), rangerRole.getCreatedByUser());
+        Assert.assertNotNull(createdRole);
+        Assert.assertEquals(createdRole.getName(), rangerRole.getName());
+        Assert.assertEquals(createdRole.getDescription(), rangerRole.getDescription());
+        Assert.assertEquals(createdRole.getCreatedByUser(), rangerRole.getCreatedByUser());
     }
 
     @Test
@@ -175,9 +174,9 @@ public class TestRoleREST {
             throw new RuntimeException(e);
         }
         RangerRole updatedRole = roleRest.updateRole(roleId, rangerRole, eq(createNonExistUserGroup));
-        Assertions.assertNotNull(updatedRole);
-        Assertions.assertEquals(updatedRole.getName(), rangerRole.getName());
-        Assertions.assertEquals(updatedRole.getUsers(), rangerRole.getUsers());
+        Assert.assertNotNull(updatedRole);
+        Assert.assertEquals(updatedRole.getName(), rangerRole.getName());
+        Assert.assertEquals(updatedRole.getUsers(), rangerRole.getUsers());
     }
 
     @Test
@@ -216,8 +215,8 @@ public class TestRoleREST {
             throw new RuntimeException(e);
         }
         RangerRole returnedRole = roleRest.getRole("admin", adminLoginID ,rangerRole.getName());
-        Assertions.assertNotNull(returnedRole);
-        Assertions.assertEquals(returnedRole.getName(), rangerRole.getName());
+        Assert.assertNotNull(returnedRole);
+        Assert.assertEquals(returnedRole.getName(), rangerRole.getName());
     }
 
     @Test
@@ -229,9 +228,9 @@ public class TestRoleREST {
             throw new RuntimeException(e);
         }
         RangerRole returnedRole = roleRest.getRole(eq(rangerRole.getId()));
-        Assertions.assertNotNull(returnedRole);
-        Assertions.assertEquals(returnedRole.getName(), rangerRole.getName());
-        Assertions.assertEquals(returnedRole.getId(), rangerRole.getId());
+        Assert.assertNotNull(returnedRole);
+        Assert.assertEquals(returnedRole.getName(), rangerRole.getName());
+        Assert.assertEquals(returnedRole.getId(), rangerRole.getId());
     }
 
     @Test
@@ -240,8 +239,8 @@ public class TestRoleREST {
         Mockito.when(searchUtil.getSearchFilter(Mockito.any(HttpServletRequest.class), eq(roleService.sortFields))).
                 thenReturn(Mockito.mock(SearchFilter.class));
         RangerRoleList returnedRangerRoleList = roleRest.getAllRoles(Mockito.mock(HttpServletRequest.class));
-        Assertions.assertNotNull(returnedRangerRoleList);
-        Assertions.assertEquals(returnedRangerRoleList.getListSize(), rangerRoleList.getListSize());
+        Assert.assertNotNull(returnedRangerRoleList);
+        Assert.assertEquals(returnedRangerRoleList.getListSize(), rangerRoleList.getListSize());
     }
 
     @Test
@@ -251,8 +250,8 @@ public class TestRoleREST {
         Mockito.when(searchUtil.getSearchFilter(Mockito.any(HttpServletRequest.class), eq(roleService.sortFields))).
                 thenReturn(searchFilter);
         RangerRoleList returnedRangerRoleList = roleRest.getAllRolesForUser(Mockito.mock(HttpServletRequest.class));
-        Assertions.assertNotNull(returnedRangerRoleList);
-        Assertions.assertEquals(returnedRangerRoleList.getListSize(), rangerRoleList.getListSize());
+        Assert.assertNotNull(returnedRangerRoleList);
+        Assert.assertEquals(returnedRangerRoleList.getListSize(), rangerRoleList.getListSize());
     }
     @Test
     public void test9GetAllRoleNames(){
@@ -266,8 +265,8 @@ public class TestRoleREST {
             throw new RuntimeException(e);
         }
         List<String> returnedRoleList = roleRest.getAllRoleNames(adminLoginID, adminLoginID, Mockito.mock(HttpServletRequest.class));
-        Assertions.assertNotNull(returnedRoleList);
-        Assertions.assertEquals(returnedRoleList.size(), roleList.size());
+        Assert.assertNotNull(returnedRoleList);
+        Assert.assertEquals(returnedRoleList.size(), roleList.size());
     }
     @Test
     public void test10AddUsersAndGroups(){
@@ -288,9 +287,9 @@ public class TestRoleREST {
             throw new RuntimeException(e);
         }
         RangerRole returnedRole = roleRest.addUsersAndGroups(roleId, users, groups, isAdmin);
-        Assertions.assertNotNull(returnedRole);
-        Assertions.assertEquals(returnedRole.getUsers().size(), users.size());
-        Assertions.assertEquals(returnedRole.getGroups().size(), groups.size());
+        Assert.assertNotNull(returnedRole);
+        Assert.assertEquals(returnedRole.getUsers().size(), users.size());
+        Assert.assertEquals(returnedRole.getGroups().size(), groups.size());
     }
     @Test
     public void test11RemoveUsersAndGroups(){
@@ -318,21 +317,21 @@ public class TestRoleREST {
             throw new RuntimeException(e);
         }
         RangerRole returnedRole = roleRest.removeUsersAndGroups(roleId, users, groups);
-        Assertions.assertNotNull(returnedRole);
-        Assertions.assertEquals(createdRoleUsers,users);
-        Assertions.assertEquals(createdRoleGroups,groups);
-        Assertions.assertEquals(returnedRole.getUsers().size(), 0);
-        Assertions.assertEquals(returnedRole.getGroups().size(), 0);
+        Assert.assertNotNull(returnedRole);
+        Assert.assertEquals(createdRoleUsers,users);
+        Assert.assertEquals(createdRoleGroups,groups);
+        Assert.assertEquals(returnedRole.getUsers().size(), 0);
+        Assert.assertEquals(returnedRole.getGroups().size(), 0);
     }
 
     @Test
     public void test12RemoveAdminFromUsersAndGroups(){
         RangerRole rangerRole = createRoleWithUsersAndGroups();
         for (RangerRole.RoleMember role: rangerRole.getUsers()){
-            Assertions.assertTrue(role.getIsAdmin());
+            Assert.assertTrue(role.getIsAdmin());
         }
         for (RangerRole.RoleMember group: rangerRole.getGroups()){
-            Assertions.assertTrue(group.getIsAdmin());
+            Assert.assertTrue(group.getIsAdmin());
         }
         List<String> users = new ArrayList<>(Arrays.asList("test-role","admin"));
         List<String> groups = new ArrayList<>(Arrays.asList("test-group","admin"));
@@ -357,14 +356,14 @@ public class TestRoleREST {
             throw new RuntimeException(e);
         }
         RangerRole returnedRole = roleRest.removeAdminFromUsersAndGroups(roleId, users, groups);
-        Assertions.assertNotNull(returnedRole);
-        Assertions.assertEquals(createdRoleUsers,users);
-        Assertions.assertEquals(createdRoleGroups,groups);
+        Assert.assertNotNull(returnedRole);
+        Assert.assertEquals(createdRoleUsers,users);
+        Assert.assertEquals(createdRoleGroups,groups);
         for (RangerRole.RoleMember role: returnedRole.getUsers()){
-            Assertions.assertFalse(role.getIsAdmin());
+            Assert.assertFalse(role.getIsAdmin());
         }
         for (RangerRole.RoleMember group: returnedRole.getGroups()){
-            Assertions.assertFalse(group.getIsAdmin());
+            Assert.assertFalse(group.getIsAdmin());
         }
     }
     @Test
@@ -386,8 +385,8 @@ public class TestRoleREST {
         }
         RESTResponse resp = roleRest.grantRole(serviceName, grantRevokeRoleRequest,
                 Mockito.mock(HttpServletRequest.class));
-        Assertions.assertNotNull(resp);
-        Assertions.assertEquals(resp.getStatusCode(), RESTResponse.STATUS_SUCCESS);
+        Assert.assertNotNull(resp);
+        Assert.assertEquals(resp.getStatusCode(), RESTResponse.STATUS_SUCCESS);
     }
 
     @Test
@@ -409,8 +408,8 @@ public class TestRoleREST {
         }
         RESTResponse resp = roleRest.revokeRole(serviceName, grantRevokeRoleRequest,
                 Mockito.mock(HttpServletRequest.class));
-        Assertions.assertNotNull(resp);
-        Assertions.assertEquals(resp.getStatusCode(), RESTResponse.STATUS_SUCCESS);
+        Assert.assertNotNull(resp);
+        Assert.assertEquals(resp.getStatusCode(), RESTResponse.STATUS_SUCCESS);
     }
 
     @Test
@@ -433,8 +432,8 @@ public class TestRoleREST {
             throw new RuntimeException(e);
         }
         List<String> returnedRoles = roleRest.getUserRoles(adminLoginID,Mockito.mock(HttpServletRequest.class));
-        Assertions.assertNotNull(returnedRoles);
-        Assertions.assertEquals(returnedRoles.size(), rangerRoles.size());
+        Assert.assertNotNull(returnedRoles);
+        Assert.assertEquals(returnedRoles.size(), rangerRoles.size());
     }
 
     @Test
@@ -459,8 +458,8 @@ public class TestRoleREST {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        Assertions.assertNotNull(returnedRangeRoles);
-        Assertions.assertEquals(returnedRangeRoles.getRangerRoles().size(), rangerRoles.getRangerRoles().size());
+        Assert.assertNotNull(returnedRangeRoles);
+        Assert.assertEquals(returnedRangeRoles.getRangerRoles().size(), rangerRoles.getRangerRoles().size());
     }
 
     @Test
@@ -487,23 +486,20 @@ public class TestRoleREST {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        Assertions.assertNotNull(returnedRangeRoles);
-        Assertions.assertEquals(returnedRangeRoles.getRangerRoles().size(), rangerRoles.getRangerRoles().size());
+        Assert.assertNotNull(returnedRangeRoles);
+        Assert.assertEquals(returnedRangeRoles.getRangerRoles().size(), rangerRoles.getRangerRoles().size());
     }
 
-    @Test
+    @Test(expected = Throwable.class)
     public void test1bCreateRole(){
-		assertThrows(Throwable.class, () -> {
         boolean createNonExistUserGroup = true;
         Mockito.when(validatorFactory.getRangerRoleValidator(roleStore)).thenReturn(Mockito.mock(RangerRoleValidator.class));
         Mockito.when(bizUtil.isUserRangerAdmin(Mockito.anyString())).thenReturn(true);
         RangerRole rangerRole = createRoleInvalidMember();
         roleRest.createRole("admin", rangerRole ,createNonExistUserGroup);
-		});
     }
-    @Test
+    @Test(expected = Throwable.class)
     public void test2bUpdateRole(){
-		assertThrows(Throwable.class, () -> {
         Boolean createNonExistUserGroup = Boolean.TRUE;
         RangerRole rangerRole = createRoleInvalidMember();
         RangerRole rangerRoleOld = createRoleOld();
@@ -517,11 +513,9 @@ public class TestRoleREST {
             throw new RuntimeException(e);
         }
         roleRest.updateRole(roleId, rangerRole, eq(createNonExistUserGroup));
-		});
     }
-    @Test
+    @Test(expected = Throwable.class)
     public void test3bDeleteRoleByName(){
-		assertThrows(Throwable.class, () -> {
         RangerRole rangerRole = createRole();
         Mockito.doReturn(false).when(bizUtil).isUserRangerAdmin(Mockito.anyString());
         Mockito.when(validatorFactory.getRangerRoleValidator(roleStore)).thenReturn(Mockito.mock(RangerRoleValidator.class));
@@ -531,12 +525,10 @@ public class TestRoleREST {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-		});
     }
 
-    @Test
+    @Test(expected = Throwable.class)
     public void test4bDeleteRoleById(){
-		assertThrows(Throwable.class, () -> {
         RangerRole rangerRole = createRole();
         Mockito.when(validatorFactory.getRangerRoleValidator(roleStore)).thenReturn(Mockito.mock(RangerRoleValidator.class));
         roleRest.deleteRole(rangerRole.getId());
@@ -545,20 +537,16 @@ public class TestRoleREST {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-		});
     }
 
-    @Test
+    @Test(expected = Throwable.class)
     public void test5bGetRoleByName(){
-		assertThrows(Throwable.class, () -> {
         RangerRole rangerRole = createRole();
         roleRest.getRole("admin", adminLoginID ,rangerRole.getName());
-		});
     }
 
-    @Test
+    @Test(expected = Throwable.class)
     public void test6bGetRoleById(){
-		assertThrows(Throwable.class, () -> {
         RangerRole rangerRole = createRole();
         try {
             Mockito.when(roleStore.getRole(Mockito.anyLong())).thenThrow(new Exception("test"));
@@ -566,12 +554,10 @@ public class TestRoleREST {
             throw new RuntimeException(e);
         }
         roleRest.getRole(eq(rangerRole.getId()));
-		});
     }
 
-    @Test
+    @Test(expected = Throwable.class)
     public void test7bGetAllRoles(){
-		assertThrows(Throwable.class, () -> {
         SearchFilter searchFilter = new SearchFilter();
         try {
             Mockito.when(roleStore.getRoles(searchFilter, Mockito.any(RangerRoleList.class))).thenThrow(new Exception("test"));
@@ -581,7 +567,6 @@ public class TestRoleREST {
         Mockito.when(searchUtil.getSearchFilter(Mockito.any(HttpServletRequest.class), eq(roleService.sortFields))).
                 thenReturn(Mockito.mock(SearchFilter.class));
         roleRest.getAllRoles(Mockito.mock(HttpServletRequest.class));
-		});
     }
 
     @Test
@@ -591,20 +576,18 @@ public class TestRoleREST {
         Mockito.when(searchUtil.getSearchFilter(Mockito.any(HttpServletRequest.class), eq(roleService.sortFields))).
                 thenReturn(searchFilter);
         RangerRoleList returnedRangerRoleList = roleRest.getAllRolesForUser(Mockito.mock(HttpServletRequest.class));
-        Assertions.assertNotNull(returnedRangerRoleList);
-        Assertions.assertEquals(returnedRangerRoleList.getListSize(), rangerRoleList.getListSize());
+        Assert.assertNotNull(returnedRangerRoleList);
+        Assert.assertEquals(returnedRangerRoleList.getListSize(), rangerRoleList.getListSize());
     }
 
-    @Test
+    @Test(expected = Throwable.class)
     public void test9bGetAllRoleNames(){
-		assertThrows(Throwable.class, () -> {
         List<String> roleList = createRoleList();
         Mockito.when(searchUtil.getSearchFilter(Mockito.any(HttpServletRequest.class), eq(roleService.sortFields))).
                 thenReturn(Mockito.mock(SearchFilter.class));
         List<String> returnedRoleList = roleRest.getAllRoleNames(adminLoginID, adminLoginID, Mockito.mock(HttpServletRequest.class));
-			Assertions.assertNotNull(returnedRoleList);
-			Assertions.assertEquals(returnedRoleList.size(), roleList.size());
-		});
+        Assert.assertNotNull(returnedRoleList);
+        Assert.assertEquals(returnedRoleList.size(), roleList.size());
     }
     @Test
     public void test10bAddUsersAndGroups(){
@@ -627,24 +610,21 @@ public class TestRoleREST {
             throw new RuntimeException(e);
         }
         RangerRole returnedRole = roleRest.addUsersAndGroups(roleId, users, groups, isAdmin);
-        Assertions.assertNotNull(returnedRole);
-        Assertions.assertEquals(returnedRole.getGroups().size(), groups.size() + currentGroupsCount);
+        Assert.assertNotNull(returnedRole);
+        Assert.assertEquals(returnedRole.getGroups().size(), groups.size() + currentGroupsCount);
     }
 
-    @Test
+    @Test(expected = Throwable.class)
     public void test10cAddUsersAndGroups(){
-		assertThrows(Throwable.class, () -> {
         RangerRole rangerRole = createRole();
         List<String> users = new ArrayList<>(Arrays.asList("{OWNER}","test-role3"));
         List<String> groups = new ArrayList<>(Arrays.asList("test-group2","test-group3"));
         Boolean isAdmin = Boolean.TRUE;
         roleRest.addUsersAndGroups(roleId, users, groups, isAdmin);
-		});
     }
 
-    @Test
+    @Test(expected = Throwable.class)
     public void test11bRemoveUsersAndGroups(){
-		assertThrows(Throwable.class, () -> {
         RangerRole rangerRole = createRole();
         List<String> users = new ArrayList<>(Arrays.asList("test-role","admin"));
         List<String> groups = new ArrayList<>();
@@ -653,15 +633,13 @@ public class TestRoleREST {
             createdRoleUsers.add(roleMember.getName());
         }
         roleRest.removeUsersAndGroups(roleId, users, groups);
-		});
     }
 
-    @Test
+    @Test(expected = Throwable.class)
     public void test12bRemoveAdminFromUsersAndGroups(){
-		assertThrows(Throwable.class, () -> {
         RangerRole rangerRole = createRole();
         for (RangerRole.RoleMember role: rangerRole.getUsers()){
-				Assertions.assertTrue(role.getIsAdmin());
+            Assert.assertTrue(role.getIsAdmin());
         }
         List<String> users = new ArrayList<>(Arrays.asList("test-role","admin"));
         List<String> groups = new ArrayList<>();
@@ -670,18 +648,15 @@ public class TestRoleREST {
             createdRoleUsers.add(roleMember.getName());
         }
         roleRest.removeAdminFromUsersAndGroups(roleId, users, groups);
-		});
     }
 
-    @Test
+    @Test(expected = Throwable.class)
     public void test13bGrantRole(){
-		assertThrows(Throwable.class, () -> {
         RangerRole rangerRole = createRole();
         String serviceName = "serviceName";
         GrantRevokeRoleRequest grantRevokeRoleRequest = createGrantRevokeRoleRequest();
         roleRest.grantRole(serviceName, grantRevokeRoleRequest,
                 Mockito.mock(HttpServletRequest.class));
-		});
     }
 
     @Test
@@ -704,13 +679,12 @@ public class TestRoleREST {
         }
         RESTResponse resp = roleRest.revokeRole(serviceName, grantRevokeRoleRequest,
                 Mockito.mock(HttpServletRequest.class));
-        Assertions.assertNotNull(resp);
-        Assertions.assertEquals(resp.getStatusCode(), RESTResponse.STATUS_SUCCESS);
+        Assert.assertNotNull(resp);
+        Assert.assertEquals(resp.getStatusCode(), RESTResponse.STATUS_SUCCESS);
     }
 
-    @Test
+    @Test(expected = Throwable.class)
     public void test14cRevokeRole(){
-		assertThrows(Throwable.class, () -> {
         RangerRole rangerRole = createRole();
         String serviceName = "serviceName";
         GrantRevokeRoleRequest grantRevokeRoleRequest = createGrantRevokeRoleRequest();
@@ -718,12 +692,10 @@ public class TestRoleREST {
         grantRevokeRoleRequest.setGrantorGroups(new HashSet<>(Arrays.asList("group1","group2")));
         roleRest.revokeRole(serviceName, grantRevokeRoleRequest,
                 Mockito.mock(HttpServletRequest.class));
-		});
     }
 
-    @Test
+    @Test(expected = Throwable.class)
     public void test15bGetUserRoles(){
-		assertThrows(Throwable.class, () -> {
         Set<RangerRole> rangerRoles = new HashSet<>();
         RangerRole rangerRole = createRole();
         rangerRoles.add(rangerRole);
@@ -736,12 +708,10 @@ public class TestRoleREST {
         Mockito.when(roleRefUpdater.getRangerDaoManager().getXXRoleRefGroup().findByGroupName(adminLoginID)).
                 thenReturn(xxRoleRefGroupList);
         roleRest.getUserRoles(adminLoginID,Mockito.mock(HttpServletRequest.class));
-		});
     }
 
-    @Test
+    @Test(expected = Throwable.class)
     public void test16bGetRangerRolesIfUpdated() {
-		assertThrows(Throwable.class, () -> {
         RangerRoles rangerRoles = createRangerRoles();
         String serviceName = "serviceName";
         String pluginId = "pluginId";
@@ -758,12 +728,10 @@ public class TestRoleREST {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-		});
     }
 
-    @Test
+    @Test(expected = Throwable.class)
     public void test16cGetRangerRolesIfUpdated() {
-		assertThrows(Throwable.class, () -> {
         String serviceName = "serviceName";
         String pluginId = "pluginId";
         String clusterName = "";
@@ -781,12 +749,10 @@ public class TestRoleREST {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-		});
     }
 
-    @Test
+    @Test(expected = Throwable.class)
     public void test17bGetSecureRangerRolesIfUpdated(){
-		assertThrows(Throwable.class, () -> {
         RangerRoles rangerRoles = createRangerRoles();
         String serviceName = "serviceName";
         String pluginId = "pluginId";
@@ -807,12 +773,10 @@ public class TestRoleREST {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-		});
     }
 
-    @Test
+    @Test(expected = Throwable.class)
     public void test17cGetSecureRangerRolesIfUpdated(){
-		assertThrows(Throwable.class, () -> {
         String serviceName = "serviceName";
         String pluginId = "pluginId";
         String clusterName = "";
@@ -827,12 +791,10 @@ public class TestRoleREST {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-		});
     }
 
-    @Test
+    @Test(expected = Throwable.class)
     public void test17dGetSecureRangerRolesIfUpdated(){
-		assertThrows(Throwable.class, () -> {
 
         String serviceName = "serviceName";
         String pluginId = "pluginId";
@@ -853,7 +815,6 @@ public class TestRoleREST {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-		});
     }
 
 	// empty request roles (requestParamRoles = 0, dbRoles = 5, return = all dbRoles)
@@ -923,9 +884,8 @@ public class TestRoleREST {
 	}
 
 	// getAllFilteredRoleList throws Exception
-	@Test
+	@Test(expected = Throwable.class)
 	public void test18dGetRolesInJson() throws Exception {
-		assertThrows(Throwable.class, () -> {
 		// pre-requisites
 		List<RangerRole> rangerRolesProcessed = new ArrayList<>();
 
@@ -937,10 +897,9 @@ public class TestRoleREST {
 		Mockito.when(roleRest.getAllFilteredRoleList(requestMock)).thenThrow(new Throwable());
 
 		// test
-			Assertions.assertThrows(Throwable.class, () -> roleRest.getRolesInJson(requestMock, responseMock));
+		Assert.assertThrows(Throwable.class, () -> roleRest.getRolesInJson(requestMock, responseMock));
 		Mockito.verify(svcStore, Mockito.never()).getObjectInJson(rangerRolesProcessed, responseMock, ROLE);
 		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyString());
-		});
 	}
 
 	// full match: requestParamRoles = 0, dbRoles = 5, return = all dbRoles
@@ -968,9 +927,9 @@ public class TestRoleREST {
 
 		// test
 		List<RangerRole> rangerRolesProcessedActual = roleRest.getAllFilteredRoleList(requestMock);
-		Assertions.assertNotNull(rangerRolesProcessedActual);
-		Assertions.assertEquals(rangerRolesProcessedActual.size(), rangerRolesProcessedExpected.size());
-		Assertions.assertEquals(rangerRolesProcessedActual, rangerRolesProcessedExpected);
+		Assert.assertNotNull(rangerRolesProcessedActual);
+		Assert.assertEquals(rangerRolesProcessedActual.size(), rangerRolesProcessedExpected.size());
+		Assert.assertEquals(rangerRolesProcessedActual, rangerRolesProcessedExpected);
 	}
 
 	// partial match: requestParamRoles = 2, dbRoles = 5, match = 2
@@ -1003,9 +962,9 @@ public class TestRoleREST {
 
 		// test
 		List<RangerRole> rangerRolesProcessedActual = roleRest.getAllFilteredRoleList(requestMock);
-		Assertions.assertNotNull(rangerRolesProcessedActual);
-		Assertions.assertEquals(rangerRolesProcessedActual.size(), rangerRolesProcessedExpected.size());
-		Assertions.assertEquals(rangerRolesProcessedActual, rangerRolesProcessedExpected);
+		Assert.assertNotNull(rangerRolesProcessedActual);
+		Assert.assertEquals(rangerRolesProcessedActual.size(), rangerRolesProcessedExpected.size());
+		Assert.assertEquals(rangerRolesProcessedActual, rangerRolesProcessedExpected);
 	}
 
 	// partial match: requestParamRoles = 4, dbRoles = 5, match = 2
@@ -1038,9 +997,9 @@ public class TestRoleREST {
 
 		// test
 		List<RangerRole> rangerRolesProcessedActual = roleRest.getAllFilteredRoleList(requestMock);
-		Assertions.assertNotNull(rangerRolesProcessedActual);
-		Assertions.assertEquals(rangerRolesProcessedActual.size(), rangerRolesProcessedExpected.size());
-		Assertions.assertEquals(rangerRolesProcessedActual, rangerRolesProcessedExpected);
+		Assert.assertNotNull(rangerRolesProcessedActual);
+		Assert.assertEquals(rangerRolesProcessedActual.size(), rangerRolesProcessedExpected.size());
+		Assert.assertEquals(rangerRolesProcessedActual, rangerRolesProcessedExpected);
 	}
 
 	// no match: requestParamRoles = 3, dbRoles = 5, match = 0
@@ -1070,9 +1029,9 @@ public class TestRoleREST {
 
 		// test
 		List<RangerRole> rangerRolesProcessedActual = roleRest.getAllFilteredRoleList(requestMock);
-		Assertions.assertNotNull(rangerRolesProcessedActual);
-		Assertions.assertEquals(rangerRolesProcessedActual.size(), rangerRolesProcessedExpected.size());
-		Assertions.assertEquals(rangerRolesProcessedActual, rangerRolesProcessedExpected);
+		Assert.assertNotNull(rangerRolesProcessedActual);
+		Assert.assertEquals(rangerRolesProcessedActual.size(), rangerRolesProcessedExpected.size());
+		Assert.assertEquals(rangerRolesProcessedActual, rangerRolesProcessedExpected);
 	}
 
 	// no match: requestParamRoles = 3, dbRoles = 0, match = 0
@@ -1092,9 +1051,9 @@ public class TestRoleREST {
 
 		// test
 		List<RangerRole> rangerRolesProcessedActual = roleRest.getAllFilteredRoleList(requestMock);
-		Assertions.assertNotNull(rangerRolesProcessedActual);
-		Assertions.assertEquals(rangerRolesProcessedActual.size(), rangerRolesProcessedExpected.size());
-		Assertions.assertEquals(rangerRolesProcessedActual, rangerRolesProcessedExpected);
+		Assert.assertNotNull(rangerRolesProcessedActual);
+		Assert.assertEquals(rangerRolesProcessedActual.size(), rangerRolesProcessedExpected.size());
+		Assert.assertEquals(rangerRolesProcessedActual, rangerRolesProcessedExpected);
 	}
 
 	// full match: requestParamRoles = null, dbRoles = 5, return = all dbRoles
@@ -1122,9 +1081,9 @@ public class TestRoleREST {
 
 		// test
 		List<RangerRole> rangerRolesProcessedActual = roleRest.getAllFilteredRoleList(requestMock);
-		Assertions.assertNotNull(rangerRolesProcessedActual);
-		Assertions.assertEquals(rangerRolesProcessedActual.size(), rangerRolesProcessedExpected.size());
-		Assertions.assertEquals(rangerRolesProcessedActual, rangerRolesProcessedExpected);
+		Assert.assertNotNull(rangerRolesProcessedActual);
+		Assert.assertEquals(rangerRolesProcessedActual.size(), rangerRolesProcessedExpected.size());
+		Assert.assertEquals(rangerRolesProcessedActual, rangerRolesProcessedExpected);
 	}
 
 	// import role with updateIfExists=false and createNonExistUserGroupRole=false
@@ -1152,9 +1111,9 @@ public class TestRoleREST {
 
 		RESTResponse resp = roleRest.importRolesFromFile(request, uploadedInputStream, fileDetail, updateIfExists,
 				createNonExistUserGroupRole);
-		Assertions.assertNotNull(resp);
-		Assertions.assertEquals(resp.getStatusCode(), RESTResponse.STATUS_SUCCESS);
-		Assertions.assertEquals(resp.getMsgDesc(), "Total Role Created = 6 , Total Role Unchanged = 1");
+		Assert.assertNotNull(resp);
+		Assert.assertEquals(resp.getStatusCode(), RESTResponse.STATUS_SUCCESS);
+		Assert.assertEquals(resp.getMsgDesc(), "Total Role Created = 6 , Total Role Unchanged = 1");
 	}
 
 	// import role with updateIfExists=false and createNonExistUserGroupRole=true
@@ -1182,9 +1141,9 @@ public class TestRoleREST {
 
 		RESTResponse resp = roleRest.importRolesFromFile(request, uploadedInputStream, fileDetail, updateIfExists,
 				createNonExistUserGroupRole);
-		Assertions.assertNotNull(resp);
-		Assertions.assertEquals(resp.getStatusCode(), RESTResponse.STATUS_SUCCESS);
-		Assertions.assertEquals(resp.getMsgDesc(), "Total Role Created = 6 , Total Role Unchanged = 1");
+		Assert.assertNotNull(resp);
+		Assert.assertEquals(resp.getStatusCode(), RESTResponse.STATUS_SUCCESS);
+		Assert.assertEquals(resp.getMsgDesc(), "Total Role Created = 6 , Total Role Unchanged = 1");
 	}
 
 	// import role with updateIfExists=true and createNonExistUserGroupRole=true
@@ -1213,17 +1172,16 @@ public class TestRoleREST {
 
 		RESTResponse resp = roleRest.importRolesFromFile(request, uploadedInputStream, fileDetail, updateIfExists,
 				createNonExistUserGroupRole);
-		Assertions.assertNotNull(resp);
-		Assertions.assertEquals(resp.getStatusCode(), RESTResponse.STATUS_SUCCESS);
-		Assertions.assertEquals(resp.getMsgDesc(),
+		Assert.assertNotNull(resp);
+		Assert.assertEquals(resp.getStatusCode(), RESTResponse.STATUS_SUCCESS);
+		Assert.assertEquals(resp.getMsgDesc(),
 				"Total Role Created = 6 , Total Role Updated = 1 , Total Role Unchanged = 0");
 	}
 
 	// import role throws exceptions
 	@SuppressWarnings("unchecked")
-	@Test
+	@Test(expected = Throwable.class)
 	public void test20dimportRolesFromFileWithUpdate() throws Exception {
-		assertThrows(Throwable.class, () -> {
 		HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
 
 		File jsonRoleFile = new File(importRoleTestFilePath);
@@ -1235,10 +1193,9 @@ public class TestRoleREST {
 
 		Mockito.when(roleStore.getRoleNames(Mockito.any(SearchFilter.class))).thenThrow(new Throwable());
 
-			Assertions.assertThrows(Throwable.class, () -> roleRest.importRolesFromFile(request, uploadedInputStream,
+		Assert.assertThrows(Throwable.class, () -> roleRest.importRolesFromFile(request, uploadedInputStream,
 				fileDetail, updateIfExists, createNonExistUserGroupRole));
 		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyString());
-		});
 	}
 
     private RangerRole createRole(){
@@ -1377,9 +1334,8 @@ public class TestRoleREST {
         return rangerRole;
     }
 
-    @Test
+    @Test(expected = Throwable.class)
     public void test21deleteRoleWithinPolicy() {
-		assertThrows(Throwable.class, () -> {
         RangerRole rangerRole = createRole();
         rangerPolicy(rangerRole);
         try {
@@ -1389,17 +1345,15 @@ public class TestRoleREST {
         }
 
         try {
-				Assertions.assertThrows(Throwable.class, () -> roleRest.deleteRole(rangerRole.getId()));
+            Assert.assertThrows(Throwable.class, () -> roleRest.deleteRole(rangerRole.getId()));
             Mockito.verify(restErrorUtil, Mockito.times(1)).createRESTException(Mockito.anyString());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-		});
     }
 
-    @Test
+    @Test(expected = Throwable.class)
     public void test22deleteRoleWithValidationError() {
-		assertThrows(Throwable.class, () -> {
         RangerRole rangerRole = createRole();
         try {
             Mockito.when(validatorFactory.getRangerRoleValidator(roleStore)).thenThrow(new Exception());
@@ -1408,12 +1362,11 @@ public class TestRoleREST {
         }
 
         try {
-				Assertions.assertThrows(Throwable.class, () -> roleRest.deleteRole(rangerRole.getId()));
+            Assert.assertThrows(Throwable.class,() -> roleRest.deleteRole(rangerRole.getId()));
             Mockito.verify(restErrorUtil, Mockito.times(1)).createRESTException(Mockito.anyString());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-		});
     }
 
      private RangerPolicy rangerPolicy(RangerRole rangerRole) {

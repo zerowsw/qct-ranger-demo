@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.ranger.common.ContextUtil;
 import org.apache.ranger.common.JSONUtil;
 import org.apache.ranger.common.PropertiesUtil;
@@ -41,20 +41,22 @@ import org.apache.ranger.plugin.model.RangerServiceDef.RangerServiceConfigDef;
 import org.apache.ranger.plugin.util.ServiceDefUtil;
 import org.apache.ranger.security.context.RangerContextHolder;
 import org.apache.ranger.security.context.RangerSecurityContext;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.MethodOrderer.MethodName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.Assert;
+import org.junit.FixMethodOrder;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.apache.ranger.service.RangerServiceDefService.PROP_ENABLE_IMPLICIT_CONDITION_EXPRESSION;
 
-@ExtendWith(MockitoExtension.class)
-@TestMethodOrder(MethodName.class)
+@RunWith(MockitoJUnitRunner.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestRangerServiceDefService {
 
 	private static Long Id = 8L;
@@ -79,6 +81,9 @@ public class TestRangerServiceDefService {
 
 	@Mock
 	XXServiceDefDao xServiceDefDao;
+
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
 
 	public void setup() {
 		RangerSecurityContext context = new RangerSecurityContext();
@@ -137,7 +142,7 @@ public class TestRangerServiceDefService {
 	public void test1ValidateForCreate() {
 		RangerServiceDef rangerServiceDef = rangerServiceDef();
 		serviceDefService.validateForCreate(rangerServiceDef);
-		Assertions.assertNotNull(rangerServiceDef);
+		Assert.assertNotNull(rangerServiceDef);
 	}
 
 	@Test
@@ -146,7 +151,7 @@ public class TestRangerServiceDefService {
 		XXServiceDef serviceDef = serviceDef();
 		serviceDefService.validateForUpdate(rangerServiceDef, serviceDef);
 
-		Assertions.assertNotNull(rangerServiceDef);
+		Assert.assertNotNull(rangerServiceDef);
 	}
 
 	@Test
@@ -332,13 +337,13 @@ public class TestRangerServiceDefService {
 
 		RangerServiceDef dbRangerServiceDef = serviceDefService
 				.populateViewBean(serviceDef);
-		Assertions.assertNotNull(dbRangerServiceDef);
-		Assertions.assertEquals(dbRangerServiceDef.getId(), serviceDef.getId());
-		Assertions.assertEquals(dbRangerServiceDef.getName(), serviceDef.getName());
-		Assertions.assertEquals(dbRangerServiceDef.getDescription(),
+		Assert.assertNotNull(dbRangerServiceDef);
+		Assert.assertEquals(dbRangerServiceDef.getId(), serviceDef.getId());
+		Assert.assertEquals(dbRangerServiceDef.getName(), serviceDef.getName());
+		Assert.assertEquals(dbRangerServiceDef.getDescription(),
 				serviceDef.getDescription());
-		Assertions.assertEquals(dbRangerServiceDef.getGuid(), serviceDef.getGuid());
-		Assertions.assertEquals(dbRangerServiceDef.getVersion(),
+		Assert.assertEquals(dbRangerServiceDef.getGuid(), serviceDef.getGuid());
+		Assert.assertEquals(dbRangerServiceDef.getVersion(),
 				serviceDef.getVersion());
 		Mockito.verify(daoManager).getXXServiceConfigDef();
 		Mockito.verify(daoManager).getXXResourceDef();
@@ -548,7 +553,7 @@ public class TestRangerServiceDefService {
 
 		List<RangerServiceDef> dbRangerServiceDef = serviceDefService
 				.getAllServiceDefs();
-		Assertions.assertNotNull(dbRangerServiceDef);
+		Assert.assertNotNull(dbRangerServiceDef);
 		Mockito.verify(daoManager).getXXResourceDef();
 		Mockito.verify(daoManager).getXXAccessTypeDef();
 		Mockito.verify(daoManager).getXXPolicyConditionDef();
@@ -739,7 +744,7 @@ public class TestRangerServiceDefService {
 
 		RangerServiceDef dbRangerServiceDef = serviceDefService
 				.getPopulatedViewObject(serviceDef);
-		Assertions.assertNotNull(dbRangerServiceDef);
+		Assert.assertNotNull(dbRangerServiceDef);
 		Mockito.verify(daoManager).getXXServiceConfigDef();
 		Mockito.verify(daoManager).getXXResourceDef();
 		Mockito.verify(daoManager).getXXAccessTypeDef();
@@ -755,11 +760,11 @@ public class TestRangerServiceDefService {
 		boolean          isAdded    = serviceDefService.addImplicitConditionExpressionIfNeeded(serviceDef);
 
 		// serviceDef doesn't have RangerScriptConditionEvaluator condition, hence should be added
-		Assertions.assertTrue(isAdded);
+		Assert.assertTrue(isAdded);
 
 		int postCount = serviceDef.getPolicyConditions().size();
 
-		Assertions.assertEquals(initCount + 1, postCount);
+		Assert.assertEquals(initCount + 1, postCount);
 
 		boolean exists = false;
 
@@ -771,12 +776,12 @@ public class TestRangerServiceDefService {
 			}
 		}
 
-		Assertions.assertTrue(exists);
+		Assert.assertTrue(exists);
 
 		isAdded = serviceDefService.addImplicitConditionExpressionIfNeeded(serviceDef);
 
 		// serviceDef already has RangerScriptConditionEvaluator, hence shouldn't be added again
-		Assertions.assertFalse(isAdded);
+		Assert.assertFalse(isAdded);
 	}
 
 	@Test
@@ -789,11 +794,11 @@ public class TestRangerServiceDefService {
 			boolean          isAdded    = serviceDefService.addImplicitConditionExpressionIfNeeded(serviceDef);
 
 			// PROP_ENABLE_IMPLICIT_CONDITION_EXPR is false, hence shouldn't be added
-			Assertions.assertFalse(isAdded);
+			Assert.assertFalse(isAdded);
 
 			int postCount = serviceDef.getPolicyConditions().size();
 
-			Assertions.assertEquals(initCount, postCount);
+			Assert.assertEquals(initCount, postCount);
 		} finally {
 			PropertiesUtil.getPropertiesMap().remove(PROP_ENABLE_IMPLICIT_CONDITION_EXPRESSION);
 		}

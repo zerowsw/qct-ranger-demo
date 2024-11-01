@@ -37,8 +37,7 @@ import org.apache.hadoop.hdfs.MiniDFSCluster;
 import org.apache.hadoop.security.AccessControlException;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.apache.ranger.authorization.hadoop.RangerHdfsAuthorizer;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.Assert;
 
 /**
  * Here we plug the Ranger AccessControlEnforcer into HDFS.
@@ -57,7 +56,7 @@ public class HDFSRangerTest {
     private static MiniDFSCluster hdfsCluster;
     private static String defaultFs;
 
-    @org.junit.jupiter.api.BeforeAll
+    @org.junit.BeforeClass
     public static void setup() throws Exception {
         Configuration conf = new Configuration();
         conf.set(MiniDFSCluster.HDFS_MINIDFS_BASEDIR, baseDir.getAbsolutePath());
@@ -67,18 +66,18 @@ public class HDFSRangerTest {
         defaultFs = conf.get("fs.defaultFS");
     }
 
-    @org.junit.jupiter.api.AfterAll
+    @org.junit.AfterClass
     public static void cleanup() throws Exception {
         FileUtil.fullyDelete(baseDir);
         hdfsCluster.shutdown();
     }
 
-    @org.junit.jupiter.api.Test
+    @org.junit.Test
     public void readTest() throws Exception {
         HDFSReadTest("/tmp/tmpdir/data-file2");
     }
 
-    @org.junit.jupiter.api.Test
+    @org.junit.Test
     public void writeTest() throws Exception {
 
         FileSystem fileSystem = hdfsCluster.getFileSystem();
@@ -141,10 +140,10 @@ public class HDFSRangerTest {
                 // Write to the file
                 try {
                     fs.append(file);
-                    Assertions.fail("Failure expected on an incorrect permission");
+                    Assert.fail("Failure expected on an incorrect permission");
                 } catch (AccessControlException ex) {
                     // expected
-                    Assertions.assertTrue(AccessControlException.class.getName().equals(ex.getClass().getName()));
+                    Assert.assertTrue(AccessControlException.class.getName().equals(ex.getClass().getName()));
                 }
 
                 fs.close();
@@ -153,7 +152,7 @@ public class HDFSRangerTest {
         });
     }
 
-    @org.junit.jupiter.api.Test
+    @org.junit.Test
     public void executeTest() throws Exception {
         FileSystem fileSystem = hdfsCluster.getFileSystem();
 
@@ -184,7 +183,7 @@ public class HDFSRangerTest {
                 FileSystem fs = FileSystem.get(conf);
 
                 RemoteIterator<LocatedFileStatus> iter = fs.listFiles(file.getParent(), false);
-                Assertions.assertTrue(iter.hasNext());
+                Assert.assertTrue(iter.hasNext());
 
                 fs.close();
                 return null;
@@ -202,7 +201,7 @@ public class HDFSRangerTest {
                 FileSystem fs = FileSystem.get(conf);
 
                 RemoteIterator<LocatedFileStatus> iter = fs.listFiles(file.getParent(), false);
-                Assertions.assertTrue(iter.hasNext());
+                Assert.assertTrue(iter.hasNext());
 
                 fs.close();
                 return null;
@@ -222,11 +221,11 @@ public class HDFSRangerTest {
                 // Write to the file
                 try {
                     RemoteIterator<LocatedFileStatus> iter = fs.listFiles(file.getParent(), false);
-                    Assertions.assertTrue(iter.hasNext());
-                    Assertions.fail("Failure expected on an incorrect permission");
+                    Assert.assertTrue(iter.hasNext());
+                    Assert.fail("Failure expected on an incorrect permission");
                 } catch (AccessControlException ex) {
                     // expected
-                    Assertions.assertTrue(AccessControlException.class.getName().equals(ex.getClass().getName()));
+                    Assert.assertTrue(AccessControlException.class.getName().equals(ex.getClass().getName()));
                 }
 
                 fs.close();
@@ -236,7 +235,7 @@ public class HDFSRangerTest {
 
     }
 
-    @org.junit.jupiter.api.Test
+    @org.junit.Test
     public void readTestUsingTagPolicy() throws Exception {
         FileSystem fileSystem = hdfsCluster.getFileSystem();
 
@@ -267,7 +266,7 @@ public class HDFSRangerTest {
                 ByteArrayOutputStream output = new ByteArrayOutputStream();
                 IOUtils.copy(in, output);
                 String content = new String(output.toByteArray());
-                Assertions.assertTrue(content.startsWith("data0"));
+                Assert.assertTrue(content.startsWith("data0"));
 
                 fs.close();
                 return null;
@@ -289,7 +288,7 @@ public class HDFSRangerTest {
                 ByteArrayOutputStream output = new ByteArrayOutputStream();
                 IOUtils.copy(in, output);
                 String content = new String(output.toByteArray());
-                Assertions.assertTrue(content.startsWith("data0"));
+                Assert.assertTrue(content.startsWith("data0"));
 
                 fs.close();
                 return null;
@@ -309,10 +308,10 @@ public class HDFSRangerTest {
                 // Read the file
                 try {
                     fs.open(file);
-                    Assertions.fail("Failure expected on an incorrect permission");
+                    Assert.fail("Failure expected on an incorrect permission");
                 } catch (AccessControlException ex) {
                     // expected
-                    Assertions.assertTrue(AccessControlException.class.getName().equals(ex.getClass().getName()));
+                    Assert.assertTrue(AccessControlException.class.getName().equals(ex.getClass().getName()));
                 }
 
                 fs.close();
@@ -333,10 +332,10 @@ public class HDFSRangerTest {
                 // Read the file
                 try {
                     fs.open(file);
-                    Assertions.fail("Failure expected on an incorrect permission");
+                    Assert.fail("Failure expected on an incorrect permission");
                 } catch (AccessControlException ex) {
                     // expected
-                    Assertions.assertTrue(AccessControlException.class.getName().equals(ex.getClass().getName()));
+                    Assert.assertTrue(AccessControlException.class.getName().equals(ex.getClass().getName()));
                 }
 
                 fs.close();
@@ -345,13 +344,13 @@ public class HDFSRangerTest {
         });
     }
 
-    @org.junit.jupiter.api.Test
+    @org.junit.Test
     public void HDFSFileNameTokenReadTest() throws Exception {
         HDFSReadTest("/tmp/tmpdir4/data-file");
         HDFSReadFailTest("/tmp/tmpdir4/t/abc");
     }
 
-    @org.junit.jupiter.api.Test
+    @org.junit.Test
     public void HDFSBaseFileNameTokenReadTest() throws Exception {
         HDFSReadTest("/tmp/tmpdir5/data-file.txt");
         HDFSReadFailTest("/tmp/tmpdir5/data-file.csv");
@@ -359,8 +358,8 @@ public class HDFSRangerTest {
     }
 
     // TODO
-    @org.junit.jupiter.api.Test
-    @org.junit.jupiter.api.Disabled
+    @org.junit.Test
+    @org.junit.Ignore
     public void HDFSContentSummaryTest() throws Exception {
         HDFSGetContentSummary("/tmp/get-content-summary");
     }
@@ -395,7 +394,7 @@ public class HDFSRangerTest {
                 ByteArrayOutputStream output = new ByteArrayOutputStream();
                 IOUtils.copy(in, output);
                 String content = new String(output.toByteArray());
-                Assertions.assertTrue(content.startsWith("data0"));
+                Assert.assertTrue(content.startsWith("data0"));
 
                 fs.close();
                 return null;
@@ -417,7 +416,7 @@ public class HDFSRangerTest {
                 ByteArrayOutputStream output = new ByteArrayOutputStream();
                 IOUtils.copy(in, output);
                 String content = new String(output.toByteArray());
-                Assertions.assertTrue(content.startsWith("data0"));
+                Assert.assertTrue(content.startsWith("data0"));
 
                 fs.close();
                 return null;
@@ -437,10 +436,10 @@ public class HDFSRangerTest {
                 // Read the file
                 try {
                     fs.open(file);
-                    Assertions.fail("Failure expected on an incorrect permission");
+                    Assert.fail("Failure expected on an incorrect permission");
                 } catch (AccessControlException ex) {
                     // expected
-                    Assertions.assertTrue(AccessControlException.class.getName().equals(ex.getClass().getName()));
+                    Assert.assertTrue(AccessControlException.class.getName().equals(ex.getClass().getName()));
                 }
 
                 fs.close();
@@ -476,10 +475,10 @@ public class HDFSRangerTest {
                 // Read the file
                 try {
                     fs.open(file);
-                    Assertions.fail("Failure expected on an incorrect permission");
+                    Assert.fail("Failure expected on an incorrect permission");
                 } catch (AccessControlException ex) {
                     // expected
-                    Assertions.assertTrue(AccessControlException.class.getName().equals(ex.getClass().getName()));
+                    Assert.assertTrue(AccessControlException.class.getName().equals(ex.getClass().getName()));
                 }
 
                 fs.close();
@@ -500,10 +499,10 @@ public class HDFSRangerTest {
                 // Read the file
                 try {
                     fs.open(file);
-                    Assertions.fail("Failure expected on an incorrect permission");
+                    Assert.fail("Failure expected on an incorrect permission");
                 } catch (AccessControlException ex) {
                     // expected
-                    Assertions.assertTrue(AccessControlException.class.getName().equals(ex.getClass().getName()));
+                    Assert.assertTrue(AccessControlException.class.getName().equals(ex.getClass().getName()));
                 }
 
                 fs.close();
@@ -524,10 +523,10 @@ public class HDFSRangerTest {
                 // Read the file
                 try {
                     fs.open(file);
-                    Assertions.fail("Failure expected on an incorrect permission");
+                    Assert.fail("Failure expected on an incorrect permission");
                 } catch (AccessControlException ex) {
                     // expected
-                    Assertions.assertTrue(AccessControlException.class.getName().equals(ex.getClass().getName()));
+                    Assert.assertTrue(AccessControlException.class.getName().equals(ex.getClass().getName()));
                 }
 
                 fs.close();
@@ -557,9 +556,9 @@ public class HDFSRangerTest {
                     ContentSummary contentSummary = fs.getContentSummary(new Path(dirName));
 
                     long directoryCount = contentSummary.getDirectoryCount();
-                    Assertions.assertTrue(directoryCount == 3, "Found unexpected number of directories; expected-count=3, actual-count=" + directoryCount);
+                    Assert.assertTrue("Found unexpected number of directories; expected-count=3, actual-count=" + directoryCount, directoryCount == 3);
                 } catch (Exception e) {
-                    Assertions.fail("Failed to getContentSummary, exception=" + e);
+                    Assert.fail("Failed to getContentSummary, exception=" + e);
                 }
                 fs.close();
                 return null;

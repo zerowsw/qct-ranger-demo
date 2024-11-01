@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import jakarta.ws.rs.WebApplicationException;
+import javax.ws.rs.WebApplicationException;
 
 import org.apache.ranger.biz.RangerBizUtil;
 import org.apache.ranger.common.ContextUtil;
@@ -55,20 +55,20 @@ import org.apache.ranger.plugin.util.SearchFilter;
 import org.apache.ranger.security.context.RangerContextHolder;
 import org.apache.ranger.security.context.RangerSecurityContext;
 import org.apache.ranger.view.RangerServiceDefList;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.MethodOrderer.MethodName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.Assert;
+import org.junit.FixMethodOrder;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ExtendWith(MockitoExtension.class)
-@TestMethodOrder(MethodName.class)
+@RunWith(MockitoJUnitRunner.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestRangerServiceDefServiceBase {
 
 	private static Long Id = 8L;
@@ -102,6 +102,9 @@ public class TestRangerServiceDefServiceBase {
 
 	@Mock
 	BaseDao<XXServiceDef> baseDao;
+
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
 
 	public void setup() {
 		RangerSecurityContext context = new RangerSecurityContext();
@@ -166,19 +169,19 @@ public class TestRangerServiceDefServiceBase {
 		XXServiceDef dbServiceDef = rangerServiceDefService
 				.mapViewToEntityBean(rangerServiceDef, serviceDef,
 						operationContext);
-		Assertions.assertNotNull(dbServiceDef);
-		Assertions.assertEquals(dbServiceDef, serviceDef);
-		Assertions.assertEquals(dbServiceDef.getDescription(),
+		Assert.assertNotNull(dbServiceDef);
+		Assert.assertEquals(dbServiceDef, serviceDef);
+		Assert.assertEquals(dbServiceDef.getDescription(),
 				serviceDef.getDescription());
-		Assertions.assertEquals(dbServiceDef.getGuid(), serviceDef.getGuid());
-		Assertions.assertEquals(dbServiceDef.getName(), serviceDef.getName());
-		Assertions.assertEquals(dbServiceDef.getAddedByUserId(),
+		Assert.assertEquals(dbServiceDef.getGuid(), serviceDef.getGuid());
+		Assert.assertEquals(dbServiceDef.getName(), serviceDef.getName());
+		Assert.assertEquals(dbServiceDef.getAddedByUserId(),
 				serviceDef.getAddedByUserId());
-		Assertions.assertEquals(dbServiceDef.getId(), serviceDef.getId());
-		Assertions.assertEquals(dbServiceDef.getVersion(), serviceDef.getVersion());
-		Assertions.assertEquals(dbServiceDef.getImplclassname(),
+		Assert.assertEquals(dbServiceDef.getId(), serviceDef.getId());
+		Assert.assertEquals(dbServiceDef.getVersion(), serviceDef.getVersion());
+		Assert.assertEquals(dbServiceDef.getImplclassname(),
 				serviceDef.getImplclassname());
-		Assertions.assertEquals(dbServiceDef.getUpdatedByUserId(),
+		Assert.assertEquals(dbServiceDef.getUpdatedByUserId(),
 				serviceDef.getUpdatedByUserId());
 	}
 
@@ -189,17 +192,17 @@ public class TestRangerServiceDefServiceBase {
 
 		RangerServiceDef dbRangerServiceDef = rangerServiceDefService
 				.mapEntityToViewBean(rangerServiceDef, serviceDef);
-		Assertions.assertNotNull(dbRangerServiceDef);
-		Assertions.assertEquals(dbRangerServiceDef, rangerServiceDef);
-		Assertions.assertEquals(dbRangerServiceDef.getDescription(),
+		Assert.assertNotNull(dbRangerServiceDef);
+		Assert.assertEquals(dbRangerServiceDef, rangerServiceDef);
+		Assert.assertEquals(dbRangerServiceDef.getDescription(),
 				rangerServiceDef.getDescription());
-		Assertions.assertEquals(dbRangerServiceDef.getGuid(),
+		Assert.assertEquals(dbRangerServiceDef.getGuid(),
 				rangerServiceDef.getGuid());
-		Assertions.assertEquals(dbRangerServiceDef.getName(),
+		Assert.assertEquals(dbRangerServiceDef.getName(),
 				rangerServiceDef.getName());
-		Assertions.assertEquals(dbRangerServiceDef.getId(),
+		Assert.assertEquals(dbRangerServiceDef.getId(),
 				rangerServiceDef.getId());
-		Assertions.assertEquals(dbRangerServiceDef.getVersion(),
+		Assert.assertEquals(dbRangerServiceDef.getVersion(),
 				rangerServiceDef.getVersion());
 
 	}
@@ -217,7 +220,7 @@ public class TestRangerServiceDefServiceBase {
 		XXServiceConfigDef dbServiceConfigDef = rangerServiceDefService
 				.populateRangerServiceConfigDefToXX(serviceConfigDefObj,
 						configDefObj, serviceDefObj, 1);
-		Assertions.assertNotNull(dbServiceConfigDef);
+		Assert.assertNotNull(dbServiceConfigDef);
 
 	}
 
@@ -227,7 +230,7 @@ public class TestRangerServiceDefServiceBase {
 
 		RangerServiceConfigDef dbserviceConfigDefObj = rangerServiceDefService
 				.populateXXToRangerServiceConfigDef(serviceConfigDefObj);
-		Assertions.assertNotNull(dbserviceConfigDefObj);
+		Assert.assertNotNull(dbserviceConfigDefObj);
 	}
 
 	@Test
@@ -260,12 +263,12 @@ public class TestRangerServiceDefServiceBase {
 		XXResourceDef dbResourceDef = rangerServiceDefService
 				.populateRangerResourceDefToXX(rangerResourceDefObj,
 						resourceDefObj, serviceDefObj, 1);
-		Assertions.assertNotNull(dbResourceDef);
-		Assertions.assertEquals(dbResourceDef, resourceDefObj);
-		Assertions.assertEquals(dbResourceDef.getId(), resourceDefObj.getId());
-		Assertions.assertEquals(dbResourceDef.getLabel(), resourceDefObj.getLabel());
-		Assertions.assertEquals(dbResourceDef.getName(), resourceDefObj.getName());
-		Assertions.assertEquals(dbResourceDef.getDescription(),
+		Assert.assertNotNull(dbResourceDef);
+		Assert.assertEquals(dbResourceDef, resourceDefObj);
+		Assert.assertEquals(dbResourceDef.getId(), resourceDefObj.getId());
+		Assert.assertEquals(dbResourceDef.getLabel(), resourceDefObj.getLabel());
+		Assert.assertEquals(dbResourceDef.getName(), resourceDefObj.getName());
+		Assert.assertEquals(dbResourceDef.getDescription(),
 				resourceDefObj.getDescription());
 
 	}
@@ -284,14 +287,14 @@ public class TestRangerServiceDefServiceBase {
 
 		RangerResourceDef dbRangerResourceDef = rangerServiceDefService
 				.populateXXToRangerResourceDef(resourceDefObj);
-		Assertions.assertNotNull(dbRangerResourceDef);
-		Assertions.assertEquals(dbRangerResourceDef.getName(),
+		Assert.assertNotNull(dbRangerResourceDef);
+		Assert.assertEquals(dbRangerResourceDef.getName(),
 				resourceDefObj.getName());
-		Assertions.assertEquals(dbRangerResourceDef.getDescription(),
+		Assert.assertEquals(dbRangerResourceDef.getDescription(),
 				resourceDefObj.getDescription());
-		Assertions.assertEquals(dbRangerResourceDef.getType(),
+		Assert.assertEquals(dbRangerResourceDef.getType(),
 				resourceDefObj.getType());
-		Assertions.assertEquals(dbRangerResourceDef.getRbKeyDescription(),
+		Assert.assertEquals(dbRangerResourceDef.getRbKeyDescription(),
 				resourceDefObj.getRbkeydescription());
 		Mockito.verify(daoManager).getXXResourceDef();
 	}
@@ -328,27 +331,26 @@ public class TestRangerServiceDefServiceBase {
 		XXAccessTypeDef dbAccessTypeDef = rangerServiceDefService
 				.populateRangerAccessTypeDefToXX(rangerAccessTypeDefObj,
 						accessTypeDefObj, serviceDefObj, 1);
-		Assertions.assertNotNull(dbAccessTypeDef);
-		Assertions.assertEquals(dbAccessTypeDef, accessTypeDefObj);
-		Assertions.assertEquals(dbAccessTypeDef.getName(),
+		Assert.assertNotNull(dbAccessTypeDef);
+		Assert.assertEquals(dbAccessTypeDef, accessTypeDefObj);
+		Assert.assertEquals(dbAccessTypeDef.getName(),
 				accessTypeDefObj.getName());
-		Assertions.assertEquals(dbAccessTypeDef.getLabel(),
+		Assert.assertEquals(dbAccessTypeDef.getLabel(),
 				accessTypeDefObj.getLabel());
-		Assertions.assertEquals(dbAccessTypeDef.getRbkeylabel(),
+		Assert.assertEquals(dbAccessTypeDef.getRbkeylabel(),
 				accessTypeDefObj.getRbkeylabel());
-		Assertions.assertEquals(dbAccessTypeDef.getDefid(),
+		Assert.assertEquals(dbAccessTypeDef.getDefid(),
 				accessTypeDefObj.getDefid());
-		Assertions.assertEquals(dbAccessTypeDef.getId(), accessTypeDefObj.getId());
-		Assertions.assertEquals(dbAccessTypeDef.getCreateTime(),
+		Assert.assertEquals(dbAccessTypeDef.getId(), accessTypeDefObj.getId());
+		Assert.assertEquals(dbAccessTypeDef.getCreateTime(),
 				accessTypeDefObj.getCreateTime());
-		Assertions.assertEquals(dbAccessTypeDef.getOrder(),
+		Assert.assertEquals(dbAccessTypeDef.getOrder(),
 				accessTypeDefObj.getOrder());
 
 	}
 
 	@Test
 	public void test8populateRangerAccessTypeDefToXXNullValue() {
-		assertThrows(WebApplicationException.class, () -> {
 		RangerAccessTypeDef rangerAccessTypeDefObj = null;
 		XXAccessTypeDef accessTypeDefObj = null;
 		XXServiceDef serviceDefObj = null;
@@ -357,11 +359,12 @@ public class TestRangerServiceDefServiceBase {
 						"RangerServiceDef cannot be null.",
 						MessageEnums.DATA_NOT_FOUND)).thenThrow(
 				new WebApplicationException());
+
+		thrown.expect(WebApplicationException.class);
 		XXAccessTypeDef dbAccessTypeDef = rangerServiceDefService
 				.populateRangerAccessTypeDefToXX(rangerAccessTypeDefObj,
 						accessTypeDefObj, serviceDefObj, 1);
-			Assertions.assertNull(dbAccessTypeDef);
-		});
+		Assert.assertNull(dbAccessTypeDef);
 	}
 
 	@Test
@@ -381,12 +384,12 @@ public class TestRangerServiceDefServiceBase {
 
 		RangerAccessTypeDef dbRangerAccessTypeDef = rangerServiceDefService
 				.populateXXToRangerAccessTypeDef(accessTypeDefObj, Collections.emptyList());
-		Assertions.assertNotNull(dbRangerAccessTypeDef);
-		Assertions.assertEquals(dbRangerAccessTypeDef.getName(),
+		Assert.assertNotNull(dbRangerAccessTypeDef);
+		Assert.assertEquals(dbRangerAccessTypeDef.getName(),
 				accessTypeDefObj.getName());
-		Assertions.assertEquals(dbRangerAccessTypeDef.getLabel(),
+		Assert.assertEquals(dbRangerAccessTypeDef.getLabel(),
 				accessTypeDefObj.getLabel());
-		Assertions.assertEquals(dbRangerAccessTypeDef.getRbKeyLabel(),
+		Assert.assertEquals(dbRangerAccessTypeDef.getRbKeyLabel(),
 				accessTypeDefObj.getRbkeylabel());
 	}
 
@@ -422,31 +425,30 @@ public class TestRangerServiceDefServiceBase {
 		XXPolicyConditionDef dbPolicyConditionDef = rangerServiceDefService
 				.populateRangerPolicyConditionDefToXX(rangerConditionDefvObj,
 						policyConditionDefObj, serviceDefObj, 1);
-		Assertions.assertNotNull(dbPolicyConditionDef);
-		Assertions.assertEquals(dbPolicyConditionDef.getName(),
+		Assert.assertNotNull(dbPolicyConditionDef);
+		Assert.assertEquals(dbPolicyConditionDef.getName(),
 				policyConditionDefObj.getName());
-		Assertions.assertEquals(dbPolicyConditionDef.getDescription(),
+		Assert.assertEquals(dbPolicyConditionDef.getDescription(),
 				policyConditionDefObj.getDescription());
-		Assertions.assertEquals(dbPolicyConditionDef.getEvaluator(),
+		Assert.assertEquals(dbPolicyConditionDef.getEvaluator(),
 				policyConditionDefObj.getEvaluator());
-		Assertions.assertEquals(dbPolicyConditionDef.getLabel(),
+		Assert.assertEquals(dbPolicyConditionDef.getLabel(),
 				policyConditionDefObj.getLabel());
-		Assertions.assertEquals(dbPolicyConditionDef.getId(),
+		Assert.assertEquals(dbPolicyConditionDef.getId(),
 				policyConditionDefObj.getId());
-		Assertions.assertEquals(dbPolicyConditionDef.getRbkeydescription(),
+		Assert.assertEquals(dbPolicyConditionDef.getRbkeydescription(),
 				policyConditionDefObj.getRbkeydescription());
-		Assertions.assertEquals(dbPolicyConditionDef.getOrder(),
+		Assert.assertEquals(dbPolicyConditionDef.getOrder(),
 				policyConditionDefObj.getOrder());
-		Assertions.assertEquals(dbPolicyConditionDef.getUpdatedByUserId(),
+		Assert.assertEquals(dbPolicyConditionDef.getUpdatedByUserId(),
 				policyConditionDefObj.getUpdatedByUserId());
-		Assertions.assertEquals(dbPolicyConditionDef.getUpdateTime(),
+		Assert.assertEquals(dbPolicyConditionDef.getUpdateTime(),
 				policyConditionDefObj.getUpdateTime());
 
 	}
 
 	@Test
 	public void test11populateRangerPolicyConditionDefToXXnullValue() {
-		assertThrows(WebApplicationException.class, () -> {
 		RangerPolicyConditionDef rangerConditionDefvObj = null;
 		XXPolicyConditionDef policyConditionDefObj = null;
 		XXServiceDef serviceDefObj = null;
@@ -457,11 +459,12 @@ public class TestRangerServiceDefServiceBase {
 						MessageEnums.DATA_NOT_FOUND)).thenThrow(
 				new WebApplicationException());
 
+		thrown.expect(WebApplicationException.class);
+
 		XXPolicyConditionDef dbPolicyConditionDef = rangerServiceDefService
 				.populateRangerPolicyConditionDefToXX(rangerConditionDefvObj,
 						policyConditionDefObj, serviceDefObj, 1);
-			Assertions.assertNull(dbPolicyConditionDef);
-		});
+		Assert.assertNull(dbPolicyConditionDef);
 	}
 
 	@Test
@@ -479,14 +482,14 @@ public class TestRangerServiceDefServiceBase {
 
 		RangerPolicyConditionDef dbRangerPolicyConditionDef = rangerServiceDefService
 				.populateXXToRangerPolicyConditionDef(policyConditionDefObj);
-		Assertions.assertNotNull(dbRangerPolicyConditionDef);
-		Assertions.assertEquals(dbRangerPolicyConditionDef.getName(),
+		Assert.assertNotNull(dbRangerPolicyConditionDef);
+		Assert.assertEquals(dbRangerPolicyConditionDef.getName(),
 				policyConditionDefObj.getName());
-		Assertions.assertEquals(dbRangerPolicyConditionDef.getDescription(),
+		Assert.assertEquals(dbRangerPolicyConditionDef.getDescription(),
 				policyConditionDefObj.getDescription());
-		Assertions.assertEquals(dbRangerPolicyConditionDef.getEvaluator(),
+		Assert.assertEquals(dbRangerPolicyConditionDef.getEvaluator(),
 				policyConditionDefObj.getEvaluator());
-		Assertions.assertEquals(dbRangerPolicyConditionDef.getLabel(),
+		Assert.assertEquals(dbRangerPolicyConditionDef.getLabel(),
 				policyConditionDefObj.getLabel());
 	}
 
@@ -524,29 +527,28 @@ public class TestRangerServiceDefServiceBase {
 				.populateRangerContextEnricherDefToXX(
 						rangerContextEnricherDefObj, contextEnricherDefObj,
 						serviceDefObj, 1);
-		Assertions.assertNotNull(dbContextEnricherDef);
-		Assertions.assertEquals(dbContextEnricherDef.getEnricher(),
+		Assert.assertNotNull(dbContextEnricherDef);
+		Assert.assertEquals(dbContextEnricherDef.getEnricher(),
 				contextEnricherDefObj.getEnricher());
-		Assertions.assertEquals(dbContextEnricherDef.getEnricherOptions(),
+		Assert.assertEquals(dbContextEnricherDef.getEnricherOptions(),
 				contextEnricherDefObj.getEnricherOptions());
-		Assertions.assertEquals(dbContextEnricherDef.getName(),
+		Assert.assertEquals(dbContextEnricherDef.getName(),
 				contextEnricherDefObj.getName());
-		Assertions.assertEquals(dbContextEnricherDef.getCreateTime(),
+		Assert.assertEquals(dbContextEnricherDef.getCreateTime(),
 				contextEnricherDefObj.getCreateTime());
-		Assertions.assertEquals(dbContextEnricherDef.getId(),
+		Assert.assertEquals(dbContextEnricherDef.getId(),
 				contextEnricherDefObj.getId());
-		Assertions.assertEquals(dbContextEnricherDef.getOrder(),
+		Assert.assertEquals(dbContextEnricherDef.getOrder(),
 				contextEnricherDefObj.getOrder());
-		Assertions.assertEquals(dbContextEnricherDef.getUpdatedByUserId(),
+		Assert.assertEquals(dbContextEnricherDef.getUpdatedByUserId(),
 				contextEnricherDefObj.getUpdatedByUserId());
-		Assertions.assertEquals(dbContextEnricherDef.getUpdateTime(),
+		Assert.assertEquals(dbContextEnricherDef.getUpdateTime(),
 				contextEnricherDefObj.getUpdateTime());
 
 	}
 
 	@Test
 	public void test14populateRangerContextEnricherDefToXXnullValue() {
-		assertThrows(WebApplicationException.class, () -> {
 		RangerContextEnricherDef rangerContextEnricherDefObj = null;
 		XXContextEnricherDef contextEnricherDefObj = null;
 		XXServiceDef serviceDefObj = null;
@@ -557,13 +559,13 @@ public class TestRangerServiceDefServiceBase {
 						MessageEnums.DATA_NOT_FOUND)).thenThrow(
 				new WebApplicationException());
 
+		thrown.expect(WebApplicationException.class);
+
 		XXContextEnricherDef dbContextEnricherDef = rangerServiceDefService
 				.populateRangerContextEnricherDefToXX(
 						rangerContextEnricherDefObj, contextEnricherDefObj,
 						serviceDefObj, 1);
-			Assertions.assertNull(dbContextEnricherDef);
-
-		});
+		Assert.assertNull(dbContextEnricherDef);
 
 	}
 
@@ -584,10 +586,10 @@ public class TestRangerServiceDefServiceBase {
 
 		RangerContextEnricherDef dbRangerContextEnricherDef = rangerServiceDefService
 				.populateXXToRangerContextEnricherDef(contextEnricherDefObj);
-		Assertions.assertNotNull(dbRangerContextEnricherDef);
-		Assertions.assertEquals(dbRangerContextEnricherDef.getEnricher(),
+		Assert.assertNotNull(dbRangerContextEnricherDef);
+		Assert.assertEquals(dbRangerContextEnricherDef.getEnricher(),
 				contextEnricherDefObj.getEnricher());
-		Assertions.assertEquals(dbRangerContextEnricherDef.getName(),
+		Assert.assertEquals(dbRangerContextEnricherDef.getName(),
 				contextEnricherDefObj.getName());
 
 	}
@@ -620,19 +622,18 @@ public class TestRangerServiceDefServiceBase {
 		XXEnumDef dbEnumDef = rangerServiceDefService
 				.populateRangerEnumDefToXX(rangerEnumDefObj, enumDefObj,
 						serviceDefObj,1);
-		Assertions.assertNotNull(dbEnumDef);
-		Assertions.assertEquals(dbEnumDef, enumDefObj);
-		Assertions.assertEquals(dbEnumDef.getName(), enumDefObj.getName());
-		Assertions.assertEquals(dbEnumDef.getDefid(), enumDefObj.getDefid());
-		Assertions.assertEquals(dbEnumDef.getId(), enumDefObj.getId());
-		Assertions.assertEquals(dbEnumDef.getCreateTime(),
+		Assert.assertNotNull(dbEnumDef);
+		Assert.assertEquals(dbEnumDef, enumDefObj);
+		Assert.assertEquals(dbEnumDef.getName(), enumDefObj.getName());
+		Assert.assertEquals(dbEnumDef.getDefid(), enumDefObj.getDefid());
+		Assert.assertEquals(dbEnumDef.getId(), enumDefObj.getId());
+		Assert.assertEquals(dbEnumDef.getCreateTime(),
 				enumDefObj.getCreateTime());
 
 	}
 
 	@Test
 	public void test17populateRangerEnumDefToXXnullValue() {
-		assertThrows(WebApplicationException.class, () -> {
 		RangerEnumDef rangerEnumDefObj = null;
 		XXEnumDef enumDefObj = null;
 		XXServiceDef serviceDefObj = null;
@@ -643,12 +644,12 @@ public class TestRangerServiceDefServiceBase {
 						MessageEnums.DATA_NOT_FOUND)).thenThrow(
 				new WebApplicationException());
 
+		thrown.expect(WebApplicationException.class);
+
 		XXEnumDef dbEnumDef = rangerServiceDefService
 				.populateRangerEnumDefToXX(rangerEnumDefObj, enumDefObj,
 						serviceDefObj, 1);
-			Assertions.assertNull(dbEnumDef);
-
-		});
+		Assert.assertNull(dbEnumDef);
 
 	}
 
@@ -687,8 +688,8 @@ public class TestRangerServiceDefServiceBase {
 
 		RangerEnumDef dbRangerEnumDef = rangerServiceDefService
 				.populateXXToRangerEnumDef(enumDefObj);
-		Assertions.assertNotNull(dbRangerEnumDef);
-		Assertions.assertEquals(dbRangerEnumDef.getName(), enumDefObj.getName());
+		Assert.assertNotNull(dbRangerEnumDef);
+		Assert.assertEquals(dbRangerEnumDef.getName(), enumDefObj.getName());
 
 		Mockito.verify(daoManager).getXXEnumElementDef();
 	}
@@ -727,19 +728,19 @@ public class TestRangerServiceDefServiceBase {
 		XXEnumElementDef dbEnumElementDef = rangerServiceDefService
 				.populateRangerEnumElementDefToXX(rangerEnumElementDefObj,
 						enumElementDefObj, enumDefObj, 1);
-		Assertions.assertNotNull(dbEnumElementDef);
-		Assertions.assertEquals(dbEnumElementDef.getId(), enumElementDefObj.getId());
-		Assertions.assertEquals(dbEnumElementDef.getName(),
+		Assert.assertNotNull(dbEnumElementDef);
+		Assert.assertEquals(dbEnumElementDef.getId(), enumElementDefObj.getId());
+		Assert.assertEquals(dbEnumElementDef.getName(),
 				enumElementDefObj.getName());
-		Assertions.assertEquals(dbEnumElementDef.getLabel(),
+		Assert.assertEquals(dbEnumElementDef.getLabel(),
 				enumElementDefObj.getLabel());
-		Assertions.assertEquals(dbEnumElementDef.getCreateTime(),
+		Assert.assertEquals(dbEnumElementDef.getCreateTime(),
 				enumElementDefObj.getCreateTime());
-		Assertions.assertEquals(dbEnumElementDef.getAddedByUserId(),
+		Assert.assertEquals(dbEnumElementDef.getAddedByUserId(),
 				enumElementDefObj.getAddedByUserId());
-		Assertions.assertEquals(dbEnumElementDef.getUpdateTime(),
+		Assert.assertEquals(dbEnumElementDef.getUpdateTime(),
 				enumElementDefObj.getUpdateTime());
-		Assertions.assertEquals(dbEnumElementDef.getUpdatedByUserId(),
+		Assert.assertEquals(dbEnumElementDef.getUpdatedByUserId(),
 				enumElementDefObj.getUpdatedByUserId());
 		Mockito.verify(rangerAuditFields).populateAuditFields(
 				enumElementDefObj, enumDefObj);
@@ -760,10 +761,10 @@ public class TestRangerServiceDefServiceBase {
 
 		RangerEnumElementDef dbRangerEnumElementDef = rangerServiceDefService
 				.populateXXToRangerEnumElementDef(enumElementDefObj);
-		Assertions.assertNotNull(dbRangerEnumElementDef);
-		Assertions.assertEquals(dbRangerEnumElementDef.getLabel(),
+		Assert.assertNotNull(dbRangerEnumElementDef);
+		Assert.assertEquals(dbRangerEnumElementDef.getLabel(),
 				enumElementDefObj.getLabel());
-		Assertions.assertEquals(dbRangerEnumElementDef.getName(),
+		Assert.assertEquals(dbRangerEnumElementDef.getName(),
 				enumElementDefObj.getName());
 
 	}
@@ -777,6 +778,6 @@ public class TestRangerServiceDefServiceBase {
 
 		RangerServiceDefList dbRangerServiceDefList = rangerServiceDefService
 				.searchRangerServiceDefs(searchFilter);
-		Assertions.assertNotNull(dbRangerServiceDefList);
+		Assert.assertNotNull(dbRangerServiceDefList);
 	}
 }

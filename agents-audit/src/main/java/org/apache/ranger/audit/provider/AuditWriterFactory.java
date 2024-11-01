@@ -19,12 +19,11 @@ package org.apache.ranger.audit.provider;
  * under the License.
  */
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.ranger.audit.utils.RangerAuditWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.Properties;
 
@@ -75,8 +74,6 @@ public class AuditWriterFactory {
         }
     }
 
-    private static final Logger logger = LoggerFactory.getLogger(EnclosingClass.class);
-
     public RangerAuditWriter createWriter(String writerClass) throws  Exception {
         if (logger.isDebugEnabled()) {
             logger.debug("==> AuditWriterFactory.createWriter()");
@@ -84,10 +81,8 @@ public class AuditWriterFactory {
         RangerAuditWriter ret = null;
         try {
             Class<RangerAuditWriter> cls = (Class<RangerAuditWriter>) Class.forName(writerClass);
-            ret = cls.getDeclaredConstructor().newInstance();
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            throw new Exception("Error creating RangerAuditWriter instance", e);
-        } catch (ClassNotFoundException e) {
+            ret = cls.newInstance();
+        } catch (Exception e) {
             throw e;
         }
         if (logger.isDebugEnabled()) {

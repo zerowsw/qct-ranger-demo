@@ -22,20 +22,19 @@ package org.apache.ranger.plugin.contextenricher.externalretrievers;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.hadoop.util.StringUtils;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
-import org.apache.hc.core5.http.HttpEntity;
-import org.apache.hc.core5.http.HttpHeaders;
-import org.apache.hc.core5.http.HttpStatus;
-import org.apache.hc.core5.http.NameValuePair;
-import org.apache.hc.client5.http.entity.UrlEncodedFormEntity;
-import org.apache.hc.client5.http.classic.methods.HttpPost;
-import org.apache.hc.client5.http.classic.methods.HttpUriRequest;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
-import org.apache.hc.client5.http.impl.classic.HttpClients;
-import org.apache.hc.core5.http.io.entity.EntityUtils;
-import org.apache.hc.core5.http.io.support.ClassicRequestBuilder;
-import org.apache.hc.core5.http.message.BasicNameValuePair;
-import org.apache.hc.core5.http.message.StatusLine;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpHeaders;
+import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.methods.RequestBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.apache.ranger.authorization.utils.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,7 +58,7 @@ public class GetFromURL {
         }
 
         String         token   = getBearerToken(configFile);
-        HttpUriRequest request = ClassicRequestBuilder.get().setUri(url)
+        HttpUriRequest request = RequestBuilder.get().setUri(url)
                                                      .setHeader(HttpHeaders.AUTHORIZATION, token)
                                                      .setHeader(HttpHeaders.CONTENT_TYPE, "text/plain")
                                                      .build();
@@ -71,10 +70,10 @@ public class GetFromURL {
                 throw new IOException("getFromURL(" + url + ") failed: null response");
             }
 
-            int statusCode = response.getCode();
+            int statusCode = response.getStatusLine().getStatusCode();
 
             if (statusCode != HttpStatus.SC_OK) {
-                throw new IOException("getFromURL(" + url + ") failed: http status=" + new StatusLine(response));
+                throw new IOException("getFromURL(" + url + ") failed: http status=" + response.getStatusLine());
             }
 
             HttpEntity                             httpEntity     = response.getEntity();
@@ -130,10 +129,10 @@ public class GetFromURL {
                 throw new IOException("getBearerToken(" + configFile + ") failed: null response");
             }
 
-            int statusCode = response.getCode();
+            int statusCode = response.getStatusLine().getStatusCode();
 
             if (statusCode != HttpStatus.SC_OK) {
-                throw new IOException("getBearerToken(" + configFile + ") failed: http status=" + new StatusLine(response));
+                throw new IOException("getBearerToken(" + configFile + ") failed: http status=" + response.getStatusLine());
             }
 
             HttpEntity          httpEntity   = response.getEntity();

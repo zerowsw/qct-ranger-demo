@@ -23,7 +23,7 @@
 import org.apache.ranger.common.DateUtil;
 import org.apache.ranger.common.RangerConstants;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity

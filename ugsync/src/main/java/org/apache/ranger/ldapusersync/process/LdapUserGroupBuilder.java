@@ -52,8 +52,8 @@ import javax.naming.ldap.Rdn;
 import javax.naming.ldap.StartTlsRequest;
 import javax.naming.ldap.StartTlsResponse;
 
-import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.thirdparty.com.google.common.collect.HashBasedTable;
 import org.apache.hadoop.thirdparty.com.google.common.collect.Table;
 import org.apache.ranger.ugsyncutil.util.UgsyncCommonConstants;
@@ -627,7 +627,9 @@ public class LdapUserGroupBuilder implements UserGroupSource {
 					Control[] controls = ldapContext.getResponseControls();
 					if (controls != null) {
 						for (int i = 0; i < controls.length; i++) {
-							if (controls[i] instanceof PagedResultsResponseControl prrc) {
+							if (controls[i] instanceof PagedResultsResponseControl) {
+								PagedResultsResponseControl prrc =
+										(PagedResultsResponseControl)controls[i];
 								total = prrc.getResultSize();
 								if (total != 0) {
 									if (LOG.isDebugEnabled()) {
@@ -649,7 +651,7 @@ public class LdapUserGroupBuilder implements UserGroupSource {
 					// Re-activate paged results
 					if (pagedResultsEnabled)   {
 						if (LOG.isDebugEnabled()) {
-							LOG.debug("Fetched paged results round: %s".formatted(++paged));
+							LOG.debug(String.format("Fetched paged results round: %s", ++paged));
 						}
 						ldapContext.setRequestControls(new Control[]{
 								new PagedResultsControl(pagedResultsSize, cookie, Control.CRITICAL) });
@@ -809,7 +811,9 @@ public class LdapUserGroupBuilder implements UserGroupSource {
 						Control[] controls = ldapContext.getResponseControls();
 						if (controls != null) {
 							for (int i = 0; i < controls.length; i++) {
-								if (controls[i] instanceof PagedResultsResponseControl prrc) {
+								if (controls[i] instanceof PagedResultsResponseControl) {
+									PagedResultsResponseControl prrc =
+											(PagedResultsResponseControl)controls[i];
 									total = prrc.getResultSize();
 									if (total != 0) {
 										if (LOG.isDebugEnabled()) {
@@ -831,7 +835,7 @@ public class LdapUserGroupBuilder implements UserGroupSource {
 						// Re-activate paged results
 						if (pagedResultsEnabled)   {
 							if (LOG.isDebugEnabled()) {
-								LOG.debug("Fetched paged results round: %s".formatted(++paged));
+								LOG.debug(String.format("Fetched paged results round: %s", ++paged));
 							}
 							ldapContext.setRequestControls(new Control[]{
 									new PagedResultsControl(pagedResultsSize, cookie, Control.CRITICAL) });
@@ -1001,7 +1005,9 @@ public class LdapUserGroupBuilder implements UserGroupSource {
 						Control[] controls = ldapContext.getResponseControls();
 						if (controls != null) {
 							for (int i = 0; i < controls.length; i++) {
-								if (controls[i] instanceof PagedResultsResponseControl prrc) {
+								if (controls[i] instanceof PagedResultsResponseControl) {
+									PagedResultsResponseControl prrc =
+											(PagedResultsResponseControl)controls[i];
 									total = prrc.getResultSize();
 									if (total != 0) {
 										if (LOG.isDebugEnabled()) {
@@ -1233,7 +1239,9 @@ public class LdapUserGroupBuilder implements UserGroupSource {
 						Control[] controls = ldapContext.getResponseControls();
 						if (controls != null) {
 							for (int i = 0; i < controls.length; i++) {
-								if (controls[i] instanceof PagedResultsResponseControl prrc) {
+								if (controls[i] instanceof PagedResultsResponseControl) {
+									PagedResultsResponseControl prrc =
+											(PagedResultsResponseControl)controls[i];
 									total = prrc.getResultSize();
 									if (total != 0) {
 										if (LOG.isDebugEnabled()) {
@@ -1255,7 +1263,7 @@ public class LdapUserGroupBuilder implements UserGroupSource {
 						// Re-activate paged results
 						if (pagedResultsEnabled)   {
 							if (LOG.isDebugEnabled()) {
-								LOG.debug("Fetched paged results round: %s".formatted(++paged));
+								LOG.debug(String.format("Fetched paged results round: %s", ++paged));
 							}
 							ldapContext.setRequestControls(new Control[]{
 									new PagedResultsControl(pagedResultsSize, cookie, Control.CRITICAL) });

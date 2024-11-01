@@ -54,9 +54,16 @@ import org.apache.ranger.plugin.util.PerfDataRecorder;
 import org.apache.ranger.plugin.util.PerfDataRecorder.PerfStatistic;
 import org.apache.ranger.plugin.util.ServicePolicies;
 import org.apache.ranger.policyengine.perftest.v2.RangerPolicyFactory;
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameter;
+import org.junit.runners.Parameterized.Parameters;
+
 import be.ceau.chart.LineChart;
 import be.ceau.chart.color.Color;
 import be.ceau.chart.data.LineData;
@@ -67,6 +74,7 @@ import be.ceau.chart.dataset.LineDataset;
  * A cross product of the input parameters are generated and fed into the test method.
  * This microbenchmark includes a warm-up phase so that any of the JIT performance optimizations happen before the measurement of the policy engine's performance.
  */
+@RunWith(Parameterized.class)
 public class RangerPolicyEnginePerformanceTest {
 
 	private static final String STATISTICS_KEY__ACCESS_ALLOWED = "RangerPolicyEngine.isAccessAllowed";
@@ -77,13 +85,18 @@ public class RangerPolicyEnginePerformanceTest {
 	private static LoadingCache<Integer, List<RangerAccessRequest>> requestsCache = CacheBuilder.newBuilder().build(createAccessRequestsCacheLoader());
 
 	private static LoadingCache<Integer, ServicePolicies> servicePoliciesCache = CacheBuilder.newBuilder().build(createServicePoliciesCacheLoader());
+
+	@Parameter(0)
 	public Integer numberOfPolicies;
+
+	@Parameter(1)
 	public Integer concurrency;
 
 	/**
 	 * Generates a cross product of number-of-policies X concurrency parameter sets.
 	 * @returns a collection of "tuples" (Object[]) of numberOfPolicies and concurrency for the given test run
 	 */
+	@Parameters(name = "{index}: isAccessAllowed(policies: {0}, concurrent calls: {1})")
 	public static Iterable<Object[]> data() {
 		// tree set for maintaining natural ordering
 		Set<Integer> policies = Sets.newTreeSet(Lists.newArrayList(5, 50, 100, 250, 500, 1_000, 2_000, 3_000, 4_000, 5_000));
@@ -97,13 +110,13 @@ public class RangerPolicyEnginePerformanceTest {
 		});
 	}
 
-	@BeforeAll
+	@BeforeClass
 	public static void init() throws IOException {
 		PerfDataRecorder.initialize(Arrays.asList("")); // dummy value initializes PerfDataRecorder
 		Files.write("policies;concurrency;average;min;max;total-time-spent;\n", outputFile(), Charsets.UTF_8);
 	}
 
-	@AfterAll
+	@AfterClass
 	public static void chartResults() throws IOException {
 		// row: policies
 		// column: concurrency
@@ -113,25 +126,23 @@ public class RangerPolicyEnginePerformanceTest {
 		Files.write(chartMarkup, new File("target", "performance-chart.html"), Charsets.UTF_8);
 	}
 
-	@BeforeEach
+	@Before
 	public void before() throws Exception {
 		PerfDataRecorder.clearStatistics();
 	}
 
-	@AfterEach
+	@After
 	public void after() throws IOException {
 		Map<String, PerfStatistic> exposeStatistics = PerfDataRecorder.exposeStatistics();
 		PerfStatistic stat = exposeStatistics.get(STATISTICS_KEY__ACCESS_ALLOWED);
 		long average = stat.getNumberOfInvocations() > 0 ? (stat.getMicroSecondsSpent() / stat.getNumberOfInvocations()) : 0;
-		Files.append("%s;%s;%s;%s;%s;%s;\n".formatted(numberOfPolicies, concurrency, average, stat.getMinTimeSpent(), stat.getMaxTimeSpent(), stat.getMicroSecondsSpent()), outputFile(), Charsets.UTF_8);
+		Files.append(String.format("%s;%s;%s;%s;%s;%s;\n", numberOfPolicies, concurrency, average, stat.getMinTimeSpent(), stat.getMaxTimeSpent(), stat.getMicroSecondsSpent()), outputFile(), Charsets.UTF_8);
 		PerfDataRecorder.printStatistics();
 		PerfDataRecorder.clearStatistics();
 	}
 
-	@MethodSource("data")
-	@ParameterizedTest(name = "{index}: isAccessAllowed(policies: {0}, concurrent calls: {1})")
-	public void policyEngineTest(Integer numberOfPolicies, Integer concurrency) throws InterruptedException {
-		initRangerPolicyEnginePerformanceTest(numberOfPolicies, concurrency);
+	@Test
+	public void policyEngineTest() throws InterruptedException {
 		List<RangerAccessRequest> requests = requestsCache.getUnchecked(concurrency);
 		ServicePolicies servicePolicies = servicePoliciesCache.getUnchecked(numberOfPolicies);
 		RangerPluginContext pluginContext = new RangerPluginContext(new RangerPluginConfig("hive", null, "perf-test", "cl1", "on-prem", RangerPolicyFactory.createPolicyEngineOption()));
@@ -152,7 +163,7 @@ public class RangerPolicyEnginePerformanceTest {
 					System.identityHashCode(rangerPolicyEngine.evaluatePolicies(rangerAccessRequest, RangerPolicy.POLICY_TYPE_ACCESS, null));
 					latch.countDown();
 				}
-			}, "Client #%s".formatted(i)).start();
+			}, String.format("Client #%s", i)).start();
 		}
 		latch.await();
 	}
@@ -186,13 +197,13 @@ public class RangerPolicyEnginePerformanceTest {
 			LineDataset dataset = new LineDataset()
 					.setBackgroundColor(Color.TRANSPARENT)
 					.setBorderColor(Color.random())
-					.setLabel("%s client(s)".formatted(concurrencyKeyedEntry.getKey()))
+					.setLabel(String.format("%s client(s)", concurrencyKeyedEntry.getKey()))
 					.setData(concurrencyKeyedEntry.getValue().values());
 			lineData.addDataset(dataset);
 		}
 		
 		for (Long policies : policyConcurrencyValueTable.rowKeySet()) {
-			lineData.addLabels("Policies %s".formatted(policies));
+			lineData.addLabels(String.format("Policies %s", policies));
 		}
 		return chart;
 	}
@@ -210,10 +221,5 @@ public class RangerPolicyEnginePerformanceTest {
 			policyConcurrencyValueTable.put(policies, concurrency, averageValue);
 		}
 		return policyConcurrencyValueTable;
-	}
-
-	public void initRangerPolicyEnginePerformanceTest(Integer numberOfPolicies, Integer concurrency) {
-		this.numberOfPolicies = numberOfPolicies;
-		this.concurrency = concurrency;
 	}
 }

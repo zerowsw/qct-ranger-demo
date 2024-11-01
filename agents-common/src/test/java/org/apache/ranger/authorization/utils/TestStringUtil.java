@@ -24,8 +24,8 @@ import org.apache.ranger.plugin.model.RangerPolicy.RangerPolicyResource;
 import org.apache.ranger.plugin.model.RangerSecurityZone;
 import org.apache.ranger.plugin.model.RangerSecurityZone.RangerSecurityZoneService;
 import org.apache.ranger.plugin.util.RangerSecurityZoneHelper;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,13 +45,13 @@ public class TestStringUtil {
         String              s2     = getString("database");
 
         // s1 and s2 point to different instances of String
-        Assertions.assertNotSame(s1, s2, "s1 != s2");
+        Assert.assertNotSame("s1 != s2", s1, s2);
 
         // strTbl doesn't have s1; dedupString(s1) should return s1
-        Assertions.assertSame(s1, StringUtil.dedupString(s1, strTbl), "s1 == dedupString(s1)");
+        Assert.assertSame("s1 == dedupString(s1)", s1, StringUtil.dedupString(s1, strTbl));
 
         // strTbl now has s1; s2 has same value as s1, hence dedupString() should return s1
-        Assertions.assertSame(s1, StringUtil.dedupString(s2, strTbl), "s1 == dedupString(s2)");
+        Assert.assertSame("s1 == dedupString(s2)", s1, StringUtil.dedupString(s2, strTbl));
     }
 
     @Test
@@ -59,31 +59,31 @@ public class TestStringUtil {
         Map<String, String> strTbl = new HashMap<>();
         List<String>        l1     = null;
 
-        Assertions.assertSame(l1, StringUtil.dedupStringsList(l1, strTbl), "null list - dedupStringsList() should return the same list");
+        Assert.assertSame("null list - dedupStringsList() should return the same list", l1, StringUtil.dedupStringsList(l1, strTbl));
 
         l1 = Collections.emptyList();
-        Assertions.assertSame(l1, StringUtil.dedupStringsList(l1, strTbl), "empty list - dedupStringsList() should return the same list");
+        Assert.assertSame("empty list - dedupStringsList() should return the same list", l1, StringUtil.dedupStringsList(l1, strTbl));
 
         l1 = new ArrayList<>();
-        Assertions.assertSame(l1, StringUtil.dedupStringsList(l1, strTbl), "empty list - dedupStringsList() should return the same list");
+        Assert.assertSame("empty list - dedupStringsList() should return the same list", l1, StringUtil.dedupStringsList(l1, strTbl));
 
         l1 = new ArrayList<String>() {{ add(getString("*")); }};
-        Assertions.assertNotSame(l1, StringUtil.dedupStringsList(l1, strTbl), "non-empty list - dedupStringsList() should return a new list");
+        Assert.assertNotSame("non-empty list - dedupStringsList() should return a new list", l1, StringUtil.dedupStringsList(l1, strTbl));
 
         l1 = new ArrayList<String>() {{ add(getString("*")); add(getString("db1")); }};
-        Assertions.assertNotSame(l1, StringUtil.dedupStringsList(l1, strTbl), "non-empty list - dedupStringsList() should return a new list");
+        Assert.assertNotSame("non-empty list - dedupStringsList() should return a new list", l1, StringUtil.dedupStringsList(l1, strTbl));
 
         List<String> l2 = new ArrayList<String>() {{ add(getString("*")); add(getString("db1")); }};
 
         for (int i = 0; i < l1.size(); i++) {
-            Assertions.assertNotSame(l1.get(i), l2.get(i), "Before dedupStringsList(): l1[" + i + "] == l2[" + i + "]");
+            Assert.assertNotSame("Before dedupStringsList(): l1[" + i + "] == l2[" + i + "]", l1.get(i), l2.get(i));
         }
 
         l1 = StringUtil.dedupStringsList(l1, strTbl);
         l2 = StringUtil.dedupStringsList(l2, strTbl);
 
         for (int i = 0; i < l1.size(); i++) {
-            Assertions.assertSame(l1.get(i), l2.get(i), "After dedupStringsList(): l1[" + i + "] == l2[" + i + "]");
+            Assert.assertSame("After dedupStringsList(): l1[" + i + "] == l2[" + i + "]", l1.get(i), l2.get(i));
         }
     }
 
@@ -92,31 +92,31 @@ public class TestStringUtil {
         Map<String, String> strTbl = new HashMap<>();
         Set<String>         s1     = null;
 
-        Assertions.assertSame(s1, StringUtil.dedupStringsSet(s1, strTbl), "null set - dedupStringsList() should return the same set");
+        Assert.assertSame("null set - dedupStringsList() should return the same set", s1, StringUtil.dedupStringsSet(s1, strTbl));
 
         s1 = Collections.emptySet();
-        Assertions.assertSame(s1, StringUtil.dedupStringsSet(s1, strTbl), "empty set - dedupStringsSet() should return the same set");
+        Assert.assertSame("empty set - dedupStringsSet() should return the same set", s1, StringUtil.dedupStringsSet(s1, strTbl));
 
         s1 = new HashSet<>();
-        Assertions.assertSame(s1, StringUtil.dedupStringsSet(s1, strTbl), "empty set - dedupStringsSet() should return the same set");
+        Assert.assertSame("empty set - dedupStringsSet() should return the same set", s1, StringUtil.dedupStringsSet(s1, strTbl));
 
         s1 = new HashSet<String>() {{ add(getString("*")); }};
-        Assertions.assertNotSame(s1, StringUtil.dedupStringsSet(s1, strTbl), "non-empty set - dedupStringsSet() should return a new set");
+        Assert.assertNotSame("non-empty set - dedupStringsSet() should return a new set", s1, StringUtil.dedupStringsSet(s1, strTbl));
 
         s1 = new HashSet<String>() {{ add(getString("*")); add(getString("db1")); }};
-        Assertions.assertNotSame(s1, StringUtil.dedupStringsSet(s1, strTbl), "non-empty set - dedupStringsSet() should return a new set");
+        Assert.assertNotSame("non-empty set - dedupStringsSet() should return a new set", s1, StringUtil.dedupStringsSet(s1, strTbl));
 
         Set<String> s2 = new HashSet<String>() {{ add(getString("*")); add(getString("db1")); }};
 
         for (String elem : s1) {
-            Assertions.assertFalse(containsInstance(s2, elem), "Before dedupStringsSet(): s1[" + elem + "] == s2[" + elem + "]");
+            Assert.assertFalse("Before dedupStringsSet(): s1[" + elem + "] == s2[" + elem + "]", containsInstance(s2, elem));
         }
 
         s1 = StringUtil.dedupStringsSet(s1, strTbl);
         s2 = StringUtil.dedupStringsSet(s2, strTbl);
 
         for (String elem : s1) {
-            Assertions.assertTrue(containsInstance(s2, elem), "After dedupStringsSet(): s1[" + elem + "] == s2[" + elem + "]");
+            Assert.assertTrue("After dedupStringsSet(): s1[" + elem + "] == s2[" + elem + "]", containsInstance(s2, elem));
         }
     }
 
@@ -125,24 +125,24 @@ public class TestStringUtil {
         Map<String, String> strTbl = new HashMap<>();
         Map<String, String> m1     = null;
 
-        Assertions.assertSame(m1, StringUtil.dedupStringsMap(m1, strTbl), "null map - dedupStringsMap() should return the same map");
+        Assert.assertSame("null map - dedupStringsMap() should return the same map", m1, StringUtil.dedupStringsMap(m1, strTbl));
 
         m1 = Collections.emptyMap();
-        Assertions.assertSame(m1, StringUtil.dedupStringsMap(m1, strTbl), "empty map - dedupStringsMap() should return the same map");
+        Assert.assertSame("empty map - dedupStringsMap() should return the same map", m1, StringUtil.dedupStringsMap(m1, strTbl));
 
         m1 = new HashMap<>();
-        Assertions.assertSame(m1, StringUtil.dedupStringsMap(m1, strTbl), "empty map - dedupStringsMap() should return the same map");
+        Assert.assertSame("empty map - dedupStringsMap() should return the same map", m1, StringUtil.dedupStringsMap(m1, strTbl));
 
         m1 = new HashMap<String, String>() {{ put(getString("database"), getString("*")); }};
-        Assertions.assertNotSame(m1, StringUtil.dedupStringsMap(m1, strTbl), "non-empty map - dedupStringsMap() should return a new map");
+        Assert.assertNotSame("non-empty map - dedupStringsMap() should return a new map", m1, StringUtil.dedupStringsMap(m1, strTbl));
 
         Map<String, String> m2 = new HashMap<String, String>() {{ put(getString("database"), getString("*")); }};
 
         for (Map.Entry<String, String> entry : m1.entrySet()) {
             String key = entry.getKey();
 
-            Assertions.assertFalse(containsInstance(m2.keySet(), key), "Before dedupStringsMap(): m2 has same key as m1");
-            Assertions.assertNotSame(m1.get(key), m2.get(key), "Before dedupStringsMap(): m1[" + key + "] == l2[" + key + "]");
+            Assert.assertFalse("Before dedupStringsMap(): m2 has same key as m1", containsInstance(m2.keySet(), key));
+            Assert.assertNotSame("Before dedupStringsMap(): m1[" + key + "] == l2[" + key + "]", m1.get(key), m2.get(key));
         }
 
         m1 = StringUtil.dedupStringsMap(m1, strTbl);
@@ -151,8 +151,8 @@ public class TestStringUtil {
         for (Map.Entry<String, String> entry : m1.entrySet()) {
             String key = entry.getKey();
 
-            Assertions.assertTrue(containsInstance(m2.keySet(), key), "After dedupStringsMap(): m2 has same key as m1");
-            Assertions.assertSame(m1.get(key), m2.get(key), "After dedupStringsMap(): m1[" + key + "] == l2[" + key + "]");
+            Assert.assertTrue("After dedupStringsMap(): m2 has same key as m1", containsInstance(m2.keySet(), key));
+            Assert.assertSame("After dedupStringsMap(): m1[" + key + "] == l2[" + key + "]", m1.get(key), m2.get(key));
         }
     }
 
@@ -161,16 +161,16 @@ public class TestStringUtil {
         Map<String, String>               strTbl = new HashMap<>();
         Map<String, RangerPolicyResource> m1     = null;
 
-        Assertions.assertSame(m1, StringUtil.dedupStringsMapOfPolicyResource(m1, strTbl), "null map - dedupStringsMapOfPolicyResource() should return the same map");
+        Assert.assertSame("null map - dedupStringsMapOfPolicyResource() should return the same map", m1, StringUtil.dedupStringsMapOfPolicyResource(m1, strTbl));
 
         m1 = Collections.emptyMap();
-        Assertions.assertSame(m1, StringUtil.dedupStringsMapOfPolicyResource(m1, strTbl), "empty map - dedupStringsMapOfPolicyResource() should return the same map");
+        Assert.assertSame("empty map - dedupStringsMapOfPolicyResource() should return the same map", m1, StringUtil.dedupStringsMapOfPolicyResource(m1, strTbl));
 
         m1 = new HashMap<>();
-        Assertions.assertSame(m1, StringUtil.dedupStringsMapOfPolicyResource(m1, strTbl), "empty map - dedupStringsMapOfPolicyResource() should return the same map");
+        Assert.assertSame("empty map - dedupStringsMapOfPolicyResource() should return the same map", m1, StringUtil.dedupStringsMapOfPolicyResource(m1, strTbl));
 
         m1 = new HashMap<String, RangerPolicyResource>() {{ put(getString("database"), new RangerPolicyResource(getString("db1"))); put(getString("table"), new RangerPolicyResource(getString("*"))); }};
-        Assertions.assertNotSame(m1, StringUtil.dedupStringsMapOfPolicyResource(m1, strTbl), "non-empty map - dedupStringsMapOfPolicyResource() should return a new map");
+        Assert.assertNotSame("non-empty map - dedupStringsMapOfPolicyResource() should return a new map", m1, StringUtil.dedupStringsMapOfPolicyResource(m1, strTbl));
 
         Map<String, RangerPolicyResource> m2 = new HashMap<String, RangerPolicyResource>() {{ put(getString("database"), new RangerPolicyResource(getString("db1"))); put(getString("table"), new RangerPolicyResource(getString("*"))); }};
 
@@ -179,10 +179,10 @@ public class TestStringUtil {
             RangerPolicyResource value1 = entry.getValue();
             RangerPolicyResource value2 = m2.get(key);
 
-            Assertions.assertFalse(containsInstance(m2.keySet(), key), "Before dedupStringsMapOfPolicyResource(): m2 has same key as m1");
+            Assert.assertFalse("Before dedupStringsMapOfPolicyResource(): m2 has same key as m1", containsInstance(m2.keySet(), key));
 
             for (String value : value1.getValues()) {
-                Assertions.assertFalse(containsInstance(value2.getValues(), value), "Before dedupStringsMapOfPolicyResource(): m2.values not same values as m1.values for " + value);
+                Assert.assertFalse("Before dedupStringsMapOfPolicyResource(): m2.values not same values as m1.values for " + value, containsInstance(value2.getValues(), value));
             }
         }
 
@@ -194,10 +194,10 @@ public class TestStringUtil {
             RangerPolicyResource value1 = entry.getValue();
             RangerPolicyResource value2 = m2.get(key);
 
-            Assertions.assertTrue(containsInstance(m2.keySet(), key), "After dedupStringsMapOfPolicyResource(): m2 has same key as m1");
+            Assert.assertTrue("After dedupStringsMapOfPolicyResource(): m2 has same key as m1", containsInstance(m2.keySet(), key));
 
             for (String value : value1.getValues()) {
-                Assertions.assertTrue(containsInstance(value2.getValues(), value), "After dedupStringsMapOfPolicyResource(): m2.values has same values as m1.values for " + value);
+                Assert.assertTrue("After dedupStringsMapOfPolicyResource(): m2.values has same values as m1.values for " + value, containsInstance(value2.getValues(), value));
             }
         }
     }
@@ -212,11 +212,11 @@ public class TestStringUtil {
             String             compressed   = StringUtil.compressString(json);
             String             deCompressed = StringUtil.decompressString(compressed);
 
-            System.out.println("%d: resourceCount=%d: len(json)=%,d, len(compressed)=%,d, savings=(%,d == %.03f%%)".formatted(sizeFactor, getResourceCount(zone), json.length(), compressed.length(), (json.length() - compressed.length()), ((json.length() - compressed.length()) / (float) json.length()) * 100));
+            System.out.println(String.format("%d: resourceCount=%d: len(json)=%,d, len(compressed)=%,d, savings=(%,d == %.03f%%)", sizeFactor, getResourceCount(zone), json.length(), compressed.length(), (json.length() - compressed.length()), ((json.length() - compressed.length()) / (float) json.length()) * 100));
 
-            Assertions.assertTrue(compressed.length() < deCompressed.length());
+            Assert.assertTrue(compressed.length() < deCompressed.length());
 
-            Assertions.assertEquals(json, deCompressed);
+            Assert.assertEquals(json, deCompressed);
         }
     }
 

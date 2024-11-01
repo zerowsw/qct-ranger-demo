@@ -23,7 +23,7 @@
  *
  */
 
-import jakarta.persistence.EntityManager;
+import javax.persistence.EntityManager;
 
 public abstract class RangerDaoManagerBase {
 

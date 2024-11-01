@@ -21,7 +21,6 @@ package org.apache.ranger.unixusersync.config;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.KeyStore;
@@ -32,7 +31,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 //import org.apache.hadoop.security.alias.BouncyCastleFipsKeyStoreProvider;
 import org.apache.ranger.credentialapi.CredentialReader;
@@ -586,12 +585,7 @@ public class UserGroupSyncConfig  {
 
 		Class<UserGroupSource> ugSourceClass = (Class<UserGroupSource>)Class.forName(className);
 
-		UserGroupSource ret;
-		try {
-			ret = ugSourceClass.getDeclaredConstructor().newInstance();
-		} catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-			throw new RuntimeException("Failed to create instance of " + className, e);
-		}
+		UserGroupSource ret = ugSourceClass.newInstance();
 
 		return ret;
 	}
@@ -1383,7 +1377,7 @@ public class UserGroupSyncConfig  {
 				LOG.warn("More than one character found in RegEx Separator, using default RegEx Separator /");
 			}
 		}
-		LOG.info("Using %s as the RegEx Separator".formatted(ret));
+		LOG.info(String.format("Using %s as the RegEx Separator", ret));
 		return ret;
 	}
 

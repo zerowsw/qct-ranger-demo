@@ -385,15 +385,15 @@ public abstract class BaseAuditHandler implements AuditHandler {
 		long mSeconds = (timeInMs % (1000));
 
 		if (hours > 0)
-			return "%02d:%02d:%02d.%03d hours".formatted(hours, minutes,
+			return String.format("%02d:%02d:%02d.%03d hours", hours, minutes,
 					seconds, mSeconds);
 		else if (minutes > 0)
-			return "%02d:%02d.%03d minutes".formatted(minutes, seconds,
+			return String.format("%02d:%02d.%03d minutes", minutes, seconds,
 					mSeconds);
 		else if (seconds > 0)
-			return "%02d.%03d seconds".formatted(seconds, mSeconds);
+			return String.format("%02d.%03d seconds", seconds, mSeconds);
 		else
-			return "%03d milli-seconds".formatted(mSeconds);
+			return String.format("%03d milli-seconds", mSeconds);
 	}
 
 	public void logFailedEvent(AuditEventBase event) {

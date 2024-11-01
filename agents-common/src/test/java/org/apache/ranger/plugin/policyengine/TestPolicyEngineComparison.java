@@ -31,17 +31,23 @@ import org.apache.ranger.authorization.hadoop.config.RangerPluginConfig;
 import org.apache.ranger.plugin.contextenricher.RangerTagEnricher;
 import org.apache.ranger.plugin.util.ServicePolicies;
 import org.apache.ranger.plugin.util.ServiceTags;
-import org.junit.jupiter.api.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class TestPolicyEngineComparison {
     private static Gson gsonBuilder;
 
-    @BeforeAll
+    @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         gsonBuilder = new GsonBuilder().setDateFormat("yyyyMMdd-HH:mm:ss.SSS-Z")
                 .setPrettyPrinting()
@@ -50,15 +56,15 @@ public class TestPolicyEngineComparison {
 
     }
 
-    @AfterAll
+    @AfterClass
     public static void tearDownAfterClass() throws Exception {
     }
 
-    @BeforeEach
+    @Before
     public void setUp() throws Exception {
     }
 
-    @AfterEach
+    @After
     public void tearDown() throws Exception {
     }
 
@@ -81,7 +87,7 @@ public class TestPolicyEngineComparison {
 
         ComparisonTests testCases = gsonBuilder.fromJson(reader, ComparisonTests.class);
 
-        assertTrue(testCases != null && testCases.testCases != null, "invalid input: " + testName);
+        assertTrue("invalid input: " + testName, testCases != null && testCases.testCases != null);
 
         RangerPolicyEngineOptions options = new RangerPolicyEngineOptions();
         options.optimizeTrieForRetrieval = true;
@@ -89,19 +95,19 @@ public class TestPolicyEngineComparison {
 
         for (ComparisonTests.TestCase testCase : testCases.testCases) {
 
-            assertTrue(testCase.me != null && testCase.other != null,"invalid input: " + testCase.name);
+            assertTrue("invalid input: " + testCase.name ,testCase.me != null && testCase.other != null);
 
             ComparisonTests.TestCase.PolicyEngineData myData = testCase.me;
             ComparisonTests.TestCase.PolicyEngineData otherData = testCase.other;
 
-            assertFalse(myData.servicePoliciesFile == null || otherData.servicePoliciesFile == null, "invalid input: " + testCase.name);
-            assertTrue(myData.serviceTagsFile == null || otherData.serviceTagsFile != null, "invalid input: " + testCase.name);
+            assertFalse("invalid input: " + testCase.name, myData.servicePoliciesFile == null || otherData.servicePoliciesFile == null);
+            assertTrue("invalid input: " + testCase.name, myData.serviceTagsFile == null || otherData.serviceTagsFile != null);
 
             // Read servicePoliciesFile
             ServicePolicies myServicePolicies = readServicePolicies(myData.servicePoliciesFile);
             ServicePolicies otherServicePolicies = readServicePolicies(otherData.servicePoliciesFile);
 
-            assertFalse(myServicePolicies == null || otherServicePolicies == null, "invalid input: " + testCase.name);
+            assertFalse("invalid input: " + testCase.name, myServicePolicies == null || otherServicePolicies == null);
 
             ServiceTags myServiceTags = null;
             ServiceTags otherServiceTags = null;
@@ -110,7 +116,7 @@ public class TestPolicyEngineComparison {
                 myServiceTags = readServiceTags(myData.serviceTagsFile);
                 otherServiceTags = readServiceTags(otherData.serviceTagsFile);
 
-                assertFalse(myServiceTags == null || otherServiceTags == null, "invalid input: " + testCase.name);
+                assertFalse("invalid input: " + testCase.name, myServiceTags == null || otherServiceTags == null);
             }
 
             boolean isPolicyEnginesEqual = true;
@@ -147,8 +153,8 @@ public class TestPolicyEngineComparison {
 
                 }
             }
-            assertEquals(isPolicyEnginesEqual, testCase.isPolicyEnginesEqual, "PolicyEngines are not equal " + testCase.name);
-            assertEquals(isTagsEqual, testCase.isTagsEqual, "Tags are not equal " + testCase.name);
+            assertEquals("PolicyEngines are not equal " + testCase.name, isPolicyEnginesEqual, testCase.isPolicyEnginesEqual);
+            assertEquals("Tags are not equal " + testCase.name,isTagsEqual, testCase.isTagsEqual);
         }
 
     }

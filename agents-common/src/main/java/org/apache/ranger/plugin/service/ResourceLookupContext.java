@@ -79,6 +79,6 @@ public class ResourceLookupContext {
 	
 	@Override
 	public String toString() {
-		return "ResourceLookupContext={resourceName=%s,userInput=%s,resources=%s}".formatted(resourceName, userInput, resources);
+		return String.format("ResourceLookupContext={resourceName=%s,userInput=%s,resources=%s}", resourceName, userInput, resources);
 	}
 }

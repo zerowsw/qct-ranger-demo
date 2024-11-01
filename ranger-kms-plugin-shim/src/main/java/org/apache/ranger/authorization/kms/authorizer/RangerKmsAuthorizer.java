@@ -28,7 +28,6 @@ import org.apache.hadoop.security.UserGroupInformation;
 import org.apache.ranger.plugin.classloader.RangerPluginClassLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.lang.reflect.InvocationTargetException;
 
 public class RangerKmsAuthorizer implements Runnable, KeyACLs {
 
@@ -68,7 +67,7 @@ public class RangerKmsAuthorizer implements Runnable, KeyACLs {
 
 			activatePluginClassLoader();
 
-			impl 			   = cls.getDeclaredConstructor().newInstance();
+			impl 			   = cls.newInstance();
 			implRunnable       = (Runnable)impl;
 			implKeyACLs 	   = (KeyACLs)impl;
 		} catch (Exception e) {

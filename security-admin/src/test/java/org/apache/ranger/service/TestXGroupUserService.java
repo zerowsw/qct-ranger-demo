@@ -33,19 +33,19 @@ import org.apache.ranger.entity.XXGroupUser;
 import org.apache.ranger.entity.XXPortalUser;
 import org.apache.ranger.entity.XXUser;
 import org.apache.ranger.view.VXGroupUser;
-import org.junit.jupiter.api.MethodOrderer.MethodName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.apache.ranger.service.RangerBaseModelService.OPERATION_CREATE_CONTEXT;
 
-@ExtendWith(MockitoExtension.class)
-@TestMethodOrder(MethodName.class)
+@RunWith(MockitoJUnitRunner.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestXGroupUserService {
 
 	@InjectMocks

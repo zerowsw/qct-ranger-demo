@@ -18,7 +18,7 @@
  */
 package org.apache.ranger.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 
 @Entity

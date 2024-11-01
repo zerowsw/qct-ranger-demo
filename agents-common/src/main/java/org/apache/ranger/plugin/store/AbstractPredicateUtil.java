@@ -27,13 +27,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.collections4.Predicate;
-import org.apache.commons.collections4.PredicateUtils;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
+import org.apache.commons.collections.Predicate;
+import org.apache.commons.collections.PredicateUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.ranger.plugin.model.RangerBaseModelObject;
 import org.apache.ranger.plugin.model.RangerPolicy;
 import org.apache.ranger.plugin.model.RangerPolicy.RangerPolicyItem;
@@ -156,18 +156,18 @@ public class AbstractPredicateUtil {
 			String val2 = null;
 
 			if(o1 != null) {
-				if(o1 instanceof RangerServiceDef def) {
-					val1 = def.getName();
-				} else if(o1 instanceof RangerService service) {
-					val1 = service.getType();
+				if(o1 instanceof RangerServiceDef) {
+					val1 = ((RangerServiceDef)o1).getName();
+				} else if(o1 instanceof RangerService) {
+					val1 = ((RangerService)o1).getType();
 				}
 			}
 
 			if(o2 != null) {
-				if(o2 instanceof RangerServiceDef def) {
-					val2 = def.getName();
-				} else if(o2 instanceof RangerService service) {
-					val2 = service.getType();
+				if(o2 instanceof RangerServiceDef) {
+					val2 = ((RangerServiceDef)o2).getName();
+				} else if(o2 instanceof RangerService) {
+					val2 = ((RangerService)o2).getType();
 				}
 			}
 
@@ -182,18 +182,18 @@ public class AbstractPredicateUtil {
 			String val2 = null;
 
 			if(o1 != null) {
-				if(o1 instanceof RangerPolicy policy) {
-					val1 = policy.getService();
-				} else if(o1 instanceof RangerService service) {
-					val1 = service.getType();
+				if(o1 instanceof RangerPolicy) {
+					val1 = ((RangerPolicy)o1).getService();
+				} else if(o1 instanceof RangerService) {
+					val1 = ((RangerService)o1).getType();
 				}
 			}
 
 			if(o2 != null) {
-				if(o2 instanceof RangerPolicy policy) {
-					val2 = policy.getService();
-				} else if(o2 instanceof RangerService service) {
-					val2 = service.getType();
+				if(o2 instanceof RangerPolicy) {
+					val2 = ((RangerPolicy)o2).getService();
+				} else if(o2 instanceof RangerService) {
+					val2 = ((RangerService)o2).getType();
 				}
 			}
 
@@ -204,8 +204,8 @@ public class AbstractPredicateUtil {
 	protected final static Comparator<RangerBaseModelObject> policyNameComparator = new Comparator<RangerBaseModelObject>() {
 		@Override
 		public int compare(RangerBaseModelObject o1, RangerBaseModelObject o2) {
-			String val1 = (o1 instanceof RangerPolicy rp) ? rp.getName() : null;
-			String val2 = (o2 instanceof RangerPolicy rp) ? rp.getName() : null;
+			String val1 = (o1 instanceof RangerPolicy) ? ((RangerPolicy)o1).getName() : null;
+			String val2 = (o2 instanceof RangerPolicy) ? ((RangerPolicy)o2).getName() : null;
 
 			return ObjectUtils.compare(val1, val2);
 		}
@@ -224,8 +224,8 @@ public class AbstractPredicateUtil {
     protected final static Comparator<RangerBaseModelObject> zoneNameComparator = new Comparator<RangerBaseModelObject>() {
         @Override
         public int compare(RangerBaseModelObject o1, RangerBaseModelObject o2) {
-            String val1 = (o1 instanceof RangerSecurityZone rsz) ? rsz.getName() : null;
-            String val2 = (o2 instanceof RangerSecurityZone rsz) ? rsz.getName() : null;
+            String val1 = (o1 instanceof RangerSecurityZone) ? ((RangerSecurityZone)o1).getName() : null;
+            String val2 = (o2 instanceof RangerSecurityZone) ? ((RangerSecurityZone)o2).getName() : null;
 
             return ObjectUtils.compare(val1, val2);
         }
@@ -257,7 +257,8 @@ public class AbstractPredicateUtil {
 
 				boolean ret = false;
 
-				if(object instanceof RangerServiceDef serviceDef) {
+				if(object instanceof RangerServiceDef) {
+					RangerServiceDef serviceDef = (RangerServiceDef)object;
 					String           svcType    = serviceDef.getName();
 
 					ret = StringUtils.equals(svcType, serviceType);
@@ -290,7 +291,8 @@ public class AbstractPredicateUtil {
 
 				boolean ret = false;
 
-				if(object instanceof RangerServiceDef serviceDef) {
+				if(object instanceof RangerServiceDef) {
+					RangerServiceDef serviceDef = (RangerServiceDef)object;
 					Long             svcDefId   = serviceDef.getId();
 
 					if(svcDefId != null) {
@@ -325,10 +327,12 @@ public class AbstractPredicateUtil {
 
 				boolean ret = false;
 
-				if(object instanceof RangerPolicy policy) {
+				if(object instanceof RangerPolicy) {
+					RangerPolicy policy = (RangerPolicy)object;
 
 					ret = StringUtils.equals(serviceName, policy.getService());
-				} else if(object instanceof RangerService service) {
+				} else if(object instanceof RangerService) {
+					RangerService service = (RangerService)object;
 
 					ret = StringUtils.equals(serviceName, service.getName());
 				} else {
@@ -360,7 +364,8 @@ public class AbstractPredicateUtil {
 
 				boolean ret = false;
 
-				if(object instanceof RangerPolicy policy) {
+				if(object instanceof RangerPolicy) {
+					RangerPolicy policy = (RangerPolicy)object;
 
 					ret = StringUtils.equals(policyName, policy.getName());
 				} else {
@@ -392,7 +397,8 @@ public class AbstractPredicateUtil {
 
 				boolean ret = false;
 
-				if(object instanceof RangerPolicy policy) {
+				if(object instanceof RangerPolicy) {
+					RangerPolicy policy = (RangerPolicy)object;
 
 					ret = StringUtils.containsIgnoreCase(policy.getName(), policyName);
 				} else {
@@ -424,7 +430,8 @@ public class AbstractPredicateUtil {
 
 				boolean ret = false;
 
-				if(object instanceof RangerPolicy policy) {
+				if(object instanceof RangerPolicy) {
+					RangerPolicy policy = (RangerPolicy)object;
 
 					if(policy.getId() != null) {
 						ret = StringUtils.equals(policyId, policy.getId().toString());
@@ -458,7 +465,8 @@ public class AbstractPredicateUtil {
 
 				boolean ret = false;
 
-				if(object instanceof RangerPolicy policy) {
+				if(object instanceof RangerPolicy) {
+					RangerPolicy policy = (RangerPolicy)object;
 
 					List<?>[] policyItemsList = new List<?>[] { policy.getPolicyItems(),
 																policy.getDenyPolicyItems(),
@@ -515,7 +523,8 @@ public class AbstractPredicateUtil {
 
 				boolean ret = false;
 
-				if(object instanceof RangerPolicy policy) {
+				if(object instanceof RangerPolicy) {
+					RangerPolicy policy = (RangerPolicy)object;
 
 					List<?>[] policyItemsList = new List<?>[] { policy.getPolicyItems(),
 							policy.getDenyPolicyItems(),
@@ -572,7 +581,8 @@ public class AbstractPredicateUtil {
 
 				boolean ret = false;
 
-				if(object instanceof RangerPolicy policy) {
+				if(object instanceof RangerPolicy) {
+					RangerPolicy policy = (RangerPolicy)object;
 
 					List<?>[] policyItemsList = new List<?>[] { policy.getPolicyItems(),
 																policy.getDenyPolicyItems(),
@@ -629,7 +639,8 @@ public class AbstractPredicateUtil {
 
 				boolean ret = false;
 
-				if(object instanceof RangerBaseModelObject obj) {
+				if(object instanceof RangerBaseModelObject) {
+					RangerBaseModelObject obj = (RangerBaseModelObject)object;
 
 					if(Boolean.parseBoolean(status)) {
 						ret = obj.getIsEnabled();
@@ -665,7 +676,8 @@ public class AbstractPredicateUtil {
 
 				boolean ret = false;
 
-				if(object instanceof RangerPolicy policy) {
+				if(object instanceof RangerPolicy) {
+					RangerPolicy policy = (RangerPolicy)object;
 
 					if(! MapUtils.isEmpty(policy.getResources())) {
 						int numFound = 0;
@@ -727,7 +739,8 @@ public class AbstractPredicateUtil {
 
 				boolean ret = false;
 
-				if(object instanceof RangerPolicy policy) {
+				if(object instanceof RangerPolicy) {
+					RangerPolicy                      policy          = (RangerPolicy)object;
 					Map<String, RangerPolicyResource> policyResources = policy.getResources();
 
 					if(MapUtils.isNotEmpty(policyResources)) {
@@ -781,7 +794,8 @@ public class AbstractPredicateUtil {
 
 				boolean ret = true;
 
-				if(object instanceof RangerPolicy policy) {
+				if(object instanceof RangerPolicy) {
+					RangerPolicy policy = (RangerPolicy)object;
 
 					if(! MapUtils.isEmpty(policy.getResources())) {
 						for(Map.Entry<String, RangerPolicyResource> e : policy.getResources().entrySet()) {
@@ -825,7 +839,8 @@ public class AbstractPredicateUtil {
 
 				boolean ret = false;
 
-				if(object instanceof RangerService service) {
+				if(object instanceof RangerService) {
+					RangerService service = (RangerService)object;
 
 					ret = StringUtils.equals(tagServiceName, service.getTagService());
 				} else {
@@ -868,7 +883,8 @@ public class AbstractPredicateUtil {
 
 				boolean ret = true;
 
-				if(object instanceof RangerPolicy policy) {
+				if(object instanceof RangerPolicy) {
+					RangerPolicy policy = (RangerPolicy)object;
 
 					if(policy.getPolicyType() != null) {
 						ret = StringUtils.equalsIgnoreCase(policyType, policy.getPolicyType().toString());
@@ -899,7 +915,8 @@ public class AbstractPredicateUtil {
 				}
 				boolean ret = false;
 
-				if (object instanceof RangerPolicy policy) {
+				if (object instanceof RangerPolicy) {
+					RangerPolicy policy = (RangerPolicy) object;
 					//	exact match
                                         /*if (policy.getPolicyLabels().contains(policyLabels)) {
                                                 ret = true;
@@ -939,7 +956,8 @@ public class AbstractPredicateUtil {
 
 				boolean ret = true;
 
-				if (object instanceof RangerPolicy policy) {
+				if (object instanceof RangerPolicy) {
+					RangerPolicy policy = (RangerPolicy) object;
 
 					Integer priority = policy.getPolicyPriority() != null ? policy.getPolicyPriority() : RangerPolicy.POLICY_PRIORITY_NORMAL;
 
@@ -981,7 +999,8 @@ public class AbstractPredicateUtil {
 
 				boolean ret = false;
 
-				if (object instanceof RangerPolicy policy) {
+				if (object instanceof RangerPolicy) {
+					RangerPolicy policy = (RangerPolicy)object;
 
 					ret = StringUtils.equals(policy.getResourceSignature(), policySignature);
 				} else {
@@ -1007,14 +1026,16 @@ public class AbstractPredicateUtil {
 
                 final boolean ret;
 
-                if(object instanceof RangerPolicy policy) {
+                if(object instanceof RangerPolicy) {
+                    RangerPolicy policy = (RangerPolicy)object;
 
                     if (policy.getZoneName() != null) {
                         ret = StringUtils.equals(zoneName, policy.getZoneName());
                     } else {
                         ret = StringUtils.isEmpty(zoneName);
                     }
-                } else if (object instanceof RangerSecurityZone securityZone) {
+                } else if (object instanceof RangerSecurityZone) {
+                    RangerSecurityZone securityZone = (RangerSecurityZone)object;
 
                     return StringUtils.equals(securityZone.getName(), zoneName);
                 } else {

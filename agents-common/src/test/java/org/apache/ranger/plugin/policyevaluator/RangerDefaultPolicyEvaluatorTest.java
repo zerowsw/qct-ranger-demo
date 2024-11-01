@@ -34,18 +34,17 @@ import org.apache.ranger.plugin.model.RangerPolicy.RangerPolicyItemCondition;
 import org.apache.ranger.plugin.model.RangerServiceDef;
 import org.apache.ranger.plugin.model.RangerServiceDef.RangerPolicyConditionDef;
 import org.apache.ranger.plugin.policyengine.RangerAccessRequest;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.After;
+import org.junit.Before;
 
 
 public class RangerDefaultPolicyEvaluatorTest {
 
-	@BeforeEach
+	@Before
 	public void setUp() throws Exception {
 	}
 
-	@AfterEach
+	@After
 	public void tearDown() throws Exception {
 	}
 	

@@ -39,8 +39,8 @@ import org.apache.ranger.common.RESTErrorUtil;
 import org.apache.ranger.common.SearchCriteria;
 import org.apache.ranger.common.StringUtil;
 import org.apache.ranger.view.VXAccessAuditList;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +48,7 @@ public class ElasticSearchAccessAuditsServiceTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(ElasticSearchAccessAuditsServiceTest.class);
 
     @Test
-    @Ignore // For manual execution only
+    @Disabled // For manual execution only
     public void testQuery() {
         ElasticSearchAccessAuditsService elasticSearchAccessAuditsService = new ElasticSearchAccessAuditsService();
         Map<String, String> properties = PropertiesUtil.getPropertiesMap();
@@ -63,7 +63,7 @@ public class ElasticSearchAccessAuditsServiceTest {
         elasticSearchAccessAuditsService.setRestErrorUtil(new RESTErrorUtil());
         LOGGER.info("Running searchXAccessAudits:");
         VXAccessAuditList vxAccessAuditList = elasticSearchAccessAuditsService.searchXAccessAudits(getSearchCriteria());
-        LOGGER.info(String.format("searchXAccessAudits results (%d items):", vxAccessAuditList.getListSize()));
+        LOGGER.info("searchXAccessAudits results (%d items):".formatted(vxAccessAuditList.getListSize()));
         ObjectWriter writer = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT).writer();
         vxAccessAuditList.getVXAccessAudits().forEach(x -> {
             try {
@@ -95,7 +95,7 @@ public class ElasticSearchAccessAuditsServiceTest {
     }
 
     @Test
-    @Ignore // For manual execution only
+    @Disabled // For manual execution only
     public void testWrite() {
         ElasticSearchAuditDestination elasticSearchAuditDestination = new ElasticSearchAuditDestination();
         Properties properties = new Properties();

@@ -19,9 +19,9 @@
 
 package org.apache.ranger.plugin.util;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.ranger.plugin.model.RangerServiceResource;
 import org.apache.ranger.plugin.model.RangerTag;
@@ -244,10 +244,12 @@ public class RangerServiceTagsDeltaUtil {
             delta.setServiceResources(deltaServiceResources);
 
             if (LOG.isDebugEnabled()) {
-                LOG.debug("RangerServiceTagsDeltaUtil.applyDelta(): delta(tagDefs={}, tags={}, resources={}), " +
-                          "resources(total={}, added={}, removed={}), " +
-                          "tags(total={}, added={}, updated={}, removed={}), " +
-                          "tagDefs(total={}, added={}, updated={}, removed={})",
+                LOG.debug("""
+                          RangerServiceTagsDeltaUtil.applyDelta(): delta(tagDefs={}, tags={}, resources={}), \
+                          resources(total={}, added={}, removed={}), \
+                          tags(total={}, added={}, updated={}, removed={}), \
+                          tagDefs(total={}, added={}, updated={}, removed={})\
+                          """,
                         delta.getTagDefinitions().size(), delta.getTags().size(), delta.getServiceResources().size(),
                         serviceResources.size(), resourcesToAdd.size(), resourcesToRemove.size(),
                         tags.size(), tagsAdded, tagsUpdated, tagsRemoved,

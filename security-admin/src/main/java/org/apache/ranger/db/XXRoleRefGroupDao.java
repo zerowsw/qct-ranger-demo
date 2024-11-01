@@ -22,9 +22,9 @@ package org.apache.ranger.db;
 import java.util.Collections;
 import java.util.List;
 
-import javax.persistence.NoResultException;
+import jakarta.persistence.NoResultException;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.ranger.common.db.BaseDao;
 import org.apache.ranger.entity.XXRoleRefGroup;
 import org.springframework.stereotype.Service;

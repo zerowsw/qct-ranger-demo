@@ -19,9 +19,9 @@
 
 package org.apache.ranger.plugin.policyengine;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.authorization.utils.JsonUtils;
 import org.apache.ranger.plugin.contextenricher.RangerAbstractContextEnricher;
 import org.apache.ranger.plugin.contextenricher.RangerContextEnricher;
@@ -847,8 +847,8 @@ public class RangerPolicyRepository {
                     }
                 }
 
-                if (policyItem instanceof RangerPolicy.RangerDataMaskPolicyItem) {
-                    RangerPolicyItemDataMaskInfo dataMaskInfo = ((RangerPolicy.RangerDataMaskPolicyItem) policyItem).getDataMaskInfo();
+                if (policyItem instanceof RangerPolicy.RangerDataMaskPolicyItem item) {
+                    RangerPolicyItemDataMaskInfo dataMaskInfo = item.getDataMaskInfo();
                     String                       maskType     = dataMaskInfo.getDataMaskType();
 
                     if (StringUtils.startsWith(maskType, prefix)) {
@@ -1079,8 +1079,7 @@ public class RangerPolicyRepository {
                 ret.setServiceName(componentServiceName);
                 ret.setServiceDef(componentServiceDef);
                 ret.setAppId(appId);
-                if (ret instanceof RangerAbstractContextEnricher) {
-                    RangerAbstractContextEnricher abstractContextEnricher = (RangerAbstractContextEnricher) ret;
+                if (ret instanceof RangerAbstractContextEnricher abstractContextEnricher) {
                     abstractContextEnricher.setPluginContext(pluginContext);
                     abstractContextEnricher.setPolicyEngineOptions(options);
                 }

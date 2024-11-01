@@ -34,15 +34,15 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.thirdparty.com.google.common.util.concurrent.ThreadFactoryBuilder;
-import org.apache.http.HttpHost;
-import org.apache.http.auth.AuthSchemeProvider;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.config.AuthSchemes;
-import org.apache.http.config.Lookup;
-import org.apache.http.config.RegistryBuilder;
-import org.apache.http.impl.auth.SPNegoSchemeFactory;
+import org.apache.hc.core5.http.HttpHost;
+import org.apache.hc.client5.http.auth.AuthSchemeProvider;
+import org.apache.hc.client5.http.auth.CredentialsProvider;
+import org.apache.hc.client5.http.config.AuthSchemes;
+import org.apache.hc.core5.http.config.Lookup;
+import org.apache.hc.core5.http.config.RegistryBuilder;
+import org.apache.hc.client5.http.impl.auth.SPNegoSchemeFactory;
 import org.apache.ranger.audit.model.AuditEventBase;
 import org.apache.ranger.audit.model.AuthzAuditEvent;
 import org.apache.ranger.audit.provider.MiscUtil;
@@ -153,7 +153,7 @@ public class ElasticSearchAuditDestination extends AuditDestination {
                         logFailedEvent(Arrays.asList(itemRequest), itemResponse.getFailureMessage());
                     } else {
                         if (LOG.isDebugEnabled()) {
-                            LOG.debug(String.format("Indexed %s", itemRequest.getEventKey()));
+                            LOG.debug("Indexed %s".formatted(itemRequest.getEventKey()));
                         }
                         addSuccessCount(1);
                         ret = true;
@@ -216,7 +216,7 @@ public class ElasticSearchAuditDestination extends AuditDestination {
     public static RestClientBuilder getRestClientBuilder(String urls, String protocol, String user, String password, int port) {
         RestClientBuilder restClientBuilder = RestClient.builder(
                 MiscUtil.toArray(urls, ",").stream()
-                        .map(x -> new HttpHost(x, port, protocol))
+                        .map(x -> new HttpHost(protocol, x, port))
                         .toArray(HttpHost[]::new)
         );
         ThreadFactory clientThreadFactory = new ThreadFactoryBuilder()

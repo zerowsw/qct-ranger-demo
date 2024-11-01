@@ -32,8 +32,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.HashSet;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.hadoop.thirdparty.com.google.common.base.Joiner;
 import org.apache.hadoop.thirdparty.com.google.common.base.Preconditions;
 import org.apache.ranger.audit.provider.MiscUtil;
@@ -64,7 +64,7 @@ import org.apache.solr.security.AuthorizationContext.CollectionRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.solr.security.PermissionNameProvider;
 
 public class RangerSolrAuthorizer extends SearchComponent implements AuthorizationPlugin {
@@ -786,8 +786,8 @@ public class RangerSolrAuthorizer extends SearchComponent implements Authorizati
 				Set<RangerContextEnricher> contextEnrichers = contextEnricherMap.keySet();
 
 				for (RangerContextEnricher enricher : contextEnrichers) {
-					if (enricher instanceof RangerUserStoreEnricher) {
-						ret = (RangerUserStoreEnricher) enricher;
+					if (enricher instanceof RangerUserStoreEnricher storeEnricher) {
+						ret = storeEnricher;
 
 						break;
 					}

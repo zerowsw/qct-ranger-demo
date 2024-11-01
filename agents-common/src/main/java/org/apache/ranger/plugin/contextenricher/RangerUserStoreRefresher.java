@@ -19,7 +19,7 @@
 package org.apache.ranger.plugin.contextenricher;
 
 import com.sun.jersey.api.client.ClientResponse;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.apache.ranger.admin.client.datatype.RESTResponse;
 import org.apache.ranger.audit.provider.MiscUtil;
@@ -34,7 +34,7 @@ import org.apache.ranger.plugin.util.RangerRESTUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.Reader;
 import java.io.Writer;

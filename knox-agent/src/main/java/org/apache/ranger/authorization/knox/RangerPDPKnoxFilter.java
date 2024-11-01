@@ -26,14 +26,14 @@ import java.util.List;
 import java.util.Set;
 
 import javax.security.auth.Subject;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.knox.gateway.filter.AbstractGatewayFilter;
 import org.apache.knox.gateway.security.GroupPrincipal;
@@ -177,8 +177,7 @@ public class RangerPDPKnoxFilter implements Filter {
 
 	private List<String> getForwardedAddresses(ServletRequest request) {
 		List<String> forwardedAddresses = null;
-		if (request instanceof HttpServletRequest) {
-			HttpServletRequest httpRequest = (HttpServletRequest) request;
+		if (request instanceof HttpServletRequest httpRequest) {
 			String xForwardedFor = httpRequest.getHeader("X-Forwarded-For");
 			if(xForwardedFor != null) {
 				forwardedAddresses = Arrays.asList(xForwardedFor.split(","));

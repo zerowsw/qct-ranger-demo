@@ -19,7 +19,7 @@
 package org.apache.ranger.authorization.nestedstructure.authorizer;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -37,7 +37,7 @@ public class DataMasker {
     /**
      * The default numberic value when masking and no other value is defined.
      */
-    static final Number DEFAULT_NUMBER_MASK = new Long(-11111);
+    static final Number DEFAULT_NUMBER_MASK = Long.valueOf(-11111);
 
     /**
      * The default boolean value when masking and no other value is defined.

@@ -42,9 +42,9 @@ import org.apache.ranger.plugin.model.RangerServiceDef.RangerServiceConfigDef;
 import org.apache.ranger.plugin.model.validation.RangerValidator.Action;
 import org.apache.ranger.plugin.store.ServiceStore;
 import org.apache.ranger.plugin.util.ServiceDefUtil;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class TestRangerValidator {
 
@@ -59,7 +59,7 @@ public class TestRangerValidator {
 		}
 	}
 	
-	@Before
+	@BeforeEach
 	public void before() {
 		_store = mock(ServiceStore.class);
 		_validator = new RangerValidatorForTest(_store);
@@ -71,7 +71,7 @@ public class TestRangerValidator {
 		try {
 			// service store can't be null during construction
 			new RangerValidatorForTest(null);
-			Assert.fail("Should have thrown exception!");
+			Assertions.fail("Should have thrown exception!");
 		} catch (IllegalArgumentException e) {
 			// expected exception
 		}
@@ -82,11 +82,11 @@ public class TestRangerValidator {
 		// default implementation should fail.  This is abstract class.  Sub-class must do something sensible with isValid
 		try {
 			_validator.validate(1L, Action.CREATE);
-			Assert.fail("Should have thrown exception!");
+			Assertions.fail("Should have thrown exception!");
 		} catch (Exception e) {
 			// ok expected exception
 			String message = e.getMessage();
-			Assert.assertTrue(message.contains("internal error"));
+			Assertions.assertTrue(message.contains("internal error"));
 		}
 	}
 
@@ -94,26 +94,26 @@ public class TestRangerValidator {
 	public void test_getServiceConfigParameters() {
 		// reasonable protection against null values
 		Set<String> parameters = _validator.getServiceConfigParameters(null);
-		Assert.assertNotNull(parameters);
-		Assert.assertTrue(parameters.isEmpty());
+		Assertions.assertNotNull(parameters);
+		Assertions.assertTrue(parameters.isEmpty());
 		
 		RangerService service = mock(RangerService.class);
 		when(service.getConfigs()).thenReturn(null);
 		parameters = _validator.getServiceConfigParameters(service);
-		Assert.assertNotNull(parameters);
-		Assert.assertTrue(parameters.isEmpty());
+		Assertions.assertNotNull(parameters);
+		Assertions.assertTrue(parameters.isEmpty());
 		
 		when(service.getConfigs()).thenReturn(new HashMap<String, String>());
 		parameters = _validator.getServiceConfigParameters(service);
-		Assert.assertNotNull(parameters);
-		Assert.assertTrue(parameters.isEmpty());
+		Assertions.assertNotNull(parameters);
+		Assertions.assertTrue(parameters.isEmpty());
 
 		String[] keys = new String[] { "a", "b", "c" };
 		Map<String, String> map = _utils.createMap(keys);
 		when(service.getConfigs()).thenReturn(map);
 		parameters = _validator.getServiceConfigParameters(service);
 		for (String key: keys) {
-			Assert.assertTrue("key", parameters.contains(key));
+			Assertions.assertTrue(parameters.contains(key), "key");
 		}
 	}
 	
@@ -121,20 +121,20 @@ public class TestRangerValidator {
 	public void test_getRequiredParameters() {
 		// reasonable protection against null things
 		Set<String> parameters = _validator.getRequiredParameters(null);
-		Assert.assertNotNull(parameters);
-		Assert.assertTrue(parameters.isEmpty());
+		Assertions.assertNotNull(parameters);
+		Assertions.assertTrue(parameters.isEmpty());
 
 		RangerServiceDef serviceDef = mock(RangerServiceDef.class);
 		when(serviceDef.getConfigs()).thenReturn(null);
 		parameters = _validator.getRequiredParameters(null);
-		Assert.assertNotNull(parameters);
-		Assert.assertTrue(parameters.isEmpty());
+		Assertions.assertNotNull(parameters);
+		Assertions.assertTrue(parameters.isEmpty());
 
 		List<RangerServiceConfigDef> configs = new ArrayList<>();
 		when(serviceDef.getConfigs()).thenReturn(configs);
 		parameters = _validator.getRequiredParameters(null);
-		Assert.assertNotNull(parameters);
-		Assert.assertTrue(parameters.isEmpty());
+		Assertions.assertNotNull(parameters);
+		Assertions.assertTrue(parameters.isEmpty());
 		
 		Object[][] input = new Object[][] {
 				{ "param1", false },
@@ -145,8 +145,8 @@ public class TestRangerValidator {
 		configs = _utils.createServiceConditionDefs(input);
 		when(serviceDef.getConfigs()).thenReturn(configs);
 		parameters = _validator.getRequiredParameters(serviceDef);
-		Assert.assertTrue("result does not contain: param2", parameters.contains("param2"));
-		Assert.assertTrue("result does not contain: param3", parameters.contains("param3"));
+		Assertions.assertTrue(parameters.contains("param2"), "result does not contain: param2");
+		Assertions.assertTrue(parameters.contains("param3"), "result does not contain: param3");
 	}
 	
 	@Test
@@ -159,12 +159,12 @@ public class TestRangerValidator {
 			when(_store.getServiceDefByName("good-service")).thenReturn(serviceDef);
 		} catch (Exception e) {
 			e.printStackTrace();
-			Assert.fail("Unexpected exception during mocking!");
+			Assertions.fail("Unexpected exception during mocking!");
 		}
 		
-		Assert.assertNull(_validator.getServiceDef("return null"));
-		Assert.assertNull(_validator.getServiceDef("throw"));
-		Assert.assertFalse(_validator.getServiceDef("good-service") == null);
+		Assertions.assertNull(_validator.getServiceDef("return null"));
+		Assertions.assertNull(_validator.getServiceDef("throw"));
+		Assertions.assertFalse(_validator.getServiceDef("good-service") == null);
 	}
 
 	@Test
@@ -175,9 +175,9 @@ public class TestRangerValidator {
 		RangerPolicy policy = mock(RangerPolicy.class);
 		when(_store.getPolicy(3L)).thenReturn(policy);
 		
-		Assert.assertNull(_validator.getPolicy(1L));
-		Assert.assertNull(_validator.getPolicy(2L));
-		Assert.assertTrue(_validator.getPolicy(3L) != null);
+		Assertions.assertNull(_validator.getPolicy(1L));
+		Assertions.assertNull(_validator.getPolicy(2L));
+		Assertions.assertTrue(_validator.getPolicy(3L) != null);
 	}
 	
 	@Test
@@ -187,9 +187,9 @@ public class TestRangerValidator {
 		String serviceName = "service-name";
 		boolean isPolicyEnabled = true;
 		when(_store.getPoliciesByResourceSignature(serviceName, hexSignature, isPolicyEnabled)).thenReturn(null);
-		Assert.assertNotNull(_validator.getPoliciesForResourceSignature(serviceName, hexSignature));
+		Assertions.assertNotNull(_validator.getPoliciesForResourceSignature(serviceName, hexSignature));
 		when(_store.getPoliciesByResourceSignature(serviceName, hexSignature, isPolicyEnabled)).thenThrow(new Exception());
-		Assert.assertNotNull(_validator.getPoliciesForResourceSignature(serviceName, hexSignature));
+		Assertions.assertNotNull(_validator.getPoliciesForResourceSignature(serviceName, hexSignature));
 
 		// what ever store returns should come back
 		hexSignature = "anotherSignature";
@@ -200,7 +200,7 @@ public class TestRangerValidator {
 		policies.add(policy2);
 		when(_store.getPoliciesByResourceSignature(serviceName, hexSignature, isPolicyEnabled)).thenReturn(policies);
 		List<RangerPolicy> result = _validator.getPoliciesForResourceSignature(serviceName, hexSignature);
-		Assert.assertTrue(result.contains(policy1) && result.contains(policy2));
+		Assertions.assertTrue(result.contains(policy1) && result.contains(policy2));
 	}
 
 	@Test
@@ -211,9 +211,9 @@ public class TestRangerValidator {
 		RangerService service = mock(RangerService.class);
 		when(_store.getService(3L)).thenReturn(service);
 		
-		Assert.assertNull(_validator.getService(1L));
-		Assert.assertNull(_validator.getService(2L));
-		Assert.assertTrue(_validator.getService(3L) != null);
+		Assertions.assertNull(_validator.getService(1L));
+		Assertions.assertNull(_validator.getService(2L));
+		Assertions.assertTrue(_validator.getService(3L) != null);
 	}
 
 	@Test
@@ -226,67 +226,67 @@ public class TestRangerValidator {
 			when(_store.getServiceByName("good-service")).thenReturn(service);
 		} catch (Exception e) {
 			e.printStackTrace();
-			Assert.fail("Unexpected exception during mocking!");
+			Assertions.fail("Unexpected exception during mocking!");
 		}
 		
-		Assert.assertNull(_validator.getService("return null"));
-		Assert.assertNull(_validator.getService("throw"));
-		Assert.assertFalse(_validator.getService("good-service") == null);
+		Assertions.assertNull(_validator.getService("return null"));
+		Assertions.assertNull(_validator.getService("throw"));
+		Assertions.assertFalse(_validator.getService("good-service") == null);
 	}
 	
 	@Test
 	public void test_getAccessTypes() {
 		// passing in null service def
 		Set<String> accessTypes = _validator.getAccessTypes((RangerServiceDef)null);
-		Assert.assertTrue(accessTypes.isEmpty());
+		Assertions.assertTrue(accessTypes.isEmpty());
 		// that has null or empty access type def
 		RangerServiceDef serviceDef = mock(RangerServiceDef.class);
 		when(serviceDef.getAccessTypes()).thenReturn(null);
 		accessTypes = _validator.getAccessTypes(serviceDef);
-		Assert.assertTrue(accessTypes.isEmpty());
+		Assertions.assertTrue(accessTypes.isEmpty());
 
 		List<RangerAccessTypeDef> accessTypeDefs = new ArrayList<>();
 		when(serviceDef.getAccessTypes()).thenReturn(accessTypeDefs);
 		accessTypes = _validator.getAccessTypes(serviceDef);
-		Assert.assertTrue(accessTypes.isEmpty());
+		Assertions.assertTrue(accessTypes.isEmpty());
 		
 		// having null accesstypedefs
 		accessTypeDefs.add(null);
 		accessTypes = _validator.getAccessTypes(serviceDef);
-		Assert.assertTrue(accessTypes.isEmpty());
+		Assertions.assertTrue(accessTypes.isEmpty());
 		
 		// access type defs with null empty blank names are skipped, spaces within names are preserved
 		String[] names = new String[] { null, "", "a", "  ", "b ", "		", " C", "	D	" };
 		accessTypeDefs.addAll(_utils.createAccessTypeDefs(names));
 		accessTypes = _validator.getAccessTypes(serviceDef);
 		accessTypes.removeAll(ServiceDefUtil.ACCESS_TYPE_MARKERS);
-		Assert.assertEquals(4, accessTypes.size());
-		Assert.assertTrue(accessTypes.contains("a"));
-		Assert.assertTrue(accessTypes.contains("b "));
-		Assert.assertTrue(accessTypes.contains(" C"));
-		Assert.assertTrue(accessTypes.contains("	D	"));
+		Assertions.assertEquals(4, accessTypes.size());
+		Assertions.assertTrue(accessTypes.contains("a"));
+		Assertions.assertTrue(accessTypes.contains("b "));
+		Assertions.assertTrue(accessTypes.contains(" C"));
+		Assertions.assertTrue(accessTypes.contains("	D	"));
 	}
 	
 	@Test
 	public void test_getResourceNames() {
 		// passing in null service def
 		Set<String> accessTypes = _validator.getMandatoryResourceNames((RangerServiceDef)null);
-		Assert.assertTrue(accessTypes.isEmpty());
+		Assertions.assertTrue(accessTypes.isEmpty());
 		// that has null or empty access type def
 		RangerServiceDef serviceDef = mock(RangerServiceDef.class);
 		when(serviceDef.getResources()).thenReturn(null);
 		accessTypes = _validator.getMandatoryResourceNames(serviceDef);
-		Assert.assertTrue(accessTypes.isEmpty());
+		Assertions.assertTrue(accessTypes.isEmpty());
 
 		List<RangerResourceDef> resourceDefs = new ArrayList<>();
 		when(serviceDef.getResources()).thenReturn(resourceDefs);
 		accessTypes = _validator.getMandatoryResourceNames(serviceDef);
-		Assert.assertTrue(accessTypes.isEmpty());
+		Assertions.assertTrue(accessTypes.isEmpty());
 		
 		// having null accesstypedefs
 		resourceDefs.add(null);
 		accessTypes = _validator.getMandatoryResourceNames(serviceDef);
-		Assert.assertTrue(accessTypes.isEmpty());
+		Assertions.assertTrue(accessTypes.isEmpty());
 		
 		// access type defs with null empty blank names are skipped, spaces within names are preserved
 		Object[][] data = {
@@ -301,37 +301,37 @@ public class TestRangerValidator {
 		};
 		resourceDefs.addAll(_utils.createResourceDefs(data));
 		accessTypes = _validator.getMandatoryResourceNames(serviceDef);
-		Assert.assertEquals(2, accessTypes.size());
-		Assert.assertTrue(accessTypes.contains("a"));
-		Assert.assertTrue(accessTypes.contains("d")); // name should come back lower case
+		Assertions.assertEquals(2, accessTypes.size());
+		Assertions.assertTrue(accessTypes.contains("a"));
+		Assertions.assertTrue(accessTypes.contains("d")); // name should come back lower case
 		
 		accessTypes = _validator.getAllResourceNames(serviceDef);
-		Assert.assertEquals(5, accessTypes.size());
-		Assert.assertTrue(accessTypes.contains("b"));
-		Assert.assertTrue(accessTypes.contains("c"));
-		Assert.assertTrue(accessTypes.contains("e"));
+		Assertions.assertEquals(5, accessTypes.size());
+		Assertions.assertTrue(accessTypes.contains("b"));
+		Assertions.assertTrue(accessTypes.contains("c"));
+		Assertions.assertTrue(accessTypes.contains("e"));
 	}
 
 	@Test
 	public void test_getValidationRegExes() {
 		// passing in null service def
 		Map<String, String> regExMap = _validator.getValidationRegExes((RangerServiceDef)null);
-		Assert.assertTrue(regExMap.isEmpty());
+		Assertions.assertTrue(regExMap.isEmpty());
 		// that has null or empty access type def
 		RangerServiceDef serviceDef = mock(RangerServiceDef.class);
 		when(serviceDef.getResources()).thenReturn(null);
 		regExMap = _validator.getValidationRegExes(serviceDef);
-		Assert.assertTrue(regExMap.isEmpty());
+		Assertions.assertTrue(regExMap.isEmpty());
 
 		List<RangerResourceDef> resourceDefs = new ArrayList<>();
 		when(serviceDef.getResources()).thenReturn(resourceDefs);
 		regExMap = _validator.getValidationRegExes(serviceDef);
-		Assert.assertTrue(regExMap.isEmpty());
+		Assertions.assertTrue(regExMap.isEmpty());
 		
 		// having null accesstypedefs
 		resourceDefs.add(null);
 		regExMap = _validator.getValidationRegExes(serviceDef);
-		Assert.assertTrue(regExMap.isEmpty());
+		Assertions.assertTrue(regExMap.isEmpty());
 		
 		// access type defs with null empty blank names are skipped, spaces within names are preserved
 		String[][] data = {
@@ -345,10 +345,10 @@ public class TestRangerValidator {
 		};
 		resourceDefs.addAll(_utils.createResourceDefsWithRegEx(data));
 		regExMap = _validator.getValidationRegExes(serviceDef);
-		Assert.assertEquals(3, regExMap.size());
-		Assert.assertEquals("regex1", regExMap.get("b"));
-		Assert.assertEquals("regex2", regExMap.get("d"));
-		Assert.assertEquals("regex3", regExMap.get("f"));
+		Assertions.assertEquals(3, regExMap.size());
+		Assertions.assertEquals("regex1", regExMap.get("b"));
+		Assertions.assertEquals("regex2", regExMap.get("d"));
+		Assertions.assertEquals("regex3", regExMap.get("f"));
 	}
 
 	@Test
@@ -356,20 +356,20 @@ public class TestRangerValidator {
 		// null policy
 		RangerPolicy policy = null;
 		boolean result = _validator.getIsAuditEnabled(policy);
-		Assert.assertFalse(result);
+		Assertions.assertFalse(result);
 		// null isAuditEnabled Boolean is supposed to be TRUE!!
 		policy = mock(RangerPolicy.class);
 		when(policy.getIsAuditEnabled()).thenReturn(null);
 		result = _validator.getIsAuditEnabled(policy);
-		Assert.assertTrue(result);
+		Assertions.assertTrue(result);
 		// non-null value
 		when(policy.getIsAuditEnabled()).thenReturn(Boolean.FALSE);
 		result = _validator.getIsAuditEnabled(policy);
-		Assert.assertFalse(result);
+		Assertions.assertFalse(result);
 
 		when(policy.getIsAuditEnabled()).thenReturn(Boolean.TRUE);
 		result = _validator.getIsAuditEnabled(policy);
-		Assert.assertTrue(result);
+		Assertions.assertTrue(result);
 	}
 	
 	@Test
@@ -380,19 +380,19 @@ public class TestRangerValidator {
 		RangerServiceDef serviceDef = mock(RangerServiceDef.class);
 		when(_store.getServiceDef(3L)).thenReturn(serviceDef);
 		
-		Assert.assertNull(_validator.getServiceDef(1L));
-		Assert.assertNull(_validator.getServiceDef(2L));
-		Assert.assertTrue(_validator.getServiceDef(3L) != null);
+		Assertions.assertNull(_validator.getServiceDef(1L));
+		Assertions.assertNull(_validator.getServiceDef(2L));
+		Assertions.assertTrue(_validator.getServiceDef(3L) != null);
 	}
 
 	@Test
 	public void test_getEnumDefaultIndex() {
 		RangerEnumDef enumDef = mock(RangerEnumDef.class);
-		Assert.assertEquals(-1, _validator.getEnumDefaultIndex(null));
+		Assertions.assertEquals(-1, _validator.getEnumDefaultIndex(null));
 		when(enumDef.getDefaultIndex()).thenReturn(null);
-		Assert.assertEquals(0, _validator.getEnumDefaultIndex(enumDef));
+		Assertions.assertEquals(0, _validator.getEnumDefaultIndex(enumDef));
 		when(enumDef.getDefaultIndex()).thenReturn(-5);
-		Assert.assertEquals(-5, _validator.getEnumDefaultIndex(enumDef));
+		Assertions.assertEquals(-5, _validator.getEnumDefaultIndex(enumDef));
 	}
 	
 	@Test
@@ -400,34 +400,34 @@ public class TestRangerValidator {
 		
 		// passing in null gets back a null
 		Collection<String> result = _validator.getImpliedGrants(null);
-		Assert.assertNull(result);
+		Assertions.assertNull(result);
 		
 		// null or empty implied grant collection gets back an empty collection
 		RangerAccessTypeDef accessTypeDef = mock(RangerAccessTypeDef.class);
 		when(accessTypeDef.getImpliedGrants()).thenReturn(null);
 		result = _validator.getImpliedGrants(accessTypeDef);
-		Assert.assertTrue(result.isEmpty());
+		Assertions.assertTrue(result.isEmpty());
 		
 		List<String> impliedGrants = new ArrayList<>();
 		when(accessTypeDef.getImpliedGrants()).thenReturn(impliedGrants);
 		result = _validator.getImpliedGrants(accessTypeDef);
-		Assert.assertTrue(result.isEmpty());
+		Assertions.assertTrue(result.isEmpty());
 
 		// null/empty values come back as is
 		impliedGrants = Arrays.asList(new String[] { null, "", " ", "		" });
 		when(accessTypeDef.getImpliedGrants()).thenReturn(impliedGrants);
 		result = _validator.getImpliedGrants(accessTypeDef);
-		Assert.assertEquals(4, result.size());
+		Assertions.assertEquals(4, result.size());
 		
 		// non-empty values get lower cased
 		impliedGrants = Arrays.asList(new String[] { "a", "B", "C	", " d " });
 		when(accessTypeDef.getImpliedGrants()).thenReturn(impliedGrants);
 		result = _validator.getImpliedGrants(accessTypeDef);
-		Assert.assertEquals(4, result.size());
-		Assert.assertTrue(result.contains("a"));
-		Assert.assertTrue(result.contains("b"));
-		Assert.assertTrue(result.contains("c	"));
-		Assert.assertTrue(result.contains(" d "));
+		Assertions.assertEquals(4, result.size());
+		Assertions.assertTrue(result.contains("a"));
+		Assertions.assertTrue(result.contains("b"));
+		Assertions.assertTrue(result.contains("c	"));
+		Assertions.assertTrue(result.contains(" d "));
 	}
 	
 	@Test
@@ -437,22 +437,22 @@ public class TestRangerValidator {
 		Set<String> alreadySeen = new HashSet<>();
 		// null/empty string value is invalid
 		for (String value : new String[] { null, "", "  " }) {
-			Assert.assertFalse(_validator.isUnique(value, alreadySeen, fieldName, collectionName, _failures));
+			Assertions.assertFalse(_validator.isUnique(value, alreadySeen, fieldName, collectionName, _failures));
 			_utils.checkFailureForMissingValue(_failures, fieldName);
 		}
 		// value should not have been seen so far.
 		String value = "blah";
-		_failures.clear(); Assert.assertTrue(_validator.isUnique(value, alreadySeen, fieldName, collectionName, _failures));
-		Assert.assertTrue(_failures.isEmpty());
-		Assert.assertTrue(alreadySeen.contains(value));
+		_failures.clear(); Assertions.assertTrue(_validator.isUnique(value, alreadySeen, fieldName, collectionName, _failures));
+		Assertions.assertTrue(_failures.isEmpty());
+		Assertions.assertTrue(alreadySeen.contains(value));
 
 		// since "blah" has already been seen doing this test again should fail
-		_failures.clear(); Assert.assertFalse(_validator.isUnique(value, alreadySeen, fieldName, collectionName, _failures));
+		_failures.clear(); Assertions.assertFalse(_validator.isUnique(value, alreadySeen, fieldName, collectionName, _failures));
 		_utils.checkFailureForSemanticError(_failures, fieldName, value);
 		
 		// not see check is done in a case-insenstive manner
 		value = "bLaH";
-		_failures.clear(); Assert.assertFalse(_validator.isUnique(value, alreadySeen, fieldName, collectionName, _failures));
+		_failures.clear(); Assertions.assertFalse(_validator.isUnique(value, alreadySeen, fieldName, collectionName, _failures));
 		_utils.checkFailureForSemanticError(_failures, fieldName, value);
 	}
 	
@@ -463,17 +463,17 @@ public class TestRangerValidator {
 		Set<Long> alreadySeen = new HashSet<>();
 		Long value = null;
 		// null value is invalid
-		Assert.assertFalse(_validator.isUnique(value, alreadySeen, fieldName, collectionName, _failures));
+		Assertions.assertFalse(_validator.isUnique(value, alreadySeen, fieldName, collectionName, _failures));
 		_utils.checkFailureForMissingValue(_failures, fieldName);
 
 		// value should not have been seen so far.
 		value = 7L;
-		_failures.clear(); Assert.assertTrue(_validator.isUnique(value, alreadySeen, fieldName, collectionName, _failures));
-		Assert.assertTrue(_failures.isEmpty());
-		Assert.assertTrue(alreadySeen.contains(value));
+		_failures.clear(); Assertions.assertTrue(_validator.isUnique(value, alreadySeen, fieldName, collectionName, _failures));
+		Assertions.assertTrue(_failures.isEmpty());
+		Assertions.assertTrue(alreadySeen.contains(value));
 
 		// since 7L has already been seen doing this test again should fail
-		_failures.clear(); Assert.assertFalse(_validator.isUnique(value, alreadySeen, fieldName, collectionName, _failures));
+		_failures.clear(); Assertions.assertFalse(_validator.isUnique(value, alreadySeen, fieldName, collectionName, _failures));
 		_utils.checkFailureForSemanticError(_failures, fieldName, value.toString());
 	}
 	
@@ -484,17 +484,17 @@ public class TestRangerValidator {
 		Set<Integer> alreadySeen = new HashSet<>();
 		Integer value = null;
 		// null value is invalid
-		Assert.assertFalse(_validator.isUnique(value, alreadySeen, fieldName, collectionName, _failures));
+		Assertions.assertFalse(_validator.isUnique(value, alreadySeen, fieldName, collectionName, _failures));
 		_utils.checkFailureForMissingValue(_failures, fieldName);
 
 		// value should not have been seen so far.
 		value = 49;
-		_failures.clear(); Assert.assertTrue(_validator.isUnique(value, alreadySeen, fieldName, collectionName, _failures));
-		Assert.assertTrue(_failures.isEmpty());
-		Assert.assertTrue(alreadySeen.contains(value));
+		_failures.clear(); Assertions.assertTrue(_validator.isUnique(value, alreadySeen, fieldName, collectionName, _failures));
+		Assertions.assertTrue(_failures.isEmpty());
+		Assertions.assertTrue(alreadySeen.contains(value));
 
 		// since 7L has already been seen doing this test again should fail
-		_failures.clear(); Assert.assertFalse(_validator.isUnique(value, alreadySeen, fieldName, collectionName, _failures));
+		_failures.clear(); Assertions.assertFalse(_validator.isUnique(value, alreadySeen, fieldName, collectionName, _failures));
 		_utils.checkFailureForSemanticError(_failures, fieldName, value.toString());
 	}
 	

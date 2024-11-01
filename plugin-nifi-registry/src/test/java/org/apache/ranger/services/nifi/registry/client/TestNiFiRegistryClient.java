@@ -22,12 +22,12 @@ import com.google.common.io.Resources;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import org.apache.ranger.plugin.service.ResourceLookupContext;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -42,7 +42,7 @@ public class TestNiFiRegistryClient {
 
     private NiFiRegistryClient registryClient;
 
-    @Before
+    @BeforeEach
     public void setup() throws IOException {
         final URL responseFile = TestNiFiRegistryClient.class.getResource("/resources-response.json");
         final String resourcesResponse = Resources.toString(responseFile, StandardCharsets.UTF_8);
@@ -65,10 +65,10 @@ public class TestNiFiRegistryClient {
         expectedResources.add("/buckets/0b5edba5-da83-4839-b64a-adf5f21abaf4");
 
         List<String> resources = registryClient.getResources(resourceLookupContext);
-        Assert.assertNotNull(resources);
-        Assert.assertEquals(expectedResources.size(), resources.size());
+        Assertions.assertNotNull(resources);
+        Assertions.assertEquals(expectedResources.size(), resources.size());
 
-        Assert.assertTrue(resources.containsAll(expectedResources));
+        Assertions.assertTrue(resources.containsAll(expectedResources));
     }
 
     @Test
@@ -81,10 +81,10 @@ public class TestNiFiRegistryClient {
         expectedResources.add("/proxy");
 
         List<String> resources = registryClient.getResources(resourceLookupContext);
-        Assert.assertNotNull(resources);
-        Assert.assertEquals(expectedResources.size(), resources.size());
+        Assertions.assertNotNull(resources);
+        Assertions.assertEquals(expectedResources.size(), resources.size());
 
-        Assert.assertTrue(resources.containsAll(expectedResources));
+        Assertions.assertTrue(resources.containsAll(expectedResources));
     }
 
     @Test
@@ -96,10 +96,10 @@ public class TestNiFiRegistryClient {
         expectedResources.add("/tenants");
 
         List<String> resources = registryClient.getResources(resourceLookupContext);
-        Assert.assertNotNull(resources);
-        Assert.assertEquals(expectedResources.size(), resources.size());
+        Assertions.assertNotNull(resources);
+        Assertions.assertEquals(expectedResources.size(), resources.size());
 
-        Assert.assertTrue(resources.containsAll(expectedResources));
+        Assertions.assertTrue(resources.containsAll(expectedResources));
     }
 
     @Test
@@ -112,17 +112,17 @@ public class TestNiFiRegistryClient {
 
         try {
             registryClient.getResources(resourceLookupContext);
-            Assert.fail("should have thrown exception");
+            Assertions.fail("should have thrown exception");
         } catch (Exception e) {
-            Assert.assertTrue(e.getMessage().contains(errorMsg));
+            Assertions.assertTrue(e.getMessage().contains(errorMsg));
         }
     }
 
     @Test
     public void testConnectionTestSuccess() {
         HashMap<String, Object> ret = registryClient.connectionTest();
-        Assert.assertNotNull(ret);
-        Assert.assertEquals(NiFiRegistryClient.SUCCESS_MSG, ret.get("message"));
+        Assertions.assertNotNull(ret);
+        Assertions.assertEquals(NiFiRegistryClient.SUCCESS_MSG, ret.get("message"));
     }
 
     @Test
@@ -131,8 +131,8 @@ public class TestNiFiRegistryClient {
         registryClient = new MockNiFiRegistryClient(errorMsg, Response.Status.BAD_REQUEST.getStatusCode());
 
         HashMap<String, Object> ret = registryClient.connectionTest();
-        Assert.assertNotNull(ret);
-        Assert.assertEquals(NiFiRegistryClient.FAILURE_MSG, ret.get("message"));
+        Assertions.assertNotNull(ret);
+        Assertions.assertEquals(NiFiRegistryClient.FAILURE_MSG, ret.get("message"));
     }
 
 

@@ -19,8 +19,8 @@
 
 package org.apache.ranger;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.common.PropertiesUtil;
 import org.apache.ranger.common.RESTErrorUtil;
 import org.apache.ranger.common.SearchField;
@@ -125,7 +125,7 @@ public class AccessAuditsService {
             List<String> excludeUsersList = getExcludeUsersList();
             if (CollectionUtils.isNotEmpty(excludeUsersList)) {
                 Object oldUserExclusions = paramList.get("-requestUser");
-                if (oldUserExclusions instanceof Collection && (!((Collection<?>)oldUserExclusions).isEmpty())) {
+                if (oldUserExclusions instanceof Collection<?> collection && (!collection.isEmpty())) {
                     excludeUsersList.addAll((Collection<String>)oldUserExclusions);
                     paramList.put("-requestUser", excludeUsersList);
                 } else {

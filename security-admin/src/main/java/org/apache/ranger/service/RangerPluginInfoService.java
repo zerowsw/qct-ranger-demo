@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.biz.RangerBizUtil;
 import org.apache.ranger.common.JSONUtil;
 import org.apache.ranger.common.RangerSearchUtil;
@@ -44,8 +44,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 
 @Service
 public class RangerPluginInfoService {
@@ -117,8 +117,8 @@ public class RangerPluginInfoService {
 				for (Object[] objects : objectsList) {
 					if (objects.length == 2) {
 						if (xObj.getServiceName().equals(objects[1])) {
-							if (objects[0] instanceof XXServiceVersionInfo) {
-								xxServiceVersionInfo = (XXServiceVersionInfo) objects[0];
+							if (objects[0] instanceof XXServiceVersionInfo info) {
+								xxServiceVersionInfo = info;
 								for (XXService service : servicesWithTagService) {
 									if (service.getName().equals(xObj.getServiceName())) {
 										hasAssociatedTagService = true;

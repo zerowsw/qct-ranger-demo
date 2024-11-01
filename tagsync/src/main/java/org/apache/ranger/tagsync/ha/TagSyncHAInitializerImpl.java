@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.logging.log4j.LogManager;
 import org.apache.ranger.RangerHAInitializer;
 import org.apache.ranger.ha.ActiveInstanceElectorService;
 import org.apache.ranger.ha.ActiveStateChangeHandler;
@@ -32,11 +33,11 @@ import org.apache.ranger.ha.ServiceState;
 import org.apache.ranger.ha.service.HARangerService;
 import org.apache.ranger.ha.service.ServiceManager;
 import org.apache.ranger.tagsync.process.TagSyncConfig;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 
 public class TagSyncHAInitializerImpl extends RangerHAInitializer {
-	private static final Logger LOG = Logger.getLogger(TagSyncHAInitializerImpl.class);
+	private static final Logger LOG = LogManager.getLogger(TagSyncHAInitializerImpl.class);
 	ActiveInstanceElectorService activeInstanceElectorService 	= null;
 	ActiveStateChangeHandler activeStateChangeHandler 			= null;
 	List<HARangerService> haRangerService 						= null;
@@ -48,7 +49,7 @@ public class TagSyncHAInitializerImpl extends RangerHAInitializer {
 			LOG.info("==> TagSyncHAInitializerImpl.TagSyncHAInitializerImpl()");
 		}
 		try {
-			LOG.info("Ranger TagSync server is HA enabled : "+configuration.getBoolean(TagSyncConfig.TAGSYNC_SERVER_HA_ENABLED_PARAM, false) );
+			LOG.info("Ranger TagSync server is HA enabled : {}", configuration.getBoolean(TagSyncConfig.TAGSYNC_SERVER_HA_ENABLED_PARAM, false));
 			init(configuration);
 		} catch (Exception e) {
 			LOG.error("TagSyncHAInitializerImpl initialization failed", e);

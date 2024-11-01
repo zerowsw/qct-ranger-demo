@@ -34,14 +34,14 @@ import java.util.LinkedHashMap;
 import java.util.regex.Pattern;
 
 import javax.security.auth.Subject;
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.Cookie;
-import javax.ws.rs.core.NewCookie;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.ws.rs.core.Cookie;
+import jakarta.ws.rs.core.NewCookie;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.security.SecureClientLogin;
 import org.apache.ranger.authorization.utils.JsonUtils;
 import org.apache.ranger.ugsyncutil.model.GroupUserInfo;
@@ -240,7 +240,7 @@ public class PolicyMgrUserGroupBuilder extends AbstractUserGroupSource implement
 		buildUserGroupInfo();
 
 		if (LOG.isDebugEnabled()) {
-			LOG.debug(String.format("PolicyMgrUserGroupBuilderOld.init()==> policyMgrBaseUrl: %s, KeyStore File: %s, TrustStore File: %s, Authentication Type: %s", policyMgrBaseUrl, keyStoreFile, trustStoreFile, authenticationType));
+			LOG.debug("PolicyMgrUserGroupBuilderOld.init()==> policyMgrBaseUrl: %s, KeyStore File: %s, TrustStore File: %s, Authentication Type: %s".formatted(policyMgrBaseUrl, keyStoreFile, trustStoreFile, authenticationType));
 		}
 
 	}
@@ -398,10 +398,10 @@ public class PolicyMgrUserGroupBuilder extends AbstractUserGroupSource implement
 
 	private void buildUserGroupInfo() throws Throwable {
 		if(LOG.isDebugEnabled() && authenticationType != null && AUTH_KERBEROS.equalsIgnoreCase(authenticationType) && SecureClientLogin.isKerberosCredentialExists(principal, keytab)) {
-			LOG.debug(String.format("==> Kerberos Environment : Principal is %s and Keytab is %s", principal, keytab));
+			LOG.debug("==> Kerberos Environment : Principal is %s and Keytab is %s".formatted(principal, keytab));
 		}
 		if (authenticationType != null && AUTH_KERBEROS.equalsIgnoreCase(authenticationType) && SecureClientLogin.isKerberosCredentialExists(principal, keytab)) {
-			LOG.info(String.format("Using principal: %s and keytab: %s", principal, keytab));
+			LOG.info("Using principal: %s and keytab: %s".formatted(principal, keytab));
 			Subject sub = SecureClientLogin.loginUserFromKeytab(principal, keytab, nameRules);
 			Boolean isInitDone = Subject.doAs(sub, new PrivilegedAction<Boolean>() {
 				@Override
@@ -458,7 +458,7 @@ public class PolicyMgrUserGroupBuilder extends AbstractUserGroupSource implement
 				}
 			}
 			if (LOG.isDebugEnabled()) {
-				LOG.debug(String.format("REST response from %s : %s", PM_GROUP_LIST_URI, response));
+				LOG.debug("REST response from %s : %s".formatted(PM_GROUP_LIST_URI, response));
 			}
 			GetXGroupListResponse groupList = JsonUtils.jsonToObject(response, GetXGroupListResponse.class);
 
@@ -467,7 +467,7 @@ public class PolicyMgrUserGroupBuilder extends AbstractUserGroupSource implement
 			if (groupList.getXgroupInfoList() != null) {
 				for (XGroupInfo g : groupList.getXgroupInfoList()) {
 					if (LOG.isDebugEnabled()) {
-						LOG.debug(String.format("GROUP:  Id: %s, Name: %s, Description: %s", g.getId(), g.getName(), g.getDescription()));
+						LOG.debug("GROUP:  Id: %s, Name: %s, Description: %s".formatted(g.getId(), g.getName(), g.getDescription()));
 					}
 					if(null != g.getOtherAttributes()) {
 						g.setOtherAttrsMap(JsonUtils.jsonToObject(g.getOtherAttributes(), Map.class));
@@ -512,7 +512,7 @@ public class PolicyMgrUserGroupBuilder extends AbstractUserGroupSource implement
 				}
 			}
 			if (LOG.isDebugEnabled()) {
-				LOG.debug(String.format("REST response from %s : %s", PM_USER_LIST_URI, response));
+				LOG.debug("REST response from %s : %s".formatted(PM_USER_LIST_URI, response));
 			}
 			GetXUserListResponse userList = JsonUtils.jsonToObject(response, GetXUserListResponse.class);
 			totalCount = userList.getTotalCount();
@@ -520,7 +520,7 @@ public class PolicyMgrUserGroupBuilder extends AbstractUserGroupSource implement
 			if (userList.getXuserInfoList() != null) {
 				for (XUserInfo u : userList.getXuserInfoList()) {
 					if (LOG.isDebugEnabled()) {
-						LOG.debug(String.format("USER: Id: %s, Name: %s, Description: %s", u.getId(), u.getName(), u.getDescription()));
+						LOG.debug("USER: Id: %s, Name: %s, Description: %s".formatted(u.getId(), u.getName(), u.getDescription()));
 					}
 					if(null != u.getOtherAttributes()) {
 						u.setOtherAttrsMap(JsonUtils.jsonToObject(u.getOtherAttributes(), Map.class));
@@ -558,7 +558,7 @@ public class PolicyMgrUserGroupBuilder extends AbstractUserGroupSource implement
 			}
 		}
 		if (LOG.isDebugEnabled()) {
-			LOG.debug(String.format("REST response from %s : %s", PM_GET_ALL_GROUP_USER_MAP_LIST_URI, response));
+			LOG.debug("REST response from %s : %s".formatted(PM_GET_ALL_GROUP_USER_MAP_LIST_URI, response));
 		}
 
 		groupUsersCache = JsonUtils.jsonToObject(response, Map.class);
@@ -628,14 +628,14 @@ public class PolicyMgrUserGroupBuilder extends AbstractUserGroupSource implement
 
 	private <T> T setOtherAttributes(T uginfo, String syncSource, Map<String, String> otherAttrsMap, String otherAttributes) {
 
-		if (uginfo instanceof XUserInfo){
-			XUserInfo xUserInfo = ((XUserInfo) uginfo);
+		if (uginfo instanceof XUserInfo info){
+			XUserInfo xUserInfo =info;
 			xUserInfo.setSyncSource(syncSource);
 			xUserInfo.setOtherAttrsMap(otherAttrsMap);
 			xUserInfo.setOtherAttributes(otherAttributes);
 			return ((T) xUserInfo);
-		} else if (uginfo instanceof XGroupInfo ){
-			XGroupInfo xGroupInfo = ((XGroupInfo) uginfo);
+		} else if (uginfo instanceof XGroupInfo info ){
+			XGroupInfo xGroupInfo =info;
 			xGroupInfo.setSyncSource(syncSource);
 			xGroupInfo.setOtherAttrsMap(otherAttrsMap);
 			xGroupInfo.setOtherAttributes(otherAttributes);
@@ -1016,7 +1016,7 @@ public class PolicyMgrUserGroupBuilder extends AbstractUserGroupSource implement
 				LOG.error("Failed to addOrUpdateUsers " + uploadedCount );
 				throw new Exception("Failed to addOrUpdateUsers" + uploadedCount);
 			}
-			LOG.info(String.format("API returned: %s, No. of users uploaded to ranger admin = %s", ret, (uploadedCount>totalCount?totalCount:uploadedCount)));		}
+			LOG.info("API returned: %s, No. of users uploaded to ranger admin = %s".formatted(ret, (uploadedCount > totalCount ? totalCount : uploadedCount)));		}
 
 		if(LOG.isDebugEnabled()){
 			LOG.debug("<== PolicyMgrUserGroupBuilder.getUsers()");
@@ -1040,7 +1040,7 @@ public class PolicyMgrUserGroupBuilder extends AbstractUserGroupSource implement
 			}
 		}
 		if (LOG.isDebugEnabled()) {
-			LOG.debug(String.format("REST response from %s : %s", uri, response));
+			LOG.debug("REST response from %s : %s".formatted(uri, response));
 		}
 		return response;
 	}
@@ -1117,7 +1117,7 @@ public class PolicyMgrUserGroupBuilder extends AbstractUserGroupSource implement
 				LOG.error("Failed to addOrUpdateGroups " + uploadedCount );
 				throw new Exception("Failed to addOrUpdateGroups " + uploadedCount);
 			}
-			LOG.info(String.format("API returned: %s, No. of groups uploaded to ranger admin = %s", ret, (uploadedCount>totalCount?totalCount:uploadedCount)));		}
+			LOG.info("API returned: %s, No. of groups uploaded to ranger admin = %s".formatted(ret, (uploadedCount > totalCount ? totalCount : uploadedCount)));		}
 
 		if(LOG.isDebugEnabled()){
 			LOG.debug("<== PolicyMgrUserGroupBuilder.getGroups()");
@@ -1192,7 +1192,7 @@ public class PolicyMgrUserGroupBuilder extends AbstractUserGroupSource implement
 				throw new Exception("Failed to addOrUpdateGroupUsers " + uploadedCount);
 			}
 
-			LOG.info(String.format("API returned: %s, No. of group memberships uploaded to ranger admin = %s", ret, (uploadedCount>totalCount?totalCount:uploadedCount)));		}
+			LOG.info("API returned: %s, No. of group memberships uploaded to ranger admin = %s".formatted(ret, (uploadedCount > totalCount ? totalCount : uploadedCount)));		}
 
 		if(LOG.isDebugEnabled()){
 			LOG.debug("<== PolicyMgrUserGroupBuilder.getGroupUsers()");
@@ -1253,7 +1253,7 @@ public class PolicyMgrUserGroupBuilder extends AbstractUserGroupSource implement
 
 				if (LOG.isDebugEnabled()) {
 					String jsonString = JsonUtils.objectToJson(pagedUgRoleAssignmentsList);
-					LOG.debug(String.format("Paged RoleAssignments Request to %s: %s", url, jsonString));
+					LOG.debug("Paged RoleAssignments Request to %s: %s".formatted(url, jsonString));
 				}
 
 				if (isRangerCookieEnabled) {
@@ -1270,7 +1270,7 @@ public class PolicyMgrUserGroupBuilder extends AbstractUserGroupSource implement
 				}
 
 				if (LOG.isDebugEnabled()) {
-					LOG.debug(String.format("REST response from %s : %s", url, response));
+					LOG.debug("REST response from %s : %s".formatted(url, response));
 				}
 
 				if (response == null){
@@ -1293,7 +1293,7 @@ public class PolicyMgrUserGroupBuilder extends AbstractUserGroupSource implement
 
 	private void addUserGroupAuditInfo(UgsyncAuditInfo auditInfo) throws Throwable {
 		if (LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> PolicyMgrUserGroupBuilder.addUserGroupAuditInfo(%s, %s, %s, %s, %s)", auditInfo.getNoOfNewUsers(), auditInfo.getNoOfNewGroups(), auditInfo.getNoOfModifiedUsers(), auditInfo.getNoOfModifiedGroups(), auditInfo.getSyncSource()));
+			LOG.debug("==> PolicyMgrUserGroupBuilder.addUserGroupAuditInfo(%s, %s, %s, %s, %s)".formatted(auditInfo.getNoOfNewUsers(), auditInfo.getNoOfNewGroups(), auditInfo.getNoOfModifiedUsers(), auditInfo.getNoOfModifiedGroups(), auditInfo.getSyncSource()));
 		}
 
 		if (authenticationType != null
@@ -1346,7 +1346,7 @@ public class PolicyMgrUserGroupBuilder extends AbstractUserGroupSource implement
 			}
 		}
 		if (LOG.isDebugEnabled()) {
-			LOG.debug(String.format("REST response from %s : %s", PM_AUDIT_INFO_URI, response));
+			LOG.debug("REST response from %s : %s".formatted(PM_AUDIT_INFO_URI, response));
 		}
 		JsonUtils.jsonToObject(response, UgsyncAuditInfo.class);
 
@@ -1447,7 +1447,7 @@ public class PolicyMgrUserGroupBuilder extends AbstractUserGroupSource implement
 
 		if ( LOG.isDebugEnabled() ) {
 			String jsonString = JsonUtils.objectToJson(obj);
-			LOG.debug(String.format("User Group Mapping: %s", jsonString));
+			LOG.debug("User Group Mapping: %s".formatted(jsonString));
 		}
 
 		try {
@@ -1799,7 +1799,7 @@ public class PolicyMgrUserGroupBuilder extends AbstractUserGroupSource implement
 			}
 		}
 		if (LOG.isDebugEnabled()) {
-			LOG.debug(String.format("REST response from %s : %s", PM_UPDATE_DELETED_GROUPS_URI, response));
+			LOG.debug("REST response from %s : %s".formatted(PM_UPDATE_DELETED_GROUPS_URI, response));
 		}
 		if (response != null) {
 			try {
@@ -1920,7 +1920,7 @@ public class PolicyMgrUserGroupBuilder extends AbstractUserGroupSource implement
 			}
 		}
 		if (LOG.isDebugEnabled()) {
-			LOG.debug(String.format("REST response from %s : %s", PM_UPDATE_DELETED_USERS_URI, response));
+			LOG.debug("REST response from %s : %s".formatted(PM_UPDATE_DELETED_USERS_URI, response));
 		}
 		if (response != null) {
 			try {

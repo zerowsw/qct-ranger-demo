@@ -25,18 +25,18 @@ import org.apache.ranger.db.XXTagDefDao;
 import org.apache.ranger.entity.XXTagAttributeDef;
 import org.apache.ranger.entity.XXTagDef;
 import org.apache.ranger.plugin.model.RangerTagDef;
-import org.junit.Assert;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.MethodOrderer.MethodName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@ExtendWith(MockitoExtension.class)
+@TestMethodOrder(MethodName.class)
 public class TestRangerTagDefService {
 	Long id = 1L;
 	String guid = "989898_01_1";
@@ -54,7 +54,7 @@ public class TestRangerTagDefService {
 		RangerTagDef rangerServiceDef = new RangerTagDef();
 		
 		rangerTagDefService.validateForCreate(rangerServiceDef);
-		Assert.assertNotNull(rangerServiceDef);
+		Assertions.assertNotNull(rangerServiceDef);
 	}
 	
 	@Test
@@ -63,7 +63,7 @@ public class TestRangerTagDefService {
 		XXTagDef xXTagDef = new XXTagDef();
 		
 		rangerTagDefService.validateForUpdate(rangerServiceDef, xXTagDef);
-		Assert.assertNotNull(rangerServiceDef);
+		Assertions.assertNotNull(rangerServiceDef);
 	}
 	
 	@Test
@@ -80,8 +80,8 @@ public class TestRangerTagDefService {
 		tagAttrDefList.add(xxTagAttributeDef);
 
 		RangerTagDef result = rangerTagDefService.postUpdate(tagDef);
-		Assert.assertEquals(result.getId(), tagAttrDefList.get(0).getId());
-		Assert.assertEquals(result.getName(), tagAttrDefList.get(0).getName());
+		Assertions.assertEquals(result.getId(), tagAttrDefList.get(0).getId());
+		Assertions.assertEquals(result.getName(), tagAttrDefList.get(0).getName());
 
 	}
 		
@@ -103,8 +103,8 @@ public class TestRangerTagDefService {
 		tagAttrDefList.add(xxTagAttributeDef);
 		
 		RangerTagDef result = rangerTagDefService.getTagDefByGuid(guid);
-		Assert.assertEquals(result.getId(), tagAttrDefList.get(0).getId());
-		Assert.assertEquals(result.getName(), tagAttrDefList.get(0).getName());
+		Assertions.assertEquals(result.getId(), tagAttrDefList.get(0).getId());
+		Assertions.assertEquals(result.getName(), tagAttrDefList.get(0).getName());
 		
 		Mockito.verify(daoMgr).getXXTagDef();
 		Mockito.verify(xXTagDefDao).findByGuid(guid);
@@ -119,7 +119,7 @@ public class TestRangerTagDefService {
 		Mockito.when(xXTagDefDao.findByGuid(guid)).thenReturn(xxTagDef);
 		
 		RangerTagDef result = rangerTagDefService.getTagDefByGuid(guid);
-		Assert.assertNull(result);
+		Assertions.assertNull(result);
 		
 		Mockito.verify(daoMgr).getXXTagDef();
 		Mockito.verify(xXTagDefDao).findByGuid(guid);
@@ -146,8 +146,8 @@ public class TestRangerTagDefService {
 		tagAttrDefList.add(xxTagAttributeDef);
 		
 		RangerTagDef result = rangerTagDefService.getTagDefByName(name);
-		Assert.assertEquals(result.getId(), tagAttrDefList.get(0).getId());
-		Assert.assertEquals(result.getName(), tagAttrDefList.get(0).getName());
+		Assertions.assertEquals(result.getId(), tagAttrDefList.get(0).getId());
+		Assertions.assertEquals(result.getName(), tagAttrDefList.get(0).getName());
 		
 		Mockito.verify(daoMgr).getXXTagDef();
 		Mockito.verify(xXTagDefDao).findByName(name);
@@ -162,7 +162,7 @@ public class TestRangerTagDefService {
 		Mockito.when(xXTagDefDao.findByName(name)).thenReturn(xxTagDef);
 		
 		RangerTagDef result = rangerTagDefService.getTagDefByName(name);
-		Assert.assertNull(result);
+		Assertions.assertNull(result);
 		
 		Mockito.verify(daoMgr).getXXTagDef();
 		Mockito.verify(xXTagDefDao).findByName(name);
@@ -187,8 +187,8 @@ public class TestRangerTagDefService {
 		tagAttrDefList.add(xxTagAttributeDef);
 		
 		List<RangerTagDef> result = rangerTagDefService.getTagDefsByServiceId(serviceId);
-		Assert.assertEquals(result.get(0).getId(), tagAttrDefList.get(0).getId());
-		Assert.assertEquals(result.get(0).getName(), tagAttrDefList.get(0).getName());
+		Assertions.assertEquals(result.get(0).getId(), tagAttrDefList.get(0).getId());
+		Assertions.assertEquals(result.get(0).getName(), tagAttrDefList.get(0).getName());
 		
 		Mockito.verify(daoMgr).getXXTagDef();
 		Mockito.verify(xXTagDefDao).findByServiceId(serviceId);
@@ -204,7 +204,7 @@ public class TestRangerTagDefService {
 		Mockito.when(xXTagDefDao.findByServiceId(serviceId)).thenReturn(xxTagDefs);
 		
 		List<RangerTagDef> result = rangerTagDefService.getTagDefsByServiceId(serviceId);
-		Assert.assertNotNull(result);
+		Assertions.assertNotNull(result);
 		
 		Mockito.verify(daoMgr).getXXTagDef();
 		Mockito.verify(xXTagDefDao).findByServiceId(serviceId);
@@ -224,7 +224,7 @@ public class TestRangerTagDefService {
 		tagAttrDefList.add(xxTagAttributeDef);
 		
 		RangerTagDef result = rangerTagDefService.getPopulatedViewObject(xxTagDef);
-		Assert.assertEquals(result.getId(), tagAttrDefList.get(0).getId());
-		Assert.assertEquals(result.getName(), tagAttrDefList.get(0).getName());
+		Assertions.assertEquals(result.getId(), tagAttrDefList.get(0).getId());
+		Assertions.assertEquals(result.getName(), tagAttrDefList.get(0).getName());
 	}
 }

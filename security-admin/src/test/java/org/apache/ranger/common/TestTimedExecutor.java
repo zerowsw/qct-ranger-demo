@@ -19,8 +19,8 @@
 
 package org.apache.ranger.common;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +35,8 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +44,7 @@ public class TestTimedExecutor {
 
 	private static final Logger LOG = LoggerFactory.getLogger(TestTimedExecutor.class);
 
-	@Before
+	@BeforeEach
 	public void before() {
 		
 	}
@@ -96,10 +96,10 @@ public class TestTimedExecutor {
 		int successCount = results.get("success").get();
 		int timeoutCount = results.get("java.util.concurrent.TimeoutException").get();
 		int rejectedCount = results.get("java.util.concurrent.RejectedExecutionException").get();
-		assertEquals("success count", 2, successCount);
-		assertTrue("timeout[" + timeoutCount + "]: 3 <= count(timeout) <= 5", timeoutCount >= 3 && timeoutCount <= 5);
-		assertTrue("rejected[" + rejectedCount + "]: 3 <= count(timeout) <= 5", rejectedCount >= 3 && rejectedCount <= 5);
-		assertEquals("total should equal 10", 10, successCount + timeoutCount + rejectedCount);
+		assertEquals(2, successCount, "success count");
+		assertTrue(timeoutCount >= 3 && timeoutCount <= 5, "timeout[" + timeoutCount + "]: 3 <= count(timeout) <= 5");
+		assertTrue(rejectedCount >= 3 && rejectedCount <= 5, "rejected[" + rejectedCount + "]: 3 <= count(timeout) <= 5");
+		assertEquals(10, successCount + timeoutCount + rejectedCount, "total should equal 10");
 		_executor.shutdown();
 	}
 
@@ -121,10 +121,10 @@ public class TestTimedExecutor {
 		
 		@Override
 		public Integer call() throws Exception {
-			LOG.debug(String.format(format, "Starting", _id));
+			LOG.debug(format.formatted("Starting", _id));
 			_semaphore.acquire();
-			LOG.debug(String.format(format, "Acquired", _id));
-			LOG.debug(String.format(format, "Ended", _id));
+			LOG.debug(format.formatted("Acquired", _id));
+			LOG.debug(format.formatted("Ended", _id));
 			return _id;
 		}
 		
@@ -151,14 +151,14 @@ public class TestTimedExecutor {
 		@Override
 		public Integer call() throws Exception {
 			int id = _callable.getId();
-			LOG.debug(String.format(format, "Submitting", id));
+			LOG.debug(format.formatted("Submitting", id));
 			try {
 				Integer result = _executor.timedTask(_callable, _timeout, _unit);
-				LOG.debug(String.format(format, "Finished", id));
+				LOG.debug(format.formatted("Finished", id));
 				recordResult(_results, "success");
 				return result;
 			} catch (Exception e) {
-				LOG.debug(String.format(format, "Exception", id));
+				LOG.debug(format.formatted("Exception", id));
 				recordResult(_results, e);
 				// re-throw caught exception
 				throw e;

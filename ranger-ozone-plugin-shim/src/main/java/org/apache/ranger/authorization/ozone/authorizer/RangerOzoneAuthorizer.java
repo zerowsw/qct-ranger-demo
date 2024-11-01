@@ -26,6 +26,7 @@ import org.apache.hadoop.ozone.security.acl.RequestContext;
 import org.apache.ranger.plugin.classloader.RangerPluginClassLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.lang.reflect.InvocationTargetException;
 
 public class RangerOzoneAuthorizer implements IAccessAuthorizer {
 
@@ -63,8 +64,8 @@ public class RangerOzoneAuthorizer implements IAccessAuthorizer {
 
             activatePluginClassLoader();
 
-            ozoneAuthorizationProviderImpl = cls.newInstance();
-        } catch (Exception e) {
+            ozoneAuthorizationProviderImpl = cls.getDeclaredConstructor().newInstance();
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             // check what need to be done
             LOG.error("Error Enabling RangerOzonePlugin", e);
         } finally {

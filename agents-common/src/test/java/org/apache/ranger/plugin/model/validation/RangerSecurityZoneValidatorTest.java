@@ -44,17 +44,17 @@ import org.apache.ranger.plugin.store.EmbeddedServiceDefsUtil;
 import org.apache.ranger.plugin.store.SecurityZoneStore;
 import org.apache.ranger.plugin.store.ServiceStore;
 import org.apache.ranger.plugin.util.SearchFilter;
-import org.junit.Assert;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.MethodOrderer.MethodName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@ExtendWith(MockitoExtension.class)
+@TestMethodOrder(MethodName.class)
 public class RangerSecurityZoneValidatorTest {
 	ServiceStore _store = mock(ServiceStore.class);
 	SecurityZoneStore _securityZoneStore = mock(SecurityZoneStore.class);
@@ -115,7 +115,7 @@ public class RangerSecurityZoneValidatorTest {
 		try{
 			rangerSecurityZoneValidator.validate(suppliedSecurityZone, RangerValidator.Action.DELETE);
 		}catch(IllegalArgumentException ex){
-			Assert.assertEquals(ex.getMessage(), "isValid(RangerSecurityZone, ...) is only supported for create/update");
+			Assertions.assertEquals(ex.getMessage(), "isValid(RangerSecurityZone, ...) is only supported for create/update");
 		}
 	}
 	
@@ -126,7 +126,7 @@ public class RangerSecurityZoneValidatorTest {
                 try{
                         rangerSecurityZoneValidator.validate(suppliedSecurityZone, RangerValidator.Action.CREATE);
                 }catch(Exception ex){
-                        Assert.assertEquals(ex.getMessage(), "(0) Validation failure: error code[3035], reason[Internal error: missing field[name]], field[name], subfield[null], type[missing] ");
+                        Assertions.assertEquals(ex.getMessage(), "(0) Validation failure: error code[3035], reason[Internal error: missing field[name]], field[name], subfield[null], type[missing] ");
                 }
         }
 
@@ -139,7 +139,7 @@ public class RangerSecurityZoneValidatorTest {
                 try{
                         rangerSecurityZoneValidator.validate(suppliedSecurityZone, RangerValidator.Action.CREATE);
                 }catch(Exception ex){
-                        Assert.assertEquals(ex.getMessage(), "(0) Validation failure: error code[3036], reason[Another security zone already exists for this name: zone-id=[1]]], field[name], subfield[null], type[] ");
+                        Assertions.assertEquals(ex.getMessage(), "(0) Validation failure: error code[3036], reason[Another security zone already exists for this name: zone-id=[1]]], field[name], subfield[null], type[] ");
                 }
         }
 
@@ -150,7 +150,7 @@ public class RangerSecurityZoneValidatorTest {
                 try {
                         rangerSecurityZoneValidator.validate(suppliedSecurityZone,RangerValidator.Action.UPDATE);
                 } catch (Exception ex) {
-                        Assert.assertEquals(ex.getMessage(),"(0) Validation failure: error code[3037], reason[No security zone found for [1]], field[id], subfield[null], type[] ");
+                        Assertions.assertEquals(ex.getMessage(),"(0) Validation failure: error code[3037], reason[No security zone found for [1]], field[id], subfield[null], type[] ");
                 }
         }
 
@@ -172,7 +172,7 @@ public class RangerSecurityZoneValidatorTest {
 			ValidationErrorCode expectedError    = ValidationErrorCode.SECURITY_ZONE_VALIDATION_ERR_MISSING_USER_AND_GROUPS_AND_ROLES;
 			boolean             hasExpectedError = StringUtils.contains(failureMessage, expectedError.getErrorCode() + "");
 
-			Assert.assertTrue("validation failure message didn't include expected error code " + expectedError.getErrorCode() + ". Failure message: " + failureMessage, hasExpectedError);
+			Assertions.assertTrue(hasExpectedError, "validation failure message didn't include expected error code " + expectedError.getErrorCode() + ". Failure message: " + failureMessage);
 		}
 	}
 
@@ -195,7 +195,7 @@ public class RangerSecurityZoneValidatorTest {
 			rangerSecurityZoneValidator.validate(suppliedSecurityZone,
 					RangerValidator.Action.CREATE);
 		} catch (Exception ex) {
-			Assert.assertEquals(
+			Assertions.assertEquals(
 					ex.getMessage(),
 					"(0) Validation failure: error code[3039], reason[No resources specified for service [hdfsSvc]], field[security zone resources], subfield[null], type[missing] ");
 		}
@@ -212,7 +212,7 @@ public class RangerSecurityZoneValidatorTest {
 			rangerSecurityZoneValidator.validate(suppliedSecurityZone,
 					RangerValidator.Action.CREATE);
 		} catch (Exception ex) {
-			Assert.assertEquals(
+			Assertions.assertEquals(
 					ex.getMessage(),
 					"(0) Validation failure: error code[3040], reason[Invalid service [hdfsSvc]], field[security zone resource service-name], subfield[null], type[] ");
 		}
@@ -231,7 +231,7 @@ public class RangerSecurityZoneValidatorTest {
 			rangerSecurityZoneValidator.validate(suppliedSecurityZone,
 					RangerValidator.Action.CREATE);
 		} catch (Exception ex) {
-			Assert.assertEquals(
+			Assertions.assertEquals(
 					ex.getMessage(),
 					"(0) Validation failure: error code[3041], reason[Invalid service-type [1]], field[security zone resource service-type], subfield[null], type[] ");
 		}
@@ -252,7 +252,7 @@ public class RangerSecurityZoneValidatorTest {
 			rangerSecurityZoneValidator.validate(suppliedSecurityZone,
 					RangerValidator.Action.CREATE);
 		} catch (Exception ex) {
-			Assert.assertEquals(
+			Assertions.assertEquals(
 					ex.getMessage(),
 					"(0) Validation failure: error code[3042], reason[Invalid resource hierarchy specified for service:[hdfsSvc], resource-hierarchy:[[hdfs]]], field[security zone resource hierarchy], subfield[null], type[] ");
 		}
@@ -308,7 +308,7 @@ public class RangerSecurityZoneValidatorTest {
 			rangerSecurityZoneValidator.validate(suppliedSecurityZone,
 					RangerValidator.Action.CREATE);
 		} catch (Exception ex) {
-			Assert.assertEquals(
+			Assertions.assertEquals(
 					ex.getMessage(),
 					"(0) Validation failure: error code[3045], reason[Internal Error:[null]], field[null], subfield[null], type[] ");
 		}
@@ -321,7 +321,7 @@ public class RangerSecurityZoneValidatorTest {
 		boolean isValid =	rangerSecurityZoneValidator.isValid(suppliedSecurityZone.getName(),
 					RangerValidator.Action.UPDATE, failures);
 		
-		Assert.assertFalse(isValid);
+		Assertions.assertFalse(isValid);
 	}
 	
 	@Test
@@ -332,7 +332,7 @@ public class RangerSecurityZoneValidatorTest {
 		boolean isValid =	rangerSecurityZoneValidator.isValid(suppliedSecurityZone.getName(),
 					RangerValidator.Action.DELETE, failures);
 		
-		Assert.assertFalse(isValid);
+		Assertions.assertFalse(isValid);
 	}
 
 	@Test
@@ -342,7 +342,7 @@ public class RangerSecurityZoneValidatorTest {
 		List<ValidationFailureDetails> failures = new ArrayList<ValidationFailureDetails>();
 		boolean isValid =	rangerSecurityZoneValidator.isValid(suppliedSecurityZone.getName(),
 					RangerValidator.Action.DELETE, failures);
-		Assert.assertFalse(isValid);
+		Assertions.assertFalse(isValid);
 	}
 
 	@Test
@@ -351,7 +351,7 @@ public class RangerSecurityZoneValidatorTest {
 		List<ValidationFailureDetails> failures = new ArrayList<ValidationFailureDetails>();
 		boolean isValid =	rangerSecurityZoneValidator.isValid(suppliedSecurityZone.getId(),
 					RangerValidator.Action.UPDATE, failures);
-		Assert.assertFalse(isValid);
+		Assertions.assertFalse(isValid);
 	}
 	
 	
@@ -363,7 +363,7 @@ public class RangerSecurityZoneValidatorTest {
 		boolean isValid =	rangerSecurityZoneValidator.isValid(suppliedSecurityZone.getId(),
 					RangerValidator.Action.DELETE, failures);
 		
-		Assert.assertFalse(isValid);
+		Assertions.assertFalse(isValid);
 	}
 
 	@Test
@@ -395,13 +395,13 @@ public class RangerSecurityZoneValidatorTest {
 		try {
 			rangerSecurityZoneValidator.validate(zone2, RangerValidator.Action.UPDATE);
 
-			Assert.assertFalse("security-zone update should have failed in validation", true);
+			Assertions.assertFalse(true, "security-zone update should have failed in validation");
 		} catch (Exception excp) {
 			String              failureMessage   = excp.getMessage();
 			ValidationErrorCode expectedError    = ValidationErrorCode.SECURITY_ZONE_VALIDATION_ERR_ZONE_RESOURCE_CONFLICT;
 			boolean             hasExpectedError = StringUtils.contains(failureMessage, expectedError.getErrorCode() + "");
 
-			Assert.assertTrue("validation failure message didn't include expected error code " + expectedError.getErrorCode() + ". Failure message: " + failureMessage, hasExpectedError);
+			Assertions.assertTrue(hasExpectedError, "validation failure message didn't include expected error code " + expectedError.getErrorCode() + ". Failure message: " + failureMessage);
 		}
 	}
 
@@ -434,12 +434,12 @@ public class RangerSecurityZoneValidatorTest {
 		try {
 			rangerSecurityZoneValidator.validate(zone2, RangerValidator.Action.UPDATE);
 
-			Assert.assertFalse("security-zone update should have failed in validation", true);
+			Assertions.assertFalse(true, "security-zone update should have failed in validation");
 		} catch (Exception excp) {
 			String  failureMessage           = excp.getMessage();
 			boolean hasResourceConflictError = StringUtils.contains(failureMessage, ValidationErrorCode.SECURITY_ZONE_VALIDATION_ERR_ZONE_RESOURCE_CONFLICT.getErrorCode() + "");
 
-			Assert.assertTrue("validation failure message didn't include expected error code " + ValidationErrorCode.SECURITY_ZONE_VALIDATION_ERR_ZONE_RESOURCE_CONFLICT.getErrorCode() + ". Failure message: " + excp.getMessage(), hasResourceConflictError);
+			Assertions.assertTrue(hasResourceConflictError, "validation failure message didn't include expected error code " + ValidationErrorCode.SECURITY_ZONE_VALIDATION_ERR_ZONE_RESOURCE_CONFLICT.getErrorCode() + ". Failure message: " + excp.getMessage());
 		}
 	}
 
@@ -472,12 +472,12 @@ public class RangerSecurityZoneValidatorTest {
 		try {
 			rangerSecurityZoneValidator.validate(zone2, RangerValidator.Action.UPDATE);
 
-			Assert.assertFalse("security-zone update should have failed in validation", true);
+			Assertions.assertFalse(true, "security-zone update should have failed in validation");
 		} catch (Exception excp) {
 			String  failureMessage           = excp.getMessage();
 			boolean hasResourceConflictError = StringUtils.contains(failureMessage, ValidationErrorCode.SECURITY_ZONE_VALIDATION_ERR_ZONE_RESOURCE_CONFLICT.getErrorCode() + "");
 
-			Assert.assertTrue("validation failure message didn't include expected error code " + ValidationErrorCode.SECURITY_ZONE_VALIDATION_ERR_ZONE_RESOURCE_CONFLICT.getErrorCode() + ". Failure message: " + excp.getMessage(), hasResourceConflictError);
+			Assertions.assertTrue(hasResourceConflictError, "validation failure message didn't include expected error code " + ValidationErrorCode.SECURITY_ZONE_VALIDATION_ERR_ZONE_RESOURCE_CONFLICT.getErrorCode() + ". Failure message: " + excp.getMessage());
 		}
 	}
 
@@ -505,12 +505,12 @@ public class RangerSecurityZoneValidatorTest {
 		try {
 			rangerSecurityZoneValidator.validate(zone1, RangerValidator.Action.UPDATE);
 
-			Assert.assertFalse("security-zone update should have failed in validation", true);
+			Assertions.assertFalse(true, "security-zone update should have failed in validation");
 		} catch (Exception excp) {
 			String  failureMessage           = excp.getMessage();
 			boolean hasResourceConflictError = StringUtils.contains(failureMessage, ValidationErrorCode.SECURITY_ZONE_VALIDATION_ERR_DUPLICATE_RESOURCE_ENTRY.getErrorCode() + "");
 
-			Assert.assertTrue("validation failure message didn't include expected error code " + ValidationErrorCode.SECURITY_ZONE_VALIDATION_ERR_DUPLICATE_RESOURCE_ENTRY.getErrorCode() + ". Failure message: " + excp.getMessage(), hasResourceConflictError);
+			Assertions.assertTrue(hasResourceConflictError, "validation failure message didn't include expected error code " + ValidationErrorCode.SECURITY_ZONE_VALIDATION_ERR_DUPLICATE_RESOURCE_ENTRY.getErrorCode() + ". Failure message: " + excp.getMessage());
 		}
 	}
 

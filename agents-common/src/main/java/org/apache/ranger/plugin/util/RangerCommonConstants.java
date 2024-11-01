@@ -158,34 +158,38 @@ public class RangerCommonConstants {
 	public static final String SCRIPT_MACRO_IS_ACCESS_TIME_BEFORE  = "IS_ACCESS_TIME_BEFORE";
 	public static final String SCRIPT_MACRO_IS_ACCESS_TIME_BETWEEN = "IS_ACCESS_TIME_BETWEEN";
 
-	public static final String SCRIPT_POLYFILL_INCLUDES = "if (!Array.prototype.includes) {\n" +
-			"    Object.defineProperty(\n" +
-			"      Array.prototype, 'includes', {\n" +
-			"        value: function(valueToFind) {\n" +
-			"                var o = Object(this); \n" +
-			"                var len = o.length;\n" +
-			"                if (len === 0) { return false; }\n" +
-			"                for (var k=0; k < len; k++) {\n" +
-			"                    if (o[k]==valueToFind) {return true; }\n" +
-			"                }   \n" +
-			"                return false;\n" +
-			"            }\n" +
-			"        }\n" +
-			"    );\n" +
-			" }; ";
+	public static final String SCRIPT_POLYFILL_INCLUDES = """
+			if (!Array.prototype.includes) {
+			    Object.defineProperty(
+			      Array.prototype, 'includes', {
+			        value: function(valueToFind) {
+			                var o = Object(this);\s
+			                var len = o.length;
+			                if (len === 0) { return false; }
+			                for (var k=0; k < len; k++) {
+			                    if (o[k]==valueToFind) {return true; }
+			                }  \s
+			                return false;
+			            }
+			        }
+			    );
+			 }; \
+			""";
 
-	public static final String SCRIPT_POLYFILL_INTERSECTS = "if (!Array.prototype.intersects) {\n" +
-			"    Object.defineProperty(\n" +
-			"      Array.prototype, 'intersects', {\n" +
-			"          value: function (x) {\n" +
-			"           if (x == null) {return false;}\n" +
-			"           var o = Object(this);\n" +
-			"           var len = o.length >>> 0;\n" +
-			"           if (len === 0) { return false; }\n" +
-			"           var result = o.filter(function(n) { return x.indexOf(n) > -1;})\n" +
-			"           return result.length != 0;\n" +
-			"        }\n" +
-			"      }\n" +
-			"    );\n" +
-			"}; ";
+	public static final String SCRIPT_POLYFILL_INTERSECTS = """
+			if (!Array.prototype.intersects) {
+			    Object.defineProperty(
+			      Array.prototype, 'intersects', {
+			          value: function (x) {
+			           if (x == null) {return false;}
+			           var o = Object(this);
+			           var len = o.length >>> 0;
+			           if (len === 0) { return false; }
+			           var result = o.filter(function(n) { return x.indexOf(n) > -1;})
+			           return result.length != 0;
+			        }
+			      }
+			    );
+			}; \
+			""";
 }

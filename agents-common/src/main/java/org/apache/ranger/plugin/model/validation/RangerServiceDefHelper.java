@@ -31,8 +31,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.thirdparty.com.google.common.collect.Lists;
 import org.apache.hadoop.thirdparty.com.google.common.collect.Sets;
 import org.apache.ranger.plugin.model.RangerPolicy;
@@ -137,7 +137,7 @@ public class RangerServiceDefHelper {
 		// NOTE: we assume serviceDef, its name and update time are can never by null.
 		
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerServiceDefHelper(). The RangerServiceDef: %s", serviceDef));
+			LOG.debug("==> RangerServiceDefHelper(). The RangerServiceDef: %s".formatted(serviceDef));
 		}
 
 		String serviceName = serviceDef.getName();
@@ -442,7 +442,7 @@ public class RangerServiceDefHelper {
 
 			_valid = isValid;
 			if (LOG.isDebugEnabled()) {
-				String message = String.format("Found [%d] resource hierarchies for service [%s] update-date[%s]: %s", _hierarchies.size(), _serviceName,
+				String message = "Found [%d] resource hierarchies for service [%s] update-date[%s]: %s".formatted(_hierarchies.size(), _serviceName,
 						_serviceDefFreshnessDate == null ? null : _serviceDefFreshnessDate.toString(), _hierarchies);
 				LOG.debug(message);
 			}

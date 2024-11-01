@@ -19,9 +19,9 @@
 
 package org.apache.ranger.plugin.util;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.ranger.plugin.conditionevaluator.RangerScriptConditionEvaluator;
 import org.apache.ranger.plugin.contextenricher.RangerGdsEnricher;
@@ -921,16 +921,14 @@ public class ServiceDefUtil {
         if (policyItem != null) {
             ret = anyPolicyConditionHasUserGroupAttributeReference(policyItem.getConditions());
 
-            if (!ret && policyItem instanceof RangerRowFilterPolicyItem) {
-                RangerRowFilterPolicyItem rowFilterPolicyItem = (RangerRowFilterPolicyItem) policyItem;
+            if (!ret && policyItem instanceof RangerRowFilterPolicyItem rowFilterPolicyItem) {
                 RangerPolicyItemRowFilterInfo rowFilterInfo       = rowFilterPolicyItem.getRowFilterInfo();
                 String                        filterExpr          = rowFilterInfo != null ? rowFilterInfo.getFilterExpr() : "";
 
                 ret = RangerRequestExprResolver.hasUserGroupAttributeInExpression(filterExpr);
             }
 
-            if (!ret && policyItem instanceof RangerDataMaskPolicyItem) {
-                RangerDataMaskPolicyItem     dataMaskPolicyItem = (RangerDataMaskPolicyItem) policyItem;
+            if (!ret && policyItem instanceof RangerDataMaskPolicyItem dataMaskPolicyItem) {
                 RangerPolicyItemDataMaskInfo dataMaskInfo       = dataMaskPolicyItem.getDataMaskInfo();
                 String                       maskedValue        = dataMaskInfo != null ? dataMaskInfo.getValueExpr() : null;
 

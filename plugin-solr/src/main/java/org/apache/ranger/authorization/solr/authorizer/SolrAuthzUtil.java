@@ -63,8 +63,10 @@ class SolrAuthzUtil {
       }
     }
     if (result.isEmpty()) {
-        LOG.debug("Missing collection name for the config operation with authorization context {}."
-            + " Using * permissions for authorization check", toString(ctx));
+        LOG.debug("""
+            Missing collection name for the config operation with authorization context {}.\
+             Using * permissions for authorization check\
+            """, toString(ctx));
       result.add("*");
     }
 
@@ -81,8 +83,10 @@ class SolrAuthzUtil {
       result.add(r.collectionName);
     }
     if (result.isEmpty()) {
-        LOG.debug("Missing collection name for the schema operation with authorization context {}."
-            + " Using * permissions for authorization check", toString(ctx));
+        LOG.debug("""
+            Missing collection name for the schema operation with authorization context {}.\
+             Using * permissions for authorization check\
+            """, toString(ctx));
       result.add("*");
     }
 

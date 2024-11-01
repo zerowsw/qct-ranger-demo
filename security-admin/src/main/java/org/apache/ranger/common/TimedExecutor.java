@@ -33,12 +33,12 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import javax.annotation.PostConstruct;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.thirdparty.com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.apache.ranger.plugin.client.HadoopException;
 import org.apache.ranger.plugin.service.RangerDefaultService;
+
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,7 +93,7 @@ public class TimedExecutor {
 				return result;
 			} catch (CancellationException | ExecutionException | InterruptedException e) {
 				if (LOG.isDebugEnabled()) {
-					LOG.debug(String.format("TimedExecutor: Caught exception[%s] for callable[%s]: detail[%s].  Re-throwing...", e.getClass().getName(), callable, e.getMessage()));
+					LOG.debug("TimedExecutor: Caught exception[%s] for callable[%s]: detail[%s].  Re-throwing...".formatted(e.getClass().getName(), callable, e.getMessage()));
 				}
 
 				if (StringUtils.contains(e.getMessage(), RangerDefaultService.ERROR_MSG_VALIDATE_CONFIG_NOT_IMPLEMENTED)) {
@@ -103,7 +103,7 @@ public class TimedExecutor {
 				}
 			} catch (TimeoutException e) {
 				if (LOG.isDebugEnabled()) {
-					LOG.debug(String.format("TimedExecutor: Timed out waiting for callable[%s] to finish.  Cancelling the task.", callable));
+					LOG.debug("TimedExecutor: Timed out waiting for callable[%s] to finish.  Cancelling the task.".formatted(callable));
 				}
 				boolean interruptRunningTask = true;
 				future.cancel(interruptRunningTask);
@@ -125,10 +125,12 @@ public class TimedExecutor {
 	}
 	
 	private HadoopException generateHadoopException( Exception e) {
-		String msgDesc = "Unable to retrieve any files using given parameters, "
-				+ "You can still save the repository and start creating policies, "
-				+ "but you would not be able to use autocomplete for resource names. "
-				+ "Check ranger_admin.log for more info. ";
+		String msgDesc = """
+				Unable to retrieve any files using given parameters, \
+				You can still save the repository and start creating policies, \
+				but you would not be able to use autocomplete for resource names. \
+				Check ranger_admin.log for more info. \
+				""";
 		HadoopException hpe = new HadoopException(e.getMessage(), e);
 		hpe.generateResponseDataMap(false, hpe.getMessage(e), msgDesc, null, null);
 		return hpe;
@@ -138,7 +140,7 @@ public class TimedExecutor {
 
 		@Override
 		public void uncaughtException(Thread t, Throwable e) {
-			String message = String.format("TimedExecutor: Uncaught exception hanlder received exception[%s] in thread[%s]", t.getClass().getName(), t.getName());
+			String message = "TimedExecutor: Uncaught exception hanlder received exception[%s] in thread[%s]".formatted(t.getClass().getName(), t.getName());
 			LOG.warn(message, e);
 		}
 	}

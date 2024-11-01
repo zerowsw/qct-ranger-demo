@@ -39,9 +39,9 @@ import java.util.Properties;
 
 import javax.security.auth.Subject;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
 import org.apache.hadoop.hive.metastore.api.FieldSchema;
@@ -57,9 +57,11 @@ public class HiveClient extends BaseClient implements Closeable {
 
 	private static final Logger LOG = LoggerFactory.getLogger(HiveClient.class);
 	
-	private static final String ERR_MSG = "You can still save the repository and start creating "
-			+ "policies, but you would not be able to use autocomplete for "
-			+ "resource names. Check ranger_admin.log for more info.";
+	private static final String ERR_MSG = """
+			You can still save the repository and start creating \
+			policies, but you would not be able to use autocomplete for \
+			resource names. Check ranger_admin.log for more info.\
+			""";
 
 	private Connection con;
 	private HiveMetaStoreClient hiveClient;
@@ -593,8 +595,10 @@ public class HiveClient extends BaseClient implements Closeable {
 				}
 				hiveClient = new HiveMetaStoreClient(conf);
 			} catch (HadoopException he) {
-				String msgDesc = "initConnection: Class or its nullary constructor might not accessible."
-						+ "So unable to initiate connection to hive thrift server instance.";
+				String msgDesc = """
+						initConnection: Class or its nullary constructor might not accessible.\
+						So unable to initiate connection to hive thrift server instance.\
+						""";
 				HadoopException hdpException = new HadoopException(msgDesc, he);
 				hdpException.generateResponseDataMap(false, getMessage(he),
 						msgDesc + ERR_MSG, null, null);
@@ -603,8 +607,10 @@ public class HiveClient extends BaseClient implements Closeable {
 				}
 				throw hdpException;
 			} catch (MalformedURLException e) {
-				String msgDesc = "initConnection: URL might be malformed."
-						+ "So unable to initiate connection to hive thrift server instance.";
+				String msgDesc = """
+						initConnection: URL might be malformed.\
+						So unable to initiate connection to hive thrift server instance.\
+						""";
 				HadoopException hdpException = new HadoopException(msgDesc, e);
 				hdpException.generateResponseDataMap(false, getMessage(e), msgDesc + ERR_MSG, null, null);
 				if (LOG.isDebugEnabled()) {
@@ -612,8 +618,10 @@ public class HiveClient extends BaseClient implements Closeable {
 				}
 				throw hdpException;
 			} catch (MetaException e) {
-				String msgDesc = "initConnection: Meta info is not proper."
-						+ "So unable to initiate connection to hive thrift server instance.";
+				String msgDesc = """
+						initConnection: Meta info is not proper.\
+						So unable to initiate connection to hive thrift server instance.\
+						""";
 				HadoopException hdpException = new HadoopException(msgDesc, e);
 				hdpException.generateResponseDataMap(false, getMessage(e), msgDesc + ERR_MSG, null, null);
 				if (LOG.isDebugEnabled()) {
@@ -639,8 +647,10 @@ public class HiveClient extends BaseClient implements Closeable {
 					Driver driver = (Driver)Class.forName(driverClassName).newInstance();
 					DriverManager.registerDriver(driver);
 				} catch (SQLException e) {
-					String msgDesc = "initConnection: Caught SQLException while registering "
-							+ "Hive driver, so Unable to connect to Hive Thrift Server instance.";
+					String msgDesc = """
+							initConnection: Caught SQLException while registering \
+							Hive driver, so Unable to connect to Hive Thrift Server instance.\
+							""";
 					HadoopException hdpException = new HadoopException(msgDesc, e);
 					hdpException.generateResponseDataMap(false, getMessage(e),
 							msgDesc + ERR_MSG, null, null);
@@ -649,8 +659,10 @@ public class HiveClient extends BaseClient implements Closeable {
 					}
 					throw hdpException;
 				} catch (IllegalAccessException ilae) {
-					String msgDesc = "initConnection: Class or its nullary constructor might not accessible."
-							+ "So unable to initiate connection to hive thrift server instance.";
+					String msgDesc = """
+							initConnection: Class or its nullary constructor might not accessible.\
+							So unable to initiate connection to hive thrift server instance.\
+							""";
 					HadoopException hdpException = new HadoopException(msgDesc, ilae);
 					hdpException.generateResponseDataMap(false, getMessage(ilae),
 							msgDesc + ERR_MSG, null, null);
@@ -659,9 +671,11 @@ public class HiveClient extends BaseClient implements Closeable {
 					}
 					throw hdpException;
 				} catch (InstantiationException ie) {
-					String msgDesc = "initConnection: Class may not have its nullary constructor or "
-							+ "may be the instantiation fails for some other reason."
-							+ "So unable to initiate connection to hive thrift server instance.";
+					String msgDesc = """
+							initConnection: Class may not have its nullary constructor or \
+							may be the instantiation fails for some other reason.\
+							So unable to initiate connection to hive thrift server instance.\
+							""";
 					HadoopException hdpException = new HadoopException(msgDesc, ie);
 					hdpException.generateResponseDataMap(false, getMessage(ie),
 							msgDesc + ERR_MSG, null, null);
@@ -670,9 +684,11 @@ public class HiveClient extends BaseClient implements Closeable {
 					}
 					throw hdpException;
 				} catch (ExceptionInInitializerError eie) {
-					String msgDesc = "initConnection: Got ExceptionInInitializerError, "
-							+ "The initialization provoked by this method fails."
-							+ "So unable to initiate connection to hive thrift server instance.";
+					String msgDesc = """
+							initConnection: Got ExceptionInInitializerError, \
+							The initialization provoked by this method fails.\
+							So unable to initiate connection to hive thrift server instance.\
+							""";
 					HadoopException hdpException = new HadoopException(msgDesc, eie);
 					hdpException.generateResponseDataMap(false, getMessage(eie),
 							msgDesc + ERR_MSG, null, null);
@@ -681,10 +697,12 @@ public class HiveClient extends BaseClient implements Closeable {
 					}
 					throw hdpException;
 				} catch (SecurityException se) {
-					String msgDesc = "initConnection: unable to initiate connection to hive thrift server instance,"
-							+ " The caller's class loader is not the same as or an ancestor "
-							+ "of the class loader for the current class and invocation of "
-							+ "s.checkPackageAccess() denies access to the package of this class.";
+					String msgDesc = """
+							initConnection: unable to initiate connection to hive thrift server instance,\
+							 The caller's class loader is not the same as or an ancestor \
+							of the class loader for the current class and invocation of \
+							s.checkPackageAccess() denies access to the package of this class.\
+							""";
 					HadoopException hdpException = new HadoopException(msgDesc, se);
 					hdpException.generateResponseDataMap(false, getMessage(se),
 							msgDesc + ERR_MSG, null, null);
@@ -693,8 +711,10 @@ public class HiveClient extends BaseClient implements Closeable {
 					}
 					throw hdpException;
 				} catch (Throwable t) {
-					String msgDesc = "initConnection: Unable to connect to Hive Thrift Server instance, "
-							+ "please provide valid value of field : {jdbc.driverClassName}.";
+					String msgDesc = """
+							initConnection: Unable to connect to Hive Thrift Server instance, \
+							please provide valid value of field : {jdbc.driverClassName}.\
+							""";
 					HadoopException hdpException = new HadoopException(msgDesc, t);
 					hdpException.generateResponseDataMap(false, getMessage(t),
 							msgDesc + ERR_MSG, null, "jdbc.driverClassName");

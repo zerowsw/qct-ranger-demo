@@ -20,9 +20,9 @@
 package org.apache.ranger.plugin.policyengine;
 
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.Predicate;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.ranger.plugin.model.RangerPolicy.RangerPolicyResource;
 import org.apache.ranger.plugin.model.RangerServiceDef.RangerResourceDef;
@@ -416,8 +416,8 @@ public class RangerResourceTrie<T extends RangerResourceEvaluator> {
         for (E evaluator : evaluators) {
             final List<T> resourceEvaluators;
 
-            if (evaluator instanceof RangerPolicyEvaluator) {
-                resourceEvaluators = (List<T>) ((RangerPolicyEvaluator) evaluator).getResourceEvaluators();
+            if (evaluator instanceof RangerPolicyEvaluator policyEvaluator) {
+                resourceEvaluators = (List<T>) policyEvaluator.getResourceEvaluators();
             } else if (evaluator instanceof RangerResourceEvaluator) {
                 resourceEvaluators = Collections.singletonList((T) evaluator);
             } else {
@@ -605,8 +605,8 @@ public class RangerResourceTrie<T extends RangerResourceEvaluator> {
     }
 
     public void traverse(Object resource, ResourceElementMatchingScope scope, TraverseMatchHandler<T> handler) {
-        if (resource instanceof String) {
-            traverse((String) resource, scope, handler);
+        if (resource instanceof String string) {
+            traverse(string, scope, handler);
         } else if (resource instanceof Collection) {
             Collection<String> resources = (Collection<String>) resource;
 

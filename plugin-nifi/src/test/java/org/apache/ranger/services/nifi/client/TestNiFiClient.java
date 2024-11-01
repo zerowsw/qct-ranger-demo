@@ -21,12 +21,12 @@ package org.apache.ranger.services.nifi.client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import org.apache.ranger.plugin.service.ResourceLookupContext;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -37,41 +37,43 @@ import static org.mockito.Mockito.when;
 
 public class TestNiFiClient {
 
-    private static final String RESOURCES_RESPONSE = "{\n" +
-            "  \"revision\": {\n" +
-            "    \"clientId\": \"0daac173-025c-4aa7-b644-97f7b10435d2\"\n" +
-            "  },\n" +
-            "  \"resources\": [\n" +
-            "    {\n" +
-            "      \"identifier\": \"/system\",\n" +
-            "      \"name\": \"System\"\n" +
-            "    },\n" +
-            "    {\n" +
-            "      \"identifier\": \"/controller\",\n" +
-            "      \"name\": \"Controller\"\n" +
-            "    },\n" +
-            "    {\n" +
-            "      \"identifier\": \"/flow\",\n" +
-            "      \"name\": \"NiFi Flow\"\n" +
-            "    },\n" +
-            "    {\n" +
-            "      \"identifier\": \"/provenance\",\n" +
-            "      \"name\": \"Provenance\"\n" +
-            "    },\n" +
-            "    {\n" +
-            "      \"identifier\": \"/proxy\",\n" +
-            "      \"name\": \"Proxy User Requests\"\n" +
-            "    },\n" +
-            "    {\n" +
-            "      \"identifier\": \"/resources\",\n" +
-            "      \"name\": \"NiFi Resources\"\n" +
-            "    }\n" +
-            "  ]\n" +
-            "}";
+    private static final String RESOURCES_RESPONSE = """
+            {
+              "revision": {
+                "clientId": "0daac173-025c-4aa7-b644-97f7b10435d2"
+              },
+              "resources": [
+                {
+                  "identifier": "/system",
+                  "name": "System"
+                },
+                {
+                  "identifier": "/controller",
+                  "name": "Controller"
+                },
+                {
+                  "identifier": "/flow",
+                  "name": "NiFi Flow"
+                },
+                {
+                  "identifier": "/provenance",
+                  "name": "Provenance"
+                },
+                {
+                  "identifier": "/proxy",
+                  "name": "Proxy User Requests"
+                },
+                {
+                  "identifier": "/resources",
+                  "name": "NiFi Resources"
+                }
+              ]
+            }\
+            """;
 
     private NiFiClient niFiClient;
 
-    @Before
+    @BeforeEach
     public void setup() {
         niFiClient = new MockNiFiClient(RESOURCES_RESPONSE, 200);
     }
@@ -90,11 +92,11 @@ public class TestNiFiClient {
         expectedResources.add("/resources");
 
         List<String> resources = niFiClient.getResources(resourceLookupContext);
-        Assert.assertNotNull(resources);
-        Assert.assertEquals(expectedResources.size(), resources.size());
+        Assertions.assertNotNull(resources);
+        Assertions.assertEquals(expectedResources.size(), resources.size());
 
         resources.removeAll(expectedResources);
-        Assert.assertEquals(0, resources.size());
+        Assertions.assertEquals(0, resources.size());
     }
 
     @Test
@@ -107,11 +109,11 @@ public class TestNiFiClient {
         expectedResources.add("/proxy");
 
         List<String> resources = niFiClient.getResources(resourceLookupContext);
-        Assert.assertNotNull(resources);
-        Assert.assertEquals(expectedResources.size(), resources.size());
+        Assertions.assertNotNull(resources);
+        Assertions.assertEquals(expectedResources.size(), resources.size());
 
         resources.removeAll(expectedResources);
-        Assert.assertEquals(0, resources.size());
+        Assertions.assertEquals(0, resources.size());
     }
 
     @Test
@@ -123,11 +125,11 @@ public class TestNiFiClient {
         expectedResources.add("/controller");
 
         List<String> resources = niFiClient.getResources(resourceLookupContext);
-        Assert.assertNotNull(resources);
-        Assert.assertEquals(expectedResources.size(), resources.size());
+        Assertions.assertNotNull(resources);
+        Assertions.assertEquals(expectedResources.size(), resources.size());
 
         resources.removeAll(expectedResources);
-        Assert.assertEquals(0, resources.size());
+        Assertions.assertEquals(0, resources.size());
     }
 
     @Test
@@ -140,17 +142,17 @@ public class TestNiFiClient {
 
         try {
             niFiClient.getResources(resourceLookupContext);
-            Assert.fail("should have thrown exception");
+            Assertions.fail("should have thrown exception");
         } catch (Exception e) {
-            Assert.assertTrue(e.getMessage().contains(errorMsg));
+            Assertions.assertTrue(e.getMessage().contains(errorMsg));
         }
     }
 
     @Test
     public void testConnectionTestSuccess() {
         HashMap<String, Object> ret = niFiClient.connectionTest();
-        Assert.assertNotNull(ret);
-        Assert.assertEquals(NiFiClient.SUCCESS_MSG, ret.get("message"));
+        Assertions.assertNotNull(ret);
+        Assertions.assertEquals(NiFiClient.SUCCESS_MSG, ret.get("message"));
     }
 
     @Test
@@ -159,8 +161,8 @@ public class TestNiFiClient {
         niFiClient = new MockNiFiClient(errorMsg, Response.Status.BAD_REQUEST.getStatusCode());
 
         HashMap<String, Object> ret = niFiClient.connectionTest();
-        Assert.assertNotNull(ret);
-        Assert.assertEquals(NiFiClient.FAILURE_MSG, ret.get("message"));
+        Assertions.assertNotNull(ret);
+        Assertions.assertEquals(NiFiClient.FAILURE_MSG, ret.get("message"));
     }
 
 

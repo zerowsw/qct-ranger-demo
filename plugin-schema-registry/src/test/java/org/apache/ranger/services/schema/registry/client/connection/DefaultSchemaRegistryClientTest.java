@@ -22,8 +22,8 @@ import com.hortonworks.registries.schemaregistry.SchemaMetadata;
 import com.hortonworks.registries.schemaregistry.SchemaVersion;
 import com.hortonworks.registries.schemaregistry.webservice.LocalSchemaRegistryServer;
 import org.apache.commons.io.IOUtils;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
@@ -35,13 +35,12 @@ import java.util.List;
 import java.util.Map;
 
 import static com.hortonworks.registries.schemaregistry.client.SchemaRegistryClient.Configuration.SCHEMA_REGISTRY_URL;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 
-@org.junit.Ignore
+@org.junit.jupiter.api.Disabled
 public class DefaultSchemaRegistryClientTest {
 
     private static final String V1_API_PATH = "api/v1";
@@ -50,7 +49,7 @@ public class DefaultSchemaRegistryClientTest {
 
     private static ISchemaRegistryClient client;
 
-    @BeforeClass
+    @BeforeAll
     public static void init() throws Exception {
         localSchemaRegistryServer =
                 new LocalSchemaRegistryServer(getFilePath("ssl-schema-registry.yaml"));
@@ -184,8 +183,10 @@ public class DefaultSchemaRegistryClientTest {
         }
     }
 
-    @Test(expected = Exception.class)
+    @Test
     public void checkConnection2() throws Exception {
+		assertThrows(Exception.class, () -> {
         new DefaultSchemaRegistryClient(new HashMap<>()).checkConnection();
+		});
     }
 }

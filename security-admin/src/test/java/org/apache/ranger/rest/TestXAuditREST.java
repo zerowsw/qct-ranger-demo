@@ -18,7 +18,7 @@ package org.apache.ranger.rest;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.ranger.biz.XAuditMgr;
 import org.apache.ranger.common.SearchCriteria;
@@ -30,18 +30,18 @@ import org.apache.ranger.view.VXAccessAuditList;
 import org.apache.ranger.view.VXLong;
 import org.apache.ranger.view.VXTrxLog;
 import org.apache.ranger.view.VXTrxLogList;
-import org.junit.Assert;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.MethodOrderer.MethodName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@ExtendWith(MockitoExtension.class)
+@TestMethodOrder(MethodName.class)
 public class TestXAuditREST {
 
 	@InjectMocks
@@ -78,10 +78,10 @@ public class TestXAuditREST {
 		vxExp.setObjectName(name);
 		Mockito.when(xAuditMgr.getXTrxLog(id)).thenReturn(vxExp);
 		VXTrxLog vxAct = auditREST.getXTrxLog(id);
-		Assert.assertNotNull(vxAct);
-		Assert.assertEquals(vxExp, vxAct);
-		Assert.assertEquals(vxExp.getId(), vxAct.getId());
-		Assert.assertEquals(vxExp.getObjectName(), vxAct.getObjectName());
+		Assertions.assertNotNull(vxAct);
+		Assertions.assertEquals(vxExp, vxAct);
+		Assertions.assertEquals(vxExp.getId(), vxAct.getId());
+		Assertions.assertEquals(vxExp.getObjectName(), vxAct.getObjectName());
 		Mockito.verify(xAuditMgr).getXTrxLog(id);
 	}
 
@@ -92,10 +92,10 @@ public class TestXAuditREST {
 		vxExp.setObjectName(name);
 		Mockito.when(xAuditMgr.createXTrxLog(vxExp)).thenReturn(vxExp);
 		VXTrxLog vxAct = auditREST.createXTrxLog(vxExp);
-		Assert.assertNotNull(vxAct);
-		Assert.assertEquals(vxExp, vxAct);
-		Assert.assertEquals(vxExp.getId(), vxAct.getId());
-		Assert.assertEquals(vxExp.getObjectName(), vxAct.getObjectName());
+		Assertions.assertNotNull(vxAct);
+		Assertions.assertEquals(vxExp, vxAct);
+		Assertions.assertEquals(vxExp.getId(), vxAct.getId());
+		Assertions.assertEquals(vxExp.getObjectName(), vxAct.getObjectName());
 		Mockito.verify(xAuditMgr).createXTrxLog(vxExp);
 	}
 
@@ -112,9 +112,9 @@ public class TestXAuditREST {
 
 		VXTrxLog vxAct = auditREST.updateXTrxLog(vxPrev);
 
-		Assert.assertNotNull(vxAct);
-		Assert.assertEquals(vxExp, vxAct);
-		Assert.assertEquals(vxExp.getObjectName(), vxAct.getObjectName());
+		Assertions.assertNotNull(vxAct);
+		Assertions.assertEquals(vxExp, vxAct);
+		Assertions.assertEquals(vxExp.getObjectName(), vxAct.getObjectName());
 
 		Mockito.verify(xAuditMgr).updateXTrxLog(vxPrev);
 	}
@@ -141,8 +141,8 @@ public class TestXAuditREST {
 
 		VXTrxLogList vxActList = auditREST.searchXTrxLogs(request);
 
-		Assert.assertNotNull(vxActList);
-		Assert.assertEquals(vxExpList, vxActList);
+		Assertions.assertNotNull(vxActList);
+		Assertions.assertEquals(vxExpList, vxActList);
 
 		Mockito.verify(searchUtil).extractCommonCriterias((HttpServletRequest) Mockito.any(),
 				(List<SortField>) Mockito.any());
@@ -161,9 +161,9 @@ public class TestXAuditREST {
 
 		VXLong vxLongAct = auditREST.countXTrxLogs(request);
 
-		Assert.assertNotNull(vxLongAct);
-		Assert.assertEquals(vxLongExp, vxLongAct);
-		Assert.assertEquals(vxLongExp.getValue(), vxLongAct.getValue());
+		Assertions.assertNotNull(vxLongAct);
+		Assertions.assertEquals(vxLongExp, vxLongAct);
+		Assertions.assertEquals(vxLongExp.getValue(), vxLongAct.getValue());
 
 		Mockito.verify(searchUtil).extractCommonCriterias((HttpServletRequest) Mockito.any(),
 				(List<SortField>) Mockito.any());
@@ -184,9 +184,9 @@ public class TestXAuditREST {
 
 		VXAccessAuditList vxAAListAct = auditREST.searchXAccessAudits(request);
 
-		Assert.assertNotNull(vxAAListAct);
-		Assert.assertEquals(vxAAListExp, vxAAListAct);
-		Assert.assertEquals(vxAAListExp.getTotalCount(), vxAAListAct.getTotalCount());
+		Assertions.assertNotNull(vxAAListAct);
+		Assertions.assertEquals(vxAAListExp, vxAAListAct);
+		Assertions.assertEquals(vxAAListExp.getTotalCount(), vxAAListAct.getTotalCount());
 
 		Mockito.verify(searchUtil).extractCommonCriterias((HttpServletRequest) Mockito.any(),
 				(List<SortField>) Mockito.any());
@@ -210,8 +210,8 @@ public class TestXAuditREST {
 
 		VXLong vxLongAct = auditREST.countXAccessAudits(request);
 
-		Assert.assertNotNull(vxLongAct);
-		Assert.assertEquals(vXLongExpect.getValue(), vxLongAct.getValue());
+		Assertions.assertNotNull(vxLongAct);
+		Assertions.assertEquals(vXLongExpect.getValue(), vxLongAct.getValue());
 
 		Mockito.verify(searchUtil, Mockito.times(2)).extractCommonCriterias((HttpServletRequest) Mockito.any(),
 				(List<SortField>) Mockito.any());

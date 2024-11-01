@@ -23,18 +23,18 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import org.apache.ranger.plugin.model.RangerMetrics;
 import org.apache.ranger.util.RangerMetricsUtil;
-import org.junit.Assert;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.MethodOrderer.MethodName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@ExtendWith(MockitoExtension.class)
+@TestMethodOrder(MethodName.class)
 public class TestMetricsREST {
     @InjectMocks
     MetricsREST metricsREST = new MetricsREST();
@@ -51,23 +51,23 @@ public class TestMetricsREST {
 
         RangerMetrics rangerMetrics = metricsREST.getStatus();
 
-        Assert.assertNotNull(rangerMetrics);
-        Assert.assertNotNull(rangerMetrics.getData());
-        Assert.assertNotNull(rangerMetrics.getData().get("jvm"));
+        Assertions.assertNotNull(rangerMetrics);
+        Assertions.assertNotNull(rangerMetrics.getData());
+        Assertions.assertNotNull(rangerMetrics.getData().get("jvm"));
 
         Map<String, Object> jvmMetricsMap = (Map<String, Object>)rangerMetrics.getData().get("jvm");
 
-        Assert.assertNotNull(jvmMetricsMap.get("JVM Machine Actual Name"));
-        Assert.assertNotNull(jvmMetricsMap.get("version"));
-        Assert.assertNotNull(jvmMetricsMap.get("JVM Vendor Name"));
-        Assert.assertEquals("Mac OS X, x86_64, 12.6.3", jvmMetricsMap.get("os.spec"));
-        Assert.assertEquals("8", jvmMetricsMap.get("os.vcpus"));
-        Assert.assertNotNull(jvmMetricsMap.get("memory"));
+        Assertions.assertNotNull(jvmMetricsMap.get("JVM Machine Actual Name"));
+        Assertions.assertNotNull(jvmMetricsMap.get("version"));
+        Assertions.assertNotNull(jvmMetricsMap.get("JVM Vendor Name"));
+        Assertions.assertEquals("Mac OS X, x86_64, 12.6.3", jvmMetricsMap.get("os.spec"));
+        Assertions.assertEquals("8", jvmMetricsMap.get("os.vcpus"));
+        Assertions.assertNotNull(jvmMetricsMap.get("memory"));
 
         Map<String, Object> memoryDetailsMap = (Map<String, Object>)jvmMetricsMap.get("memory");
 
-        Assert.assertEquals("7635730432", memoryDetailsMap.get("heapMax"));
-        Assert.assertEquals("40424768", memoryDetailsMap.get("heapUsed"));
+        Assertions.assertEquals("7635730432", memoryDetailsMap.get("heapMax"));
+        Assertions.assertEquals("40424768", memoryDetailsMap.get("heapUsed"));
     }
 
 

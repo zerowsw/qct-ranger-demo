@@ -32,7 +32,7 @@ import java.util.Map;
 
 import javax.security.auth.Subject;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.security.HadoopKerberosName;
 import org.apache.hadoop.security.ProviderUtils;
@@ -59,9 +59,11 @@ public class KMSClient {
 
 	private static final String KMS_LIST_API_ENDPOINT = "v1/keys/names"; // GET
 
-	private static final String errMessage = " You can still save the repository and start creating "
-			+ "policies, but you would not be able to use autocomplete for "
-			+ "resource names. Check ranger_admin.log for more info.";
+	private static final String errMessage = """
+			 You can still save the repository and start creating \
+			policies, but you would not be able to use autocomplete for \
+			resource names. Check ranger_admin.log for more info.\
+			""";
 	
 	private static final String AUTH_TYPE_KERBEROS = "kerberos";
 

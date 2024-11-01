@@ -77,7 +77,7 @@ public class ElasticSearchAccessAuditsService extends org.apache.ranger.AccessAu
 		try {
 			response = elasticSearchUtil.searchResources(searchCriteria, searchFields, sortFields, client, elasticSearchMgr.index);
 		} catch (IOException e) {
-			LOGGER.warn(String.format("ElasticSearch query failed: %s", e.getMessage()));
+			LOGGER.warn("ElasticSearch query failed: %s".formatted(e.getMessage()));
 			throw restErrorUtil.createRESTException(
 					"Error querying search engine",
 					MessageEnums.ERROR_SYSTEM);
@@ -86,7 +86,7 @@ public class ElasticSearchAccessAuditsService extends org.apache.ranger.AccessAu
 		try {
 			docs = elasticSearchUtil.fetch(client, elasticSearchMgr.index, response.getHits().getHits());
 		} catch (IOException e) {
-			LOGGER.warn(String.format("ElasticSearch fetch failed: %s", e.getMessage()));
+			LOGGER.warn("ElasticSearch fetch failed: %s".formatted(e.getMessage()));
 			throw restErrorUtil.createRESTException(
 					"Error querying search engine",
 					MessageEnums.ERROR_SYSTEM);

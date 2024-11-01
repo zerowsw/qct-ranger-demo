@@ -36,8 +36,10 @@ import java.util.*;
 public class OzoneClient extends BaseClient {
 
     private static final Logger LOG     = LoggerFactory.getLogger(OzoneClient.class);
-    private static final String ERR_MSG = "You can still save the repository and start creating policies, but you " +
-            "would not be able to use autocomplete for resource names. Check ranger_admin.log for more info.";
+    private static final String ERR_MSG = """
+            You can still save the repository and start creating policies, but you \
+            would not be able to use autocomplete for resource names. Check ranger_admin.log for more info.\
+            """;
 
     private final OzoneConfiguration conf;
     private org.apache.hadoop.ozone.client.OzoneClient ozoneClient = null;

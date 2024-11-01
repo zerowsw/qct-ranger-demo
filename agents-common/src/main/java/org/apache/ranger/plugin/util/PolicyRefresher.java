@@ -33,8 +33,8 @@ import java.util.Timer;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.admin.client.RangerAdminClient;
 import org.apache.ranger.authorization.hadoop.config.RangerPluginConfig;
 import org.apache.ranger.authorization.utils.JsonUtils;
@@ -78,7 +78,7 @@ public class PolicyRefresher extends Thread {
 		this.cacheDir    = pluginConfig.get(propertyPrefix + ".policy.cache.dir");
 
 		String appId         = StringUtils.isEmpty(plugIn.getAppId()) ? serviceType : plugIn.getAppId();
-		String cacheFilename = String.format("%s_%s.json", appId, serviceName);
+		String cacheFilename = "%s_%s.json".formatted(appId, serviceName);
 
 		cacheFilename = cacheFilename.replace(File.separatorChar,  '_');
 		cacheFilename = cacheFilename.replace(File.pathSeparatorChar,  '_');

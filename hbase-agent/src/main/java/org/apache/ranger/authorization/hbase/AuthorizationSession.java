@@ -23,7 +23,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.hbase.security.AccessDeniedException;
 import org.apache.hadoop.hbase.security.User;
 import org.apache.hadoop.thirdparty.com.google.common.collect.Lists;
@@ -128,27 +128,27 @@ public class AuthorizationSession {
 		
 		String template = "Internal error: Incomplete/inconsisten state: [%s]. Can't build auth request!";
 		if (_factory == null) {
-			String message = String.format(template, "factory is null");
+			String message = template.formatted("factory is null");
 			LOG.error(message);
 			throw new IllegalStateException(message);
 		}
 		if (_access == null || _access.isEmpty()) {
-			String message = String.format(template, "access is null");
+			String message = template.formatted("access is null");
 			LOG.error(message);
 			throw new IllegalStateException(message);
 		}
 		if (_user == null) {
-			String message = String.format(template, "user is null");
+			String message = template.formatted("user is null");
 			LOG.error(message);
 			throw new IllegalStateException(message);
 		}
 		if (isProvided(_columnFamily) && !isProvided(_table)) {
-			String message = String.format(template, "Table must be provided if column-family is provided");
+			String message = template.formatted("Table must be provided if column-family is provided");
 			LOG.error(message);
 			throw new IllegalStateException(message);
 		}
 		if (isProvided(_column) && !isProvided(_columnFamily)) {
-			String message = String.format(template, "Column family must be provided if column is provided");
+			String message = template.formatted("Column family must be provided if column is provided");
 			LOG.error(message);
 			throw new IllegalStateException(message);
 		}
@@ -209,7 +209,7 @@ public class AuthorizationSession {
 		}
 		
 		if (_request == null) {
-			String message = String.format("Invalid state transition: buildRequest() must be called before authorize().  This request would ultimately get denied.!");
+			String message = "Invalid state transition: buildRequest() must be called before authorize().  This request would ultimately get denied.!".formatted();
 			throw new IllegalStateException(message);
 		} else {
 			// ok to pass potentially null handler to policy engine.  Null handler effectively suppresses the audit.
@@ -263,7 +263,7 @@ public class AuthorizationSession {
 			if (LOG.isDebugEnabled()) {
 				int size = events == null ? 0 : events.size();
 				String auditMessage = events == null ? "" : events.toString();
-				String message = String.format("Writing %d messages to audit: [%s]", size, auditMessage);
+				String message = "Writing %d messages to audit: [%s]".formatted(size, auditMessage);
 				LOG.debug(message);
 			}
 			_auditHandler.logAuthzAudits(events);
@@ -287,7 +287,7 @@ public class AuthorizationSession {
 
 		boolean audited = false;
 		if (_result == null) {
-			String message = String.format("Internal error: _result was null!  Assuming no audit. Request[%s]", _request.toString());
+			String message = "Internal error: _result was null!  Assuming no audit. Request[%s]".formatted(_request.toString());
 			LOG.error(message);
 		} else {
 			audited = _result.getIsAudited();
@@ -298,7 +298,7 @@ public class AuthorizationSession {
 	boolean isAuthorized() {
 		boolean allowed = false;
 		if (_result == null) {
-			String message = String.format("Internal error: _result was null! Returning false.");
+			String message = "Internal error: _result was null! Returning false.".formatted();
 			LOG.error(message);
 		} else {
 			allowed = _result.getIsAllowed();
@@ -315,7 +315,7 @@ public class AuthorizationSession {
 	String getDenialReason() {
 		String reason = "";
 		if (_result == null) {
-			String message = String.format("Internal error: _result was null!  Returning empty reason.");
+			String message = "Internal error: _result was null!  Returning empty reason.".formatted();
 			LOG.error(message);
 		} else {
 			boolean allowed = _result.getIsAllowed();
@@ -352,14 +352,14 @@ public class AuthorizationSession {
 	String getRequestMessage() {
 		String format = "Access[%s] by user[%s] belonging to groups[%s] to table[%s] for column-family[%s], column[%s] triggered by operation[%s], otherInformation[%s]";
 		String user = _userUtils.getUserAsString();
-		String message = String.format(format, getPrintableValue(_access), getPrintableValue(user), _groups, getPrintableValue(_table),
+		String message = format.formatted(getPrintableValue(_access), getPrintableValue(user), _groups, getPrintableValue(_table),
 				getPrintableValue(_columnFamily), getPrintableValue(_column), getPrintableValue(_operation), getPrintableValue(_otherInformation));
 		return message;
 	}
 	
 	String getLogMessage(boolean allowed, String reason) {
 		String format = " %s: status[%s], reason[%s]";
-		String message = String.format(format, getRequestMessage(), allowed ? "allowed" : "denied", reason);
+		String message = format.formatted(getRequestMessage(), allowed ? "allowed" : "denied", reason);
 		return message;
 	}
 

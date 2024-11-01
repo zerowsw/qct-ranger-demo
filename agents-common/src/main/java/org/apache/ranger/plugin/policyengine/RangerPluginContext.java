@@ -19,7 +19,7 @@
 
 package org.apache.ranger.plugin.policyengine;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.admin.client.RangerAdminClient;
 import org.apache.ranger.admin.client.RangerAdminRESTClient;
 import org.apache.ranger.authorization.hadoop.config.RangerPluginConfig;
@@ -151,11 +151,11 @@ public class RangerPluginContext {
 
 		if(StringUtils.isEmpty(policySourceImpl)) {
 			if (LOG.isDebugEnabled()) {
-				LOG.debug(String.format("Value for property[%s] was null or empty. Unexpected! Will use policy source of type[%s]", propertyName, RangerAdminRESTClient.class.getName()));
+				LOG.debug("Value for property[%s] was null or empty. Unexpected! Will use policy source of type[%s]".formatted(propertyName, RangerAdminRESTClient.class.getName()));
 			}
 		} else {
 			if (LOG.isDebugEnabled()) {
-				LOG.debug(String.format("Value for property[%s] was [%s].", propertyName, policySourceImpl));
+				LOG.debug("Value for property[%s] was [%s].".formatted(propertyName, policySourceImpl));
 			}
 
 			try {

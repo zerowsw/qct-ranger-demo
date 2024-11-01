@@ -33,8 +33,8 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.security.SecureClientLogin;
 import org.apache.ranger.common.PropertiesUtil;
 import org.apache.ranger.common.TimedExecutor;
@@ -217,7 +217,7 @@ public class ServiceMgr {
 
 				ret = generateResponseForTestConn(responseData, "");
 			} catch (Exception e) {
-				Map<String, Object> respData = (e instanceof HadoopException) ? ((HadoopException) e).getResponseData() : new HashMap<>();
+				Map<String, Object> respData = (e instanceof HadoopException he) ? he.getResponseData() : new HashMap<>();
 				String              msg;
 
 				if (StringUtils.contains(e.getMessage(), RangerDefaultService.ERROR_MSG_VALIDATE_CONFIG_NOT_IMPLEMENTED)) {
@@ -373,8 +373,8 @@ public class ServiceMgr {
 
 					ret.init(serviceDef, service);
 
-					if(ret instanceof RangerServiceTag) {
-						((RangerServiceTag)ret).setTagStore(tagStore);
+					if(ret instanceof RangerServiceTag tag) {
+						tag.setTagStore(tagStore);
 					}
 				} else {
 					LOG.warn("ServiceMgr.getRangerServiceByService(" + service + "): could not find service class '"
@@ -602,7 +602,7 @@ public class ServiceMgr {
 	
 	long getTimeoutValueInMilliSeconds(final String type, RangerBaseService svc, long defaultValue) {
 		if (LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> ServiceMgr.getTimeoutValueInMilliSeconds (%s, %s)", type, svc));
+			LOG.debug("==> ServiceMgr.getTimeoutValueInMilliSeconds (%s, %s)".formatted(type, svc));
 		}
 		String propertyName = type + ".timeout.value.in.ms"; // type == "lookup" || type == "validate-config"
 
@@ -640,7 +640,7 @@ public class ServiceMgr {
 		}
 
 		if (LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== ServiceMgr.getTimeoutValueInMilliSeconds (%s, %s): %s", type, svc, result));
+			LOG.debug("<== ServiceMgr.getTimeoutValueInMilliSeconds (%s, %s): %s".formatted(type, svc, result));
 		}
 		return result;
 	}
@@ -687,7 +687,7 @@ public class ServiceMgr {
 					Date finish = new Date();
 					long waitTime = start.getTime() - creation.getTime();
 					long executionTime = finish.getTime() - start.getTime();
-					LOG.debug(String.format("<== TimedCallable: %s: wait time[%d ms], execution time [%d ms]", toString(), waitTime, executionTime));
+					LOG.debug("<== TimedCallable: %s: wait time[%d ms], execution time [%d ms]".formatted(toString(), waitTime, executionTime));
 				}
 			}
 		}
@@ -706,7 +706,7 @@ public class ServiceMgr {
 
 		@Override
 		public String toString() {
-			return String.format("lookup resource[%s] for service[%s], ", context.toString(), svc.getServiceName());
+			return "lookup resource[%s] for service[%s], ".formatted(context.toString(), svc.getServiceName());
 		}
 
 		@Override
@@ -724,7 +724,7 @@ public class ServiceMgr {
 
 		@Override
 		public String toString() {
-			return String.format("validate config for service[%s]", svc.getServiceName());
+			return "validate config for service[%s]".formatted(svc.getServiceName());
 		}
 
 		@Override

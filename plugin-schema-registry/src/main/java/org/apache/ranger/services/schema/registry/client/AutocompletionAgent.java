@@ -39,9 +39,11 @@ public class AutocompletionAgent {
     private ISchemaRegistryClient client;
     private String serviceName;
 
-    private static final String errMessage = "You can still save the repository and start creating "
-            + "policies, but you would not be able to use autocomplete for "
-            + "resource names. Check server logs for more info.";
+    private static final String errMessage = """
+            You can still save the repository and start creating \
+            policies, but you would not be able to use autocomplete for \
+            resource names. Check server logs for more info.\
+            """;
 
     private static final String successMsg = "ConnectionTest Successful";
 

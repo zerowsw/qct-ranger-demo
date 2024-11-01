@@ -161,7 +161,7 @@ public class RangerKmsAuthorizer implements Runnable, KeyACLs {
 		      }
 		    } catch (Exception ex) {
 		      LOG.warn(
-		          String.format("Could not reload ACLs file: '%s'", ex.toString()), ex);
+					  "Could not reload ACLs file: '%s'".formatted(ex.toString()), ex);
 		  }
 	  }
 	
@@ -266,9 +266,9 @@ public class RangerKmsAuthorizer implements Runnable, KeyACLs {
 		  	if (!hasAccess(aclType, ugi, key, clientIp)) {
 		  		KMSWebApp.getUnauthorizedCallsMeter().mark();
 		  		KMSWebApp.getKMSAudit().unauthorized(ugi, operation, key);
-		  		throw new AuthorizationException(String.format(
+		  		throw new AuthorizationException((
 		  				(!key.equals("")) ? UNAUTHORIZED_MSG_WITH_KEY
-	                        : UNAUTHORIZED_MSG_WITHOUT_KEY,
+									: UNAUTHORIZED_MSG_WITHOUT_KEY).formatted(
 	                        ugi.getShortUserName(), operation, key));
 		  	}
 	  }

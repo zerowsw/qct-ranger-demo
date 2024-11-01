@@ -49,9 +49,11 @@ public class YarnClient extends BaseClient {
 
 	private static final String YARN_LIST_API_ENDPOINT = "/ws/v1/cluster/scheduler";
 
-	private static final String errMessage =  " You can still save the repository and start creating "
-											  + "policies, but you would not be able to use autocomplete for "
-											  + "resource names. Check ranger_admin.log for more info.";
+	private static final String errMessage =  """
+											   You can still save the repository and start creating \
+											  policies, but you would not be able to use autocomplete for \
+											  resource names. Check ranger_admin.log for more info.\
+											  """;
 
 
 	String yarnQUrl;

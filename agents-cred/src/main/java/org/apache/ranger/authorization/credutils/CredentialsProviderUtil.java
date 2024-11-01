@@ -19,12 +19,12 @@
 
 package org.apache.ranger.authorization.credutils;
 
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.KerberosCredentials;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.config.AuthSchemes;
-import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
+import org.apache.hc.client5.http.auth.AuthScope;
+import org.apache.hc.client5.http.auth.CredentialsProvider;
+import org.apache.hc.client5.http.auth.KerberosCredentials;
+import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
+import org.apache.hc.client5.http.config.AuthSchemes;
 import org.apache.ranger.authorization.credutils.kerberos.KerberosCredentialsProvider;
 import org.apache.ranger.authorization.credutils.kerberos.KeytabJaasConf;
 import org.ietf.jgss.GSSCredential;
@@ -157,7 +157,7 @@ public class CredentialsProviderUtil {
 
     public static CredentialsProvider getBasicCredentials(String user, String password) {
         CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-        credentialsProvider.setCredentials(AuthScope.ANY,
+        credentialsProvider.setCredentials(new AuthScope(null, -1),
                 new UsernamePasswordCredentials(user, password));
         return credentialsProvider;
     }

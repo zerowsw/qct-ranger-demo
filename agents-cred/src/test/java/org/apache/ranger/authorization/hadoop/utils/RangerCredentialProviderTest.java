@@ -18,8 +18,8 @@
 
 package org.apache.ranger.authorization.hadoop.utils;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,9 +29,9 @@ import java.util.List;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.security.alias.CredentialProvider;
 import org.apache.hadoop.security.alias.CredentialShell;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class RangerCredentialProviderTest {
 	
@@ -59,7 +59,7 @@ public class RangerCredentialProviderTest {
 	}
 	
 	
-	@Before
+	@BeforeEach
 	public void setup() throws Exception {
 		int ret;
 		//
@@ -94,7 +94,7 @@ public class RangerCredentialProviderTest {
 		listThreads();
 	}
 	
-	@After
+	@AfterEach
 	public void cleanup() throws Exception {
 		if (ksFile != null && ksFile.exists()) {
 			ksFile.delete();
@@ -126,7 +126,7 @@ public class RangerCredentialProviderTest {
 	}
 
 	
-	@After
+	@AfterEach
 	public void teardown() throws Exception {
 		System.out.println("In teardown : Number of active Threads : " + Thread.activeCount() );
 		int ret;

@@ -20,7 +20,7 @@
 package org.apache.ranger.authorization.hbase;
 
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.plugin.policyengine.RangerAccessResourceImpl;
 
 import java.util.ArrayList;
@@ -53,8 +53,7 @@ public class RangerHBaseResource extends RangerAccessResourceImpl {
     public void setValue(String key, Object value) {
         // special handling for tables in 'default' namespace
         if (StringUtils.equals(key, KEY_TABLE)) {
-            if (value instanceof String) {
-                String tableName = (String) value;
+            if (value instanceof String tableName) {
 
                 if (!tableName.contains(NAMESPACE_SEPARATOR)) {
                     List<String> tableNames = new ArrayList<>(3);
@@ -83,8 +82,7 @@ public class RangerHBaseResource extends RangerAccessResourceImpl {
         // Undo special handling for tables in 'default' namespace
         if (StringUtils.equals(key, KEY_TABLE)) {
             Object value = getValue(key);
-            if (value instanceof List) {
-                List<?> tableNames = (List<?>) value;
+            if (value instanceof List<?> tableNames) {
                 if (!tableNames.isEmpty()) {
                     super.setValue(key, tableNames.get(0));
                 }

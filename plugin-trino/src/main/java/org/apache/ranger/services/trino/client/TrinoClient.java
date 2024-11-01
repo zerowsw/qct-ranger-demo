@@ -14,7 +14,7 @@
 package org.apache.ranger.services.trino.client;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.ranger.plugin.client.BaseClient;
 import org.apache.ranger.plugin.client.HadoopConfigHolder;
 import org.apache.ranger.plugin.client.HadoopException;
@@ -46,9 +46,11 @@ public class TrinoClient
     public static final String TRINO_PASSWORD_PROP = "password";
 
     private static final Logger LOG = LoggerFactory.getLogger(TrinoClient.class);
-    private static final String ERR_MSG = "You can still save the repository and start creating "
-            + "policies, but you would not be able to use autocomplete for "
-            + "resource names. Check ranger_admin.log for more info.";
+    private static final String ERR_MSG = """
+            You can still save the repository and start creating \
+            policies, but you would not be able to use autocomplete for \
+            resource names. Check ranger_admin.log for more info.\
+            """;
 
     private Connection con;
 
@@ -148,10 +150,12 @@ public class TrinoClient
                 throw hdpException;
             }
             catch (SecurityException se) {
-                String msgDesc = "initConnection: unable to initiate connection to Trino instance,"
-                        + " The caller's class loader is not the same as or an ancestor "
-                        + "of the class loader for the current class and invocation of "
-                        + "s.checkPackageAccess() denies access to the package of this class.";
+                String msgDesc = """
+                        initConnection: unable to initiate connection to Trino instance,\
+                         The caller's class loader is not the same as or an ancestor \
+                        of the class loader for the current class and invocation of \
+                        s.checkPackageAccess() denies access to the package of this class.\
+                        """;
                 HadoopException hdpException = new HadoopException(msgDesc, se);
 
                 hdpException.generateResponseDataMap(false, getMessage(se), msgDesc + ERR_MSG, null, null);
@@ -159,8 +163,10 @@ public class TrinoClient
                 throw hdpException;
             }
             catch (Throwable t) {
-                String msgDesc = "initConnection: Unable to connect to Trino instance, "
-                        + "please provide valid value of field : {jdbc.driverClassName}.";
+                String msgDesc = """
+                        initConnection: Unable to connect to Trino instance, \
+                        please provide valid value of field : {jdbc.driverClassName}.\
+                        """;
                 HadoopException hdpException = new HadoopException(msgDesc, t);
 
                 hdpException.generateResponseDataMap(false, getMessage(t), msgDesc + ERR_MSG, null, null);

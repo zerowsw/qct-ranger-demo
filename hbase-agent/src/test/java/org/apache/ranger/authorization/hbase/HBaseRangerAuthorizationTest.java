@@ -23,8 +23,8 @@ import java.security.PrivilegedExceptionAction;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.HBaseTestingUtility;
@@ -47,8 +47,8 @@ import org.apache.hadoop.hbase.security.access.Permission;
 import org.apache.hadoop.hbase.security.access.UserPermission;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.security.UserGroupInformation;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,7 +71,7 @@ import org.slf4j.LoggerFactory;
  * 
  * http://localhost:6080/service/plugins/policies/download/cl1_hbase
  */
-@org.junit.Ignore
+@org.junit.jupiter.api.Disabled
 public class HBaseRangerAuthorizationTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(HBaseRangerAuthorizationTest.class.getName());
@@ -79,7 +79,7 @@ public class HBaseRangerAuthorizationTest {
     private static int port;
     private static HBaseTestingUtility utility;
 
-    @org.junit.BeforeClass
+    @org.junit.jupiter.api.BeforeAll
     public static void setup() throws Exception {
         port = getFreePort();
         
@@ -169,7 +169,7 @@ public class HBaseRangerAuthorizationTest {
         conn.close();
     }
     
-    @org.junit.AfterClass
+    @org.junit.jupiter.api.AfterAll
     public static void cleanup() throws Exception {
         utility.shutdownMiniCluster();
     }
@@ -188,7 +188,7 @@ public class HBaseRangerAuthorizationTest {
         for (HTableDescriptor desc : tableDescriptors) {
             LOG.info("Found table:[" + desc.getTableName().getNameAsString() + "]");
         }
-        Assert.assertEquals(3, tableDescriptors.length);
+        Assertions.assertEquals(3, tableDescriptors.length);
 
         conn.close();
     }
@@ -213,7 +213,7 @@ public class HBaseRangerAuthorizationTest {
                 for (HTableDescriptor desc : tableDescriptors) {
                     LOG.info("Found table:[" + desc.getTableName().getNameAsString() + "]");
                 }
-                Assert.assertEquals(0, tableDescriptors.length);
+                Assertions.assertEquals(0, tableDescriptors.length);
         
                 conn.close();
                 return null;
@@ -254,7 +254,7 @@ public class HBaseRangerAuthorizationTest {
                 try {
                     admin.disableTable(TableName.valueOf("temp2"));
                     admin.deleteTable(TableName.valueOf("temp2"));
-                    Assert.fail("Failure expected on an unauthorized user");
+                    Assertions.fail("Failure expected on an unauthorized user");
                 } catch (IOException ex) {
                     // expected
                 }
@@ -287,7 +287,7 @@ public class HBaseRangerAuthorizationTest {
         Get get = new Get(Bytes.toBytes("row1"));
         Result result = table.get(get);
         byte[] valResult = result.getValue(Bytes.toBytes("colfam1"), Bytes.toBytes("col1"));
-        Assert.assertTrue(Arrays.equals(valResult, Bytes.toBytes("val1")));
+        Assertions.assertTrue(Arrays.equals(valResult, Bytes.toBytes("val1")));
         
         conn.close();
     }
@@ -311,7 +311,7 @@ public class HBaseRangerAuthorizationTest {
                 Get get = new Get(Bytes.toBytes("row1"));
                 Result result = table.get(get);
                 byte[] valResult = result.getValue(Bytes.toBytes("colfam1"), Bytes.toBytes("col1"));
-                Assert.assertTrue(Arrays.equals(valResult, Bytes.toBytes("val1")));
+                Assertions.assertTrue(Arrays.equals(valResult, Bytes.toBytes("val1")));
 
                 conn.close();
                 return null;
@@ -340,7 +340,7 @@ public class HBaseRangerAuthorizationTest {
                     Get get = new Get(Bytes.toBytes("row1"));
                     Result result = table.get(get);
                     byte[] valResult = result.getValue(Bytes.toBytes("colfam1"), Bytes.toBytes("col1"));
-                    Assert.assertNull("Failure expected on an unauthorized user", valResult);
+                    Assertions.assertNull(valResult, "Failure expected on an unauthorized user");
                 } catch (IOException ex) {
                     // expected
                 }
@@ -365,7 +365,7 @@ public class HBaseRangerAuthorizationTest {
         Get get = new Get(Bytes.toBytes("row1"));
         Result result = table.get(get);
         byte[] valResult = result.getValue(Bytes.toBytes("colfam2"), Bytes.toBytes("col1"));
-        Assert.assertTrue(Arrays.equals(valResult, Bytes.toBytes("val2")));
+        Assertions.assertTrue(Arrays.equals(valResult, Bytes.toBytes("val2")));
 
         conn.close();
     }
@@ -389,7 +389,7 @@ public class HBaseRangerAuthorizationTest {
                 Get get = new Get(Bytes.toBytes("row1"));
                 Result result = table.get(get);
                 byte[] valResult = result.getValue(Bytes.toBytes("colfam2"), Bytes.toBytes("col1"));
-                Assert.assertNull(valResult);
+                Assertions.assertNull(valResult);
 
                 conn.close();
                 return null;
@@ -461,7 +461,7 @@ public class HBaseRangerAuthorizationTest {
                     Put put = new Put(Bytes.toBytes("row3"));
                     put.addColumn(Bytes.toBytes("colfam1"), Bytes.toBytes("col1"), Bytes.toBytes("val2"));
                     table.put(put);
-                    Assert.fail("Failure expected on an unauthorized user");
+                    Assertions.fail("Failure expected on an unauthorized user");
                 } catch (IOException ex) {
                     // expected
                 }
@@ -492,7 +492,7 @@ public class HBaseRangerAuthorizationTest {
                     Put put = new Put(Bytes.toBytes("row3"));
                     put.addColumn(Bytes.toBytes("colfam2"), Bytes.toBytes("col1"), Bytes.toBytes("val2"));
                     table.put(put);
-                    Assert.fail("Failure expected on an unauthorized user");
+                    Assertions.fail("Failure expected on an unauthorized user");
                 } catch (IOException ex) {
                     // expected
                 }
@@ -532,7 +532,7 @@ public class HBaseRangerAuthorizationTest {
         Get get = new Get(Bytes.toBytes("row1"));
         Result result = table.get(get);
         byte[] valResult = result.getValue(Bytes.toBytes("colfam2"), Bytes.toBytes("col1"));
-        Assert.assertNull(valResult);
+        Assertions.assertNull(valResult);
         
         conn.close();
         
@@ -550,7 +550,7 @@ public class HBaseRangerAuthorizationTest {
                     Get get = new Get(Bytes.toBytes("row1"));
                     Result result = table.get(get);
                     byte[] valResult = result.getValue(Bytes.toBytes("colfam2"), Bytes.toBytes("col1"));
-                    Assert.assertNull("Failure expected on an unauthorized user", valResult);
+                    Assertions.assertNull(valResult, "Failure expected on an unauthorized user");
                 } catch (IOException ex) {
                     // expected
                 }
@@ -618,7 +618,7 @@ public class HBaseRangerAuthorizationTest {
                     // Delete the new row
                     Delete delete = new Delete(Bytes.toBytes("row5"));
                     table.delete(delete);
-                    Assert.fail("Failure expected on an unauthorized user");
+                    Assertions.fail("Failure expected on an unauthorized user");
                 } catch (IOException ex) {
                     // expected
                 }
@@ -723,7 +723,7 @@ public class HBaseRangerAuthorizationTest {
                     }
                     // Clone snapshot
                     admin.cloneSnapshot("test_snapshot", clone);
-                    Assert.fail("Failure expected on an unauthorized group public");
+                    Assertions.fail("Failure expected on an unauthorized group public");
                 } catch(Exception e) {
                     // Expected
                 }
@@ -764,7 +764,7 @@ public class HBaseRangerAuthorizationTest {
 
                 try {
                     admin.createTable(tableDescriptor);
-                    Assert.fail("Failure expected on an unauthorized user");
+                    Assertions.fail("Failure expected on an unauthorized user");
                 } catch (IOException ex) {
                     // expected
                 }
@@ -840,13 +840,13 @@ public class HBaseRangerAuthorizationTest {
                 Get get = new Get(Bytes.toBytes("row1"));
                 Result result = table.get(get);
                 byte[] valResult = result.getValue(Bytes.toBytes("colfam1"), Bytes.toBytes("col1"));
-                Assert.assertTrue(Arrays.equals(valResult, Bytes.toBytes("val1")));
+                Assertions.assertTrue(Arrays.equals(valResult, Bytes.toBytes("val1")));
 
                 // Now try to read the "colfam2" column family of the temp3 table - this should fail
                 get = new Get(Bytes.toBytes("row1"));
                 result = table.get(get);
                 valResult = result.getValue(Bytes.toBytes("colfam2"), Bytes.toBytes("col1"));
-                Assert.assertNull(valResult);
+                Assertions.assertNull(valResult);
 
                 conn.close();
                 return null;
@@ -864,7 +864,7 @@ public class HBaseRangerAuthorizationTest {
                 try {
                     Result result = table.get(get);
                     byte[] valResult = result.getValue(Bytes.toBytes("colfam2"), Bytes.toBytes("col1"));
-                    Assert.assertNull("Failure expected on an unauthorized user", valResult);
+                    Assertions.assertNull(valResult, "Failure expected on an unauthorized user");
                 } catch (IOException ex) {
                     // expected
                 }
@@ -933,7 +933,7 @@ public class HBaseRangerAuthorizationTest {
                 put.addColumn(Bytes.toBytes("colfam1"), Bytes.toBytes("col2"), Bytes.toBytes("val2"));
                 try {
                     table.put(put);
-                    Assert.fail("Failure expected on an unauthorized user");
+                    Assertions.fail("Failure expected on an unauthorized user");
                 } catch (IOException ex) {
                     // expected
                 }
@@ -955,7 +955,7 @@ public class HBaseRangerAuthorizationTest {
                 put.addColumn(Bytes.toBytes("colfam1"), Bytes.toBytes("col1"), Bytes.toBytes("val2"));
                 try {
                     table.put(put);
-                    Assert.fail("Failure expected on an unauthorized user");
+                    Assertions.fail("Failure expected on an unauthorized user");
                 } catch (IOException ex) {
                     // expected
                 }
@@ -987,7 +987,7 @@ public class HBaseRangerAuthorizationTest {
 			public Void run() throws Exception {
 				try (Connection conn = ConnectionFactory.createConnection(conf)) {
 					AccessControlClient.getUserPermissions(conn, "temp");
-					Assert.fail();
+					Assertions.fail();
 				} catch (Throwable e) {
 					// expected
 				}
@@ -1015,7 +1015,7 @@ public class HBaseRangerAuthorizationTest {
 						}
 					}
 				}
-				Assert.assertTrue("QA is not found", found);
+				Assertions.assertTrue(found, "QA is not found");
 				return null;
 			}
 		});
@@ -1030,7 +1030,7 @@ public class HBaseRangerAuthorizationTest {
 		UserPermission userPermission = new UserPermission("@IT",
 				Permission.newBuilder(TableName.valueOf("temp5")).withActions(Permission.Action.READ, Permission.Action.WRITE, Permission.Action.EXEC).build());
 
-		Assert.assertTrue("@IT permission should be there", userPermissions.contains(userPermission));
+		Assertions.assertTrue(userPermissions.contains(userPermission), "@IT permission should be there");
 
 	}
 

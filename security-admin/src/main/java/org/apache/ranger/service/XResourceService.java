@@ -90,13 +90,17 @@ public class XResourceService extends
 		
 		searchFields.add(new SearchField("groupName", "xxGroup.name",
 				SearchField.DATA_TYPE.STRING, SearchField.SEARCH_TYPE.PARTIAL,
-				"XXPermMap xxPermMap, XXGroup xxGroup", "xxPermMap.resourceId "
-						+ "= obj.id and xxPermMap.groupId = xxGroup.id"));
+				"XXPermMap xxPermMap, XXGroup xxGroup", """
+						xxPermMap.resourceId \
+						= obj.id and xxPermMap.groupId = xxGroup.id\
+						"""));
 
 		searchFields.add(new SearchField("userName", "xUser.name",
 				SearchField.DATA_TYPE.STRING, SearchField.SEARCH_TYPE.PARTIAL,
-				"XXPermMap xxPermMap, XXUser xUser", "xxPermMap.resourceId "
-						+ "= obj.id and xxPermMap.userId = xUser.id"));
+				"XXPermMap xxPermMap, XXUser xUser", """
+						xxPermMap.resourceId \
+						= obj.id and xxPermMap.userId = xUser.id\
+						"""));
 
 		searchFields.add(new SearchField("userId", "xxPermMap.userId",
 				SearchField.DATA_TYPE.INT_LIST, SearchField.SEARCH_TYPE.FULL,
@@ -142,14 +146,18 @@ public class XResourceService extends
 		if(assetId != null){
 			XXAsset xAsset = daoManager.getXXAsset().getById(assetId);
 			if(xAsset == null){
-				throw restErrorUtil.createRESTException("The repository for which "
-						+ "the policy is created, doesn't exist in the system.",
+				throw restErrorUtil.createRESTException("""
+						The repository for which \
+						the policy is created, doesn't exist in the system.\
+						""",
 						MessageEnums.OPER_NOT_ALLOWED_FOR_STATE);
 			}
 		} else {
 			logger.debug("Asset id not provided.");
-			throw restErrorUtil.createRESTException("Please provide repository"
-					+ " id for policy.", MessageEnums.OPER_NOT_ALLOWED_FOR_STATE);
+			throw restErrorUtil.createRESTException("""
+					Please provide repository\
+					 id for policy.\
+					""", MessageEnums.OPER_NOT_ALLOWED_FOR_STATE);
 		}
 		
 		String resourceName = vObj.getName();
@@ -214,8 +222,10 @@ public class XResourceService extends
 	protected void validateForUpdate(VXResource vObj, XXResource mObj) {
 		if (vObj != null && vObj.getAssetType() == AppConstants.ASSET_HDFS) {
 			if (!(vObj.getName() != null) || vObj.getName().isEmpty()) {
-				throw restErrorUtil.createRESTException("Please provide the "
-						+ "resource path.", MessageEnums.INVALID_INPUT_DATA);
+				throw restErrorUtil.createRESTException("""
+						Please provide the \
+						resource path.\
+						""", MessageEnums.INVALID_INPUT_DATA);
 			}
 		}
 		if ((vObj != null && mObj != null) &&
@@ -249,8 +259,10 @@ public class XResourceService extends
 				if (permMap.getUserId() == null && permMap.getGroupId() == null
 						&& vxAuditMapList == null){
 					if(vxAuditMapList == null){
-						throw restErrorUtil.createRESTException("Please provide"
-								+ " valid group/user permissions for policy.",
+						throw restErrorUtil.createRESTException("""
+								Please provide\
+								 valid group/user permissions for policy.\
+								""",
 								MessageEnums.INVALID_INPUT_DATA);
 					}
 				} else {

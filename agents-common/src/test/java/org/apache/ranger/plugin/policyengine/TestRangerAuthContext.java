@@ -20,14 +20,14 @@
 package org.apache.ranger.plugin.policyengine;
 
 import static org.apache.ranger.plugin.util.ServiceDefUtil.IMPLICIT_GDS_ENRICHER_NAME;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.MapUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.ranger.plugin.contextenricher.RangerContextEnricher;
 import org.apache.ranger.plugin.contextenricher.RangerGdsEnricher;
 import org.apache.ranger.plugin.contextenricher.RangerTagEnricher;
@@ -35,11 +35,7 @@ import org.apache.ranger.plugin.policyengine.gds.GdsPolicyEngine;
 import org.apache.ranger.plugin.service.RangerAuthContext;
 import org.apache.ranger.plugin.service.RangerBasePlugin;
 import org.apache.ranger.plugin.util.ServicePolicies;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.*;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -48,7 +44,7 @@ public class TestRangerAuthContext {
 	private static Gson gsonBuilder;
 	private static RangerBasePlugin plugin;
 
-	@BeforeClass
+	@BeforeAll
 	public static void setUpBeforeClass() throws Exception {
 		gsonBuilder = new GsonBuilder().setDateFormat("yyyyMMdd-HH:mm:ss.SSS-Z")
 				.setPrettyPrinting()
@@ -57,15 +53,15 @@ public class TestRangerAuthContext {
 		plugin = new RangerBasePlugin("hive", "TestRangerAuthContext");
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void tearDownAfterClass() throws Exception {
 	}
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 	}
 
@@ -96,7 +92,7 @@ public class TestRangerAuthContext {
 			RangerAuthContext                  ctx              = plugin.getCurrentRangerAuthContext();
 			Map<RangerContextEnricher, Object> contextEnrichers = ctx.getRequestContextEnrichers();
 
-			assertTrue(fileName + "-" + testName + " - Empty contextEnrichers", MapUtils.isNotEmpty(contextEnrichers) && contextEnrichers.size() == 3);
+			assertTrue(MapUtils.isNotEmpty(contextEnrichers) && contextEnrichers.size() == 3, fileName + "-" + testName + " - Empty contextEnrichers");
 
 			for (Map.Entry<RangerContextEnricher, Object> entry : contextEnrichers.entrySet()) {
 				RangerContextEnricher enricher     = entry.getKey();
@@ -104,11 +100,11 @@ public class TestRangerAuthContext {
 				Object                enricherData = entry.getValue();
 
 				if (enricherName.equals("ProjectProvider")) {
-					assertTrue(fileName + "-" + testName + " - Invalid contextEnricher", enricherData instanceof RangerContextEnricher);
+					assertTrue(enricherData instanceof RangerContextEnricher, fileName + "-" + testName + " - Invalid contextEnricher");
 				} else if (enricherName.equals("TagEnricher")) {
-					assertTrue("- Invalid contextEnricher", (enricherData instanceof RangerTagEnricher || enricherData instanceof RangerTagEnricher.EnrichedServiceTags));
+					assertTrue((enricherData instanceof RangerTagEnricher || enricherData instanceof RangerTagEnricher.EnrichedServiceTags), "- Invalid contextEnricher");
 				} else if (enricherName.equals(IMPLICIT_GDS_ENRICHER_NAME) || enricher instanceof RangerGdsEnricher) {
-					assertTrue("- Invalid contextEnricher", (enricherData instanceof RangerGdsEnricher || enricherData instanceof GdsPolicyEngine));
+					assertTrue((enricherData instanceof RangerGdsEnricher || enricherData instanceof GdsPolicyEngine), "- Invalid contextEnricher");
 				} else {
 					fail(fileName + "-" + testName + " - Unexpected type of contextEnricher: " + enricher);
 				}

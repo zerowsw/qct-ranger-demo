@@ -67,7 +67,7 @@ public class HbaseAuthUtilsImpl implements HbaseAuthUtils {
 		byte[] tableName = hri.getTable().getName();
 		String tableNameStr = Bytes.toString(tableName);
 		if (LOG.isDebugEnabled()) {
-			String message = String.format("getTable: Returning tablename[%s]", tableNameStr);
+			String message = "getTable: Returning tablename[%s]".formatted(tableNameStr);
 			LOG.debug(message);
 		}
 		return tableNameStr;

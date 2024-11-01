@@ -20,8 +20,8 @@
 package org.apache.ranger.plugin.errors;
 
 import org.apache.hadoop.thirdparty.com.google.common.collect.ImmutableSet;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -36,7 +36,7 @@ public class TestValidationErrorCode {
         ValidationErrorCode errorCode = ValidationErrorCode.SERVICE_VALIDATION_ERR_UNSUPPORTED_ACTION;
         String aParameter = "FOO";
         String expected = errorCode._template.replace("{0}", aParameter);
-        Assert.assertEquals(expected, errorCode.getMessage(aParameter));
+        Assertions.assertEquals(expected, errorCode.getMessage(aParameter));
     }
 
     /**
@@ -56,7 +56,7 @@ public class TestValidationErrorCode {
         Set<ValidationErrorCode> mustNot = new HashSet<>();
 
         for (int i = 0; i < 5; i++) {
-            String token = String.format("{%d", i);
+            String token = "{%d".formatted(i);
             // check which ones should not have anymore substition varabile placehoders in them, {0}, {1}, etc.
             for (ValidationErrorCode anEnum : may) {
                 if (!anEnum._template.contains(token)) {
@@ -66,8 +66,8 @@ public class TestValidationErrorCode {
             }
             // check for incorrectly numbers substition variable placeholders
             for (ValidationErrorCode anEnum : mustNot) {
-                Assert.assertFalse(anEnum.toString() + ": contains " + token + ". Check for wongly numberd substition variable placeholders.",
-                        anEnum._template.contains(token));
+                Assertions.assertFalse(anEnum._template.contains(token),
+                        anEnum.toString() + ": contains " + token + ". Check for wongly numberd substition variable placeholders.");
             }
         }
     }
@@ -81,7 +81,7 @@ public class TestValidationErrorCode {
         for (ValidationErrorCode anEnum : ValidationErrorCode.values()) {
             int errorCode = anEnum.getErrorCode();
             // errorCode that we see must not have been seen so far.
-            Assert.assertFalse("ValidationErrorCode: error code [" + errorCode + "] used multiple times!", errorCodes.contains(errorCode));
+            Assertions.assertFalse(errorCodes.contains(errorCode), "ValidationErrorCode: error code [" + errorCode + "] used multiple times!");
             errorCodes.add(errorCode);
         }
     }

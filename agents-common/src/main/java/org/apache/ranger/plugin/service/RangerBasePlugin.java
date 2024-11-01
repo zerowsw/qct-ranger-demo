@@ -20,9 +20,9 @@
 package org.apache.ranger.plugin.service;
 
 import java.util.*;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.admin.client.RangerAdminClient;
 import org.apache.ranger.admin.client.RangerAdminRESTClient;
 import org.apache.ranger.audit.provider.AuditHandler;
@@ -989,11 +989,11 @@ public class RangerBasePlugin {
 
 		if(StringUtils.isEmpty(policySourceImpl)) {
 			if (LOG.isDebugEnabled()) {
-				LOG.debug(String.format("Value for property[%s] was null or empty. Unexpected! Will use policy source of type[%s]", propertyName, RangerAdminRESTClient.class.getName()));
+				LOG.debug("Value for property[%s] was null or empty. Unexpected! Will use policy source of type[%s]".formatted(propertyName, RangerAdminRESTClient.class.getName()));
 			}
 		} else {
 			if (LOG.isDebugEnabled()) {
-				LOG.debug(String.format("Value for property[%s] was [%s].", propertyName, policySourceImpl));
+				LOG.debug("Value for property[%s] was [%s].".formatted(propertyName, policySourceImpl));
 			}
 
 			try {
@@ -1157,8 +1157,8 @@ public class RangerBasePlugin {
 				Set<RangerContextEnricher> contextEnrichers = contextEnricherMap.keySet();
 
 				for (RangerContextEnricher enricher : contextEnrichers) {
-					if (enricher instanceof RangerTagEnricher) {
-						ret = (RangerTagEnricher) enricher;
+					if (enricher instanceof RangerTagEnricher tagEnricher) {
+						ret = tagEnricher;
 
 						break;
 					}
@@ -1179,8 +1179,8 @@ public class RangerBasePlugin {
 				Set<RangerContextEnricher> contextEnrichers = contextEnricherMap.keySet();
 
 				for (RangerContextEnricher enricher : contextEnrichers) {
-					if (enricher instanceof RangerUserStoreEnricher) {
-						ret = (RangerUserStoreEnricher) enricher;
+					if (enricher instanceof RangerUserStoreEnricher storeEnricher) {
+						ret = storeEnricher;
 
 						ret.getRangerUserStore();
 
@@ -1204,8 +1204,8 @@ public class RangerBasePlugin {
 				Set<RangerContextEnricher> contextEnrichers = contextEnricherMap.keySet();
 
 				for (RangerContextEnricher enricher : contextEnrichers) {
-					if (enricher instanceof RangerGdsEnricher) {
-						ret = (RangerGdsEnricher) enricher;
+					if (enricher instanceof RangerGdsEnricher gdsEnricher) {
+						ret = gdsEnricher;
 
 						break;
 					}

@@ -21,8 +21,8 @@ import static org.apache.ranger.plugin.model.RangerServerHealth.RangerServerStat
 
 import java.util.Map;
 import org.apache.ranger.plugin.model.RangerServerHealth;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 
 public class TestRangerServerHealthUtil {
@@ -31,9 +31,9 @@ public class TestRangerServerHealthUtil {
     @Test
     public void testGetRangerServerHealth() {
         RangerServerHealth rangerServerHealth = rangerServerHealthUtil.getRangerServerHealth("21.3c");
-        Assert.assertEquals("RangerHealth.down()", DOWN, rangerServerHealth.getStatus());
-        Assert.assertEquals("RangerHealth.getDetails()", 1, rangerServerHealth.getDetails().size());
-        Assert.assertEquals("RangerHealth.getDetails('component')", 1, ((Map<?, ?>) rangerServerHealth.getDetails().get("components")).size());
+        Assertions.assertEquals(DOWN, rangerServerHealth.getStatus(), "RangerHealth.down()");
+        Assertions.assertEquals(1, rangerServerHealth.getDetails().size(), "RangerHealth.getDetails()");
+        Assertions.assertEquals(1, ((Map<?, ?>) rangerServerHealth.getDetails().get("components")).size(), "RangerHealth.getDetails('component')");
     }
 
 }

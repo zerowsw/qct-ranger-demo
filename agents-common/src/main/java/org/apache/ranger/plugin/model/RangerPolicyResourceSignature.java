@@ -28,13 +28,13 @@ import java.util.Objects;
 import java.util.TreeMap;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.ranger.authorization.hadoop.config.RangerAdminConfig;
 import org.apache.ranger.plugin.model.RangerGds.RangerSharedResource;
 import org.apache.ranger.plugin.model.RangerPolicy.RangerPolicyResource;
 import org.apache.ranger.plugin.model.RangerPolicy.RangerPolicyItemCondition;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -116,7 +116,7 @@ public class RangerPolicyResourceSignature {
 	
 	@Override
 	public String toString() {
-		return String.format("%s: %s", _hash, _string);
+		return "%s: %s".formatted(_hash, _string);
 	}
 
 	static class PolicySerializer {
@@ -127,7 +127,7 @@ public class RangerPolicyResourceSignature {
 
 		boolean isPolicyValidForResourceSignatureComputation() {
 			if (LOG.isDebugEnabled()) {
-				LOG.debug(String.format("==> RangerPolicyResourceSignature.isPolicyValidForResourceSignatureComputation(%s)", _policy));
+				LOG.debug("==> RangerPolicyResourceSignature.isPolicyValidForResourceSignatureComputation(%s)".formatted(_policy));
 			}
 			
 			boolean valid = false;
@@ -144,7 +144,7 @@ public class RangerPolicyResourceSignature {
 			}
 
 			if (LOG.isDebugEnabled()) {
-				LOG.debug(String.format("<== RangerPolicyResourceSignature.isPolicyValidForResourceSignatureComputation(%s): %s", _policy, valid));
+				LOG.debug("<== RangerPolicyResourceSignature.isPolicyValidForResourceSignatureComputation(%s): %s".formatted(_policy, valid));
 			}
 			return valid;
 		}
@@ -181,7 +181,7 @@ public class RangerPolicyResourceSignature {
 				resource += _policy.getGuid();
 			}
 
-			String result = String.format("{version=%d,type=%d,resource=%s}", _SignatureVersion, type, resource);
+			String result = "{version=%d,type=%d,resource=%s}".formatted(_SignatureVersion, type, resource);
 			return result;
 		}
 
@@ -237,7 +237,7 @@ public class RangerPolicyResourceSignature {
 			signature += resource.getConditionExpr();
 		}
 
-		return String.format("{version=%d,ret=%s}", _SignatureVersion, signature);
+		return "{version=%d,ret=%s}".formatted(_SignatureVersion, signature);
 	}
 
 	private static Map<String, RangerPolicyResource> toPolicyResources(Map<String, List<String>> resources) {

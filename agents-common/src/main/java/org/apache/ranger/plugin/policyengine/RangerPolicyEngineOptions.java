@@ -181,8 +181,7 @@ public class RangerPolicyEngineOptions {
 	@Override
 	public boolean equals(Object other) {
 		boolean ret = false;
-		if (other instanceof RangerPolicyEngineOptions) {
-			RangerPolicyEngineOptions that = (RangerPolicyEngineOptions) other;
+		if (other instanceof RangerPolicyEngineOptions that) {
 			ret = this.disableContextEnrichers == that.disableContextEnrichers
 					&& this.disableCustomConditions == that.disableCustomConditions
 					&& this.disableTagPolicyEvaluation == that.disableTagPolicyEvaluation

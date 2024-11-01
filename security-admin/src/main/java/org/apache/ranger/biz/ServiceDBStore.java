@@ -43,14 +43,13 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
-import javax.annotation.PostConstruct;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.thirdparty.com.google.common.base.Joiner;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -205,6 +204,8 @@ import org.apache.ranger.view.VXPolicyLabelList;
 import org.apache.ranger.view.VXPortalUser;
 import org.apache.ranger.view.VXString;
 import org.apache.ranger.view.VXUser;
+
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -3999,7 +4000,7 @@ public class ServiceDBStore extends AbstractServiceStore {
 		String signature = policySignature.getSignature();
 		policy.setResourceSignature(signature);
 		if (LOG.isDebugEnabled()) {
-			String message = String.format("Setting signature on policy id=%d, name=%s to [%s]", policy.getId(), policy.getName(), signature);
+			String message = "Setting signature on policy id=%d, name=%s to [%s]".formatted(policy.getId(), policy.getName(), signature);
 			LOG.debug(message);
 		}
 	}
@@ -4206,8 +4207,10 @@ public class ServiceDBStore extends AbstractServiceStore {
 		response.setContentType("text/csv");
 
 		final String LINE_SEPARATOR = "\n";
-		final String FILE_HEADER = "ID|Name|Resources|Roles|Groups|Users|Accesses|Service Type|Status|Policy Type|Delegate Admin|isRecursive|"
-				+ "isExcludes|Service Name|Description|isAuditEnabled|Policy Conditions|Policy Condition Type|Masking Options|Row Filter Expr|Policy Label Name";
+		final String FILE_HEADER = """
+				ID|Name|Resources|Roles|Groups|Users|Accesses|Service Type|Status|Policy Type|Delegate Admin|isRecursive|\
+				isExcludes|Service Name|Description|isAuditEnabled|Policy Conditions|Policy Condition Type|Masking Options|Row Filter Expr|Policy Label Name\
+				""";
 		StringBuilder csvBuffer = new StringBuilder();
 		csvBuffer.append(FILE_HEADER);
 		csvBuffer.append(LINE_SEPARATOR);

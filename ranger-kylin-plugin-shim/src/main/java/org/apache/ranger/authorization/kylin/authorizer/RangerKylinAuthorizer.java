@@ -20,6 +20,7 @@
 package org.apache.ranger.authorization.kylin.authorizer;
 
 import java.util.List;
+import java.lang.reflect.InvocationTargetException;
 
 import org.apache.kylin.common.util.Pair;
 import org.apache.kylin.rest.security.AclPermission;
@@ -64,9 +65,9 @@ public class RangerKylinAuthorizer extends ExternalAclProvider {
 
 			activatePluginClassLoader();
 
-			externalAclProvider = cls.newInstance();
+            externalAclProvider = cls.getDeclaredConstructor().newInstance();
 			externalAclProvider.init();
-		} catch (Exception e) {
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
 			LOG.error("Error Enabling RangerKylinPlugin", e);
 		} finally {
 			deactivatePluginClassLoader();

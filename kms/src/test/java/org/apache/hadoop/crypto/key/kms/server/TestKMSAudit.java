@@ -103,18 +103,18 @@ public class TestKMSAudit {
     System.out.println(out);
     Assertions.assertTrue(
         out.matches(
-            "OK\\[op=DECRYPT_EEK, key=k1, user=luser@REALM, accessCount=1, interval=[^m]{1,4}ms\\] testmsg"
-            // Not aggregated !!
-            + "OK\\[op=DELETE_KEY, key=k1, user=luser@REALM\\] testmsg"
-            + "OK\\[op=ROLL_NEW_VERSION, key=k1, user=luser@REALM\\] testmsg"
-            + "OK\\[op=INVALIDATE_CACHE, key=k1, user=luser@REALM\\] testmsg"
-            // Aggregated
-            + "OK\\[op=DECRYPT_EEK, key=k1, user=luser@REALM, accessCount=6, interval=[^m]{1,4}ms\\] testmsg"
-            + "OK\\[op=DECRYPT_EEK, key=k1, user=luser@REALM, accessCount=1, interval=[^m]{1,4}ms\\] testmsg"
-            + "OK\\[op=REENCRYPT_EEK, key=k1, user=luser@REALM, accessCount=1, interval=[^m]{1,4}ms\\] testmsg"
-            + "OK\\[op=REENCRYPT_EEK, key=k1, user=luser@REALM, accessCount=3, interval=[^m]{1,4}ms\\] testmsg"
-            + "OK\\[op=REENCRYPT_EEK_BATCH, key=k1, user=luser@REALM\\] testmsg"
-            + "OK\\[op=REENCRYPT_EEK_BATCH, key=k1, user=luser@REALM\\] testmsg"));
+            """
+            OK\\[op=DECRYPT_EEK, key=k1, user=luser@REALM, accessCount=1, interval=[^m]{1,4}ms\\] testmsg\
+            OK\\[op=DELETE_KEY, key=k1, user=luser@REALM\\] testmsg\
+            OK\\[op=ROLL_NEW_VERSION, key=k1, user=luser@REALM\\] testmsg\
+            OK\\[op=INVALIDATE_CACHE, key=k1, user=luser@REALM\\] testmsg\
+            OK\\[op=DECRYPT_EEK, key=k1, user=luser@REALM, accessCount=6, interval=[^m]{1,4}ms\\] testmsg\
+            OK\\[op=DECRYPT_EEK, key=k1, user=luser@REALM, accessCount=1, interval=[^m]{1,4}ms\\] testmsg\
+            OK\\[op=REENCRYPT_EEK, key=k1, user=luser@REALM, accessCount=1, interval=[^m]{1,4}ms\\] testmsg\
+            OK\\[op=REENCRYPT_EEK, key=k1, user=luser@REALM, accessCount=3, interval=[^m]{1,4}ms\\] testmsg\
+            OK\\[op=REENCRYPT_EEK_BATCH, key=k1, user=luser@REALM\\] testmsg\
+            OK\\[op=REENCRYPT_EEK_BATCH, key=k1, user=luser@REALM\\] testmsg\
+            """));
   }
 
   @Test
@@ -162,12 +162,14 @@ public class TestKMSAudit {
         String out = getAndResetLogOutput();
         System.out.println(out);
         Assertions.assertTrue(out.matches(
-          "OK\\[op=GENERATE_EEK, key=k4, user=luser@REALM, accessCount=1, interval=[^m]{1,4}ms\\] testmsg"
-           + "OK\\[op=GENERATE_EEK, user=luser@REALM\\] testmsg"
-           + "OK\\[op=GENERATE_EEK, key=k4, user=luser@REALM, accessCount=1, interval=[^m]{1,4}ms\\] testmsg"
-           + "UNAUTHORIZED\\[op=DECRYPT_EEK, key=k4, user=luser@REALM\\] "
-           + "ERROR\\[user=luser@REALM\\] Method:'method' Exception:'testmsg'"
-           + "UNAUTHENTICATED RemoteHost:remotehost Method:method URL:url ErrorMsg:'testmsg'"));
+          """
+          OK\\[op=GENERATE_EEK, key=k4, user=luser@REALM, accessCount=1, interval=[^m]{1,4}ms\\] testmsg\
+          OK\\[op=GENERATE_EEK, user=luser@REALM\\] testmsg\
+          OK\\[op=GENERATE_EEK, key=k4, user=luser@REALM, accessCount=1, interval=[^m]{1,4}ms\\] testmsg\
+          UNAUTHORIZED\\[op=DECRYPT_EEK, key=k4, user=luser@REALM\\] \
+          ERROR\\[user=luser@REALM\\] Method:'method' Exception:'testmsg'\
+          UNAUTHENTICATED RemoteHost:remotehost Method:method URL:url ErrorMsg:'testmsg'\
+          """));
     }
 
   @SuppressWarnings("unchecked")

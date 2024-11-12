@@ -84,10 +84,10 @@ public class RangerAdminCache<K, V> extends RangerCache<K, V> {
                 RangerSecurityContext currentContext = null;
 
                 try {
-                    if (context instanceof RangerSecurityContext) {
+                    if (context instanceof RangerSecurityContext securityContext) {
                         currentContext = RangerContextHolder.getSecurityContext();
 
-                        RangerContextHolder.setSecurityContext((RangerSecurityContext) context);
+                        RangerContextHolder.setSecurityContext(securityContext);
                     }
 
                     return dbLoad(key, currentValue);

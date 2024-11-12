@@ -18,12 +18,13 @@
  */
 package org.apache.ranger.unixusersync.process;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.ranger.unixusersync.config.UserGroupSyncConfig;
+
+import org.junit.jupiter.api.Test;
 import org.apache.ranger.usergroupsync.PolicyMgrUserGroupBuilderTest;
-import org.junit.Test;
 
 public class TestFileSourceUserGroupBuilder {
 

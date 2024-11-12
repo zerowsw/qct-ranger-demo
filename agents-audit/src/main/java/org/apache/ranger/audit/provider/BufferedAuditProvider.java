@@ -28,8 +28,7 @@ public abstract class BufferedAuditProvider extends BaseAuditHandler {
 
 	@Override
 	public boolean log(AuditEventBase event) {
-		if (event instanceof AuthzAuditEvent) {
-			AuthzAuditEvent authzEvent = (AuthzAuditEvent) event;
+		if (event instanceof AuthzAuditEvent authzEvent) {
 
 			if (authzEvent.getAgentHostname() == null) {
 				authzEvent.setAgentHostname(MiscUtil.getHostname());

@@ -20,12 +20,13 @@ package org.apache.ranger.authorization.hbase;
 
 
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import org.apache.hadoop.hbase.security.User;
 import org.apache.ranger.plugin.service.RangerBasePlugin;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class AuthorizationSessionTest {
 
@@ -75,7 +76,7 @@ public class AuthorizationSessionTest {
 		AuthorizationSession session = new AuthorizationSession(plugin);
 		try {
 			session.verifyBuildable();
-			Assert.fail("Should have thrown exception");
+			Assertions.fail("Should have thrown exception");
 		} catch (IllegalStateException e) { }
 		// user and access are the only required ones.
 		User user = mock(User.class);
@@ -85,33 +86,33 @@ public class AuthorizationSessionTest {
 		try {
 			session.verifyBuildable();
 		} catch (IllegalStateException e) {
-			Assert.fail("Shouldn't have thrown an exception!");
+			Assertions.fail("Shouldn't have thrown an exception!");
 		}
 		// setting column-family without table is a problem
 		session.columnFamily("family");
 		try {
 			session.verifyBuildable();
-			Assert.fail("Should have thrown an exception");
+			Assertions.fail("Should have thrown an exception");
 		} catch (IllegalStateException e) { }
 		
 		session.table("table");
 		try {
 			session.verifyBuildable();
 		} catch (IllegalStateException e) {
-			Assert.fail("Shouldn't have thrown an exception!");
+			Assertions.fail("Shouldn't have thrown an exception!");
 		}
 		// setting column without column-family is a problem
 		session.columnFamily(null);
 		session.column("col");
 		try {
 			session.verifyBuildable();
-			Assert.fail("Should have thrown an exception");
+			Assertions.fail("Should have thrown an exception");
 		} catch (IllegalStateException e) { }
 		session.columnFamily("family");
 		try {
 			session.verifyBuildable();
 		} catch (IllegalStateException e) {
-			Assert.fail("Should have thrown an exception");
+			Assertions.fail("Should have thrown an exception");
 		}
 	}
 
@@ -123,10 +124,10 @@ public class AuthorizationSessionTest {
 	@Test
 	public void testIsProvided() {
 		AuthorizationSession session = new AuthorizationSession(null);
-		Assert.assertFalse(session.isProvided(null));
-		Assert.assertFalse(session.isProvided(""));
-		Assert.assertTrue(session.isProvided(" "));
-		Assert.assertTrue(session.isProvided("xtq"));
+		Assertions.assertFalse(session.isProvided(null));
+		Assertions.assertFalse(session.isProvided(""));
+		Assertions.assertTrue(session.isProvided(" "));
+		Assertions.assertTrue(session.isProvided("xtq"));
 	}
 
 	@Test

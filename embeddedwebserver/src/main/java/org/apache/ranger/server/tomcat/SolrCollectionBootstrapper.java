@@ -36,13 +36,13 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.security.SecureClientLogin;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.util.EntityUtils;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.core5.http.io.entity.ByteArrayEntity;
 import org.apache.ranger.authorization.utils.StringUtil;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -308,7 +308,7 @@ public class SolrCollectionBootstrapper extends Thread {
 						ByteBuffer byteBuffer = ByteBuffer.wrap(arrByte);
 						String baseUrl = getBaseUrl();
 						String protocol = isSSLEnabled ? "https" : "http";
-						String uploadConfigsUrl = String.format("%s://%s/admin/configs?action=UPLOAD&name=%s", protocol,
+						String uploadConfigsUrl = "%s://%s/admin/configs?action=UPLOAD&name=%s".formatted(protocol,
 								baseUrl.toString(), solr_config_name);
 						postDataAndGetResponse(solrCloudClient, uploadConfigsUrl, byteBuffer);
 						return true;

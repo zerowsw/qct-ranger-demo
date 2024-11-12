@@ -19,7 +19,7 @@
 
 package org.apache.ranger.common;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.ranger.db.RangerDaoManager;
 import org.apache.ranger.entity.XXServiceVersionInfo;
 import org.apache.ranger.plugin.model.RangerGds;
@@ -30,6 +30,8 @@ import org.apache.ranger.plugin.util.ServiceGdsInfo;
 import org.apache.ranger.service.*;
 import org.apache.ranger.util.RangerAdminCache;
 import org.apache.ranger.view.RangerGdsVList;
+
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +39,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

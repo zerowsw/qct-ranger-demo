@@ -26,7 +26,7 @@ import com.sun.jersey.api.client.ClientResponse;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.security.AccessControlException;
 import org.apache.hadoop.security.UserGroupInformation;
-import org.apache.http.HttpStatus;
+import org.apache.hc.core5.http.HttpStatus;
 import org.apache.ranger.admin.client.datatype.RESTResponse;
 import org.apache.ranger.audit.provider.MiscUtil;
 import org.apache.ranger.authorization.hadoop.config.RangerPluginConfig;
@@ -36,9 +36,9 @@ import org.apache.ranger.plugin.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.Cookie;
-import javax.ws.rs.core.NewCookie;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.ws.rs.core.Cookie;
+import jakarta.ws.rs.core.NewCookie;
 import java.io.UnsupportedEncodingException;
 import java.security.PrivilegedExceptionAction;
 import java.util.HashMap;
@@ -77,8 +77,8 @@ public class RangerAdminRESTClient extends AbstractRangerAdminClient {
 		if(StringUtil.isEmpty(clusterName)){
 			clusterName =config.get(propertyPrefix + ".ambari.cluster.name", "");
 			if (StringUtil.isEmpty(clusterName)) {
-				if (config instanceof RangerPluginConfig) {
-					clusterName = ((RangerPluginConfig)config).getClusterName();
+				if (config instanceof RangerPluginConfig pluginConfig) {
+					clusterName = pluginConfig.getClusterName();
 				}
 			}
 		}

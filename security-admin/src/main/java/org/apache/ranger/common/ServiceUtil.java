@@ -31,13 +31,13 @@ import java.util.Map.Entry;
 import javax.naming.InvalidNameException;
 import javax.naming.ldap.LdapName;
 import javax.naming.ldap.Rdn;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.WebApplicationException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.WebApplicationException;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.authorization.utils.StringUtil;
 import org.apache.ranger.biz.ServiceDBStore;
 import org.apache.ranger.db.RangerDaoManager;
@@ -737,8 +737,10 @@ public class ServiceUtil {
 			statusList.add(RangerCommonEnums.STATUS_ENABLED);
 		} else {
 			Boolean status = restErrorUtil.parseBoolean(
-					request.getParameter("status"), "Invalid value for "
-							+ "status", MessageEnums.INVALID_INPUT_DATA, null,
+					request.getParameter("status"), """
+							Invalid value for \
+							status\
+							""", MessageEnums.INVALID_INPUT_DATA, null,
 					"status");
 			int statusEnum = (status == null || status == false) ? AppConstants.STATUS_DISABLED
 					: AppConstants.STATUS_ENABLED;
@@ -1371,14 +1373,18 @@ public class ServiceUtil {
 		if (!httpEnabled) {
 			if (!isSecure) {
 				LOG.error("Unauthorized access. Only https is allowed. serviceName=" + serviceName);
-				throw restErrorUtil.createRESTException("Unauthorized access -"
-						+ " only https allowed",
+				throw restErrorUtil.createRESTException("""
+						Unauthorized access -\
+						 only https allowed\
+						""",
 						MessageEnums.OPER_NOT_ALLOWED_FOR_ENTITY);
 			}
 			if (certchain == null || certchain.length == 0) {
 				LOG.error("Unauthorized access. Unable to get client certificate. serviceName=" + serviceName);
-				throw restErrorUtil.createRESTException("Unauthorized access -"
-						+ " unable to get client certificate",
+				throw restErrorUtil.createRESTException("""
+						Unauthorized access -\
+						 unable to get client certificate\
+						""",
 						MessageEnums.OPER_NOT_ALLOWED_FOR_ENTITY);
 			}
 

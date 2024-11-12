@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.ranger.db.RangerDaoManager;
 import org.apache.ranger.entity.XXTrxLog;
 import org.apache.ranger.entity.XXTrxLogV2;
@@ -326,11 +326,11 @@ public class TrxLogV2MigrationUtil extends BaseLoader {
     }
 
     private static int toInt(Object obj) {
-        return obj instanceof Number ? ((Number) obj).intValue() : 0;
+        return obj instanceof Number n ? n.intValue() : 0;
     }
 
     private static long toLong(Object obj) {
-        return obj instanceof Long ? ((Number) obj).longValue() : 0L;
+        return obj instanceof Long l ? l.longValue() : 0L;
     }
 
     class LogMigrationThread extends Thread {

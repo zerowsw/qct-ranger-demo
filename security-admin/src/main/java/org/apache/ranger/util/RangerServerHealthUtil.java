@@ -22,7 +22,7 @@ package org.apache.ranger.util;
 import static org.apache.ranger.plugin.model.RangerServerHealth.RangerServerStatus.*;
 
 import java.util.HashMap;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import org.apache.ranger.biz.RangerBizUtil;
 import org.apache.ranger.common.AppConstants;

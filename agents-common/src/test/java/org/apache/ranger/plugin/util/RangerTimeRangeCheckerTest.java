@@ -19,8 +19,8 @@
 
 package org.apache.ranger.plugin.util;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -39,15 +39,15 @@ public class RangerTimeRangeCheckerTest {
 
             // baseTime (should be *after*)
             long time = getTime(year, month, day, hour, min, sec, tz);
-            Assert.assertFalse(toDateString(year, month, day, hour, min, sec, tz), checker.isInRange(time));
+            Assertions.assertFalse(checker.isInRange(time), toDateString(year, month, day, hour, min, sec, tz));
 
             // baseTime + 1 second
             time = getTime(year, month, day, hour, min, sec + 1, tz);
-            Assert.assertTrue(toDateString(year, month, day, hour, min, sec + 1, tz), checker.isInRange(time));
+            Assertions.assertTrue(checker.isInRange(time), toDateString(year, month, day, hour, min, sec + 1, tz));
 
             // baseTime - 1 second
             time = getTime(year, month, day, hour, min, sec - 1, tz);
-            Assert.assertFalse(toDateString(year, month, day, hour, min, sec - 1, tz), checker.isInRange(time));
+            Assertions.assertFalse(checker.isInRange(time), toDateString(year, month, day, hour, min, sec - 1, tz));
         }
     }
 
@@ -62,15 +62,15 @@ public class RangerTimeRangeCheckerTest {
 
             // baseTime (should be *after*)
             long time = getTime(year, month, day, hour, min, sec, tz);
-            Assert.assertFalse(toDateString(year, month, day, hour, min, sec, tz), checker.isInRange(time));
+            Assertions.assertFalse(checker.isInRange(time), toDateString(year, month, day, hour, min, sec, tz));
 
             // baseTime + 1 second
             time = getTime(year, month, day, hour, min, sec + 1, tz);
-            Assert.assertTrue(toDateString(year, month, day, hour, min, sec + 1, tz), checker.isInRange(time));
+            Assertions.assertTrue(checker.isInRange(time), toDateString(year, month, day, hour, min, sec + 1, tz));
 
             // baseTime - 1 second
             time = getTime(year, month, day, hour, min, sec - 1, tz);
-            Assert.assertFalse(toDateString(year, month, day, hour, min, sec - 1, tz), checker.isInRange(time));
+            Assertions.assertFalse(checker.isInRange(time), toDateString(year, month, day, hour, min, sec - 1, tz));
         }
     }
 
@@ -85,15 +85,15 @@ public class RangerTimeRangeCheckerTest {
 
             // baseTime (should be *after*)
             long time = getTime(year, month, day, hour, min, sec, tz);
-            Assert.assertFalse(toDateString(year, month, day, hour, min, sec, tz), checker.isInRange(time));
+            Assertions.assertFalse(checker.isInRange(time), toDateString(year, month, day, hour, min, sec, tz));
 
             // baseTime + 1 second
             time = getTime(year, month, day, hour, min, sec + 1, tz);
-            Assert.assertTrue(toDateString(year, month, day, hour, min, sec + 1, tz), checker.isInRange(time));
+            Assertions.assertTrue(checker.isInRange(time), toDateString(year, month, day, hour, min, sec + 1, tz));
 
             // baseTime - 1 second
             time = getTime(year, month, day, hour, min, sec - 1, tz);
-            Assert.assertFalse(toDateString(year, month, day, hour, min, sec - 1, tz), checker.isInRange(time));
+            Assertions.assertFalse(checker.isInRange(time), toDateString(year, month, day, hour, min, sec - 1, tz));
         }
     }
 
@@ -108,15 +108,15 @@ public class RangerTimeRangeCheckerTest {
 
             // baseTime (should be *before*)
             long time = getTime(year, month, day, hour, min, sec, tz);
-            Assert.assertFalse(toDateString(year, month, day, hour, min, sec, tz), checker.isInRange(time));
+            Assertions.assertFalse(checker.isInRange(time), toDateString(year, month, day, hour, min, sec, tz));
 
             // baseTime + 1 second
             time = getTime(year, month, day, hour, min, sec + 1, tz);
-            Assert.assertFalse(toDateString(year, month, day, hour, min, sec + 1, tz), checker.isInRange(time));
+            Assertions.assertFalse(checker.isInRange(time), toDateString(year, month, day, hour, min, sec + 1, tz));
 
             // baseTime - 1 second
             time = getTime(year, month, day, hour, min, sec - 1, tz);
-            Assert.assertTrue(toDateString(year, month, day, hour, min, sec - 1, tz), checker.isInRange(time));
+            Assertions.assertTrue(checker.isInRange(time), toDateString(year, month, day, hour, min, sec - 1, tz));
         }
     }
 
@@ -131,15 +131,15 @@ public class RangerTimeRangeCheckerTest {
 
             // baseTime (should be *before*)
             long time = getTime(year, month, day, hour, min, sec, tz);
-            Assert.assertFalse(toDateString(year, month, day, hour, min, sec, tz), checker.isInRange(time));
+            Assertions.assertFalse(checker.isInRange(time), toDateString(year, month, day, hour, min, sec, tz));
 
             // baseTime + 1 second
             time = getTime(year, month, day, hour, min, sec + 1, tz);
-            Assert.assertFalse(toDateString(year, month, day, hour, min, sec + 1, tz), checker.isInRange(time));
+            Assertions.assertFalse(checker.isInRange(time), toDateString(year, month, day, hour, min, sec + 1, tz));
 
             // baseTime - 1 second
             time = getTime(year, month, day, hour, min, sec - 1, tz);
-            Assert.assertTrue(toDateString(year, month, day, hour, min, sec - 1, tz), checker.isInRange(time));
+            Assertions.assertTrue(checker.isInRange(time), toDateString(year, month, day, hour, min, sec - 1, tz));
         }
     }
 
@@ -154,15 +154,15 @@ public class RangerTimeRangeCheckerTest {
 
             // baseTime (should be *before*)
             long time = getTime(year, month, day, hour, min, sec, tz);
-            Assert.assertFalse(toDateString(year, month, day, hour, min, sec, tz), checker.isInRange(time));
+            Assertions.assertFalse(checker.isInRange(time), toDateString(year, month, day, hour, min, sec, tz));
 
             // baseTime + 1 second
             time = getTime(year, month, day, hour, min, sec + 1, tz);
-            Assert.assertFalse(toDateString(year, month, day, hour, min, sec + 1, tz), checker.isInRange(time));
+            Assertions.assertFalse(checker.isInRange(time), toDateString(year, month, day, hour, min, sec + 1, tz));
 
             // baseTime - 1 second
             time = getTime(year, month, day, hour, min, sec - 1, tz);
-            Assert.assertTrue(toDateString(year, month, day, hour, min, sec - 1, tz), checker.isInRange(time));
+            Assertions.assertTrue(checker.isInRange(time), toDateString(year, month, day, hour, min, sec - 1, tz));
         }
     }
 
@@ -179,27 +179,27 @@ public class RangerTimeRangeCheckerTest {
 
             // fromTime (should be *on or after*)
             long time = getTime(fromYear, fromMonth, fromDay, fromHour, fromMin, fromSec, tz);
-            Assert.assertTrue(toDateString(fromYear, fromMonth, fromDay, fromHour, fromMin, fromSec, tz), checker.isInRange(time));
+            Assertions.assertTrue(checker.isInRange(time), toDateString(fromYear, fromMonth, fromDay, fromHour, fromMin, fromSec, tz));
 
             // fromTime + 1 second
             time = getTime(fromYear, fromMonth, fromDay, fromHour, fromMin, fromSec + 1, tz);
-            Assert.assertTrue(toDateString(fromYear, fromMonth, fromDay, fromHour, fromMin, fromSec + 1, tz), checker.isInRange(time));
+            Assertions.assertTrue(checker.isInRange(time), toDateString(fromYear, fromMonth, fromDay, fromHour, fromMin, fromSec + 1, tz));
 
             // fromTime - 1 second
             time = getTime(fromYear, fromMonth, fromDay, fromHour, fromMin, fromSec - 1, tz);
-            Assert.assertFalse(toDateString(fromYear, fromMonth, fromDay, fromHour, fromMin, fromSec - 1, tz), checker.isInRange(time));
+            Assertions.assertFalse(checker.isInRange(time), toDateString(fromYear, fromMonth, fromDay, fromHour, fromMin, fromSec - 1, tz));
 
             // toTime (should be *before*)
             time = getTime(toYear, toMonth, toDay, toHour, toMin, toSec, tz);
-            Assert.assertFalse(toDateString(toYear, toMonth, toDay, toHour, toMin, toSec, tz), checker.isInRange(time));
+            Assertions.assertFalse(checker.isInRange(time), toDateString(toYear, toMonth, toDay, toHour, toMin, toSec, tz));
 
             // toTime + 1 second
             time = getTime(toYear, toMonth, toDay, toHour, toMin, toSec + 1, tz);
-            Assert.assertFalse(toDateString(toYear, toMonth, toDay, toHour, toMin, toSec + 1, tz), checker.isInRange(time));
+            Assertions.assertFalse(checker.isInRange(time), toDateString(toYear, toMonth, toDay, toHour, toMin, toSec + 1, tz));
 
             // toTime - 1 second
             time = getTime(toYear, toMonth, toDay, toHour, toMin, toSec - 1, tz);
-            Assert.assertTrue(toDateString(toYear, toMonth, toDay, toHour, toMin, toSec - 1, tz), checker.isInRange(time));
+            Assertions.assertTrue(checker.isInRange(time), toDateString(toYear, toMonth, toDay, toHour, toMin, toSec - 1, tz));
         }
     }
 
@@ -216,27 +216,27 @@ public class RangerTimeRangeCheckerTest {
 
             // fromTime (should be *on or after*)
             long time = getTime(fromYear, fromMonth, fromDay, fromHour, fromMin, fromSec, tz);
-            Assert.assertTrue(toDateString(fromYear, fromMonth, fromDay, fromHour, fromMin, fromSec, tz), checker.isInRange(time));
+            Assertions.assertTrue(checker.isInRange(time), toDateString(fromYear, fromMonth, fromDay, fromHour, fromMin, fromSec, tz));
 
             // fromTime + 1 second
             time = getTime(fromYear, fromMonth, fromDay, fromHour, fromMin, fromSec + 1, tz);
-            Assert.assertTrue(toDateString(fromYear, fromMonth, fromDay, fromHour, fromMin, fromSec + 1, tz), checker.isInRange(time));
+            Assertions.assertTrue(checker.isInRange(time), toDateString(fromYear, fromMonth, fromDay, fromHour, fromMin, fromSec + 1, tz));
 
             // fromTime - 1 second
             time = getTime(fromYear, fromMonth, fromDay, fromHour, fromMin, fromSec - 1, tz);
-            Assert.assertFalse(toDateString(fromYear, fromMonth, fromDay, fromHour, fromMin, fromSec - 1, tz), checker.isInRange(time));
+            Assertions.assertFalse(checker.isInRange(time), toDateString(fromYear, fromMonth, fromDay, fromHour, fromMin, fromSec - 1, tz));
 
             // toTime (should be *before*)
             time = getTime(toYear, toMonth, toDay, toHour, toMin, toSec, tz);
-            Assert.assertFalse(toDateString(toYear, toMonth, toDay, toHour, toMin, toSec, tz), checker.isInRange(time));
+            Assertions.assertFalse(checker.isInRange(time), toDateString(toYear, toMonth, toDay, toHour, toMin, toSec, tz));
 
             // toTime + 1 second
             time = getTime(toYear, toMonth, toDay, toHour, toMin, toSec + 1, tz);
-            Assert.assertFalse(toDateString(toYear, toMonth, toDay, toHour, toMin, toSec + 1, tz), checker.isInRange(time));
+            Assertions.assertFalse(checker.isInRange(time), toDateString(toYear, toMonth, toDay, toHour, toMin, toSec + 1, tz));
 
             // toTime - 1 second
             time = getTime(toYear, toMonth, toDay, toHour, toMin, toSec - 1, tz);
-            Assert.assertTrue(toDateString(toYear, toMonth, toDay, toHour, toMin, toSec - 1, tz), checker.isInRange(time));
+            Assertions.assertTrue(checker.isInRange(time), toDateString(toYear, toMonth, toDay, toHour, toMin, toSec - 1, tz));
         }
     }
 
@@ -253,27 +253,27 @@ public class RangerTimeRangeCheckerTest {
 
             // fromTime (should be *on or after*)
             long time = getTime(fromYear, fromMonth, fromDay, fromHour, fromMin, fromSec, tz);
-            Assert.assertTrue(toDateString(fromYear, fromMonth, fromDay, fromHour, fromMin, fromSec, tz), checker.isInRange(time));
+            Assertions.assertTrue(checker.isInRange(time), toDateString(fromYear, fromMonth, fromDay, fromHour, fromMin, fromSec, tz));
 
             // fromTime + 1 second
             time = getTime(fromYear, fromMonth, fromDay, fromHour, fromMin, fromSec + 1, tz);
-            Assert.assertTrue(toDateString(fromYear, fromMonth, fromDay, fromHour, fromMin, fromSec + 1, tz), checker.isInRange(time));
+            Assertions.assertTrue(checker.isInRange(time), toDateString(fromYear, fromMonth, fromDay, fromHour, fromMin, fromSec + 1, tz));
 
             // fromTime - 1 second
             time = getTime(fromYear, fromMonth, fromDay, fromHour, fromMin, fromSec - 1, tz);
-            Assert.assertFalse(toDateString(fromYear, fromMonth, fromDay, fromHour, fromMin, fromSec - 1, tz), checker.isInRange(time));
+            Assertions.assertFalse(checker.isInRange(time), toDateString(fromYear, fromMonth, fromDay, fromHour, fromMin, fromSec - 1, tz));
 
             // toTime (should be *before*)
             time = getTime(toYear, toMonth, toDay, toHour, toMin, toSec, tz);
-            Assert.assertFalse(toDateString(toYear, toMonth, toDay, toHour, toMin, toSec, tz), checker.isInRange(time));
+            Assertions.assertFalse(checker.isInRange(time), toDateString(toYear, toMonth, toDay, toHour, toMin, toSec, tz));
 
             // toTime + 1 second
             time = getTime(toYear, toMonth, toDay, toHour, toMin, toSec + 1, tz);
-            Assert.assertFalse(toDateString(toYear, toMonth, toDay, toHour, toMin, toSec + 1, tz), checker.isInRange(time));
+            Assertions.assertFalse(checker.isInRange(time), toDateString(toYear, toMonth, toDay, toHour, toMin, toSec + 1, tz));
 
             // toTime - 1 second
             time = getTime(toYear, toMonth, toDay, toHour, toMin, toSec - 1, tz);
-            Assert.assertTrue(toDateString(toYear, toMonth, toDay, toHour, toMin, toSec - 1, tz), checker.isInRange(time));
+            Assertions.assertTrue(checker.isInRange(time), toDateString(toYear, toMonth, toDay, toHour, toMin, toSec - 1, tz));
         }
     }
 

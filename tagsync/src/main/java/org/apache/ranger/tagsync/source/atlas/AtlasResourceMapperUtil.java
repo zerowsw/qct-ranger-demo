@@ -19,10 +19,13 @@
 
 package org.apache.ranger.tagsync.source.atlas;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.plugin.model.RangerServiceResource;
 
 import java.util.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.NoSuchMethodException;
 
 import org.apache.ranger.tagsync.process.TagSyncConfig;
 import org.apache.ranger.tagsync.source.atlasrest.RangerAtlasEntity;
@@ -102,7 +105,8 @@ public class AtlasResourceMapperUtil {
 		for (String mapperName : mapperNames) {
 			try {
 				Class<?> clazz = Class.forName(mapperName);
-				AtlasResourceMapper resourceMapper = (AtlasResourceMapper) clazz.newInstance();
+				Constructor<?> constructor = clazz.getDeclaredConstructor();
+				AtlasResourceMapper resourceMapper = (AtlasResourceMapper) constructor.newInstance();
 
 				resourceMapper.initialize(properties);
 
@@ -110,7 +114,7 @@ public class AtlasResourceMapperUtil {
 					add(entityTypeName, resourceMapper);
 				}
 
-			} catch (Exception exception) {
+			} catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException exception) {
 				LOG.error("Failed to create AtlasResourceMapper:" + mapperName + ": ", exception);
 				ret = false;
 			}

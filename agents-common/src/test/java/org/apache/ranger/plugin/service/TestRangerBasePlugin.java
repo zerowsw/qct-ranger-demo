@@ -20,12 +20,12 @@
 package org.apache.ranger.plugin.service;
 
 import com.google.gson.*;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.authorization.hadoop.config.RangerPluginConfig;
 import org.apache.ranger.plugin.policyengine.*;
 import org.apache.ranger.plugin.util.*;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -33,13 +33,13 @@ import java.io.Reader;
 import java.lang.reflect.Type;
 import java.util.*;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestRangerBasePlugin {
     static Gson                      gsonBuilder;
     static RangerPolicyEngineOptions peOptions;
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpBeforeClass() throws Exception {
         gsonBuilder = new GsonBuilder().setDateFormat("yyyyMMdd-HH:mm:ss.SSSZ")
                                        .setPrettyPrinting()
@@ -72,13 +72,13 @@ public class TestRangerBasePlugin {
     private void runTests(Reader reader, String testName) {
         RangerBasePluginTestCase testCase = readTestCase(reader);
 
-        assertNotNull("invalid input: " + testName, testCase);
-        assertNotNull("invalid input: " + testName, testCase.policies);
-        assertNotNull("invalid input: " + testName, testCase.tags);
-        assertNotNull("invalid input: " + testName, testCase.roles);
-        assertNotNull("invalid input: " + testName, testCase.userStore);
-        assertNotNull("invalid input: " + testName, testCase.gdsInfo);
-        assertNotNull("invalid input: " + testName, testCase.tests);
+        assertNotNull(testCase, "invalid input: " + testName);
+        assertNotNull(testCase.policies, "invalid input: " + testName);
+        assertNotNull(testCase.tags, "invalid input: " + testName);
+        assertNotNull(testCase.roles, "invalid input: " + testName);
+        assertNotNull(testCase.userStore, "invalid input: " + testName);
+        assertNotNull(testCase.gdsInfo, "invalid input: " + testName);
+        assertNotNull(testCase.tests, "invalid input: " + testName);
 
         RangerPluginConfig pluginConfig = new RangerPluginConfig(testCase.policies.getServiceDef().getName(), testCase.policies.getServiceName(), "hive", "cl1", "on-prem", peOptions);
         RangerBasePlugin   plugin       = new RangerBasePlugin(pluginConfig, testCase.policies, testCase.tags, testCase.roles, testCase.userStore, testCase.gdsInfo);
@@ -89,19 +89,19 @@ public class TestRangerBasePlugin {
             if (test.result != null) {
                 RangerAccessResult result = plugin.isAccessAllowed(request);
 
-                assertNotNull("result was null! - " + test.name, result);
-                assertEquals("isAllowed mismatched! - " + test.name, test.result.getIsAllowed(), result.getIsAllowed());
-                assertEquals("isAccessDetermined mismatched! - " + test.name, test.result.getIsAccessDetermined(), result.getIsAccessDetermined());
-                assertEquals("isAllowed mismatched! - " + test.name, test.result.getPolicyId(), result.getPolicyId());
-                assertEquals("isAudited mismatched! - " + test.name, test.result.getIsAudited(), result.getIsAudited());
-                assertEquals("isAuditedDetermined mismatched! - " + test.name, test.result.getIsAuditedDetermined(), result.getIsAuditedDetermined());
+                assertNotNull(result, "result was null! - " + test.name);
+                assertEquals(test.result.getIsAllowed(), result.getIsAllowed(), "isAllowed mismatched! - " + test.name);
+                assertEquals(test.result.getIsAccessDetermined(), result.getIsAccessDetermined(), "isAccessDetermined mismatched! - " + test.name);
+                assertEquals(test.result.getPolicyId(), result.getPolicyId(), "isAllowed mismatched! - " + test.name);
+                assertEquals(test.result.getIsAudited(), result.getIsAudited(), "isAudited mismatched! - " + test.name);
+                assertEquals(test.result.getIsAuditedDetermined(), result.getIsAuditedDetermined(), "isAuditedDetermined mismatched! - " + test.name);
             }
 
             if (test.acls != null) {
                 RangerAccessRequest req  = new RangerAccessRequestImpl(request.getResource(), RangerPolicyEngine.ANY_ACCESS, null, null, null);
                 RangerResourceACLs  acls = plugin.getResourceACLs(req);
 
-                assertEquals(test.name, test.acls, acls);
+                assertEquals(test.acls, acls, test.name);
             }
         }
     }

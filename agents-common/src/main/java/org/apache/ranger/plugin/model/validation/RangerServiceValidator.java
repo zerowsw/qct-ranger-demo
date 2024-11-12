@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.thirdparty.com.google.common.collect.Sets;
 import org.apache.ranger.plugin.errors.ValidationErrorCode;
 import org.apache.ranger.plugin.model.RangerService;
@@ -47,7 +47,7 @@ public class RangerServiceValidator extends RangerValidator {
 
 	public void validate(RangerService service, Action action) throws Exception {
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerServiceValidator.validate(%s, %s)", service, action));
+			LOG.debug("==> RangerServiceValidator.validate(%s, %s)".formatted(service, action));
 		}
 		List<ValidationFailureDetails> failures = new ArrayList<>();
 		boolean valid = isValid(service, action, failures);
@@ -59,7 +59,7 @@ public class RangerServiceValidator extends RangerValidator {
 			}
 		} finally {
 			if(LOG.isDebugEnabled()) {
-				LOG.debug(String.format("<== RangerServiceValidator.validate(%s, %s): %s, reason[%s]", service, action, valid, message));
+				LOG.debug("<== RangerServiceValidator.validate(%s, %s): %s, reason[%s]".formatted(service, action, valid, message));
 			}
 		}
 	}

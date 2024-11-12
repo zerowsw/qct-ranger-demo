@@ -19,14 +19,18 @@
 
 package org.apache.ranger.authorization.credutils;
 
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.KerberosCredentials;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.config.AuthSchemes;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.ranger.authorization.credutils.kerberos.KerberosCredentialsProvider;
+
+import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
+import org.apache.hc.client5.http.auth.AuthScope;
+import org.apache.hc.client5.http.auth.Credentials;
+import org.apache.hc.client5.http.auth.CredentialsProvider;
+import org.apache.hc.core5.http.protocol.HttpContext;
+import org.apache.hc.client5.http.auth.StandardAuthScheme;
+import org.apache.hc.client5.http.impl.auth.KerberosCredentialsProvider;
+
 import org.apache.ranger.authorization.credutils.kerberos.KeytabJaasConf;
+import org.ietf.jgss.GSSCredential;
+            
 import org.ietf.jgss.GSSCredential;
 import org.ietf.jgss.GSSException;
 import org.ietf.jgss.GSSManager;
@@ -62,11 +66,9 @@ public class CredentialsProviderUtil {
         } catch (GSSException gsse) {
             throw new RuntimeException(gsse);
         }
-        return oid;
-    }
 
-    public static KerberosCredentialsProvider getKerberosCredentials(String user, String password){
-        KerberosCredentialsProvider credentialsProvider = new KerberosCredentialsProvider();
+    public static CredentialsProvider getKerberosCredentials(String user, String password) {
+        BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         final GSSManager gssManager = GSSManager.getInstance();
         try {
             final GSSName gssUserPrincipalName = gssManager.createName(user, GSSName.NT_USER_NAME);
@@ -77,8 +79,18 @@ public class CredentialsProviderUtil {
                             GSSCredential.DEFAULT_LIFETIME, SPNEGO_OID, GSSCredential.INITIATE_ONLY),
                     acc);
             credentialsProvider.setCredentials(
-                    new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT, AuthScope.ANY_REALM, AuthSchemes.SPNEGO),
-                    new KerberosCredentials(credential));
+                    new AuthScope(null, -1, null, StandardAuthScheme.SPNEGO),
+                    new Credentials() {
+                        @Override
+                        public Principal getUserPrincipal() {
+                            return new KerberosPrincipal(user);
+                        }
+
+                        @Override
+                        public char[] getPassword() {
+                            return password.toCharArray();
+                        }
+                    });
         } catch (GSSException e) {
             logger.error("GSSException:", e);
             throw new RuntimeException(e);
@@ -86,6 +98,10 @@ public class CredentialsProviderUtil {
             logger.error("PrivilegedActionException:", e);
             throw new RuntimeException(e);
         }
+        return credentialsProvider;
+    }
+
+            
         return credentialsProvider;
     }
 
@@ -157,7 +173,7 @@ public class CredentialsProviderUtil {
 
     public static CredentialsProvider getBasicCredentials(String user, String password) {
         CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-        credentialsProvider.setCredentials(AuthScope.ANY,
+        credentialsProvider.setCredentials(new AuthScope(null, -1),
                 new UsernamePasswordCredentials(user, password));
         return credentialsProvider;
     }

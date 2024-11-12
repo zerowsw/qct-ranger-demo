@@ -19,7 +19,7 @@
 
 package org.apache.ranger.plugin.policyengine;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.plugin.model.RangerPolicy;
 import org.apache.ranger.plugin.model.RangerPolicy.RangerPolicyItemDataMaskInfo;
 import org.apache.ranger.plugin.model.RangerPolicy.RangerPolicyItemRowFilterInfo;
@@ -333,8 +333,7 @@ public class RangerResourceACLs {
 		public boolean equals(Object other) {
 			if (other == null)
 				return false;
-			if (other instanceof AccessResult) {
-				AccessResult otherObject = (AccessResult)other;
+			if (other instanceof AccessResult otherObject) {
 				return result == otherObject.result && isFinal == otherObject.isFinal;
 			} else
 				return false;

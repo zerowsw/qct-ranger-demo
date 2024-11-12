@@ -24,6 +24,9 @@ import java.lang.reflect.Type;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.PrivilegedExceptionAction;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -34,17 +37,17 @@ import java.util.Set;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
-import javax.ws.rs.ProcessingException;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Cookie;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.NewCookie;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.ProcessingException;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.Invocation;
+import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.Cookie;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.NewCookie;
+import jakarta.ws.rs.core.Response;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.security.AccessControlException;
 import org.apache.hadoop.security.UserGroupInformation;
@@ -126,7 +129,7 @@ public class RangerAdminJersey2RESTClient extends AbstractRangerAdminClient {
 		this.lastKnownActiveUrlIndex = new Random().nextInt(configURLs.size());
 		String url = configURLs.get(this.lastKnownActiveUrlIndex);
 		_isSSL = isSsl(url);
-		LOG.info("Init params: " + String.format("Base URL[%s], SSL Config filename[%s], ServiceName=[%s], SupportsPolicyDeltas=[%s], ConfigURLs=[%s]", url, _sslConfigFileName, _serviceName, _supportsPolicyDeltas, _supportsTagDeltas, configURLs));
+		LOG.info("Init params: " + "Base URL[%s], SSL Config filename[%s], ServiceName=[%s], SupportsPolicyDeltas=[%s], ConfigURLs=[%s]".formatted(url, _sslConfigFileName, _serviceName, _supportsPolicyDeltas, _supportsTagDeltas, configURLs));
 		
 		_client = getClient();
 		_client.property(ClientProperties.CONNECT_TIMEOUT, _restClientConnTimeOutMs);
@@ -210,7 +213,7 @@ public class RangerAdminJersey2RESTClient extends AbstractRangerAdminClient {
 			throw new AccessControlException();
 		default:
 			String body = response.readEntity(String.class);
-			String message = String.format("Unexpected: Received status[%d] with body[%s] form url[%s]", httpResponseCode, body, relativeURL);
+			String message = "Unexpected: Received status[%d] with body[%s] form url[%s]".formatted(httpResponseCode, body, relativeURL);
 			LOG.warn(message);
 			throw new Exception("HTTP status: " + httpResponseCode);
 		}
@@ -246,7 +249,7 @@ public class RangerAdminJersey2RESTClient extends AbstractRangerAdminClient {
 			throw new AccessControlException();
 		default:
 			String body = response.readEntity(String.class);
-			String message = String.format("Unexpected: Received status[%d] with body[%s] form url[%s]", httpResponseCode, body, relativeURL);
+			String message = "Unexpected: Received status[%d] with body[%s] form url[%s]".formatted(httpResponseCode, body, relativeURL);
 			LOG.warn(message);
 			throw new Exception("HTTP status: " + httpResponseCode);
 		}
@@ -375,7 +378,12 @@ public class RangerAdminJersey2RESTClient extends AbstractRangerAdminClient {
 
 		@Override
 		public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-			return new Date(json.getAsJsonPrimitive().getAsLong());
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+			try {
+				return dateFormat.parse(json.getAsJsonPrimitive().getAsString());
+			} catch (ParseException e) {
+				throw new JsonParseException(e);
+			}
 		}
 
 	}
@@ -582,7 +590,7 @@ public class RangerAdminJersey2RESTClient extends AbstractRangerAdminClient {
 				ret = null;
 				policyDownloadSessionId = null;
 				body = response.readEntity(String.class);
-				LOG.warn(String.format("Unexpected: Received status[%d] with body[%s] form url[%s]", httpResponseCode, body, getRelativeURL(isSecureMode())));
+				LOG.warn("Unexpected: Received status[%d] with body[%s] form url[%s]".formatted(httpResponseCode, body, getRelativeURL(isSecureMode())));
 				break;
 		}
 
@@ -649,7 +657,7 @@ public class RangerAdminJersey2RESTClient extends AbstractRangerAdminClient {
 				policyDownloadSessionId = null;
 				isValidPolicyDownloadSessionCookie = false;
 				body = response.readEntity(String.class);
-				LOG.warn(String.format("Unexpected: Received status[%d] with body[%s] form url[%s]", httpResponseCode, body, getRelativeURL(isSecureMode())));
+				LOG.warn("Unexpected: Received status[%d] with body[%s] form url[%s]".formatted(httpResponseCode, body, getRelativeURL(isSecureMode())));
 				break;
 		}
 
@@ -787,7 +795,7 @@ public class RangerAdminJersey2RESTClient extends AbstractRangerAdminClient {
 				ret = null;
 				tagDownloadSessionId = null;
 				body = response.readEntity(String.class);
-				LOG.warn(String.format("Unexpected: Received status[%d] with body[%s] form url[%s]", httpResponseCode, body, getRelativeURLForTagDownload(isSecureMode())));
+				LOG.warn("Unexpected: Received status[%d] with body[%s] form url[%s]".formatted(httpResponseCode, body, getRelativeURLForTagDownload(isSecureMode())));
 				break;
 		}
 
@@ -854,7 +862,7 @@ public class RangerAdminJersey2RESTClient extends AbstractRangerAdminClient {
 				tagDownloadSessionId = null;
 				isValidTagDownloadSessionCookie = false;
 				body = response.readEntity(String.class);
-				LOG.warn(String.format("Unexpected: Received status[%d] with body[%s] form url[%s]", httpResponseCode, body, ret));
+				LOG.warn("Unexpected: Received status[%d] with body[%s] form url[%s]".formatted(httpResponseCode, body, ret));
 				break;
 		}
 
@@ -990,7 +998,7 @@ public class RangerAdminJersey2RESTClient extends AbstractRangerAdminClient {
 				ret = null;
 				roleDownloadSessionId = null;
 				body = response.readEntity(String.class);
-				LOG.warn(String.format("Unexpected: Received status[%d] with body[%s] form url[%s]", httpResponseCode, body, getRelativeURLForRoleDownload(isSecureMode())));
+				LOG.warn("Unexpected: Received status[%d] with body[%s] form url[%s]".formatted(httpResponseCode, body, getRelativeURLForRoleDownload(isSecureMode())));
 				break;
 		}
 
@@ -1056,7 +1064,7 @@ public class RangerAdminJersey2RESTClient extends AbstractRangerAdminClient {
 				roleDownloadSessionId = null;
 				isValidRoleDownloadSessionCookie = false;
 				body = response.readEntity(String.class);
-				LOG.warn(String.format("Unexpected: Received status[%d] with body[%s] form url[%s]", httpResponseCode, body, getRelativeURLForRoleDownload(isSecureMode())));
+				LOG.warn("Unexpected: Received status[%d] with body[%s] form url[%s]".formatted(httpResponseCode, body, getRelativeURLForRoleDownload(isSecureMode())));
 				break;
 		}
 

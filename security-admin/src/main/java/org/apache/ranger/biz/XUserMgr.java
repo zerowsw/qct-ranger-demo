@@ -30,9 +30,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.util.Time;
 import org.apache.ranger.biz.ServiceDBStore.REMOVE_REF_TYPE;
 import org.apache.ranger.common.*;
@@ -95,7 +95,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.ranger.entity.XXPortalUserRole;
 import org.springframework.transaction.support.TransactionCallback;
@@ -372,8 +372,10 @@ public class XUserMgr extends XUserMgrBase {
 		if (vXUser == null || vXUser.getName() == null
 				|| "null".equalsIgnoreCase(vXUser.getName())
 				|| vXUser.getName().trim().isEmpty()) {
-			throw restErrorUtil.createRESTException("Please provide a valid "
-					+ "username.", MessageEnums.INVALID_INPUT_DATA);
+			throw restErrorUtil.createRESTException("""
+					Please provide a valid \
+					username.\
+					""", MessageEnums.INVALID_INPUT_DATA);
 		}
 		String firstName = vXUser.getFirstName();
 		if (firstName == null || "null".equalsIgnoreCase(firstName)
@@ -656,7 +658,7 @@ public class XUserMgr extends XUserMgrBase {
 					.findByLoginId(vXUser.getName());
 			if (xUser != null) {
 				// Add or update group user mapping only if the user already exists in x_user table.
-				logger.debug(String.format("createXGroupUserFromMap(): Create or update group %s ", vXGroup.getName()));
+				logger.debug("createXGroupUserFromMap(): Create or update group %s ".formatted(vXGroup.getName()));
 				vXGroup = xGroupService.createXGroupWithOutLogin(vXGroup);
 				vxGUInfo.setXgroupInfo(vXGroup);
 				vxu.add(vXUser);
@@ -666,8 +668,8 @@ public class XUserMgr extends XUserMgrBase {
 				if (xXPortalUser.getUserSource() == RangerCommonEnums.USER_EXTERNAL) {
 					vXGroupUser = xGroupUserService
 							.createXGroupUserWithOutLogin(vXGroupUser);
-					logger.debug(String.format("createXGroupUserFromMap(): Create or update group user mapping with groupname =  " + vXGroup.getName()
-							+ " username = %s userId = %d", xXPortalUser.getLoginId(), xUser.getId()));
+					logger.debug(("createXGroupUserFromMap(): Create or update group user mapping with groupname =  " + vXGroup.getName()
+							+ " username = %s userId = %d").formatted(xXPortalUser.getLoginId(), xUser.getId()));
 				}
 				Collection<String> reqRoleList = vXUser.getUserRoleList();
 
@@ -3038,7 +3040,7 @@ public class XUserMgr extends XUserMgrBase {
 
 			if (!vXPortalUser.getUserRoleList().contains(userRole)) {
 				if (logger.isDebugEnabled()) {
-					logger.debug(String.format("Updating role for %s to %s", userName, userRole));
+					logger.debug("Updating role for %s to %s".formatted(userName, userRole));
 				}
 				//Update the role of the user only if newly computed role is different from the existing role.
 				String updatedUser = setRolesByUserName(userName, Collections.singletonList(userRole));
@@ -3047,7 +3049,7 @@ public class XUserMgr extends XUserMgrBase {
 				}
 			} else {
 				if (logger.isDebugEnabled()) {
-					logger.debug(String.format("Role for %s unchanged: %s", userName, userRole));
+					logger.debug("Role for %s unchanged: %s".formatted(userName, userRole));
 				}
 			}
 
@@ -3065,7 +3067,7 @@ public class XUserMgr extends XUserMgrBase {
 			for (String userName : externalUsersWithNonUserRole) {
 				if (!roleAssignmentUpdatedUsers.contains(userName)) {
 					if (logger.isDebugEnabled()) {
-						logger.debug(String.format("Resetting to ROLE_USER for %s", userName));
+						logger.debug("Resetting to ROLE_USER for %s".formatted(userName));
 					}
 					String updatedUser = setRolesByUserName(userName, Collections.singletonList(RangerConstants.ROLE_USER));
 					if (updatedUser != null) {

@@ -19,7 +19,7 @@
 
 package org.apache.ranger.plugin.geo;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -102,8 +102,8 @@ public class RangerGeolocationData implements Comparable<RangerGeolocationData>,
 	@Override
 	public boolean equals(Object other) {
 		boolean ret = false;
-		if (other != null && (other instanceof RangerGeolocationData)) {
-			ret = this == other || compareTo((RangerGeolocationData) other) == 0;
+		if (other != null && (other instanceof RangerGeolocationData data)) {
+			ret = this == other || compareTo(data) == 0;
 		}
 		return ret;
 	}

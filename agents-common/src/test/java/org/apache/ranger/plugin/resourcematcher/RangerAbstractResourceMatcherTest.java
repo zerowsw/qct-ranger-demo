@@ -22,11 +22,12 @@ package org.apache.ranger.plugin.resourcematcher;
 import org.apache.ranger.plugin.policyengine.RangerAccessRequest;
 import org.apache.ranger.plugin.policyengine.RangerAccessRequest.ResourceElementMatchingScope;
 import org.apache.ranger.plugin.policyengine.RangerAccessRequest.ResourceElementMatchType;
-import org.junit.Test;
 
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RangerAbstractResourceMatcherTest {
 

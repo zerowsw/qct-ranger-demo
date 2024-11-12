@@ -19,8 +19,8 @@
 
 package org.apache.ranger.plugin.store;
 
-import org.apache.commons.collections.Predicate;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.Predicate;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.plugin.model.RangerPolicy;
 import org.apache.ranger.plugin.model.RangerService;
 import org.apache.ranger.plugin.model.RangerServiceDef;
@@ -89,16 +89,13 @@ public class ServicePredicateUtil extends AbstractPredicateUtil {
 
 				boolean ret = false;
 
-				if(object instanceof RangerPolicy) {
-					RangerPolicy policy = (RangerPolicy)object;
+				if(object instanceof RangerPolicy policy) {
 
 					ret = StringUtils.equals(serviceType, getServiceType(policy.getService()));
-				} else if(object instanceof RangerService) {
-					RangerService service = (RangerService)object;
+				} else if(object instanceof RangerService service) {
 
 					ret = StringUtils.equals(serviceType, service.getType());
-				} else if(object instanceof RangerServiceDef) {
-					RangerServiceDef serviceDef = (RangerServiceDef)object;
+				} else if(object instanceof RangerServiceDef serviceDef) {
 
 					ret = StringUtils.equals(serviceType, serviceDef.getName());
 				}
@@ -128,15 +125,13 @@ public class ServicePredicateUtil extends AbstractPredicateUtil {
 
 				boolean ret = false;
 
-				if(object instanceof RangerPolicy) {
-					RangerPolicy policy = (RangerPolicy)object;
+				if(object instanceof RangerPolicy policy) {
 					Long         svcId  = getServiceId(policy.getService());
 
 					if(svcId != null) {
 						ret = StringUtils.equals(serviceId, svcId.toString());
 					}
-				} else if(object instanceof RangerService) {
-					RangerService service = (RangerService)object;
+				} else if(object instanceof RangerService service) {
 
 					if(service.getId() != null) {
 						ret = StringUtils.equals(serviceId, service.getId().toString());
@@ -170,8 +165,7 @@ public class ServicePredicateUtil extends AbstractPredicateUtil {
 
 				boolean ret = false;
 
-				if(object instanceof RangerService) {
-					RangerService service = (RangerService)object;
+				if(object instanceof RangerService service) {
 
 					ret = StringUtils.equals(tagServiceName, service.getTagService());
 				} else {
@@ -203,8 +197,7 @@ public class ServicePredicateUtil extends AbstractPredicateUtil {
 
 				boolean ret = false;
 
-				if(object instanceof RangerService) {
-					RangerService service = (RangerService)object;
+				if(object instanceof RangerService service) {
 
 					if(! StringUtils.isEmpty(service.getTagService())) {
 						RangerService tagService = null;

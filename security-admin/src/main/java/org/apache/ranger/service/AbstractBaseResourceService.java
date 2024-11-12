@@ -19,6 +19,7 @@
 
  package org.apache.ranger.service;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
@@ -28,16 +29,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Path;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.ranger.biz.RangerBizUtil;
 import org.apache.ranger.common.ContextUtil;
@@ -149,8 +150,8 @@ public abstract class AbstractBaseResourceService<T extends XXDBBase, V extends 
 
 	protected T createEntityObject() {
 		try {
-			return tEntityClass.newInstance();
-		} catch (Throwable e) {
+			return tEntityClass.getDeclaredConstructor().newInstance();
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			logger.error("Error instantiating entity class. tEntityClass="
 					+ tEntityClass.toString(), e);
 		}
@@ -159,10 +160,9 @@ public abstract class AbstractBaseResourceService<T extends XXDBBase, V extends 
 
 	protected V createViewObject() {
 		try {
-			return tViewClass.newInstance();
-		} catch (Throwable e) {
-			logger.error("Error instantiating view class. tViewClass="
-					+ tViewClass.toString(), e);
+			return tViewClass.getDeclaredConstructor().newInstance();
+		} catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+			logger.error("Error instantiating view class. tViewClass=" + tViewClass.toString(), e);
 		}
 		return null;
 	}

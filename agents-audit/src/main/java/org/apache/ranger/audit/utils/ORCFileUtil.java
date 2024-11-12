@@ -132,10 +132,10 @@ public class ORCFileUtil {
                     String fieldName          = schemaFields.get(j);
                     SchemaInfo schemaInfo     = getFieldValue(event, fieldName);
                     ColumnVector columnVector = vectorizedRowBatchMap.get(fieldName);
-                    if (columnVector instanceof LongColumnVector) {
-                        ((LongColumnVector) columnVector).vector[row] = castLongObject(schemaInfo.getValue());
-                    } else if (columnVector instanceof BytesColumnVector) {
-                        ((BytesColumnVector) columnVector).setVal(row, getBytesValues(castStringObject(schemaInfo.getValue())));
+                    if (columnVector instanceof LongColumnVector vector) {
+                        vector.vector[row] = castLongObject(schemaInfo.getValue());
+                    } else if (columnVector instanceof BytesColumnVector vector) {
+                        vector.setVal(row, getBytesValues(castStringObject(schemaInfo.getValue())));
                     }
                 }
                 if (batch.size == orcBufferSize) {
@@ -274,12 +274,12 @@ public class ORCFileUtil {
     protected Long castLongObject(Object object) {
         Long ret = 0l;
         try {
-            if (object instanceof Long)
-                ret = ((Long) object);
-            else if (object instanceof Integer) {
-                ret = ((Integer) object).longValue();
-            } else if (object instanceof String) {
-                ret = Long.valueOf((String) object);
+            if (object instanceof Long long1)
+                ret =long1;
+            else if (object instanceof Integer integer) {
+                ret = integer.longValue();
+            } else if (object instanceof String string) {
+                ret = Long.valueOf(string);
             }
         } catch (Exception e) {
             logger.error("Error while writing into ORC File:", e);
@@ -290,10 +290,10 @@ public class ORCFileUtil {
     protected String castStringObject(Object object) {
         String ret = null;
         try {
-            if (object instanceof String)
-                ret = (String) object;
-            else if (object instanceof Date) {
-                ret = (getDateString((Date) object));
+            if (object instanceof String string)
+                ret = string;
+            else if (object instanceof Date date) {
+                ret = (getDateString(date));
             }
         } catch (Exception e) {
             logger.error("Error while writing into ORC File:", e);

@@ -29,8 +29,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.plugin.errors.ValidationErrorCode;
 import org.apache.ranger.plugin.model.RangerPolicy;
 import org.apache.ranger.plugin.model.RangerPolicy.RangerPolicyResource;
@@ -142,7 +142,7 @@ public abstract class RangerValidator {
 		} else {
 			StringBuilder builder = new StringBuilder();
 			for (int i = 0; i < failures.size(); i++) {
-				builder.append(String.format("(%d)", i));
+				builder.append("(%d)".formatted(i));
 				builder.append(failures.get(i));
 				builder.append(" ");
 			}
@@ -344,7 +344,7 @@ public abstract class RangerValidator {
 	
 	List<RangerPolicy> getPoliciesForResourceSignature(String serviceName, String policySignature) {
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerValidator.getPoliciesForResourceSignature(%s, %s)", serviceName, policySignature));
+			LOG.debug("==> RangerValidator.getPoliciesForResourceSignature(%s, %s)".formatted(serviceName, policySignature));
 		}
 		final List<RangerPolicy> ret;
 
@@ -367,7 +367,7 @@ public abstract class RangerValidator {
 		
 		if(LOG.isDebugEnabled()) {
 			int count = ret == null ? 0 : ret.size();
-			LOG.debug(String.format("<== RangerValidator.getPoliciesForResourceSignature(%s, %s): count[%d], %s", serviceName, policySignature, count, ret));
+			LOG.debug("<== RangerValidator.getPoliciesForResourceSignature(%s, %s): count[%d], %s".formatted(serviceName, policySignature, count, ret));
 		}
 		return ret;
 	}
@@ -649,7 +649,7 @@ public abstract class RangerValidator {
 	 */
 	boolean isUnique(Long value, String valueContext, Set<Long> alreadySeen, String valueName, String collectionName, List<ValidationFailureDetails> failures) {
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerServiceDefValidator.isValueUnique(%s, %s, %s, %s, %s)", value, alreadySeen, valueName, collectionName, failures));
+			LOG.debug("==> RangerServiceDefValidator.isValueUnique(%s, %s, %s, %s, %s)".formatted(value, alreadySeen, valueName, collectionName, failures));
 		}
 		boolean valid = true;
 
@@ -658,7 +658,7 @@ public abstract class RangerValidator {
 				.field(valueName)
 				.subField(valueContext)
 				.isMissing()
-				.becauseOf(String.format("%s[%s] is null/empty", valueName, value))
+				.becauseOf("%s[%s] is null/empty".formatted(valueName, value))
 				.build());
 			valid = false;
 		} else if (alreadySeen.contains(value)) { // it shouldn't have been seen already
@@ -666,7 +666,7 @@ public abstract class RangerValidator {
 				.field(valueName)
 				.subField(value.toString())
 				.isSemanticallyIncorrect()
-				.becauseOf(String.format("duplicate %s[%s] in %s", valueName, value, collectionName))
+				.becauseOf("duplicate %s[%s] in %s".formatted(valueName, value, collectionName))
 				.build());
 			valid = false;
 		} else {
@@ -674,7 +674,7 @@ public abstract class RangerValidator {
 		}
 
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerServiceDefValidator.isValueUnique(%s, %s, %s, %s, %s): %s", value, alreadySeen, valueName, collectionName, failures, valid));
+			LOG.debug("==> RangerServiceDefValidator.isValueUnique(%s, %s, %s, %s, %s): %s".formatted(value, alreadySeen, valueName, collectionName, failures, valid));
 		}
 		return valid;
 	}
@@ -690,7 +690,7 @@ public abstract class RangerValidator {
 	 */
 	boolean isUnique(Integer value, Set<Integer> alreadySeen, String valueName, String collectionName, List<ValidationFailureDetails> failures) {
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerServiceDefValidator.isValueUnique(%s, %s, %s, %s, %s)", value, alreadySeen, valueName, collectionName, failures));
+			LOG.debug("==> RangerServiceDefValidator.isValueUnique(%s, %s, %s, %s, %s)".formatted(value, alreadySeen, valueName, collectionName, failures));
 		}
 		boolean valid = true;
 
@@ -698,7 +698,7 @@ public abstract class RangerValidator {
 			failures.add(new ValidationFailureDetailsBuilder()
 				.field(valueName)
 				.isMissing()
-				.becauseOf(String.format("%s[%s] is null/empty", valueName, value))
+				.becauseOf("%s[%s] is null/empty".formatted(valueName, value))
 				.build());
 			valid = false;
 		} else if (alreadySeen.contains(value)) { // it shouldn't have been seen already
@@ -706,7 +706,7 @@ public abstract class RangerValidator {
 				.field(valueName)
 				.subField(value.toString())
 				.isSemanticallyIncorrect()
-				.becauseOf(String.format("duplicate %s[%s] in %s", valueName, value, collectionName))
+				.becauseOf("duplicate %s[%s] in %s".formatted(valueName, value, collectionName))
 				.build());
 			valid = false;
 		} else {
@@ -714,7 +714,7 @@ public abstract class RangerValidator {
 		}
 
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerServiceDefValidator.isValueUnique(%s, %s, %s, %s, %s): %s", value, alreadySeen, valueName, collectionName, failures, valid));
+			LOG.debug("==> RangerServiceDefValidator.isValueUnique(%s, %s, %s, %s, %s): %s".formatted(value, alreadySeen, valueName, collectionName, failures, valid));
 		}
 		return valid;
 	}
@@ -764,7 +764,7 @@ public abstract class RangerValidator {
 	 */
 	boolean isUnique(final String value, final String valueContext, final Set<String> alreadySeen, final String valueName, final String collectionName, final List<ValidationFailureDetails> failures) {
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerServiceDefValidator.isValueUnique(%s, %s, %s, %s, %s)", value, alreadySeen, valueName, collectionName, failures));
+			LOG.debug("==> RangerServiceDefValidator.isValueUnique(%s, %s, %s, %s, %s)".formatted(value, alreadySeen, valueName, collectionName, failures));
 		}
 		boolean valid = true;
 
@@ -773,7 +773,7 @@ public abstract class RangerValidator {
 				.field(valueName)
 				.subField(valueContext)
 				.isMissing()
-				.becauseOf(String.format("%s[%s] is null/empty", valueName, value))
+				.becauseOf("%s[%s] is null/empty".formatted(valueName, value))
 				.build());
 			valid = false;
 		} else if (alreadySeen.contains(value.toLowerCase())) { // it shouldn't have been seen already
@@ -781,7 +781,7 @@ public abstract class RangerValidator {
 				.field(valueName)
 				.subField(value)
 				.isSemanticallyIncorrect()
-				.becauseOf(String.format("duplicate %s[%s] in %s", valueName, value, collectionName))
+				.becauseOf("duplicate %s[%s] in %s".formatted(valueName, value, collectionName))
 				.build());
 			valid = false;
 		} else {
@@ -789,7 +789,7 @@ public abstract class RangerValidator {
 		}
 
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerServiceDefValidator.isValueUnique(%s, %s, %s, %s, %s): %s", value, alreadySeen, valueName, collectionName, failures, valid));
+			LOG.debug("==> RangerServiceDefValidator.isValueUnique(%s, %s, %s, %s, %s): %s".formatted(value, alreadySeen, valueName, collectionName, failures, valid));
 		}
 		return valid;
 	}

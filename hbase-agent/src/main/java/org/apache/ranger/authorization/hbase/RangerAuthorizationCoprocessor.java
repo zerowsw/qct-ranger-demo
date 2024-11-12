@@ -25,9 +25,9 @@ import java.security.PrivilegedExceptionAction;
 
 import com.google.protobuf.Message;
 import com.google.protobuf.Service;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.*;
 import org.apache.hadoop.hbase.client.*;
@@ -327,7 +327,7 @@ public class RangerAuthorizationCoprocessor implements AccessControlService.Inte
 
 		if (LOG.isDebugEnabled()) {
 			colFamiliesForDebugLoggingOnly = getColumnFamilies(familyMap);
-			LOG.debug(String.format("evaluateAccess: entered: user[%s], Operation[%s], access[%s], families[%s]",
+			LOG.debug("evaluateAccess: entered: user[%s], Operation[%s], access[%s], families[%s]".formatted(
 					userName, operation, access, colFamiliesForDebugLoggingOnly));
 		}
 		else{
@@ -348,7 +348,7 @@ public class RangerAuthorizationCoprocessor implements AccessControlService.Inte
 			LOG.debug("evaluateAccess: exiting: isKnownAccessPattern returned true: access allowed, not audited");
 			result = new ColumnFamilyAccessResult(true, true, null, null, null, null, null);
 			if (LOG.isDebugEnabled()) {
-				String message = String.format(messageTemplate, userName, operation, access, colFamiliesForDebugLoggingOnly, result.toString());
+				String message = messageTemplate.formatted(userName, operation, access, colFamiliesForDebugLoggingOnly, result.toString());
 				LOG.debug(message);
 			}
 			return result;
@@ -378,7 +378,7 @@ public class RangerAuthorizationCoprocessor implements AccessControlService.Inte
 					LOG.debug("evaluateAccess: table level access granted [" + table + "]");
 				}
 			} else {
-				reason = String.format("Insufficient permissions for user ‘%s',action: %s, tableName:%s, no column families found.", user.getName(), operation, table);
+				reason = "Insufficient permissions for user ‘%s',action: %s, tableName:%s, no column families found.".formatted(user.getName(), operation, table);
 			}
 			AuthzAuditEvent event = auditHandler.getAndDiscardMostRecentEvent(); // this could be null, of course, depending on audit settings of table.
 			// if authorized then pass captured events as access allowed set else as access denied set.
@@ -386,7 +386,7 @@ public class RangerAuthorizationCoprocessor implements AccessControlService.Inte
 						authorized ? Collections.singletonList(event) : null,
 						null, authorized ? null : event, reason, null);
 			if (LOG.isDebugEnabled()) {
-				String message = String.format(messageTemplate, userName, operation, access, colFamiliesForDebugLoggingOnly, result.toString());
+				String message = messageTemplate.formatted(userName, operation, access, colFamiliesForDebugLoggingOnly, result.toString());
 				LOG.debug(message);
 			}
 			return result;
@@ -483,7 +483,7 @@ public class RangerAuthorizationCoprocessor implements AccessControlService.Inte
 							LOG.debug("evaluateAccess: has no access of [" + access + "] type in family [" + family + "]");
 						}
 						familesAccessDenied.add(family);
-						denialReason = String.format("Insufficient permissions for user ‘%s',action: %s, tableName:%s, family:%s.", user.getName(), operation, table, family);
+						denialReason = "Insufficient permissions for user ‘%s',action: %s, tableName:%s, family:%s.".formatted(user.getName(), operation, table, family);
 					}
 				}
 				// Restore the headMatch setting
@@ -518,7 +518,7 @@ public class RangerAuthorizationCoprocessor implements AccessControlService.Inte
 						}
 						somethingIsAccessible = false;
  						everythingIsAccessible = false;
- 						denialReason = String.format("Insufficient permissions for user ‘%s',action: %s, tableName:%s, family:%s, column: %s", user.getName(), operation, table, family, column);
+ 						denialReason = "Insufficient permissions for user ‘%s',action: %s, tableName:%s, family:%s, column: %s".formatted(user.getName(), operation, table, family, column);
 						if (auditEvent != null && deniedEvent == null) { // we need to capture just one denial event
 							LOG.debug("evaluateAccess: Setting denied access audit event with last auth failure audit event.");
 							deniedEvent = auditEvent;
@@ -534,7 +534,7 @@ public class RangerAuthorizationCoprocessor implements AccessControlService.Inte
 		RangerAuthorizationFilter filter = new RangerAuthorizationFilter(session, familesAccessAllowed, familesAccessDenied, familesAccessIndeterminate, columnsAccessAllowed);
 		result = new ColumnFamilyAccessResult(everythingIsAccessible, somethingIsAccessible, authorizedEvents, familyLevelAccessEvents, deniedEvent, denialReason, filter);
 		if (LOG.isDebugEnabled()) {
-			String message = String.format(messageTemplate, userName, operation, access, colFamiliesForDebugLoggingOnly, result.toString());
+			String message = messageTemplate.formatted(userName, operation, access, colFamiliesForDebugLoggingOnly, result.toString());
 			LOG.debug(message);
 		}
 		return result;
@@ -625,14 +625,14 @@ public class RangerAuthorizationCoprocessor implements AccessControlService.Inte
 		String access = _authUtils.getAccess(action);
 		if (LOG.isDebugEnabled()) {
 			final String format = "authorizeAccess: %s: Operation[%s], Info[%s], access[%s], table[%s], columnFamily[%s], column[%s]";
-			String message = String.format(format, "Entering", operation, otherInformation, access, table, columnFamily, column);
+			String message = format.formatted("Entering", operation, otherInformation, access, table, columnFamily, column);
 			LOG.debug(message);
 		}
 		
 		final String format =  "authorizeAccess: %s: Operation[%s], Info[%s], access[%s], table[%s], columnFamily[%s], column[%s], allowed[%s], reason[%s]";
 		if (canSkipAccessCheck(user, operation, access, table)) {
 			if (LOG.isDebugEnabled()) {
-				String message = String.format(format, "Exiting", operation, otherInformation, access, table, columnFamily, column, true, "can skip auth check");
+				String message = format.formatted("Exiting", operation, otherInformation, access, table, columnFamily, column, true, "can skip auth check");
 				LOG.debug(message);
 			}
 			return;
@@ -656,7 +656,7 @@ public class RangerAuthorizationCoprocessor implements AccessControlService.Inte
 		if (LOG.isDebugEnabled()) {
 			boolean allowed = session.isAuthorized();
 			String reason = session.getDenialReason();
-			String message = String.format(format, "Exiting", operation, otherInformation, access, table, columnFamily, column, allowed, reason);
+			String message = format.formatted("Exiting", operation, otherInformation, access, table, columnFamily, column, allowed, reason);
 			LOG.debug(message);
 		}
 		
@@ -1104,8 +1104,8 @@ public class RangerAuthorizationCoprocessor implements AccessControlService.Inte
 		} else if (env instanceof RegionServerCoprocessorEnvironment) {
 			coprocessorType = REGIONAL_SERVER_COPROCESSOR_TYPE;
 			appType = "hbaseRegional";
-		} else if (env instanceof RegionCoprocessorEnvironment) {
-			regionEnv = (RegionCoprocessorEnvironment) env;
+		} else if (env instanceof RegionCoprocessorEnvironment environment) {
+			regionEnv = environment;
 			coprocessorType = REGIONAL_COPROCESSOR_TYPE;
 			appType = "hbaseRegional";
 		}
@@ -1197,26 +1197,26 @@ public class RangerAuthorizationCoprocessor implements AccessControlService.Inte
 	@Override
 	public void postGetTableNames(ObserverContext<MasterCoprocessorEnvironment> ctx, List<TableDescriptor> descriptors, String regex) throws IOException {
 		if (LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> postGetTableNames(count(descriptors)=%s, regex=%s)", descriptors == null ? 0 : descriptors.size(), regex));
+			LOG.debug("==> postGetTableNames(count(descriptors)=%s, regex=%s)".formatted(descriptors == null ? 0 : descriptors.size(), regex));
 		}
 		checkGetTableInfoAccess(ctx, "getTableNames", descriptors, regex, RangerPolicyEngine.ANY_ACCESS);
 
 		if (LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== postGetTableNames(count(descriptors)=%s, regex=%s)", descriptors == null ? 0 : descriptors.size(), regex));
+			LOG.debug("<== postGetTableNames(count(descriptors)=%s, regex=%s)".formatted(descriptors == null ? 0 : descriptors.size(), regex));
 		}
 	}
 
 	@Override
 	public void postGetTableDescriptors(ObserverContext<MasterCoprocessorEnvironment> ctx, List<TableName> tableNamesList, List<TableDescriptor> descriptors, String regex) throws IOException {
 		if (LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> postGetTableDescriptors(count(tableNamesList)=%s, count(descriptors)=%s, regex=%s)", tableNamesList == null ? 0 : tableNamesList.size(),
+			LOG.debug("==> postGetTableDescriptors(count(tableNamesList)=%s, count(descriptors)=%s, regex=%s)".formatted(tableNamesList == null ? 0 : tableNamesList.size(),
 					descriptors == null ? 0 : descriptors.size(), regex));
 		}
 
 		checkGetTableInfoAccess(ctx, "getTableDescriptors", descriptors, regex, _authUtils.getAccess(Action.CREATE));
 		
 		if (LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== postGetTableDescriptors(count(tableNamesList)=%s, count(descriptors)=%s, regex=%s)", tableNamesList == null ? 0 : tableNamesList.size(),
+			LOG.debug("<== postGetTableDescriptors(count(tableNamesList)=%s, count(descriptors)=%s, regex=%s)".formatted(tableNamesList == null ? 0 : tableNamesList.size(),
 					descriptors == null ? 0 : descriptors.size(), regex));
 		}
 	}

@@ -171,8 +171,10 @@ public class TestKeyAuthorizationKeyProvider {
               public EncryptedKeyVersion run() throws Exception {
                 try {
                   kpExt.deleteKey(barKv.getName());
-                  Assertions.fail("User should NOT be Authorized to "
-                      + "perform any other operation !!");
+                  Assertions.fail("""
+                      User should NOT be Authorized to \
+                      perform any other operation !!\
+                      """);
                 } catch (IOException ioe) {
                 }
                 return kpExt.generateEncryptedKey(barKv.getName());
@@ -185,8 +187,10 @@ public class TestKeyAuthorizationKeyProvider {
           public KeyVersion run() throws Exception {
             try {
               kpExt.deleteKey(barKv.getName());
-              Assertions.fail("User should NOT be Authorized to "
-                  + "perform any other operation !!");
+              Assertions.fail("""
+                  User should NOT be Authorized to \
+                  perform any other operation !!\
+                  """);
             } catch (IOException ioe) {
             }
             return kpExt.decryptEncryptedKey(barEKv);

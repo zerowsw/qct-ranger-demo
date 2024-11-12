@@ -27,6 +27,10 @@ import org.apache.ranger.plugin.classloader.RangerPluginClassLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.NoSuchMethodException;
+
 public class RangerOzoneAuthorizer implements IAccessAuthorizer {
 
     private static final Logger LOG  = LoggerFactory.getLogger(RangerOzoneAuthorizer.class);
@@ -63,8 +67,9 @@ public class RangerOzoneAuthorizer implements IAccessAuthorizer {
 
             activatePluginClassLoader();
 
-            ozoneAuthorizationProviderImpl = cls.newInstance();
-        } catch (Exception e) {
+            Constructor<IAccessAuthorizer> constructor = cls.getDeclaredConstructor();
+            ozoneAuthorizationProviderImpl = constructor.newInstance();
+        } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             // check what need to be done
             LOG.error("Error Enabling RangerOzonePlugin", e);
         } finally {

@@ -28,6 +28,7 @@ import org.apache.ranger.plugin.classloader.RangerPluginClassLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.acls.model.Permission;
+import java.lang.reflect.InvocationTargetException;
 
 public class RangerKylinAuthorizer extends ExternalAclProvider {
 	private static final Logger LOG = LoggerFactory.getLogger(RangerKylinAuthorizer.class);
@@ -64,9 +65,10 @@ public class RangerKylinAuthorizer extends ExternalAclProvider {
 
 			activatePluginClassLoader();
 
-			externalAclProvider = cls.newInstance();
+			externalAclProvider = cls.getDeclaredConstructor().newInstance();
 			externalAclProvider.init();
-		} catch (Exception e) {
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+				| InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			LOG.error("Error Enabling RangerKylinPlugin", e);
 		} finally {
 			deactivatePluginClassLoader();

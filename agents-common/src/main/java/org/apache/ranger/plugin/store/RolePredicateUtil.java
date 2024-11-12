@@ -19,8 +19,8 @@
 
 package org.apache.ranger.plugin.store;
 
-import org.apache.commons.collections.Predicate;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.Predicate;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.plugin.model.RangerRole;
 import org.apache.ranger.plugin.util.SearchFilter;
 
@@ -58,8 +58,7 @@ public class RolePredicateUtil extends AbstractPredicateUtil {
 
                 boolean ret = false;
 
-                if(object instanceof RangerRole) {
-                    RangerRole role = (RangerRole) object;
+                if(object instanceof RangerRole role) {
 
                     ret = StringUtils.equals(role.getName(), roleName);
 
@@ -100,8 +99,7 @@ public class RolePredicateUtil extends AbstractPredicateUtil {
 
                 boolean ret = false;
 
-                if(object instanceof RangerRole) {
-                    RangerRole role = (RangerRole) object;
+                if(object instanceof RangerRole role) {
 
                     ret = StringUtils.containsIgnoreCase(role.getName(), roleNamePartial);
 
@@ -142,8 +140,7 @@ public class RolePredicateUtil extends AbstractPredicateUtil {
 
                 boolean ret = false;
 
-                if(object instanceof RangerRole) {
-                    RangerRole role = (RangerRole) object;
+                if(object instanceof RangerRole role) {
 
                     ret = StringUtils.equals(roleId, role.getId().toString());
                 }
@@ -173,8 +170,7 @@ public class RolePredicateUtil extends AbstractPredicateUtil {
 
                 boolean ret = false;
 
-                if(object instanceof RangerRole) {
-                    RangerRole role = (RangerRole) object;
+                if(object instanceof RangerRole role) {
 
                     List<RangerRole.RoleMember> groups = role.getGroups();
 
@@ -211,8 +207,7 @@ public class RolePredicateUtil extends AbstractPredicateUtil {
 
                 boolean ret = false;
 
-                if(object instanceof RangerRole) {
-                    RangerRole role = (RangerRole) object;
+                if(object instanceof RangerRole role) {
 
                     List<RangerRole.RoleMember> groups = role.getGroups();
 
@@ -249,8 +244,7 @@ public class RolePredicateUtil extends AbstractPredicateUtil {
 
                 boolean ret = false;
 
-                if(object instanceof RangerRole) {
-                    RangerRole role = (RangerRole) object;
+                if(object instanceof RangerRole role) {
 
                     List<RangerRole.RoleMember> users = role.getUsers();
 
@@ -287,8 +281,7 @@ public class RolePredicateUtil extends AbstractPredicateUtil {
 
                 boolean ret = false;
 
-                if(object instanceof RangerRole) {
-                    RangerRole role = (RangerRole) object;
+                if(object instanceof RangerRole role) {
 
                     List<RangerRole.RoleMember> users = role.getUsers();
 

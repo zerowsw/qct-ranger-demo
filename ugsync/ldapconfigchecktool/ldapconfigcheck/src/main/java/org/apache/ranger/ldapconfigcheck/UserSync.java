@@ -266,10 +266,12 @@ public class UserSync {
                     noOfUsers++;
                 }
             } catch (NamingException ne) {
-                String msg = "Exception occured while discovering basic user properties:\n" +
-                        "ranger.usersync.ldap.user.nameattribute\n" +
-                        "ranger.usersync.ldap.user.objectclass\n" +
-                        "ranger.usersync.ldap.user.groupnameattribute\n";
+                String msg = """
+                        Exception occured while discovering basic user properties:
+                        ranger.usersync.ldap.user.nameattribute
+                        ranger.usersync.ldap.user.objectclass
+                        ranger.usersync.ldap.user.groupnameattribute
+                        """;
                 if ((config.getUserSearchBase() != null && !config.getUserSearchBase().isEmpty()) ||
                         (config.getUserSearchFilter() != null && !config.getUserSearchFilter().isEmpty())) {
                     throw new Exception(msg + "Please verify values for ranger.usersync.ldap.user.searchbase and ranger.usersync.ldap.user.searchfilter");
@@ -407,15 +409,19 @@ public class UserSync {
             }
 
         } catch (NamingException ne) {
-            String msg = "Exception occured while discovering user properties:\n" +
-                    "ranger.usersync.ldap.user.searchbase\n" +
-                    "ranger.usersync.ldap.user.searchfilter\n";
+            String msg = """
+                    Exception occured while discovering user properties:
+                    ranger.usersync.ldap.user.searchbase
+                    ranger.usersync.ldap.user.searchfilter
+                    """;
             if ((config.getUserNameAttribute() != null && !config.getUserNameAttribute().isEmpty()) ||
                     (config.getUserObjectClass() != null && !config.getUserObjectClass().isEmpty()) ||
                     (config.getGroupNameAttribute() != null && !config.getGroupNameAttribute().isEmpty())) {
-                throw new Exception("Please verify values for ranger.usersync.ldap.user.nameattribute, " +
-                        "ranger.usersync.ldap.user.objectclass, and" +
-                        "ranger.usersync.ldap.user.groupnameattribute");
+                throw new Exception("""
+                        Please verify values for ranger.usersync.ldap.user.nameattribute, \
+                        ranger.usersync.ldap.user.objectclass, and\
+                        ranger.usersync.ldap.user.groupnameattribute\
+                        """);
             } else {
                 throw new Exception(msg + ne);
             }
@@ -537,9 +543,7 @@ public class UserSync {
                 Control[] controls = ldapContext.getResponseControls();
                 if (controls != null) {
                     for (int i = 0; i < controls.length; i++) {
-                        if (controls[i] instanceof PagedResultsResponseControl) {
-                            PagedResultsResponseControl prrc =
-                                    (PagedResultsResponseControl)controls[i];
+                        if (controls[i] instanceof PagedResultsResponseControl prrc) {
                             cookie = prrc.getCookie();
                         }
                     }
@@ -561,11 +565,15 @@ public class UserSync {
                     (config.getGroupNameAttribute() != null && !config.getGroupNameAttribute().isEmpty()) ||
                     (config.getUserSearchBase() != null && !config.getUserSearchBase().isEmpty()) ||
                     (config.getUserSearchFilter() != null && !config.getUserSearchFilter().isEmpty())) {
-                throw new Exception("Please verify values for:\n ranger.usersync.ldap.user.nameattribute\n " +
-                        "ranger.usersync.ldap.user.objectclass\n" +
-                        "ranger.usersync.ldap.user.groupnameattribute\n" +
-                        "ranger.usersync.ldap.user.searchbase\n" +
-                        "ranger.usersync.ldap.user.searchfilter\n");
+                throw new Exception("""
+                        Please verify values for:
+                         ranger.usersync.ldap.user.nameattribute
+                         \
+                        ranger.usersync.ldap.user.objectclass
+                        ranger.usersync.ldap.user.groupnameattribute
+                        ranger.usersync.ldap.user.searchbase
+                        ranger.usersync.ldap.user.searchfilter
+                        """);
             } else {
                 throw new Exception(msg + ne);
             }
@@ -858,11 +866,15 @@ public class UserSync {
                     (config.getUserGroupMemberAttributeName() != null && !config.getUserGroupMemberAttributeName().isEmpty()) ||
                     (config.getGroupSearchBase() != null && !config.getGroupSearchBase().isEmpty()) ||
                     (config.getGroupSearchFilter() != null && !config.getGroupSearchFilter().isEmpty())) {
-                throw new Exception("Please verify values for:\n ranger.usersync.group.memberattributename\n " +
-                        "ranger.usersync.group.nameattribute\n" +
-                        "ranger.usersync.group.objectclass\n" +
-                        "ranger.usersync.group.searchbase\n" +
-                        "ranger.usersync.group.searchfilter\n");
+                throw new Exception("""
+                        Please verify values for:
+                         ranger.usersync.group.memberattributename
+                         \
+                        ranger.usersync.group.nameattribute
+                        ranger.usersync.group.objectclass
+                        ranger.usersync.group.searchbase
+                        ranger.usersync.group.searchfilter
+                        """);
             } else {
                 throw new Exception(msg + ne);
             }

@@ -1,0 +1,343 @@
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for org.apache.ranger:ranger-tools:jar:3.0.0-SNAPSHOT
+[WARNING] 'dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: org.apache.commons:commons-lang3:jar -> version 3.17.0 vs ${commons.lang3.version} @ line 30, column 29
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] ranger                                                             [pom]
+[INFO] Jdbc SQL Connector                                                 [jar]
+[INFO] Credential Support                                                 [jar]
+[INFO] Audit Component                                                    [jar]
+[INFO] ranger-plugin-classloader                                          [jar]
+[INFO] Common library for Plugins                                         [jar]
+[INFO] ranger-intg                                                        [jar]
+[INFO] Installer Support Component                                        [jar]
+[INFO] Credential Builder                                                 [jar]
+[INFO] Embedded Web Server Invoker                                        [jar]
+[INFO] Ranger HA Common Library                                           [jar]
+[INFO] ranger-metrics                                                     [jar]
+[INFO] Key Management Service                                             [jar]
+[INFO] HBase Security Plugin Shim                                         [jar]
+[INFO] HBase Security Plugin                                              [jar]
+[INFO] Hdfs Security Plugin                                               [jar]
+[INFO] Hive Security Plugin                                               [jar]
+[INFO] Knox Security Plugin Shim                                          [jar]
+[INFO] Knox Security Plugin                                               [jar]
+[INFO] Storm Security Plugin                                              [jar]
+[INFO] YARN Security Plugin                                               [jar]
+[INFO] Ozone Security Plugin                                              [jar]
+[INFO] Ranger Util                                                        [jar]
+[INFO] Unix Authentication Client                                         [jar]
+[INFO] User Group Synchronizer Util                                       [jar]
+[INFO] ranger-authn                                                       [jar]
+[INFO] Security Admin Web Application                                     [war]
+[INFO] KAFKA Security Plugin                                              [jar]
+[INFO] SOLR Security Plugin                                               [jar]
+[INFO] NiFi Security Plugin                                               [jar]
+[INFO] NiFi Registry Security Plugin                                      [jar]
+[INFO] Kudu Security Plugin                                               [jar]
+[INFO] Unix User Group Synchronizer                                       [jar]
+[INFO] Ldap Config Check Tool                                             [jar]
+[INFO] Unix Authentication Service                                        [jar]
+[INFO] KMS Security Plugin                                                [jar]
+[INFO] Tag Synchronizer                                                   [jar]
+[INFO] Hdfs Security Plugin Shim                                          [jar]
+[INFO] Hive Security Plugin Shim                                          [jar]
+[INFO] YARN Security Plugin Shim                                          [jar]
+[INFO] OZONE Security Plugin Shim                                         [jar]
+[INFO] Storm Security Plugin shim                                         [jar]
+[INFO] KAFKA Security Plugin Shim                                         [jar]
+[INFO] SOLR Security Plugin Shim                                          [jar]
+[INFO] Atlas Security Plugin Shim                                         [jar]
+[INFO] KMS Security Plugin Shim                                           [jar]
+[INFO] ranger-examples                                                    [pom]
+[INFO] Ranger Examples - Conditions and ContextEnrichers                  [jar]
+[INFO] Ranger Examples - SampleApp                                        [jar]
+[INFO] Ranger Examples - Ranger Plugin for SampleApp                      [jar]
+[INFO] sample-client                                                      [jar]
+[INFO] Apache Ranger Examples Distribution                                [jar]
+[INFO] Ranger Tools                                                       [jar]
+[INFO] Atlas Security Plugin                                              [jar]
+[INFO] SchemaRegistry Security Plugin                                     [jar]
+[INFO] Sqoop Security Plugin                                              [jar]
+[INFO] Sqoop Security Plugin Shim                                         [jar]
+[INFO] Kylin Security Plugin                                              [jar]
+[INFO] Kylin Security Plugin Shim                                         [jar]
+[INFO] Presto Security Plugin                                             [jar]
+[INFO] Presto Security Plugin Shim                                        [jar]
+[INFO] Elasticsearch Security Plugin Shim                                 [jar]
+[INFO] Elasticsearch Security Plugin                                      [jar]
+[INFO] Ranger Security Plugin for Trino                                   [jar]
+[INFO] Apache Ranger Distribution                                         [jar]
+[INFO] 
+[INFO] ----------------------< org.apache.ranger:ranger >----------------------
+[INFO] Building ranger 3.0.0-SNAPSHOT                                    [1/65]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ ranger ---
+[INFO] 
+[INFO] --- enforcer:3.5.0:enforce (enforce-maven-version) @ ranger ---
+[INFO] Skipping Rule Enforcement.
+[INFO] 
+[INFO] --- enforcer:3.5.0:enforce (enforce-java-version) @ ranger ---
+[INFO] Skipping Rule Enforcement.
+[INFO] 
+[INFO] --- enforcer:3.5.0:enforce (enforce-versions) @ ranger ---
+[INFO] Skipping Rule Enforcement.
+[INFO] 
+[INFO] --- jacoco:0.8.12:prepare-agent (jacoco-initialize) @ ranger ---
+[INFO] argLine set to -javaagent:/ramdisk/.m2/org/jacoco/org.jacoco.agent/0.8.12/org.jacoco.agent-0.8.12-runtime.jar=destfile=/ramdisk/code/target/jacoco.exec
+[INFO] 
+[INFO] --- remote-resources:3.2.0:process (process-resource-bundles) @ ranger ---
+[INFO] Preparing remote bundle org.apache.apache.resources:apache-jar-resource-bundle:1.5
+[INFO] Copying 3 resources from 1 bundle.
+[INFO] 
+[INFO] ----------------------< org.apache.ranger:jisql >-----------------------
+[INFO] Building Jdbc SQL Connector 3.0.0-SNAPSHOT                        [2/65]
+[INFO]   from jisql/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ jisql ---
+[INFO] 
+[INFO] --- enforcer:3.5.0:enforce (enforce-maven-version) @ jisql ---
+[INFO] Skipping Rule Enforcement.
+[INFO] 
+[INFO] --- enforcer:3.5.0:enforce (enforce-java-version) @ jisql ---
+[INFO] Skipping Rule Enforcement.
+[INFO] 
+[INFO] --- enforcer:3.5.0:enforce (enforce-versions) @ jisql ---
+[INFO] Skipping Rule Enforcement.
+[INFO] 
+[INFO] --- jacoco:0.8.12:prepare-agent (jacoco-initialize) @ jisql ---
+[INFO] argLine set to -javaagent:/ramdisk/.m2/org/jacoco/org.jacoco.agent/0.8.12/org.jacoco.agent-0.8.12-runtime.jar=destfile=/ramdisk/code/jisql/target/jacoco.exec
+[INFO] 
+[INFO] --- remote-resources:3.2.0:process (process-resource-bundles) @ jisql ---
+[INFO] Preparing remote bundle org.apache.apache.resources:apache-jar-resource-bundle:1.5
+[INFO] Copying 3 resources from 1 bundle.
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ jisql ---
+[INFO] skip non existing resourceDirectory /ramdisk/code/jisql/src/main/resources
+[INFO] Copying 3 resources from target/maven-shared-archive-resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ jisql ---
+[INFO] Compiling 7 source files with javac [forked debug release 17] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ jisql ---
+[INFO] skip non existing resourceDirectory /ramdisk/code/jisql/src/test/resources
+[INFO] Copying 3 resources from target/maven-shared-archive-resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ jisql ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] ---------------< org.apache.ranger:ranger-plugins-cred >----------------
+[INFO] Building Credential Support 3.0.0-SNAPSHOT                        [3/65]
+[INFO]   from agents-cred/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ ranger-plugins-cred ---
+[INFO] 
+[INFO] --- enforcer:3.5.0:enforce (enforce-maven-version) @ ranger-plugins-cred ---
+[INFO] Skipping Rule Enforcement.
+[INFO] 
+[INFO] --- enforcer:3.5.0:enforce (enforce-java-version) @ ranger-plugins-cred ---
+[INFO] Skipping Rule Enforcement.
+[INFO] 
+[INFO] --- enforcer:3.5.0:enforce (enforce-versions) @ ranger-plugins-cred ---
+[INFO] Skipping Rule Enforcement.
+[INFO] 
+[INFO] --- jacoco:0.8.12:prepare-agent (jacoco-initialize) @ ranger-plugins-cred ---
+[INFO] argLine set to -javaagent:/ramdisk/.m2/org/jacoco/org.jacoco.agent/0.8.12/org.jacoco.agent-0.8.12-runtime.jar=destfile=/ramdisk/code/agents-cred/target/jacoco.exec
+[INFO] 
+[INFO] --- remote-resources:3.2.0:process (process-resource-bundles) @ ranger-plugins-cred ---
+[INFO] Preparing remote bundle org.apache.apache.resources:apache-jar-resource-bundle:1.5
+[INFO] Copying 3 resources from 1 bundle.
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ ranger-plugins-cred ---
+[INFO] skip non existing resourceDirectory /ramdisk/code/agents-cred/src/main/resources
+[INFO] Copying 3 resources from target/maven-shared-archive-resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ ranger-plugins-cred ---
+[INFO] Compiling 5 source files with javac [forked debug release 17] to target/classes
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[70,4] error: illegal start of expression
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[105,8] error: illegal start of type
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[105,34] error: <identifier> expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[108,31] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[109,88] error: <identifier> expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[110,8] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[112,12] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[115,20] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[116,16] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[118,12] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[121,4] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[123,18] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[125,8] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[126,8] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[128,12] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[129,8] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[132,12] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[133,12] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[134,8] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[137,8] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[141,12] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[143,12] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[144,8] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[146,4] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[148,31] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[150,22] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[152,16] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[154,16] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[155,16] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[156,16] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[157,12] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[158,8] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[159,4] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[162,45] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[162,68] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[162,111] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[166,8] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[169,12] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[171,8] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[174,18] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[176,8] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[178,8] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[179,4] error: class, interface, enum, or record expected
+[INFO] 43 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for ranger 3.0.0-SNAPSHOT:
+[INFO] 
+[INFO] ranger ............................................. SUCCESS [  1.023 s]
+[INFO] Jdbc SQL Connector ................................. SUCCESS [  0.974 s]
+[INFO] Credential Support ................................. FAILURE [  1.189 s]
+[INFO] Audit Component .................................... SKIPPED
+[INFO] ranger-plugin-classloader .......................... SKIPPED
+[INFO] Common library for Plugins ......................... SKIPPED
+[INFO] ranger-intg ........................................ SKIPPED
+[INFO] Installer Support Component ........................ SKIPPED
+[INFO] Credential Builder ................................. SKIPPED
+[INFO] Embedded Web Server Invoker ........................ SKIPPED
+[INFO] Ranger HA Common Library ........................... SKIPPED
+[INFO] ranger-metrics ..................................... SKIPPED
+[INFO] Key Management Service ............................. SKIPPED
+[INFO] HBase Security Plugin Shim ......................... SKIPPED
+[INFO] HBase Security Plugin .............................. SKIPPED
+[INFO] Hdfs Security Plugin ............................... SKIPPED
+[INFO] Hive Security Plugin ............................... SKIPPED
+[INFO] Knox Security Plugin Shim .......................... SKIPPED
+[INFO] Knox Security Plugin ............................... SKIPPED
+[INFO] Storm Security Plugin .............................. SKIPPED
+[INFO] YARN Security Plugin ............................... SKIPPED
+[INFO] Ozone Security Plugin .............................. SKIPPED
+[INFO] Ranger Util ........................................ SKIPPED
+[INFO] Unix Authentication Client ......................... SKIPPED
+[INFO] User Group Synchronizer Util ....................... SKIPPED
+[INFO] ranger-authn ....................................... SKIPPED
+[INFO] Security Admin Web Application ..................... SKIPPED
+[INFO] KAFKA Security Plugin .............................. SKIPPED
+[INFO] SOLR Security Plugin ............................... SKIPPED
+[INFO] NiFi Security Plugin ............................... SKIPPED
+[INFO] NiFi Registry Security Plugin ...................... SKIPPED
+[INFO] Kudu Security Plugin ............................... SKIPPED
+[INFO] Unix User Group Synchronizer ....................... SKIPPED
+[INFO] Ldap Config Check Tool ............................. SKIPPED
+[INFO] Unix Authentication Service ........................ SKIPPED
+[INFO] KMS Security Plugin ................................ SKIPPED
+[INFO] Tag Synchronizer ................................... SKIPPED
+[INFO] Hdfs Security Plugin Shim .......................... SKIPPED
+[INFO] Hive Security Plugin Shim .......................... SKIPPED
+[INFO] YARN Security Plugin Shim .......................... SKIPPED
+[INFO] OZONE Security Plugin Shim ......................... SKIPPED
+[INFO] Storm Security Plugin shim ......................... SKIPPED
+[INFO] KAFKA Security Plugin Shim ......................... SKIPPED
+[INFO] SOLR Security Plugin Shim .......................... SKIPPED
+[INFO] Atlas Security Plugin Shim ......................... SKIPPED
+[INFO] KMS Security Plugin Shim ........................... SKIPPED
+[INFO] ranger-examples .................................... SKIPPED
+[INFO] Ranger Examples - Conditions and ContextEnrichers .. SKIPPED
+[INFO] Ranger Examples - SampleApp ........................ SKIPPED
+[INFO] Ranger Examples - Ranger Plugin for SampleApp ...... SKIPPED
+[INFO] sample-client ...................................... SKIPPED
+[INFO] Apache Ranger Examples Distribution ................ SKIPPED
+[INFO] Ranger Tools ....................................... SKIPPED
+[INFO] Atlas Security Plugin .............................. SKIPPED
+[INFO] SchemaRegistry Security Plugin ..................... SKIPPED
+[INFO] Sqoop Security Plugin .............................. SKIPPED
+[INFO] Sqoop Security Plugin Shim ......................... SKIPPED
+[INFO] Kylin Security Plugin .............................. SKIPPED
+[INFO] Kylin Security Plugin Shim ......................... SKIPPED
+[INFO] Presto Security Plugin ............................. SKIPPED
+[INFO] Presto Security Plugin Shim ........................ SKIPPED
+[INFO] Elasticsearch Security Plugin Shim ................. SKIPPED
+[INFO] Elasticsearch Security Plugin ...................... SKIPPED
+[INFO] Ranger Security Plugin for Trino ................... SKIPPED
+[INFO] Apache Ranger Distribution ......................... SKIPPED
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  3.771 s
+[INFO] Finished at: 2024-11-12T22:13:17Z
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.13.0:compile (default-compile) on project ranger-plugins-cred: Compilation failure: Compilation failure: 
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[70,4] error: illegal start of expression
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[105,8] error: illegal start of type
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[105,34] error: <identifier> expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[108,31] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[109,88] error: <identifier> expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[110,8] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[112,12] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[115,20] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[116,16] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[118,12] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[121,4] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[123,18] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[125,8] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[126,8] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[128,12] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[129,8] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[132,12] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[133,12] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[134,8] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[137,8] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[141,12] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[143,12] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[144,8] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[146,4] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[148,31] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[150,22] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[152,16] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[154,16] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[155,16] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[156,16] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[157,12] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[158,8] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[159,4] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[162,45] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[162,68] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[162,111] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[166,8] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[169,12] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[171,8] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[174,18] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[176,8] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[178,8] error: class, interface, enum, or record expected
+[ERROR] /ramdisk/code/agents-cred/src/main/java/org/apache/ranger/authorization/credutils/CredentialsProviderUtil.java:[179,4] error: class, interface, enum, or record expected
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :ranger-plugins-cred

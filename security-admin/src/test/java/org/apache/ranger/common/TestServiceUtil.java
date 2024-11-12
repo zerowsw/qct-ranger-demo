@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.ranger.biz.ServiceDBStore;
 import org.apache.ranger.db.RangerDaoManager;
@@ -47,15 +47,15 @@ import org.apache.ranger.view.VXPermObj;
 import org.apache.ranger.view.VXPolicy;
 import org.apache.ranger.view.VXRepository;
 import org.apache.ranger.view.VXResource;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class TestServiceUtil {
 
         @InjectMocks
@@ -84,15 +84,15 @@ public class TestServiceUtil {
                 Mockito.when(svcStore.getServiceByName("hdfs")).thenReturn(expectedRangerService);
                 RangerService actualRangerService = serviceUtil.getServiceByName("hdfs");
 
-                Assert.assertEquals(expectedRangerService.getName(), actualRangerService.getName());
-                Assert.assertEquals(expectedRangerService.getId(), actualRangerService.getId());
+                Assertions.assertEquals(expectedRangerService.getName(), actualRangerService.getName());
+                Assertions.assertEquals(expectedRangerService.getId(), actualRangerService.getId());
         }
 
         @Test
         public void testToRangerServiceForNull(){
                 VXAsset vXAsset = null;
                 RangerService actualRangerService = serviceUtil.toRangerService(vXAsset);
-                Assert.assertNull(actualRangerService);
+                Assertions.assertNull(actualRangerService);
 
         }
         @Test
@@ -118,11 +118,11 @@ public class TestServiceUtil {
 
                 RangerService actualRangerService = serviceUtil.toRangerService(vXAsset);
 
-                Assert.assertNotNull(actualRangerService);
-                Assert.assertEquals(actualRangerService.getId(), expectedRangerService.getId());
-                Assert.assertEquals(actualRangerService.getName(), expectedRangerService.getName());
-                Assert.assertEquals(actualRangerService.getDescription(), expectedRangerService.getDescription());
-                Assert.assertTrue(actualRangerService.getIsEnabled());
+                Assertions.assertNotNull(actualRangerService);
+                Assertions.assertEquals(actualRangerService.getId(), expectedRangerService.getId());
+                Assertions.assertEquals(actualRangerService.getName(), expectedRangerService.getName());
+                Assertions.assertEquals(actualRangerService.getDescription(), expectedRangerService.getDescription());
+                Assertions.assertTrue(actualRangerService.getIsEnabled());
 
 
         }
@@ -130,7 +130,7 @@ public class TestServiceUtil {
         public void testToVXAssetForNull(){
                 RangerService rangerService = null;
                 VXAsset actualVXAsset = serviceUtil.toVXAsset(rangerService);
-                Assert.assertNull(actualVXAsset);
+                Assertions.assertNull(actualVXAsset);
 
         }
 
@@ -161,11 +161,11 @@ public class TestServiceUtil {
 
                 VXAsset actualVXAsset = serviceUtil.toVXAsset(rangerService);
 
-                Assert.assertNotNull(actualVXAsset);
-                Assert.assertEquals(actualVXAsset.getId(), expectedVXAssesst.getId());
-                Assert.assertEquals(actualVXAsset.getName(), expectedVXAssesst.getName());
-                Assert.assertEquals(actualVXAsset.getDescription(), expectedVXAssesst.getDescription());
-                Assert.assertEquals(actualVXAsset.getActiveStatus(), RangerCommonEnums.STATUS_ENABLED);
+                Assertions.assertNotNull(actualVXAsset);
+                Assertions.assertEquals(actualVXAsset.getId(), expectedVXAssesst.getId());
+                Assertions.assertEquals(actualVXAsset.getName(), expectedVXAssesst.getName());
+                Assertions.assertEquals(actualVXAsset.getDescription(), expectedVXAssesst.getDescription());
+                Assertions.assertEquals(actualVXAsset.getActiveStatus(), RangerCommonEnums.STATUS_ENABLED);
 
         }
 
@@ -174,7 +174,7 @@ public class TestServiceUtil {
         public void testToVXRepositoryForNull(){
                 RangerService rangerService = null;
                 VXRepository actualvXRepository = serviceUtil.toVXRepository(rangerService);
-                Assert.assertNull(actualvXRepository);
+                Assertions.assertNull(actualvXRepository);
 
         }
 
@@ -205,12 +205,12 @@ public class TestServiceUtil {
                 Mockito.when(jsonUtil.readMapToString(map)).thenReturn("{config : hiveConfig}");
 
                 VXRepository actualvXRepository = serviceUtil.toVXRepository(rangerService);
-                Assert.assertNotNull(actualvXRepository);
-                Assert.assertEquals(actualvXRepository.getRepositoryType(), expectedVXRepository.getRepositoryType());
-                Assert.assertEquals(actualvXRepository.getName(), expectedVXRepository.getName());
-                Assert.assertEquals(actualvXRepository.getDescription(), expectedVXRepository.getDescription());
-                Assert.assertTrue(actualvXRepository.getIsActive());
-                Assert.assertEquals(actualvXRepository.getVersion(), expectedVXRepository.getVersion());
+                Assertions.assertNotNull(actualvXRepository);
+                Assertions.assertEquals(actualvXRepository.getRepositoryType(), expectedVXRepository.getRepositoryType());
+                Assertions.assertEquals(actualvXRepository.getName(), expectedVXRepository.getName());
+                Assertions.assertEquals(actualvXRepository.getDescription(), expectedVXRepository.getDescription());
+                Assertions.assertTrue(actualvXRepository.getIsActive());
+                Assertions.assertEquals(actualvXRepository.getVersion(), expectedVXRepository.getVersion());
 
         }
 
@@ -219,7 +219,7 @@ public class TestServiceUtil {
                 VXResource resource = null;
                 RangerService rangerService = null;
                 RangerPolicy actualRangerPolicy = serviceUtil.toRangerPolicy(resource, rangerService);
-                Assert.assertNull(actualRangerPolicy);
+                Assertions.assertNull(actualRangerPolicy);
         }
 
         @Test
@@ -271,12 +271,12 @@ public class TestServiceUtil {
 
                 RangerPolicy actualRangerPolicy = serviceUtil.toRangerPolicy(resource, rangerService);
 
-                Assert.assertNotNull(actualRangerPolicy);
-                Assert.assertEquals(expectedRangerPolicy.getId(), actualRangerPolicy.getId());
-                Assert.assertEquals(expectedRangerPolicy.getName(), actualRangerPolicy.getName());
-                Assert.assertEquals(expectedRangerPolicy.getService(), actualRangerPolicy.getService());
-                Assert.assertEquals(expectedRangerPolicy.getDescription(), actualRangerPolicy.getDescription());
-                Assert.assertEquals(expectedRangerPolicy.getResources(), actualRangerPolicy.getResources());
+                Assertions.assertNotNull(actualRangerPolicy);
+                Assertions.assertEquals(expectedRangerPolicy.getId(), actualRangerPolicy.getId());
+                Assertions.assertEquals(expectedRangerPolicy.getName(), actualRangerPolicy.getName());
+                Assertions.assertEquals(expectedRangerPolicy.getService(), actualRangerPolicy.getService());
+                Assertions.assertEquals(expectedRangerPolicy.getDescription(), actualRangerPolicy.getDescription());
+                Assertions.assertEquals(expectedRangerPolicy.getResources(), actualRangerPolicy.getResources());
 
         }
 
@@ -330,12 +330,12 @@ public class TestServiceUtil {
 
                 RangerPolicy actualRangerPolicy = serviceUtil.toRangerPolicy(resource, rangerService);
 
-                Assert.assertNotNull(actualRangerPolicy);
-                Assert.assertEquals(expectedRangerPolicy.getId(), actualRangerPolicy.getId());
-                Assert.assertEquals(expectedRangerPolicy.getName(), actualRangerPolicy.getName());
-                Assert.assertEquals(expectedRangerPolicy.getService(), actualRangerPolicy.getService());
-                Assert.assertEquals(expectedRangerPolicy.getDescription(), actualRangerPolicy.getDescription());
-                Assert.assertEquals(expectedRangerPolicy.getResources(), actualRangerPolicy.getResources());
+                Assertions.assertNotNull(actualRangerPolicy);
+                Assertions.assertEquals(expectedRangerPolicy.getId(), actualRangerPolicy.getId());
+                Assertions.assertEquals(expectedRangerPolicy.getName(), actualRangerPolicy.getName());
+                Assertions.assertEquals(expectedRangerPolicy.getService(), actualRangerPolicy.getService());
+                Assertions.assertEquals(expectedRangerPolicy.getDescription(), actualRangerPolicy.getDescription());
+                Assertions.assertEquals(expectedRangerPolicy.getResources(), actualRangerPolicy.getResources());
 
 
         }
@@ -390,12 +390,12 @@ public class TestServiceUtil {
 
                 RangerPolicy actualRangerPolicy = serviceUtil.toRangerPolicy(resource, rangerService);
 
-                Assert.assertNotNull(actualRangerPolicy);
-                Assert.assertEquals(expectedRangerPolicy.getId(), actualRangerPolicy.getId());
-                Assert.assertEquals(expectedRangerPolicy.getName(), actualRangerPolicy.getName());
-                Assert.assertEquals(expectedRangerPolicy.getService(), actualRangerPolicy.getService());
-                Assert.assertEquals(expectedRangerPolicy.getDescription(), actualRangerPolicy.getDescription());
-                Assert.assertEquals(expectedRangerPolicy.getResources(), actualRangerPolicy.getResources());
+                Assertions.assertNotNull(actualRangerPolicy);
+                Assertions.assertEquals(expectedRangerPolicy.getId(), actualRangerPolicy.getId());
+                Assertions.assertEquals(expectedRangerPolicy.getName(), actualRangerPolicy.getName());
+                Assertions.assertEquals(expectedRangerPolicy.getService(), actualRangerPolicy.getService());
+                Assertions.assertEquals(expectedRangerPolicy.getDescription(), actualRangerPolicy.getDescription());
+                Assertions.assertEquals(expectedRangerPolicy.getResources(), actualRangerPolicy.getResources());
 
         }
 
@@ -449,12 +449,12 @@ public class TestServiceUtil {
 
                 RangerPolicy actualRangerPolicy = serviceUtil.toRangerPolicy(resource, rangerService);
 
-                Assert.assertNotNull(actualRangerPolicy);
-                Assert.assertEquals(expectedRangerPolicy.getId(), actualRangerPolicy.getId());
-                Assert.assertEquals(expectedRangerPolicy.getName(), actualRangerPolicy.getName());
-                Assert.assertEquals(expectedRangerPolicy.getService(), actualRangerPolicy.getService());
-                Assert.assertEquals(expectedRangerPolicy.getDescription(), actualRangerPolicy.getDescription());
-                Assert.assertEquals(expectedRangerPolicy.getResources(), actualRangerPolicy.getResources());
+                Assertions.assertNotNull(actualRangerPolicy);
+                Assertions.assertEquals(expectedRangerPolicy.getId(), actualRangerPolicy.getId());
+                Assertions.assertEquals(expectedRangerPolicy.getName(), actualRangerPolicy.getName());
+                Assertions.assertEquals(expectedRangerPolicy.getService(), actualRangerPolicy.getService());
+                Assertions.assertEquals(expectedRangerPolicy.getDescription(), actualRangerPolicy.getDescription());
+                Assertions.assertEquals(expectedRangerPolicy.getResources(), actualRangerPolicy.getResources());
 
         }
 
@@ -508,12 +508,12 @@ public class TestServiceUtil {
 
                 RangerPolicy actualRangerPolicy = serviceUtil.toRangerPolicy(resource, rangerService);
 
-                Assert.assertNotNull(actualRangerPolicy);
-                Assert.assertEquals(expectedRangerPolicy.getId(), actualRangerPolicy.getId());
-                Assert.assertEquals(expectedRangerPolicy.getName(), actualRangerPolicy.getName());
-                Assert.assertEquals(expectedRangerPolicy.getService(), actualRangerPolicy.getService());
-                Assert.assertEquals(expectedRangerPolicy.getDescription(), actualRangerPolicy.getDescription());
-                Assert.assertEquals(expectedRangerPolicy.getResources(), actualRangerPolicy.getResources());
+                Assertions.assertNotNull(actualRangerPolicy);
+                Assertions.assertEquals(expectedRangerPolicy.getId(), actualRangerPolicy.getId());
+                Assertions.assertEquals(expectedRangerPolicy.getName(), actualRangerPolicy.getName());
+                Assertions.assertEquals(expectedRangerPolicy.getService(), actualRangerPolicy.getService());
+                Assertions.assertEquals(expectedRangerPolicy.getDescription(), actualRangerPolicy.getDescription());
+                Assertions.assertEquals(expectedRangerPolicy.getResources(), actualRangerPolicy.getResources());
 
         }
 
@@ -567,12 +567,12 @@ public class TestServiceUtil {
 
                 RangerPolicy actualRangerPolicy = serviceUtil.toRangerPolicy(resource, rangerService);
 
-                Assert.assertNotNull(actualRangerPolicy);
-                Assert.assertEquals(expectedRangerPolicy.getId(), actualRangerPolicy.getId());
-                Assert.assertEquals(expectedRangerPolicy.getName(), actualRangerPolicy.getName());
-                Assert.assertEquals(expectedRangerPolicy.getService(), actualRangerPolicy.getService());
-                Assert.assertEquals(expectedRangerPolicy.getDescription(), actualRangerPolicy.getDescription());
-                Assert.assertEquals(expectedRangerPolicy.getResources(), actualRangerPolicy.getResources());
+                Assertions.assertNotNull(actualRangerPolicy);
+                Assertions.assertEquals(expectedRangerPolicy.getId(), actualRangerPolicy.getId());
+                Assertions.assertEquals(expectedRangerPolicy.getName(), actualRangerPolicy.getName());
+                Assertions.assertEquals(expectedRangerPolicy.getService(), actualRangerPolicy.getService());
+                Assertions.assertEquals(expectedRangerPolicy.getDescription(), actualRangerPolicy.getDescription());
+                Assertions.assertEquals(expectedRangerPolicy.getResources(), actualRangerPolicy.getResources());
 
         }
 
@@ -626,12 +626,12 @@ public class TestServiceUtil {
 
                 RangerPolicy actualRangerPolicy = serviceUtil.toRangerPolicy(resource, rangerService);
 
-                Assert.assertNotNull(actualRangerPolicy);
-                Assert.assertEquals(expectedRangerPolicy.getId(), actualRangerPolicy.getId());
-                Assert.assertEquals(expectedRangerPolicy.getName(), actualRangerPolicy.getName());
-                Assert.assertEquals(expectedRangerPolicy.getService(), actualRangerPolicy.getService());
-                Assert.assertEquals(expectedRangerPolicy.getDescription(), actualRangerPolicy.getDescription());
-                Assert.assertEquals(expectedRangerPolicy.getResources(), actualRangerPolicy.getResources());
+                Assertions.assertNotNull(actualRangerPolicy);
+                Assertions.assertEquals(expectedRangerPolicy.getId(), actualRangerPolicy.getId());
+                Assertions.assertEquals(expectedRangerPolicy.getName(), actualRangerPolicy.getName());
+                Assertions.assertEquals(expectedRangerPolicy.getService(), actualRangerPolicy.getService());
+                Assertions.assertEquals(expectedRangerPolicy.getDescription(), actualRangerPolicy.getDescription());
+                Assertions.assertEquals(expectedRangerPolicy.getResources(), actualRangerPolicy.getResources());
 
         }
 
@@ -685,12 +685,12 @@ public class TestServiceUtil {
 
                 RangerPolicy actualRangerPolicy = serviceUtil.toRangerPolicy(resource, rangerService);
 
-                Assert.assertNotNull(actualRangerPolicy);
-                Assert.assertEquals(expectedRangerPolicy.getId(), actualRangerPolicy.getId());
-                Assert.assertEquals(expectedRangerPolicy.getName(), actualRangerPolicy.getName());
-                Assert.assertEquals(expectedRangerPolicy.getService(), actualRangerPolicy.getService());
-                Assert.assertEquals(expectedRangerPolicy.getDescription(), actualRangerPolicy.getDescription());
-                Assert.assertEquals(expectedRangerPolicy.getResources(), actualRangerPolicy.getResources());
+                Assertions.assertNotNull(actualRangerPolicy);
+                Assertions.assertEquals(expectedRangerPolicy.getId(), actualRangerPolicy.getId());
+                Assertions.assertEquals(expectedRangerPolicy.getName(), actualRangerPolicy.getName());
+                Assertions.assertEquals(expectedRangerPolicy.getService(), actualRangerPolicy.getService());
+                Assertions.assertEquals(expectedRangerPolicy.getDescription(), actualRangerPolicy.getDescription());
+                Assertions.assertEquals(expectedRangerPolicy.getResources(), actualRangerPolicy.getResources());
 
         }
 
@@ -744,12 +744,12 @@ public class TestServiceUtil {
 
                 RangerPolicy actualRangerPolicy = serviceUtil.toRangerPolicy(resource, rangerService);
 
-                Assert.assertNotNull(actualRangerPolicy);
-                Assert.assertEquals(expectedRangerPolicy.getId(), actualRangerPolicy.getId());
-                Assert.assertEquals(expectedRangerPolicy.getName(), actualRangerPolicy.getName());
-                Assert.assertEquals(expectedRangerPolicy.getService(), actualRangerPolicy.getService());
-                Assert.assertEquals(expectedRangerPolicy.getDescription(), actualRangerPolicy.getDescription());
-                Assert.assertEquals(expectedRangerPolicy.getResources(), actualRangerPolicy.getResources());
+                Assertions.assertNotNull(actualRangerPolicy);
+                Assertions.assertEquals(expectedRangerPolicy.getId(), actualRangerPolicy.getId());
+                Assertions.assertEquals(expectedRangerPolicy.getName(), actualRangerPolicy.getName());
+                Assertions.assertEquals(expectedRangerPolicy.getService(), actualRangerPolicy.getService());
+                Assertions.assertEquals(expectedRangerPolicy.getDescription(), actualRangerPolicy.getDescription());
+                Assertions.assertEquals(expectedRangerPolicy.getResources(), actualRangerPolicy.getResources());
 
         }
 
@@ -834,12 +834,12 @@ public class TestServiceUtil {
 
                 RangerPolicy actualRangerPolicy = serviceUtil.toRangerPolicy(resource, rangerService);
 
-                Assert.assertNotNull(actualRangerPolicy);
-                Assert.assertEquals(expectedRangerPolicy.getId(), actualRangerPolicy.getId());
-                Assert.assertEquals(expectedRangerPolicy.getName(), actualRangerPolicy.getName());
-                Assert.assertEquals(expectedRangerPolicy.getService(), actualRangerPolicy.getService());
-                Assert.assertEquals(expectedRangerPolicy.getDescription(), actualRangerPolicy.getDescription());
-                Assert.assertEquals(expectedRangerPolicy.getPolicyItems(), actualRangerPolicy.getPolicyItems());
+                Assertions.assertNotNull(actualRangerPolicy);
+                Assertions.assertEquals(expectedRangerPolicy.getId(), actualRangerPolicy.getId());
+                Assertions.assertEquals(expectedRangerPolicy.getName(), actualRangerPolicy.getName());
+                Assertions.assertEquals(expectedRangerPolicy.getService(), actualRangerPolicy.getService());
+                Assertions.assertEquals(expectedRangerPolicy.getDescription(), actualRangerPolicy.getDescription());
+                Assertions.assertEquals(expectedRangerPolicy.getPolicyItems(), actualRangerPolicy.getPolicyItems());
 
         }
 
@@ -852,7 +852,7 @@ public class TestServiceUtil {
 
                 VXResource vXResource = serviceUtil.toVXResource(policy, rangerService);
 
-                Assert.assertNull(vXResource);
+                Assertions.assertNull(vXResource);
 
         }
 
@@ -868,7 +868,7 @@ public class TestServiceUtil {
 
                 VXResource vXResource = serviceUtil.toVXResource(policy, rangerService);
 
-                Assert.assertNull(vXResource);
+                Assertions.assertNull(vXResource);
 
         }
 
@@ -924,16 +924,16 @@ public class TestServiceUtil {
                 VXResource actualVXResource = serviceUtil.toVXResource(policy, rangerService);
 
 
-                Assert.assertNotNull(actualVXResource);
-                Assert.assertEquals(expectedVXResource.getName(), actualVXResource.getName());
-                Assert.assertEquals(expectedVXResource.getGuid(), actualVXResource.getGuid());
-                Assert.assertEquals(expectedVXResource.getPolicyName(), actualVXResource.getPolicyName());
-                Assert.assertEquals(expectedVXResource.getResourceType(), actualVXResource.getResourceType());
-                Assert.assertEquals(expectedVXResource.getDescription(), actualVXResource.getDescription());
-                Assert.assertEquals(expectedVXResource.getAssetName(), actualVXResource.getAssetName());
-                Assert.assertEquals(expectedVXResource.getAssetType(), actualVXResource.getAssetType());
-                Assert.assertEquals(expectedVXResource.getAuditList().get(0).getResourceId(), actualVXResource.getAuditList().get(0).getResourceId());
-                Assert.assertEquals(expectedVXResource.getAuditList().get(0).getAuditType(), actualVXResource.getAuditList().get(0).getAuditType());
+                Assertions.assertNotNull(actualVXResource);
+                Assertions.assertEquals(expectedVXResource.getName(), actualVXResource.getName());
+                Assertions.assertEquals(expectedVXResource.getGuid(), actualVXResource.getGuid());
+                Assertions.assertEquals(expectedVXResource.getPolicyName(), actualVXResource.getPolicyName());
+                Assertions.assertEquals(expectedVXResource.getResourceType(), actualVXResource.getResourceType());
+                Assertions.assertEquals(expectedVXResource.getDescription(), actualVXResource.getDescription());
+                Assertions.assertEquals(expectedVXResource.getAssetName(), actualVXResource.getAssetName());
+                Assertions.assertEquals(expectedVXResource.getAssetType(), actualVXResource.getAssetType());
+                Assertions.assertEquals(expectedVXResource.getAuditList().get(0).getResourceId(), actualVXResource.getAuditList().get(0).getResourceId());
+                Assertions.assertEquals(expectedVXResource.getAuditList().get(0).getAuditType(), actualVXResource.getAuditList().get(0).getAuditType());
 
 
         }
@@ -1018,22 +1018,22 @@ public class TestServiceUtil {
                 VXResource actualVXResource = serviceUtil.toVXResource(policy, rangerService);
 
 
-                Assert.assertNotNull(actualVXResource);
-                Assert.assertEquals(expectedVXResource.getName(), actualVXResource.getName());
-                Assert.assertEquals(expectedVXResource.getGuid(), actualVXResource.getGuid());
-                Assert.assertEquals(expectedVXResource.getPolicyName(), actualVXResource.getPolicyName());
-                Assert.assertEquals(expectedVXResource.getResourceType(), actualVXResource.getResourceType());
-                Assert.assertEquals(expectedVXResource.getDescription(), actualVXResource.getDescription());
-                Assert.assertEquals(expectedVXResource.getAssetName(), actualVXResource.getAssetName());
-                Assert.assertEquals(expectedVXResource.getAssetType(), actualVXResource.getAssetType());
-                Assert.assertEquals(expectedVXResource.getResourceStatus(), actualVXResource.getResourceStatus());
-                Assert.assertEquals(expectedVXResource.getTableType(), actualVXResource.getTableType());
-                Assert.assertEquals(expectedVXResource.getColumnType(), actualVXResource.getColumnType());
-                Assert.assertEquals(expectedVXResource.getTables(), actualVXResource.getTables());
-                Assert.assertEquals(expectedVXResource.getColumns(), actualVXResource.getColumns());
-                Assert.assertEquals(expectedVXResource.getColumnFamilies(), actualVXResource.getColumnFamilies());
-                Assert.assertEquals(expectedVXResource.getAuditList().get(0).getResourceId(), actualVXResource.getAuditList().get(0).getResourceId());
-                Assert.assertEquals(expectedVXResource.getAuditList().get(0).getAuditType(), actualVXResource.getAuditList().get(0).getAuditType());
+                Assertions.assertNotNull(actualVXResource);
+                Assertions.assertEquals(expectedVXResource.getName(), actualVXResource.getName());
+                Assertions.assertEquals(expectedVXResource.getGuid(), actualVXResource.getGuid());
+                Assertions.assertEquals(expectedVXResource.getPolicyName(), actualVXResource.getPolicyName());
+                Assertions.assertEquals(expectedVXResource.getResourceType(), actualVXResource.getResourceType());
+                Assertions.assertEquals(expectedVXResource.getDescription(), actualVXResource.getDescription());
+                Assertions.assertEquals(expectedVXResource.getAssetName(), actualVXResource.getAssetName());
+                Assertions.assertEquals(expectedVXResource.getAssetType(), actualVXResource.getAssetType());
+                Assertions.assertEquals(expectedVXResource.getResourceStatus(), actualVXResource.getResourceStatus());
+                Assertions.assertEquals(expectedVXResource.getTableType(), actualVXResource.getTableType());
+                Assertions.assertEquals(expectedVXResource.getColumnType(), actualVXResource.getColumnType());
+                Assertions.assertEquals(expectedVXResource.getTables(), actualVXResource.getTables());
+                Assertions.assertEquals(expectedVXResource.getColumns(), actualVXResource.getColumns());
+                Assertions.assertEquals(expectedVXResource.getColumnFamilies(), actualVXResource.getColumnFamilies());
+                Assertions.assertEquals(expectedVXResource.getAuditList().get(0).getResourceId(), actualVXResource.getAuditList().get(0).getResourceId());
+                Assertions.assertEquals(expectedVXResource.getAuditList().get(0).getAuditType(), actualVXResource.getAuditList().get(0).getAuditType());
 
 
         }
@@ -1118,22 +1118,22 @@ public class TestServiceUtil {
                 VXResource actualVXResource = serviceUtil.toVXResource(policy, rangerService);
 
 
-                Assert.assertNotNull(actualVXResource);
-                Assert.assertEquals(expectedVXResource.getName(), actualVXResource.getName());
-                Assert.assertEquals(expectedVXResource.getGuid(), actualVXResource.getGuid());
-                Assert.assertEquals(expectedVXResource.getPolicyName(), actualVXResource.getPolicyName());
-                Assert.assertEquals(expectedVXResource.getResourceType(), actualVXResource.getResourceType());
-                Assert.assertEquals(expectedVXResource.getDescription(), actualVXResource.getDescription());
-                Assert.assertEquals(expectedVXResource.getAssetName(), actualVXResource.getAssetName());
-                Assert.assertEquals(expectedVXResource.getAssetType(), actualVXResource.getAssetType());
-                Assert.assertEquals(expectedVXResource.getResourceStatus(), actualVXResource.getResourceStatus());
-                Assert.assertEquals(expectedVXResource.getTableType(), actualVXResource.getTableType());
-                Assert.assertEquals(expectedVXResource.getColumnType(), actualVXResource.getColumnType());
-                Assert.assertEquals(expectedVXResource.getTables(), actualVXResource.getTables());
-                Assert.assertEquals(expectedVXResource.getColumns(), actualVXResource.getColumns());
-                Assert.assertEquals(expectedVXResource.getDatabases(), actualVXResource.getDatabases());
-                Assert.assertEquals(expectedVXResource.getAuditList().get(0).getResourceId(), actualVXResource.getAuditList().get(0).getResourceId());
-                Assert.assertEquals(expectedVXResource.getAuditList().get(0).getAuditType(), actualVXResource.getAuditList().get(0).getAuditType());
+                Assertions.assertNotNull(actualVXResource);
+                Assertions.assertEquals(expectedVXResource.getName(), actualVXResource.getName());
+                Assertions.assertEquals(expectedVXResource.getGuid(), actualVXResource.getGuid());
+                Assertions.assertEquals(expectedVXResource.getPolicyName(), actualVXResource.getPolicyName());
+                Assertions.assertEquals(expectedVXResource.getResourceType(), actualVXResource.getResourceType());
+                Assertions.assertEquals(expectedVXResource.getDescription(), actualVXResource.getDescription());
+                Assertions.assertEquals(expectedVXResource.getAssetName(), actualVXResource.getAssetName());
+                Assertions.assertEquals(expectedVXResource.getAssetType(), actualVXResource.getAssetType());
+                Assertions.assertEquals(expectedVXResource.getResourceStatus(), actualVXResource.getResourceStatus());
+                Assertions.assertEquals(expectedVXResource.getTableType(), actualVXResource.getTableType());
+                Assertions.assertEquals(expectedVXResource.getColumnType(), actualVXResource.getColumnType());
+                Assertions.assertEquals(expectedVXResource.getTables(), actualVXResource.getTables());
+                Assertions.assertEquals(expectedVXResource.getColumns(), actualVXResource.getColumns());
+                Assertions.assertEquals(expectedVXResource.getDatabases(), actualVXResource.getDatabases());
+                Assertions.assertEquals(expectedVXResource.getAuditList().get(0).getResourceId(), actualVXResource.getAuditList().get(0).getResourceId());
+                Assertions.assertEquals(expectedVXResource.getAuditList().get(0).getAuditType(), actualVXResource.getAuditList().get(0).getAuditType());
 
 
         }
@@ -1199,19 +1199,19 @@ public class TestServiceUtil {
                 VXResource actualVXResource = serviceUtil.toVXResource(policy, rangerService);
 
 
-                Assert.assertNotNull(actualVXResource);
-                Assert.assertEquals(expectedVXResource.getName(), actualVXResource.getName());
-                Assert.assertEquals(expectedVXResource.getGuid(), actualVXResource.getGuid());
-                Assert.assertEquals(expectedVXResource.getPolicyName(), actualVXResource.getPolicyName());
-                Assert.assertEquals(expectedVXResource.getResourceType(), actualVXResource.getResourceType());
-                Assert.assertEquals(expectedVXResource.getDescription(), actualVXResource.getDescription());
-                Assert.assertEquals(expectedVXResource.getAssetName(), actualVXResource.getAssetName());
-                Assert.assertEquals(expectedVXResource.getAssetType(), actualVXResource.getAssetType());
-                Assert.assertEquals(expectedVXResource.getResourceStatus(), actualVXResource.getResourceStatus());
-                Assert.assertEquals(expectedVXResource.getTopologies(), actualVXResource.getTopologies());
-                Assert.assertEquals(expectedVXResource.getServices(), actualVXResource.getServices());
-                Assert.assertEquals(expectedVXResource.getAuditList().get(0).getResourceId(), actualVXResource.getAuditList().get(0).getResourceId());
-                Assert.assertEquals(expectedVXResource.getAuditList().get(0).getAuditType(), actualVXResource.getAuditList().get(0).getAuditType());
+                Assertions.assertNotNull(actualVXResource);
+                Assertions.assertEquals(expectedVXResource.getName(), actualVXResource.getName());
+                Assertions.assertEquals(expectedVXResource.getGuid(), actualVXResource.getGuid());
+                Assertions.assertEquals(expectedVXResource.getPolicyName(), actualVXResource.getPolicyName());
+                Assertions.assertEquals(expectedVXResource.getResourceType(), actualVXResource.getResourceType());
+                Assertions.assertEquals(expectedVXResource.getDescription(), actualVXResource.getDescription());
+                Assertions.assertEquals(expectedVXResource.getAssetName(), actualVXResource.getAssetName());
+                Assertions.assertEquals(expectedVXResource.getAssetType(), actualVXResource.getAssetType());
+                Assertions.assertEquals(expectedVXResource.getResourceStatus(), actualVXResource.getResourceStatus());
+                Assertions.assertEquals(expectedVXResource.getTopologies(), actualVXResource.getTopologies());
+                Assertions.assertEquals(expectedVXResource.getServices(), actualVXResource.getServices());
+                Assertions.assertEquals(expectedVXResource.getAuditList().get(0).getResourceId(), actualVXResource.getAuditList().get(0).getResourceId());
+                Assertions.assertEquals(expectedVXResource.getAuditList().get(0).getAuditType(), actualVXResource.getAuditList().get(0).getAuditType());
 
 
         }
@@ -1330,29 +1330,29 @@ public class TestServiceUtil {
                 VXResource actualVXResource = serviceUtil.toVXResource(policy, rangerService);
 
 
-                Assert.assertNotNull(actualVXResource);
-                Assert.assertEquals(expectedVXResource.getName(), actualVXResource.getName());
-                Assert.assertEquals(expectedVXResource.getGuid(), actualVXResource.getGuid());
-                Assert.assertEquals(expectedVXResource.getPolicyName(), actualVXResource.getPolicyName());
-                Assert.assertEquals(expectedVXResource.getResourceType(), actualVXResource.getResourceType());
-                Assert.assertEquals(expectedVXResource.getDescription(), actualVXResource.getDescription());
-                Assert.assertEquals(expectedVXResource.getAssetName(), actualVXResource.getAssetName());
-                Assert.assertEquals(expectedVXResource.getAssetType(), actualVXResource.getAssetType());
-                Assert.assertEquals(expectedVXResource.getResourceStatus(), actualVXResource.getResourceStatus());
-                Assert.assertEquals(expectedVXResource.getTopologies(), actualVXResource.getTopologies());
-                Assert.assertEquals(expectedVXResource.getAuditList().get(0).getResourceId(), actualVXResource.getAuditList().get(0).getResourceId());
-                Assert.assertEquals(expectedVXResource.getAuditList().get(0).getAuditType(), actualVXResource.getAuditList().get(0).getAuditType());
-                Assert.assertEquals(expectedVXResource.getPermMapList().get(0).getPermFor(), actualVXResource.getPermMapList().get(0).getPermFor());
-                Assert.assertEquals(expectedVXResource.getPermMapList().get(0).getPermType(), actualVXResource.getPermMapList().get(0).getPermType());
-                Assert.assertEquals(expectedVXResource.getPermMapList().get(0).getUserName(), actualVXResource.getPermMapList().get(0).getUserName());
-                Assert.assertEquals(expectedVXResource.getPermMapList().get(0).getIpAddress(), actualVXResource.getPermMapList().get(0).getIpAddress());
-                Assert.assertEquals(expectedVXResource.getPermMapList().get(0).getUserId(), actualVXResource.getPermMapList().get(0).getUserId());
+                Assertions.assertNotNull(actualVXResource);
+                Assertions.assertEquals(expectedVXResource.getName(), actualVXResource.getName());
+                Assertions.assertEquals(expectedVXResource.getGuid(), actualVXResource.getGuid());
+                Assertions.assertEquals(expectedVXResource.getPolicyName(), actualVXResource.getPolicyName());
+                Assertions.assertEquals(expectedVXResource.getResourceType(), actualVXResource.getResourceType());
+                Assertions.assertEquals(expectedVXResource.getDescription(), actualVXResource.getDescription());
+                Assertions.assertEquals(expectedVXResource.getAssetName(), actualVXResource.getAssetName());
+                Assertions.assertEquals(expectedVXResource.getAssetType(), actualVXResource.getAssetType());
+                Assertions.assertEquals(expectedVXResource.getResourceStatus(), actualVXResource.getResourceStatus());
+                Assertions.assertEquals(expectedVXResource.getTopologies(), actualVXResource.getTopologies());
+                Assertions.assertEquals(expectedVXResource.getAuditList().get(0).getResourceId(), actualVXResource.getAuditList().get(0).getResourceId());
+                Assertions.assertEquals(expectedVXResource.getAuditList().get(0).getAuditType(), actualVXResource.getAuditList().get(0).getAuditType());
+                Assertions.assertEquals(expectedVXResource.getPermMapList().get(0).getPermFor(), actualVXResource.getPermMapList().get(0).getPermFor());
+                Assertions.assertEquals(expectedVXResource.getPermMapList().get(0).getPermType(), actualVXResource.getPermMapList().get(0).getPermType());
+                Assertions.assertEquals(expectedVXResource.getPermMapList().get(0).getUserName(), actualVXResource.getPermMapList().get(0).getUserName());
+                Assertions.assertEquals(expectedVXResource.getPermMapList().get(0).getIpAddress(), actualVXResource.getPermMapList().get(0).getIpAddress());
+                Assertions.assertEquals(expectedVXResource.getPermMapList().get(0).getUserId(), actualVXResource.getPermMapList().get(0).getUserId());
 
-                Assert.assertEquals(expectedVXResource.getPermMapList().get(1).getPermFor(), actualVXResource.getPermMapList().get(1).getPermFor());
-                Assert.assertEquals(expectedVXResource.getPermMapList().get(1).getPermType(), actualVXResource.getPermMapList().get(1).getPermType());
-                Assert.assertEquals(expectedVXResource.getPermMapList().get(1).getUserName(), actualVXResource.getPermMapList().get(1).getUserName());
-                Assert.assertEquals(expectedVXResource.getPermMapList().get(1).getIpAddress(), actualVXResource.getPermMapList().get(1).getIpAddress());
-                Assert.assertEquals(expectedVXResource.getPermMapList().get(1).getUserId(), actualVXResource.getPermMapList().get(1).getUserId());
+                Assertions.assertEquals(expectedVXResource.getPermMapList().get(1).getPermFor(), actualVXResource.getPermMapList().get(1).getPermFor());
+                Assertions.assertEquals(expectedVXResource.getPermMapList().get(1).getPermType(), actualVXResource.getPermMapList().get(1).getPermType());
+                Assertions.assertEquals(expectedVXResource.getPermMapList().get(1).getUserName(), actualVXResource.getPermMapList().get(1).getUserName());
+                Assertions.assertEquals(expectedVXResource.getPermMapList().get(1).getIpAddress(), actualVXResource.getPermMapList().get(1).getIpAddress());
+                Assertions.assertEquals(expectedVXResource.getPermMapList().get(1).getUserId(), actualVXResource.getPermMapList().get(1).getUserId());
 
 
         }
@@ -1470,29 +1470,29 @@ public class TestServiceUtil {
                 VXResource actualVXResource = serviceUtil.toVXResource(policy, rangerService);
 
 
-                Assert.assertNotNull(actualVXResource);
-                Assert.assertEquals(expectedVXResource.getName(), actualVXResource.getName());
-                Assert.assertEquals(expectedVXResource.getGuid(), actualVXResource.getGuid());
-                Assert.assertEquals(expectedVXResource.getPolicyName(), actualVXResource.getPolicyName());
-                Assert.assertEquals(expectedVXResource.getResourceType(), actualVXResource.getResourceType());
-                Assert.assertEquals(expectedVXResource.getDescription(), actualVXResource.getDescription());
-                Assert.assertEquals(expectedVXResource.getAssetName(), actualVXResource.getAssetName());
-                Assert.assertEquals(expectedVXResource.getAssetType(), actualVXResource.getAssetType());
-                Assert.assertEquals(expectedVXResource.getResourceStatus(), actualVXResource.getResourceStatus());
-                Assert.assertEquals(expectedVXResource.getTopologies(), actualVXResource.getTopologies());
-                Assert.assertEquals(expectedVXResource.getAuditList().get(0).getResourceId(), actualVXResource.getAuditList().get(0).getResourceId());
-                Assert.assertEquals(expectedVXResource.getAuditList().get(0).getAuditType(), actualVXResource.getAuditList().get(0).getAuditType());
-                Assert.assertEquals(expectedVXResource.getPermMapList().get(0).getPermFor(), actualVXResource.getPermMapList().get(0).getPermFor());
-                Assert.assertEquals(expectedVXResource.getPermMapList().get(0).getPermType(), actualVXResource.getPermMapList().get(0).getPermType());
-                Assert.assertEquals(expectedVXResource.getPermMapList().get(0).getUserName(), actualVXResource.getPermMapList().get(0).getUserName());
-                Assert.assertEquals(expectedVXResource.getPermMapList().get(0).getIpAddress(), actualVXResource.getPermMapList().get(0).getIpAddress());
-                Assert.assertEquals(expectedVXResource.getPermMapList().get(0).getUserId(), actualVXResource.getPermMapList().get(0).getUserId());
+                Assertions.assertNotNull(actualVXResource);
+                Assertions.assertEquals(expectedVXResource.getName(), actualVXResource.getName());
+                Assertions.assertEquals(expectedVXResource.getGuid(), actualVXResource.getGuid());
+                Assertions.assertEquals(expectedVXResource.getPolicyName(), actualVXResource.getPolicyName());
+                Assertions.assertEquals(expectedVXResource.getResourceType(), actualVXResource.getResourceType());
+                Assertions.assertEquals(expectedVXResource.getDescription(), actualVXResource.getDescription());
+                Assertions.assertEquals(expectedVXResource.getAssetName(), actualVXResource.getAssetName());
+                Assertions.assertEquals(expectedVXResource.getAssetType(), actualVXResource.getAssetType());
+                Assertions.assertEquals(expectedVXResource.getResourceStatus(), actualVXResource.getResourceStatus());
+                Assertions.assertEquals(expectedVXResource.getTopologies(), actualVXResource.getTopologies());
+                Assertions.assertEquals(expectedVXResource.getAuditList().get(0).getResourceId(), actualVXResource.getAuditList().get(0).getResourceId());
+                Assertions.assertEquals(expectedVXResource.getAuditList().get(0).getAuditType(), actualVXResource.getAuditList().get(0).getAuditType());
+                Assertions.assertEquals(expectedVXResource.getPermMapList().get(0).getPermFor(), actualVXResource.getPermMapList().get(0).getPermFor());
+                Assertions.assertEquals(expectedVXResource.getPermMapList().get(0).getPermType(), actualVXResource.getPermMapList().get(0).getPermType());
+                Assertions.assertEquals(expectedVXResource.getPermMapList().get(0).getUserName(), actualVXResource.getPermMapList().get(0).getUserName());
+                Assertions.assertEquals(expectedVXResource.getPermMapList().get(0).getIpAddress(), actualVXResource.getPermMapList().get(0).getIpAddress());
+                Assertions.assertEquals(expectedVXResource.getPermMapList().get(0).getUserId(), actualVXResource.getPermMapList().get(0).getUserId());
 
-                Assert.assertEquals(expectedVXResource.getPermMapList().get(1).getPermFor(), actualVXResource.getPermMapList().get(1).getPermFor());
-                Assert.assertEquals(expectedVXResource.getPermMapList().get(1).getPermType(), actualVXResource.getPermMapList().get(1).getPermType());
-                Assert.assertEquals(expectedVXResource.getPermMapList().get(1).getUserName(), actualVXResource.getPermMapList().get(1).getUserName());
-                Assert.assertEquals(expectedVXResource.getPermMapList().get(1).getIpAddress(), actualVXResource.getPermMapList().get(1).getIpAddress());
-                Assert.assertEquals(expectedVXResource.getPermMapList().get(1).getUserId(), actualVXResource.getPermMapList().get(1).getUserId());
+                Assertions.assertEquals(expectedVXResource.getPermMapList().get(1).getPermFor(), actualVXResource.getPermMapList().get(1).getPermFor());
+                Assertions.assertEquals(expectedVXResource.getPermMapList().get(1).getPermType(), actualVXResource.getPermMapList().get(1).getPermType());
+                Assertions.assertEquals(expectedVXResource.getPermMapList().get(1).getUserName(), actualVXResource.getPermMapList().get(1).getUserName());
+                Assertions.assertEquals(expectedVXResource.getPermMapList().get(1).getIpAddress(), actualVXResource.getPermMapList().get(1).getIpAddress());
+                Assertions.assertEquals(expectedVXResource.getPermMapList().get(1).getUserId(), actualVXResource.getPermMapList().get(1).getUserId());
 
 
         }
@@ -1527,15 +1527,15 @@ public class TestServiceUtil {
 
                 VXAsset actualVXAsset = serviceUtil.publicObjecttoVXAsset(vXRepository);
 
-                Assert.assertNotNull(actualVXAsset);
-                Assert.assertEquals(actualVXAsset.getActiveStatus(), expectedVXAsset.getActiveStatus());
-                Assert.assertEquals(actualVXAsset.getId(), expectedVXAsset.getId());
-                Assert.assertEquals(actualVXAsset.getName(), expectedVXAsset.getName());
-                Assert.assertEquals(actualVXAsset.getDescription(), expectedVXAsset.getDescription());
-                Assert.assertEquals(actualVXAsset.getCreateDate(), expectedVXAsset.getCreateDate());
-                Assert.assertEquals(actualVXAsset.getOwner(), expectedVXAsset.getOwner());
-                Assert.assertEquals(actualVXAsset.getAssetType() , expectedVXAsset.getAssetType());
-                Assert.assertEquals(actualVXAsset.getConfig() , expectedVXAsset.getConfig());
+                Assertions.assertNotNull(actualVXAsset);
+                Assertions.assertEquals(actualVXAsset.getActiveStatus(), expectedVXAsset.getActiveStatus());
+                Assertions.assertEquals(actualVXAsset.getId(), expectedVXAsset.getId());
+                Assertions.assertEquals(actualVXAsset.getName(), expectedVXAsset.getName());
+                Assertions.assertEquals(actualVXAsset.getDescription(), expectedVXAsset.getDescription());
+                Assertions.assertEquals(actualVXAsset.getCreateDate(), expectedVXAsset.getCreateDate());
+                Assertions.assertEquals(actualVXAsset.getOwner(), expectedVXAsset.getOwner());
+                Assertions.assertEquals(actualVXAsset.getAssetType() , expectedVXAsset.getAssetType());
+                Assertions.assertEquals(actualVXAsset.getConfig() , expectedVXAsset.getConfig());
 
 
 
@@ -1572,15 +1572,15 @@ public class TestServiceUtil {
 
                 VXRepository actualVXRepository = serviceUtil.vXAssetToPublicObject(vXAsset);
 
-                Assert.assertNotNull(actualVXRepository);
-                Assert.assertEquals(expectedVXRepository.getId(), actualVXRepository.getId());
-                Assert.assertEquals(expectedVXRepository.getName(), actualVXRepository.getName());
-                Assert.assertEquals(expectedVXRepository.getDescription(), actualVXRepository.getDescription());
-                Assert.assertTrue(actualVXRepository.getIsActive());
-                Assert.assertEquals(expectedVXRepository.getCreateDate(), actualVXRepository.getCreateDate());
-                Assert.assertEquals(expectedVXRepository.getOwner(), actualVXRepository.getOwner());
-                Assert.assertEquals(expectedVXRepository.getRepositoryType() , actualVXRepository.getRepositoryType());
-                Assert.assertEquals(expectedVXRepository.getConfig() , actualVXRepository.getConfig());
+                Assertions.assertNotNull(actualVXRepository);
+                Assertions.assertEquals(expectedVXRepository.getId(), actualVXRepository.getId());
+                Assertions.assertEquals(expectedVXRepository.getName(), actualVXRepository.getName());
+                Assertions.assertEquals(expectedVXRepository.getDescription(), actualVXRepository.getDescription());
+                Assertions.assertTrue(actualVXRepository.getIsActive());
+                Assertions.assertEquals(expectedVXRepository.getCreateDate(), actualVXRepository.getCreateDate());
+                Assertions.assertEquals(expectedVXRepository.getOwner(), actualVXRepository.getOwner());
+                Assertions.assertEquals(expectedVXRepository.getRepositoryType() , actualVXRepository.getRepositoryType());
+                Assertions.assertEquals(expectedVXRepository.getConfig() , actualVXRepository.getConfig());
 
         }
 
@@ -1602,9 +1602,9 @@ public class TestServiceUtil {
 
                 SearchCriteria actualSearchCriteria = serviceUtil.getMappedSearchParams(request, sc);
 
-                Assert.assertNotNull(actualSearchCriteria);
-                Assert.assertEquals(expectedSearchCriteria.getParamValue("type"), actualSearchCriteria.getParamValue("type"));
-                Assert.assertEquals(expectedSearchCriteria.getParamValue("status"), actualSearchCriteria.getParamValue("status"));
+                Assertions.assertNotNull(actualSearchCriteria);
+                Assertions.assertEquals(expectedSearchCriteria.getParamValue("type"), actualSearchCriteria.getParamValue("type"));
+                Assertions.assertEquals(expectedSearchCriteria.getParamValue("status"), actualSearchCriteria.getParamValue("status"));
 
         }
 
@@ -1622,7 +1622,7 @@ public class TestServiceUtil {
                 Mockito.when(svcStore.getServiceByName(serviceName)).thenReturn(rangerService);
                 boolean isValid = serviceUtil.isValidService(serviceName, request);
 
-                Assert.assertTrue(isValid);
+                Assertions.assertTrue(isValid);
 
 
         }
@@ -1642,7 +1642,7 @@ public class TestServiceUtil {
                 Mockito.when(svcStore.getServiceByName(serviceName)).thenReturn(rangerService);
                 boolean isValidAuthentication = serviceUtil.isValidateHttpsAuthentication(serviceName, request);
 
-                Assert.assertTrue(isValidAuthentication);
+                Assertions.assertTrue(isValidAuthentication);
 
 
         }
@@ -1682,12 +1682,12 @@ public class TestServiceUtil {
 
                 GrantRevokeRequest actualGrantRevokeRequest = serviceUtil.toGrantRevokeRequest(vXPolicy);
 
-                Assert.assertNotNull(actualGrantRevokeRequest);
-                Assert.assertTrue(actualGrantRevokeRequest.getEnableAudit());
-                Assert.assertFalse(actualGrantRevokeRequest.getIsRecursive());
-                Assert.assertTrue(actualGrantRevokeRequest.getReplaceExistingPermissions());
-                Assert.assertEquals(expectedGrantRevokeRequest.getGrantor(), actualGrantRevokeRequest.getGrantor());
-                Assert.assertEquals(expectedGrantRevokeRequest.getResource(), actualGrantRevokeRequest.getResource());
+                Assertions.assertNotNull(actualGrantRevokeRequest);
+                Assertions.assertTrue(actualGrantRevokeRequest.getEnableAudit());
+                Assertions.assertFalse(actualGrantRevokeRequest.getIsRecursive());
+                Assertions.assertTrue(actualGrantRevokeRequest.getReplaceExistingPermissions());
+                Assertions.assertEquals(expectedGrantRevokeRequest.getGrantor(), actualGrantRevokeRequest.getGrantor());
+                Assertions.assertEquals(expectedGrantRevokeRequest.getResource(), actualGrantRevokeRequest.getResource());
         }
 
         @Test
@@ -1725,12 +1725,12 @@ public class TestServiceUtil {
 
                 GrantRevokeRequest actualGrantRevokeRequest = serviceUtil.toGrantRevokeRequest(vXPolicy);
 
-                Assert.assertNotNull(actualGrantRevokeRequest);
-                Assert.assertTrue(actualGrantRevokeRequest.getEnableAudit());
-                Assert.assertFalse(actualGrantRevokeRequest.getIsRecursive());
-                Assert.assertTrue(actualGrantRevokeRequest.getReplaceExistingPermissions());
-                Assert.assertEquals(expectedGrantRevokeRequest.getGrantor(), actualGrantRevokeRequest.getGrantor());
-                Assert.assertEquals(expectedGrantRevokeRequest.getResource(), actualGrantRevokeRequest.getResource());
+                Assertions.assertNotNull(actualGrantRevokeRequest);
+                Assertions.assertTrue(actualGrantRevokeRequest.getEnableAudit());
+                Assertions.assertFalse(actualGrantRevokeRequest.getIsRecursive());
+                Assertions.assertTrue(actualGrantRevokeRequest.getReplaceExistingPermissions());
+                Assertions.assertEquals(expectedGrantRevokeRequest.getGrantor(), actualGrantRevokeRequest.getGrantor());
+                Assertions.assertEquals(expectedGrantRevokeRequest.getResource(), actualGrantRevokeRequest.getResource());
         }
 
         @Test
@@ -1787,15 +1787,15 @@ public class TestServiceUtil {
 
                 GrantRevokeRequest actualGrantRevokeRequest = serviceUtil.toGrantRevokeRequest(vXPolicy);
 
-                Assert.assertNotNull(actualGrantRevokeRequest);
-                Assert.assertTrue(actualGrantRevokeRequest.getEnableAudit());
-                Assert.assertTrue(actualGrantRevokeRequest.getDelegateAdmin());
-                Assert.assertFalse(actualGrantRevokeRequest.getIsRecursive());
-                Assert.assertTrue(actualGrantRevokeRequest.getReplaceExistingPermissions());
-                Assert.assertTrue(actualGrantRevokeRequest.getUsers().contains("rangerAdmin"));
-                Assert.assertTrue(actualGrantRevokeRequest.getGroups().contains("rangerGroup"));
-                Assert.assertEquals(expectedGrantRevokeRequest.getGrantor(), actualGrantRevokeRequest.getGrantor());
-                Assert.assertEquals(expectedGrantRevokeRequest.getResource(), actualGrantRevokeRequest.getResource());
+                Assertions.assertNotNull(actualGrantRevokeRequest);
+                Assertions.assertTrue(actualGrantRevokeRequest.getEnableAudit());
+                Assertions.assertTrue(actualGrantRevokeRequest.getDelegateAdmin());
+                Assertions.assertFalse(actualGrantRevokeRequest.getIsRecursive());
+                Assertions.assertTrue(actualGrantRevokeRequest.getReplaceExistingPermissions());
+                Assertions.assertTrue(actualGrantRevokeRequest.getUsers().contains("rangerAdmin"));
+                Assertions.assertTrue(actualGrantRevokeRequest.getGroups().contains("rangerGroup"));
+                Assertions.assertEquals(expectedGrantRevokeRequest.getGrantor(), actualGrantRevokeRequest.getGrantor());
+                Assertions.assertEquals(expectedGrantRevokeRequest.getResource(), actualGrantRevokeRequest.getResource());
         }
 
         @Test
@@ -1804,7 +1804,7 @@ public class TestServiceUtil {
                 RangerService service = null;
 
                 RangerPolicy actualRangerPolicy = serviceUtil.toRangerPolicy(vXPolicy, service);
-                Assert.assertNull(actualRangerPolicy);
+                Assertions.assertNull(actualRangerPolicy);
         }
 
         @Test
@@ -1890,13 +1890,13 @@ public class TestServiceUtil {
 
                 RangerPolicy actualRangerPolicy = serviceUtil.toRangerPolicy(vXPolicy, service);
 
-                Assert.assertNotNull(actualRangerPolicy);
-                Assert.assertEquals(expectedRangerPolicy.getId(), actualRangerPolicy.getId());
-                Assert.assertEquals(expectedRangerPolicy.getName(), actualRangerPolicy.getName());
-                Assert.assertEquals(expectedRangerPolicy.getDescription(), actualRangerPolicy.getDescription());
-                Assert.assertEquals(expectedRangerPolicy.getCreatedBy(), actualRangerPolicy.getCreatedBy());
-                Assert.assertTrue(actualRangerPolicy.getIsAuditEnabled());
-                Assert.assertEquals(expectedRangerPolicy.getResources(), actualRangerPolicy.getResources());
-                Assert.assertEquals(expectedRangerPolicy.getPolicyItems(), actualRangerPolicy.getPolicyItems());
+                Assertions.assertNotNull(actualRangerPolicy);
+                Assertions.assertEquals(expectedRangerPolicy.getId(), actualRangerPolicy.getId());
+                Assertions.assertEquals(expectedRangerPolicy.getName(), actualRangerPolicy.getName());
+                Assertions.assertEquals(expectedRangerPolicy.getDescription(), actualRangerPolicy.getDescription());
+                Assertions.assertEquals(expectedRangerPolicy.getCreatedBy(), actualRangerPolicy.getCreatedBy());
+                Assertions.assertTrue(actualRangerPolicy.getIsAuditEnabled());
+                Assertions.assertEquals(expectedRangerPolicy.getResources(), actualRangerPolicy.getResources());
+                Assertions.assertEquals(expectedRangerPolicy.getPolicyItems(), actualRangerPolicy.getPolicyItems());
         }
 }

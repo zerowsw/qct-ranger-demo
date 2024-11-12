@@ -21,6 +21,7 @@ package org.apache.ranger.usergroupsync;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.ranger.unixusersync.config.UserGroupSyncConfig;
+import java.lang.reflect.InvocationTargetException;
 
 public abstract class AbstractUserGroupSource {
 
@@ -37,7 +38,7 @@ public abstract class AbstractUserGroupSource {
         try {
             if (mappingUserNameHandler != null) {
                 Class<Mapper> regExClass = (Class<Mapper>)Class.forName(mappingUserNameHandler);
-                userNameRegExInst = regExClass.newInstance();
+                userNameRegExInst = regExClass.getDeclaredConstructor().newInstance();
                 if (userNameRegExInst != null) {
                     userNameRegExInst.init(UserGroupSyncConfig.SYNC_MAPPING_USERNAME);
                 } else {
@@ -46,15 +47,15 @@ public abstract class AbstractUserGroupSource {
             }
         } catch (ClassNotFoundException cne) {
             LOG.error("Failed to load " + mappingUserNameHandler + " " + cne);
-        } catch (Throwable te) {
-            LOG.error("Failed to instantiate " + mappingUserNameHandler + " " + te);
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            LOG.error("Failed to instantiate " + mappingUserNameHandler + " " + e);
         }
 
         String mappingGroupNameHandler = config.getUserSyncMappingGroupNameHandler();
         try {
             if (mappingGroupNameHandler != null) {
                 Class<Mapper> regExClass = (Class<Mapper>)Class.forName(mappingGroupNameHandler);
-                groupNameRegExInst = regExClass.newInstance();
+                groupNameRegExInst = regExClass.getDeclaredConstructor().newInstance();
                 if (groupNameRegExInst != null) {
                     groupNameRegExInst.init(UserGroupSyncConfig.SYNC_MAPPING_GROUPNAME);
                 } else {
@@ -63,8 +64,8 @@ public abstract class AbstractUserGroupSource {
             }
         } catch (ClassNotFoundException cne) {
             LOG.error("Failed to load " + mappingGroupNameHandler + " " + cne);
-        } catch (Throwable te) {
-            LOG.error("Failed to instantiate " + mappingGroupNameHandler + " " + te);
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            LOG.error("Failed to instantiate " + mappingGroupNameHandler + " " + e);
         }
     }
 

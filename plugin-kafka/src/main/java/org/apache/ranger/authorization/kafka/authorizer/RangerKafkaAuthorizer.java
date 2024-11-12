@@ -30,8 +30,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.stream.Collectors;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.apache.kafka.common.Endpoint;
 import org.apache.kafka.common.acl.AclBinding;
@@ -176,7 +176,7 @@ public class RangerKafkaAuthorizer implements Authorizer {
 
   private static String toString(AuthorizableRequestContext requestContext) {
     return requestContext == null ? null :
-        String.format("AuthorizableRequestContext{principal=%s, clientAddress=%s, clientId=%s}",
+			"AuthorizableRequestContext{principal=%s, clientAddress=%s, clientId=%s}".formatted(
             requestContext.principal(), requestContext.clientAddress(), requestContext.clientId());
   }
 
@@ -204,8 +204,8 @@ public class RangerKafkaAuthorizer implements Authorizer {
             // SASL_PLAINTEXT is used, which force Kafka to use 'sasl_plaintext.KafkaServer',
             // if it's not defined, then it reverts to 'KafkaServer' configuration.
             final Object jaasContext = configs.get("ranger.jaas.context");
-            final String listenerName = (jaasContext instanceof String
-                && StringUtils.isNotEmpty((String) jaasContext)) ? (String) jaasContext
+            final String listenerName = (jaasContext instanceof String s
+                && StringUtils.isNotEmpty(s)) ? s
                 : SecurityProtocol.SASL_PLAINTEXT.name();
             final String saslMechanism = SaslConfigs.GSSAPI_MECHANISM;
             JaasContext context = JaasContext.loadServerContext(new ListenerName(listenerName), saslMechanism, configs);

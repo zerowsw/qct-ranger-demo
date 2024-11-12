@@ -25,6 +25,8 @@ import org.apache.hadoop.hdfs.server.namenode.INodeAttributes;
 import org.apache.ranger.plugin.classloader.RangerPluginClassLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 public class RangerHdfsAuthorizer extends INodeAttributeProvider {
 	private static final Logger LOG  = LoggerFactory.getLogger(RangerHdfsAuthorizer.class);
@@ -61,7 +63,8 @@ public class RangerHdfsAuthorizer extends INodeAttributeProvider {
 
 			activatePluginClassLoader();
 
-			rangerHdfsAuthorizerImpl = cls.newInstance();
+			Constructor<INodeAttributeProvider> constructor = cls.getDeclaredConstructor();
+			rangerHdfsAuthorizerImpl = constructor.newInstance();
 		} catch (Exception e) {
 			// check what need to be done
 			LOG.error("Error Enabling RangerHdfsPlugin", e);

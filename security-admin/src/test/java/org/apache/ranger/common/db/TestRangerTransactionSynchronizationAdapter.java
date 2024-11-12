@@ -16,8 +16,8 @@
  */
 package org.apache.ranger.common.db;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -38,7 +38,7 @@ public class TestRangerTransactionSynchronizationAdapter {
                 rtsa.executeOnTransactionCompletion(count::incrementAndGet);
             });
             rtsa.afterCompletion(0);
-            Assert.assertEquals(1, count.get());
+            Assertions.assertEquals(1, count.get());
         } finally {
             TransactionSynchronizationManager.clear();
         }

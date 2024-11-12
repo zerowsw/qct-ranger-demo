@@ -94,9 +94,11 @@ public class RangerSolrConstants {
         }
     }
 
-    public static final String errMessage = " You can still save the repository and start creating "
-            + "policies, but you would not be able to use autocomplete for "
-            + "resource names. Check server logs for more info.";
+    public static final String errMessage = """
+             You can still save the repository and start creating \
+            policies, but you would not be able to use autocomplete for \
+            resource names. Check server logs for more info.\
+            """;
 
     public static final String COLLECTION_KEY = "collection";
     public static final String FIELD_KEY = "field";

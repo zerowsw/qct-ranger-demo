@@ -21,8 +21,8 @@ package org.apache.ranger.plugin.util;
 
 import java.util.*;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.ranger.plugin.contextenricher.RangerTagForEval;
 import org.apache.ranger.plugin.policyengine.RangerAccessRequest;
 import org.apache.ranger.plugin.policyengine.RangerAccessResource;
@@ -89,8 +89,8 @@ public class RangerAccessRequestUtil {
 		RangerTagForEval ret = null;
 		Object           val = context.get(KEY_CONTEXT_TAG_OBJECT);
 
-		if (val instanceof RangerTagForEval) {
-			ret = (RangerTagForEval) val;
+		if (val instanceof RangerTagForEval eval) {
+			ret = eval;
 		}
 
 		return ret;
@@ -104,8 +104,8 @@ public class RangerAccessRequestUtil {
 		RangerRequestedResources ret = null;
 		Object                   val = context.get(KEY_CONTEXT_REQUESTED_RESOURCES);
 
-		if (val instanceof RangerRequestedResources) {
-			ret = (RangerRequestedResources) val;
+		if (val instanceof RangerRequestedResources resources) {
+			ret = resources;
 		}
 
 		return ret;
@@ -119,8 +119,8 @@ public class RangerAccessRequestUtil {
 		RangerAccessResource ret = null;
 		Object               val = MapUtils.isNotEmpty(context) ? context.get(KEY_CONTEXT_RESOURCE) : null;
 
-		if (val instanceof RangerAccessResource) {
-			ret = (RangerAccessResource) val;
+		if (val instanceof RangerAccessResource resource) {
+			ret = resource;
 		}
 
 		return ret;
@@ -206,8 +206,8 @@ public class RangerAccessRequestUtil {
 		RangerUserStore ret = null;
 		Object          val = context.get(KEY_CONTEXT_USERSTORE);
 
-		if (val instanceof RangerUserStore) {
-			ret = (RangerUserStore) val;
+		if (val instanceof RangerUserStore store) {
+			ret = store;
 		}
 
 		return ret;
@@ -328,8 +328,8 @@ public class RangerAccessRequestUtil {
 			Object val = context.get(KEY_CONTEXT_REQUEST);
 
 			if (val != null) {
-				if (val instanceof RangerAccessRequest) {
-					ret = (RangerAccessRequest) val;
+				if (val instanceof RangerAccessRequest request) {
+					ret = request;
 				} else {
 					LOG.error("getRequestFromContext(): expected RangerAccessRequest, but found " + val.getClass().getCanonicalName());
 				}
@@ -354,8 +354,8 @@ public class RangerAccessRequestUtil {
 			Object val = context.get(KEY_CONTEXT_GDS_RESULT);
 
 			if (val != null) {
-				if (val instanceof GdsAccessResult) {
-					ret = (GdsAccessResult) val;
+				if (val instanceof GdsAccessResult result) {
+					ret = result;
 				} else {
 					LOG.error("getGdsResultFromContext(): expected RangerGdsAccessResult, but found " + val.getClass().getCanonicalName());
 				}

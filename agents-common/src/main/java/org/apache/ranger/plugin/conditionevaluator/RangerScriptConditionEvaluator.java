@@ -19,9 +19,9 @@
 
 package org.apache.ranger.plugin.conditionevaluator;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.plugin.policyengine.RangerAccessRequest;
 import org.apache.ranger.plugin.policyengine.RangerRequestScriptEvaluator;
 import org.apache.ranger.plugin.util.ScriptEngineUtil;

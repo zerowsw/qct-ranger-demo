@@ -25,18 +25,18 @@ import java.util.Map;
 import org.apache.ranger.biz.RangerBizUtil;
 import org.apache.ranger.plugin.model.RangerServerHealth;
 import org.apache.ranger.util.RangerServerHealthUtil;
-import org.junit.Assert;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.MethodOrderer.MethodName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@ExtendWith(MockitoExtension.class)
+@TestMethodOrder(MethodName.class)
 public class TestRangerHealthREST {
     @Mock
     RangerServerHealthUtil rangerServerHealthUtil;
@@ -51,9 +51,9 @@ public class TestRangerHealthREST {
         Mockito.when(xaBizUtil.getDBVersion()).thenReturn(dbVersion);
         Mockito.when(rangerServerHealthUtil.getRangerServerHealth(dbVersion)).thenReturn(createRangerServerHealth());
         RangerServerHealth rangerServerHealth = rangerHealthREST.getRangerServerHealth();
-        Assert.assertEquals("RangerHealth.down()", UP, rangerServerHealth.getStatus());
-        Assert.assertEquals("RangerHealth.getDetails()", 1, rangerServerHealth.getDetails().size());
-        Assert.assertEquals("RangerHealth.getDetails('component')", 2, ((Map<?, ?>) rangerServerHealth.getDetails().get("components")).size());
+        Assertions.assertEquals(UP, rangerServerHealth.getStatus(), "RangerHealth.down()");
+        Assertions.assertEquals(1, rangerServerHealth.getDetails().size(), "RangerHealth.getDetails()");
+        Assertions.assertEquals(2, ((Map<?, ?>) rangerServerHealth.getDetails().get("components")).size(), "RangerHealth.getDetails('component')");
     }
 
     private RangerServerHealth createRangerServerHealth() {

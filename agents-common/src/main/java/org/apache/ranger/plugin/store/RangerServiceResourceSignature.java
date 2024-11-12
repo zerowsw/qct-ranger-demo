@@ -62,7 +62,7 @@ public class RangerServiceResourceSignature {
 				resources.put(resourceName, resourceView);
 			}
 			String resourcesAsString = resources.toString();
-			return String.format("{version=%d,resource=%s}", _SignatureVersion, resourcesAsString);
+			return "{version=%d,resource=%s}".formatted(_SignatureVersion, resourcesAsString);
 		}
 
 		static class ResourceSerializer {

@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.elasticsearch.action.ActionRequest;
 import org.elasticsearch.action.DocWriteRequest;
 import org.elasticsearch.action.admin.cluster.shards.ClusterSearchShardsRequest;
@@ -80,8 +80,8 @@ public class RequestUtils {
 
 	public static String getClientIPAddress(RestRequest request) {
 		SocketAddress socketAddress = request.getHttpChannel().getRemoteAddress();
-		if (socketAddress instanceof InetSocketAddress) {
-			return ((InetSocketAddress) socketAddress).getAddress().getHostAddress();
+		if (socketAddress instanceof InetSocketAddress address) {
+			return address.getAddress().getHostAddress();
 		}
 
 		return null;
@@ -91,53 +91,53 @@ public class RequestUtils {
 	public static <Request extends ActionRequest> List<String> getIndexFromRequest(Request request) {
 		List<String> indexs = new ArrayList<>();
 
-		if (request instanceof SingleShardRequest) {
-			indexs.add(((SingleShardRequest<?>) request).index());
+		if (request instanceof SingleShardRequest<?> shardRequest) {
+			indexs.add(shardRequest.index());
 			return indexs;
 		}
 
-		if (request instanceof ReplicationRequest) {
-			indexs.add(((ReplicationRequest<?>) request).index());
+		if (request instanceof ReplicationRequest<?> replicationRequest) {
+			indexs.add(replicationRequest.index());
 			return indexs;
 		}
 
-		if (request instanceof InstanceShardOperationRequest) {
-			indexs.add(((InstanceShardOperationRequest<?>) request).index());
+		if (request instanceof InstanceShardOperationRequest<?> operationRequest) {
+			indexs.add(operationRequest.index());
 			return indexs;
 		}
 
-		if (request instanceof CreateIndexRequest) {
-			indexs.add(((CreateIndexRequest) request).index());
+		if (request instanceof CreateIndexRequest indexRequest) {
+			indexs.add(indexRequest.index());
 			return indexs;
 		}
 
-		if (request instanceof PutMappingRequest) {
-			if (((PutMappingRequest) request).getConcreteIndex() != null) {
-				indexs.add(((PutMappingRequest) request).getConcreteIndex().getName());
+		if (request instanceof PutMappingRequest mappingRequest) {
+			if (mappingRequest.getConcreteIndex() != null) {
+				indexs.add(mappingRequest.getConcreteIndex().getName());
 				return indexs;
 			} else {
-				return Arrays.asList(((PutMappingRequest) request).indices());
+				return Arrays.asList(mappingRequest.indices());
 			}
 		}
 
-		if (request instanceof SearchRequest) {
-			return Arrays.asList(((SearchRequest) request).indices());
+		if (request instanceof SearchRequest searchRequest) {
+			return Arrays.asList(searchRequest.indices());
 		}
 
-		if (request instanceof IndicesStatsRequest) {
-			return Arrays.asList(((IndicesStatsRequest) request).indices());
+		if (request instanceof IndicesStatsRequest statsRequest) {
+			return Arrays.asList(statsRequest.indices());
 		}
 
-		if (request instanceof OpenIndexRequest) {
-			return Arrays.asList(((OpenIndexRequest) request).indices());
+		if (request instanceof OpenIndexRequest indexRequest) {
+			return Arrays.asList(indexRequest.indices());
 		}
 
-		if (request instanceof DeleteIndexRequest) {
-			return Arrays.asList(((DeleteIndexRequest) request).indices());
+		if (request instanceof DeleteIndexRequest indexRequest) {
+			return Arrays.asList(indexRequest.indices());
 		}
 
-		if (request instanceof BulkRequest) {
-			@SuppressWarnings("rawtypes") List<DocWriteRequest<?>> requests = ((BulkRequest) request).requests();
+		if (request instanceof BulkRequest bulkRequest) {
+			@SuppressWarnings("rawtypes") List<DocWriteRequest<?>> requests = bulkRequest.requests();
 
 			if (CollectionUtils.isNotEmpty(requests)) {
 				for (DocWriteRequest<?> docWriteRequest : requests) {
@@ -147,8 +147,8 @@ public class RequestUtils {
 			}
 		}
 
-		if (request instanceof MultiGetRequest) {
-			List<Item> items = ((MultiGetRequest) request).getItems();
+		if (request instanceof MultiGetRequest getRequest) {
+			List<Item> items = getRequest.getItems();
 			if (CollectionUtils.isNotEmpty(items)) {
 				for (Item item : items) {
 					indexs.add(item.index());
@@ -157,60 +157,60 @@ public class RequestUtils {
 			}
 		}
 
-		if (request instanceof GetMappingsRequest) {
-			return Arrays.asList(((GetMappingsRequest) request).indices());
+		if (request instanceof GetMappingsRequest mappingsRequest) {
+			return Arrays.asList(mappingsRequest.indices());
 		}
 
-		if (request instanceof GetSettingsRequest) {
-			return Arrays.asList(((GetSettingsRequest) request).indices());
+		if (request instanceof GetSettingsRequest settingsRequest) {
+			return Arrays.asList(settingsRequest.indices());
 		}
 
-		if (request instanceof IndicesExistsRequest) {
-			return Arrays.asList(((IndicesExistsRequest) request).indices());
+		if (request instanceof IndicesExistsRequest existsRequest) {
+			return Arrays.asList(existsRequest.indices());
 		}
 
-		if (request instanceof GetAliasesRequest) {
-			return Arrays.asList(((GetAliasesRequest) request).indices());
+		if (request instanceof GetAliasesRequest aliasesRequest) {
+			return Arrays.asList(aliasesRequest.indices());
 		}
 
-		if (request instanceof GetIndexRequest) {
-			return Arrays.asList(((GetIndexRequest) request).indices());
+		if (request instanceof GetIndexRequest indexRequest) {
+			return Arrays.asList(indexRequest.indices());
 		}
 
-		if (request instanceof GetFieldMappingsRequest) {
-			return Arrays.asList(((GetFieldMappingsRequest) request).indices());
+		if (request instanceof GetFieldMappingsRequest mappingsRequest) {
+			return Arrays.asList(mappingsRequest.indices());
 		}
 
-		if (request instanceof TypesExistsRequest) {
-			return Arrays.asList(((TypesExistsRequest) request).indices());
+		if (request instanceof TypesExistsRequest existsRequest) {
+			return Arrays.asList(existsRequest.indices());
 		}
 
-		if (request instanceof ValidateQueryRequest) {
-			return Arrays.asList(((ValidateQueryRequest) request).indices());
+		if (request instanceof ValidateQueryRequest queryRequest) {
+			return Arrays.asList(queryRequest.indices());
 		}
 
-		if (request instanceof RecoveryRequest) {
-			return Arrays.asList(((RecoveryRequest) request).indices());
+		if (request instanceof RecoveryRequest recoveryRequest) {
+			return Arrays.asList(recoveryRequest.indices());
 		}
 
-		if (request instanceof IndicesSegmentsRequest) {
-			return Arrays.asList(((IndicesSegmentsRequest) request).indices());
+		if (request instanceof IndicesSegmentsRequest segmentsRequest) {
+			return Arrays.asList(segmentsRequest.indices());
 		}
 
-		if (request instanceof IndicesShardStoresRequest) {
-			return Arrays.asList(((IndicesShardStoresRequest) request).indices());
+		if (request instanceof IndicesShardStoresRequest storesRequest) {
+			return Arrays.asList(storesRequest.indices());
 		}
 
-		if (request instanceof UpgradeStatusRequest) {
-			return Arrays.asList(((UpgradeStatusRequest) request).indices());
+		if (request instanceof UpgradeStatusRequest statusRequest) {
+			return Arrays.asList(statusRequest.indices());
 		}
 
-		if (request instanceof ClusterSearchShardsRequest) {
-			return Arrays.asList(((ClusterSearchShardsRequest) request).indices());
+		if (request instanceof ClusterSearchShardsRequest shardsRequest) {
+			return Arrays.asList(shardsRequest.indices());
 		}
 
-		if (request instanceof IndicesAliasesRequest) {
-			List<IndicesAliasesRequest.AliasActions> aliasActions = ((IndicesAliasesRequest) request).getAliasActions();
+		if (request instanceof IndicesAliasesRequest aliasesRequest) {
+			List<IndicesAliasesRequest.AliasActions> aliasActions = aliasesRequest.getAliasActions();
 			if (CollectionUtils.isNotEmpty(aliasActions)) {
 				for (IndicesAliasesRequest.AliasActions action : aliasActions) {
 					indexs.addAll(Arrays.asList(action.indices()));
@@ -219,66 +219,66 @@ public class RequestUtils {
 			}
 		}
 
-		if (request instanceof ClearIndicesCacheRequest) {
-			return Arrays.asList(((ClearIndicesCacheRequest) request).indices());
+		if (request instanceof ClearIndicesCacheRequest cacheRequest) {
+			return Arrays.asList(cacheRequest.indices());
 		}
 
-		if (request instanceof CloseIndexRequest) {
-			return Arrays.asList(((CloseIndexRequest) request).indices());
+		if (request instanceof CloseIndexRequest indexRequest) {
+			return Arrays.asList(indexRequest.indices());
 		}
 
-		if (request instanceof FlushRequest) {
-			return Arrays.asList(((FlushRequest) request).indices());
+		if (request instanceof FlushRequest flushRequest) {
+			return Arrays.asList(flushRequest.indices());
 		}
 
-		if (request instanceof SyncedFlushRequest) {
-			return Arrays.asList(((SyncedFlushRequest) request).indices());
+		if (request instanceof SyncedFlushRequest flushRequest) {
+			return Arrays.asList(flushRequest.indices());
 		}
 
-		if (request instanceof ForceMergeRequest) {
-			return Arrays.asList(((ForceMergeRequest) request).indices());
+		if (request instanceof ForceMergeRequest mergeRequest) {
+			return Arrays.asList(mergeRequest.indices());
 		}
 
-		if (request instanceof RefreshRequest) {
-			return Arrays.asList(((RefreshRequest) request).indices());
+		if (request instanceof RefreshRequest refreshRequest) {
+			return Arrays.asList(refreshRequest.indices());
 		}
 
-		if (request instanceof RolloverRequest) {
-			return Arrays.asList(((RolloverRequest) request).indices());
+		if (request instanceof RolloverRequest rolloverRequest) {
+			return Arrays.asList(rolloverRequest.indices());
 		}
 
-		if (request instanceof UpdateSettingsRequest) {
-			return Arrays.asList(((UpdateSettingsRequest) request).indices());
+		if (request instanceof UpdateSettingsRequest settingsRequest) {
+			return Arrays.asList(settingsRequest.indices());
 		}
 
-		if (request instanceof ResizeRequest) {
-			return Arrays.asList(((ResizeRequest) request).indices());
+		if (request instanceof ResizeRequest resizeRequest) {
+			return Arrays.asList(resizeRequest.indices());
 		}
 
-		if (request instanceof DeleteIndexTemplateRequest) {
-			indexs.add(((DeleteIndexTemplateRequest) request).name());
+		if (request instanceof DeleteIndexTemplateRequest templateRequest) {
+			indexs.add(templateRequest.name());
 			return indexs;
 		}
 
-		if (request instanceof GetIndexTemplatesRequest) {
-			return Arrays.asList(((GetIndexTemplatesRequest) request).names());
+		if (request instanceof GetIndexTemplatesRequest templatesRequest) {
+			return Arrays.asList(templatesRequest.names());
 		}
 
-		if (request instanceof PutIndexTemplateRequest) {
-			indexs.add(((PutIndexTemplateRequest) request).name());
+		if (request instanceof PutIndexTemplateRequest templateRequest) {
+			indexs.add(templateRequest.name());
 			return indexs;
 		}
 
-		if (request instanceof UpgradeRequest) {
-			return Arrays.asList(((UpgradeRequest) request).indices());
+		if (request instanceof UpgradeRequest upgradeRequest) {
+			return Arrays.asList(upgradeRequest.indices());
 		}
 
-		if (request instanceof FieldCapabilitiesRequest) {
-			return Arrays.asList(((FieldCapabilitiesRequest) request).indices());
+		if (request instanceof FieldCapabilitiesRequest capabilitiesRequest) {
+			return Arrays.asList(capabilitiesRequest.indices());
 		}
 
-		if (request instanceof MultiSearchRequest) {
-			List<SearchRequest> searchRequests = ((MultiSearchRequest) request).requests();
+		if (request instanceof MultiSearchRequest searchRequest) {
+			List<SearchRequest> searchRequests = searchRequest.requests();
 			if (CollectionUtils.isNotEmpty(searchRequests)) {
 				for (SearchRequest singleRequest : searchRequests) {
 					indexs.addAll(Arrays.asList(singleRequest.indices()));
@@ -287,8 +287,8 @@ public class RequestUtils {
 			}
 		}
 
-		if (request instanceof MultiTermVectorsRequest) {
-			List<TermVectorsRequest> termVectorsRequests = ((MultiTermVectorsRequest) request).getRequests();
+		if (request instanceof MultiTermVectorsRequest vectorsRequest) {
+			List<TermVectorsRequest> termVectorsRequests = vectorsRequest.getRequests();
 			if (CollectionUtils.isNotEmpty(termVectorsRequests)) {
 				for (TermVectorsRequest singleRequest : termVectorsRequests) {
 					indexs.addAll(Arrays.asList(singleRequest.indices()));
@@ -297,17 +297,17 @@ public class RequestUtils {
 			}
 		}
 
-		if (request instanceof UpdateByQueryRequest) {
-			return Arrays.asList(((UpdateByQueryRequest) request).indices());
+		if (request instanceof UpdateByQueryRequest queryRequest) {
+			return Arrays.asList(queryRequest.indices());
 		}
 
-		if (request instanceof DeleteByQueryRequest) {
-			return Arrays.asList(((DeleteByQueryRequest) request).indices());
+		if (request instanceof DeleteByQueryRequest queryRequest) {
+			return Arrays.asList(queryRequest.indices());
 		}
 
-		if (request instanceof ReindexRequest) {
-			indexs.addAll(Arrays.asList(((ReindexRequest) request).getSearchRequest().indices()));
-			indexs.addAll(Arrays.asList(((ReindexRequest) request).getDestination().indices()));
+		if (request instanceof ReindexRequest reindexRequest) {
+			indexs.addAll(Arrays.asList(reindexRequest.getSearchRequest().indices()));
+			indexs.addAll(Arrays.asList(reindexRequest.getDestination().indices()));
 			return indexs;
 		}
 

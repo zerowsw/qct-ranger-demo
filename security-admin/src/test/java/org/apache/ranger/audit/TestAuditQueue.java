@@ -20,7 +20,7 @@
 
 package org.apache.ranger.audit;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -45,9 +45,9 @@ import org.apache.ranger.audit.queue.AuditBatchQueue;
 import org.apache.ranger.audit.queue.AuditFileSpool;
 import org.apache.ranger.audit.queue.AuditQueue;
 import org.apache.ranger.audit.queue.AuditSummaryQueue;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,11 +55,11 @@ public class TestAuditQueue {
 
 	private static final Logger logger = LoggerFactory.getLogger(TestAuditQueue.class);
 
-	@BeforeClass
+	@BeforeAll
 	public static void setUpBeforeClass() throws Exception {
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void tearDownAfterClass() throws Exception {
 	}
 
@@ -89,7 +89,7 @@ public class TestAuditQueue {
 		}
 		assertEquals(messageToSend, testConsumer.getCountTotal());
 		assertEquals(messageToSend, testConsumer.getSumTotal());
-		assertNull("Event not in sequnce", testConsumer.isInSequence());
+		assertNull(testConsumer.isInSequence(), "Event not in sequnce");
 	}
 
 	@Test
@@ -205,9 +205,9 @@ public class TestAuditQueue {
 			AuditQueue cQueue = (AuditQueue) consumer;
 			consumer = (BaseAuditHandler) cQueue.getConsumer();
 		}
-		assertTrue("Consumer should be TestConsumer. class="
-				+ consumer.getClass().getName(),
-				consumer instanceof TestConsumer);
+		assertTrue(consumer instanceof TestConsumer,
+				"Consumer should be TestConsumer. class="
+				+ consumer.getClass().getName());
 		TestConsumer testConsumer = (TestConsumer) consumer;
 		commonTestSummary(testConsumer, queue);
 	}
@@ -242,10 +242,12 @@ public class TestAuditQueue {
 			// ignore
 		}
 		for (int i = 0; i < destCount; i++) {
-			assertEquals("consumer" + i, messageToSend,
-					testConsumer[i].getCountTotal());
-			assertEquals("consumer" + i, messageToSend,
-					testConsumer[i].getSumTotal());
+			assertEquals(messageToSend,
+					testConsumer[i].getCountTotal(),
+					"consumer" + i);
+			assertEquals(messageToSend,
+					testConsumer[i].getSumTotal(),
+					"consumer" + i);
 
 		}
 	}
@@ -290,11 +292,12 @@ public class TestAuditQueue {
 		queue.stop();
 		queue.waitToComplete();
 
-		assertEquals("Total count", messageToSend, testConsumer.getCountTotal());
-		assertEquals("Total sum", messageToSend, testConsumer.getSumTotal());
-		assertEquals("Total batch", expectedBatchSize,
-				testConsumer.getBatchCount());
-		assertNull("Event not in sequnce", testConsumer.isInSequence());
+		assertEquals(messageToSend, testConsumer.getCountTotal(), "Total count");
+		assertEquals(messageToSend, testConsumer.getSumTotal(), "Total sum");
+		assertEquals(expectedBatchSize,
+				testConsumer.getBatchCount(),
+				"Total batch");
+		assertNull(testConsumer.isInSequence(), "Event not in sequnce");
 
 	}
 
@@ -344,11 +347,12 @@ public class TestAuditQueue {
 		queue.stop();
 		queue.waitToComplete();
 
-		assertEquals("Total count", messageToSend, testConsumer.getCountTotal());
-		assertEquals("Total sum", messageToSend, testConsumer.getSumTotal());
-		assertEquals("Total batch", expectedBatchSize,
-				testConsumer.getBatchCount());
-		assertNull("Event not in sequnce", testConsumer.isInSequence());
+		assertEquals(messageToSend, testConsumer.getCountTotal(), "Total count");
+		assertEquals(messageToSend, testConsumer.getSumTotal(), "Total sum");
+		assertEquals(expectedBatchSize,
+				testConsumer.getBatchCount(),
+				"Total batch");
+		assertNull(testConsumer.isInSequence(), "Event not in sequnce");
 	}
 
 	@Test
@@ -398,10 +402,10 @@ public class TestAuditQueue {
 		queue.stop();
 		queue.waitToComplete();
 
-		assertEquals("Total count", 0, testConsumer.getCountTotal());
-		assertEquals("Total sum", 0, testConsumer.getSumTotal());
-		assertEquals("Total batch", 0, testConsumer.getBatchCount());
-		assertNull("Event not in sequnce", testConsumer.isInSequence());
+		assertEquals(0, testConsumer.getCountTotal(), "Total count");
+		assertEquals(0, testConsumer.getSumTotal(), "Total sum");
+		assertEquals(0, testConsumer.getBatchCount(), "Total batch");
+		assertNull(testConsumer.isInSequence(), "Event not in sequnce");
 	}
 
 	@Test
@@ -482,9 +486,9 @@ public class TestAuditQueue {
 		queue.stop();
 		queue.waitToComplete();
 
-		assertEquals("Total count", messageToSend, testConsumer.getCountTotal());
-		assertEquals("Total sum", messageToSend, testConsumer.getSumTotal());
-		assertNull("Event not in sequnce", testConsumer.isInSequence());
+		assertEquals(messageToSend, testConsumer.getCountTotal(), "Total count");
+		assertEquals(messageToSend, testConsumer.getSumTotal(), "Total sum");
+		assertNull(testConsumer.isInSequence(), "Event not in sequnce");
 
 	}
 
@@ -578,9 +582,9 @@ public class TestAuditQueue {
 		queue.stop();
 		queue.waitToComplete();
 
-		assertEquals("Total count", messageToSend, testConsumer.getCountTotal());
-		assertEquals("Total sum", messageToSend, testConsumer.getSumTotal());
-		assertNull("Event not in sequnce", testConsumer.isInSequence());
+		assertEquals(messageToSend, testConsumer.getCountTotal(), "Total count");
+		assertEquals(messageToSend, testConsumer.getSumTotal(), "Total sum");
+		assertNull(testConsumer.isInSequence(), "Event not in sequnce");
 
 	}
 
@@ -657,7 +661,7 @@ public class TestAuditQueue {
 		queue.stop();
 		queue.waitToComplete();
 
-		assertTrue("File created", logFile.exists());
+		assertTrue(logFile.exists(), "File created");
 		try {
 			List<AuthzAuditEvent> eventList = new ArrayList<AuthzAuditEvent>();
 			int totalSum = 0;
@@ -675,14 +679,14 @@ public class TestAuditQueue {
 				}
 			}
 			br.close();
-			assertEquals("Total count", messageToSend, eventList.size());
-			assertEquals("Total sum", messageToSend, totalSum);
-			assertFalse("Event not in sequnce", outOfSeq);
+			assertEquals(messageToSend, eventList.size(), "Total count");
+			assertEquals(messageToSend, totalSum, "Total sum");
+			assertFalse(outOfSeq, "Event not in sequnce");
 
 		} catch (Throwable e) {
 			logger.error("Error opening file for reading.", e);
-			assertTrue("Error reading file. fileName=" + logFile + ", error="
-					+ e.toString(), true);
+			assertTrue(true, "Error reading file. fileName=" + logFile + ", error="
+					+ e.toString());
 		}
 
 	}
@@ -739,7 +743,7 @@ public class TestAuditQueue {
 			logger.error(e.getMessage());
 		}
 		queue.waitToComplete();
-		assertTrue("File created", logFile.exists());
+		assertTrue(logFile.exists(), "File created");
 		long rowCount = getOrcFileRowCount(logFile.getPath());
 		assertEquals(messageToSend, rowCount);
 	}

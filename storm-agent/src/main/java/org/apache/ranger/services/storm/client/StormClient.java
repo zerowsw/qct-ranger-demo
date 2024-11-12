@@ -33,7 +33,7 @@ import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.security.KrbPasswordSaverLoginModule;
 import org.apache.hadoop.security.SecureClientLogin;
 import org.apache.hadoop.security.authentication.util.KerberosUtil;
@@ -59,9 +59,11 @@ public class StormClient {
 
 	private static final String TOPOLOGY_LIST_API_ENDPOINT = "/api/v1/topology/summary";
 
-	private static final String errMessage =  " You can still save the repository and start creating "
-											  + "policies, but you would not be able to use autocomplete for "
-											  + "resource names. Check ranger_admin.log for more info.";
+	private static final String errMessage =  """
+											   You can still save the repository and start creating \
+											  policies, but you would not be able to use autocomplete for \
+											  resource names. Check ranger_admin.log for more info.\
+											  """;
 
 	String stormUIUrl;
 	String userName;

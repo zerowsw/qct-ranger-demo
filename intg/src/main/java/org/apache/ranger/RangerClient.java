@@ -34,9 +34,9 @@ import org.apache.ranger.plugin.util.GrantRevokeRoleRequest;
 import org.apache.ranger.plugin.util.RangerRESTClient;
 
 import java.security.PrivilegedExceptionAction;
-import javax.ws.rs.HttpMethod;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.HttpMethod;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import java.net.URI;
 import java.util.*;
 
@@ -683,7 +683,7 @@ public class RangerClient {
 
         public API applyUrlFormat(Object... params) throws RangerServiceException {
             try{
-                return new API(String.format(path, params), method, expectedStatus, consumes, produces);
+                return new API(path.formatted(params), method, expectedStatus, consumes, produces);
             } catch(IllegalFormatException e) {
                 LOG.error("Arguments not formatted properly");
 

@@ -19,16 +19,17 @@ package org.apache.ranger.services.schema.registry.client;
 
 import org.apache.ranger.services.schema.registry.client.connection.ISchemaRegistryClient;
 import org.apache.ranger.services.schema.registry.client.util.DefaultSchemaRegistryClientForTesting;
-import org.junit.Test;
 
 import java.util.ArrayList;
+
+import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 public class AutocompletionAgentTest {
@@ -58,9 +59,11 @@ public class AutocompletionAgentTest {
                 new AutocompletionAgent("schema-registry", client);
 
         res = autocompletionAgent.connectionTest();
-        String errMessage = "You can still save the repository and start creating "
-                + "policies, but you would not be able to use autocomplete for "
-                + "resource names. Check server logs for more info.";
+        String errMessage = """
+                You can still save the repository and start creating \
+                policies, but you would not be able to use autocomplete for \
+                resource names. Check server logs for more info.\
+                """;
         assertEquals(res.get("connectivityStatus"), false);
         assertThat(res.get("message"), is(errMessage));
         assertThat(res.get("description"), is(errMessage));

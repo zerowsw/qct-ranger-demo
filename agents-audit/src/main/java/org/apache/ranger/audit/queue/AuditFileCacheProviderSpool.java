@@ -184,8 +184,12 @@ public class AuditFileCacheProviderSpool implements Runnable {
                     + FILE_CACHE_PROVIDER_NAME);
 
             if (logFileNameFormat == null || logFileNameFormat.isEmpty()) {
-                logFileNameFormat = "spool_" + "%app-type%" + "_"
-                        + "%time:yyyyMMdd-HHmm.ss%.log";
+                logFileNameFormat = """
+                        spool_\
+                        %app-type%\
+                        _\
+                        %time:yyyyMMdd-HHmm.ss%.log\
+                        """;
             }
             logger.info("logFileNameFormat=" + logFileNameFormat
                     + ", queueName=" + FILE_CACHE_PROVIDER_NAME);

@@ -16,8 +16,8 @@
  */
 package org.apache.ranger.common;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class TestRangerConfigUtil {
@@ -28,24 +28,24 @@ public class TestRangerConfigUtil {
 	@Test
 	public void testGetDefaultMaxRows() {
 		int maxrow = xaConfigUtil.getDefaultMaxRows();
-		Assert.assertEquals(maxrow,xaConfigUtil.defaultMaxRows );
+		Assertions.assertEquals(maxrow,xaConfigUtil.defaultMaxRows );
 	}
 	
 	@Test
 	public void testIsAccessFilterEnabled() {
 		boolean value = xaConfigUtil.isAccessFilterEnabled();
-        Assert.assertTrue(value);
+        Assertions.assertTrue(value);
 	}
 	
 	@Test
 	public void testGetWebAppRootURL(){
 		String returnValue = xaConfigUtil.getWebAppRootURL();
-		Assert.assertEquals(returnValue,xaConfigUtil.webappRootURL);
+		Assertions.assertEquals(returnValue,xaConfigUtil.webappRootURL);
 	}
 	
 	@Test
 	public void testGetRoles(){
 		String[] str=xaConfigUtil.getRoles();
-		Assert.assertArrayEquals(str, xaConfigUtil.roles);
+		Assertions.assertArrayEquals(str, xaConfigUtil.roles);
 	}
 }

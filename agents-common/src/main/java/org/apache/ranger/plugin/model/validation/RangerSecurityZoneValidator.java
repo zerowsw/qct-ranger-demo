@@ -19,9 +19,9 @@
 
 package org.apache.ranger.plugin.model.validation;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.plugin.errors.ValidationErrorCode;
 import org.apache.ranger.plugin.model.RangerPolicy.RangerPolicyResource;
 import org.apache.ranger.plugin.model.RangerPolicyResourceSignature;
@@ -66,7 +66,7 @@ public class RangerSecurityZoneValidator extends RangerValidator {
 
     public void validate(RangerSecurityZone securityZone, Action action) throws Exception {
         if (LOG.isDebugEnabled()) {
-            LOG.debug(String.format("==> RangerSecurityZoneValidator.validate(%s, %s)", securityZone, action));
+            LOG.debug("==> RangerSecurityZoneValidator.validate(%s, %s)".formatted(securityZone, action));
         }
 
         List<ValidationFailureDetails> failures = new ArrayList<>();
@@ -80,7 +80,7 @@ public class RangerSecurityZoneValidator extends RangerValidator {
             }
         } finally {
             if (LOG.isDebugEnabled()) {
-                LOG.debug(String.format("<== RangerSecurityZoneValidator.validate(%s, %s)", securityZone, action));
+                LOG.debug("<== RangerSecurityZoneValidator.validate(%s, %s)".formatted(securityZone, action));
             }
         }
     }
@@ -88,7 +88,7 @@ public class RangerSecurityZoneValidator extends RangerValidator {
     @Override
     boolean isValid(String name, Action action, List<ValidationFailureDetails> failures) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug(String.format("==> RangerSecurityZoneValidator.isValid(%s, %s, %s)", name, action, failures));
+            LOG.debug("==> RangerSecurityZoneValidator.isValid(%s, %s, %s)".formatted(name, action, failures));
         }
 
         boolean ret = true;
@@ -111,7 +111,7 @@ public class RangerSecurityZoneValidator extends RangerValidator {
         }
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug(String.format("<== RangerSecurityZoneValidator.isValid(%s, %s, %s) : %s", name, action, failures, ret));
+            LOG.debug("<== RangerSecurityZoneValidator.isValid(%s, %s, %s) : %s".formatted(name, action, failures, ret));
         }
 
         return ret;
@@ -120,7 +120,7 @@ public class RangerSecurityZoneValidator extends RangerValidator {
     @Override
     boolean isValid(Long id, Action action, List<ValidationFailureDetails> failures) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug(String.format("==> RangerSecurityZoneValidator.isValid(%s, %s, %s)", id, action, failures));
+            LOG.debug("==> RangerSecurityZoneValidator.isValid(%s, %s, %s)".formatted(id, action, failures));
         }
 
         boolean ret = true;
@@ -143,7 +143,7 @@ public class RangerSecurityZoneValidator extends RangerValidator {
         }
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug(String.format("<== RangerSecurityZoneValidator.isValid(%s, %s, %s) : %s", id, action, failures, ret));
+            LOG.debug("<== RangerSecurityZoneValidator.isValid(%s, %s, %s) : %s".formatted(id, action, failures, ret));
         }
 
         return ret;
@@ -151,7 +151,7 @@ public class RangerSecurityZoneValidator extends RangerValidator {
 
     private boolean isValid(RangerSecurityZone securityZone, Action action, List<ValidationFailureDetails> failures) {
         if(LOG.isDebugEnabled()) {
-            LOG.debug(String.format("==> RangerSecurityZoneValidator.isValid(%s, %s, %s)", securityZone, action, failures));
+            LOG.debug("==> RangerSecurityZoneValidator.isValid(%s, %s, %s)".formatted(securityZone, action, failures));
         }
 
         if (!(action == Action.CREATE || action == Action.UPDATE)) {
@@ -208,7 +208,7 @@ public class RangerSecurityZoneValidator extends RangerValidator {
         ret = ret && validateAgainstAllSecurityZones(securityZone, action, failures);
 
         if(LOG.isDebugEnabled()) {
-            LOG.debug(String.format("<== RangerSecurityZoneValidator.isValid(%s, %s, %s) : %s", securityZone, action, failures, ret));
+            LOG.debug("<== RangerSecurityZoneValidator.isValid(%s, %s, %s) : %s".formatted(securityZone, action, failures, ret));
         }
 
         return ret;
@@ -216,7 +216,7 @@ public class RangerSecurityZoneValidator extends RangerValidator {
 
     private boolean validateWithinSecurityZone(RangerSecurityZone securityZone, Action action, List<ValidationFailureDetails> failures) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug(String.format("==> RangerSecurityZoneValidator.validateWithinSecurityZone(%s, %s, %s)", securityZone, action, failures));
+            LOG.debug("==> RangerSecurityZoneValidator.validateWithinSecurityZone(%s, %s, %s)".formatted(securityZone, action, failures));
         }
 
         boolean ret = true;
@@ -247,7 +247,7 @@ public class RangerSecurityZoneValidator extends RangerValidator {
         }
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug(String.format("<== RangerSecurityZoneValidator.validateWithinSecurityZone(%s, %s, %s) : %s", securityZone, action, failures, ret));
+            LOG.debug("<== RangerSecurityZoneValidator.validateWithinSecurityZone(%s, %s, %s) : %s".formatted(securityZone, action, failures, ret));
         }
 
         return ret;
@@ -255,7 +255,7 @@ public class RangerSecurityZoneValidator extends RangerValidator {
 
     private boolean validateAgainstAllSecurityZones(RangerSecurityZone securityZone, Action action, List<ValidationFailureDetails> failures) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug(String.format("==> RangerSecurityZoneValidator.validateAgainstAllSecurityZones(%s, %s, %s)", securityZone, action, failures));
+            LOG.debug("==> RangerSecurityZoneValidator.validateAgainstAllSecurityZones(%s, %s, %s)".formatted(securityZone, action, failures));
         }
 
         boolean      ret = true;
@@ -312,7 +312,7 @@ public class RangerSecurityZoneValidator extends RangerValidator {
         }
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug(String.format("<== RangerSecurityZoneValidator.validateAgainstAllSecurityZones(%s, %s, %s) : %s", securityZone, action, failures, ret));
+            LOG.debug("<== RangerSecurityZoneValidator.validateAgainstAllSecurityZones(%s, %s, %s) : %s".formatted(securityZone, action, failures, ret));
         }
 
         return ret;
@@ -320,7 +320,7 @@ public class RangerSecurityZoneValidator extends RangerValidator {
 
     private boolean validateZoneServiceInAllZones(List<RangerSecurityZone> zones, String serviceName, RangerServiceDef serviceDef, List<ValidationFailureDetails> failures) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug(String.format("==> RangerSecurityZoneValidator.validateZoneServiceInAllZones(%s, %s, %s, %s)", zones, serviceName, serviceDef, failures));
+            LOG.debug("==> RangerSecurityZoneValidator.validateZoneServiceInAllZones(%s, %s, %s, %s)".formatted(zones, serviceName, serviceDef, failures));
         }
 
         boolean                         ret              = true;
@@ -432,14 +432,14 @@ public class RangerSecurityZoneValidator extends RangerValidator {
         }
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug(String.format("<== RangerSecurityZoneValidator.validateZoneServiceInAllZones(%s, %s, %s, %s) : %s", zones, serviceName, serviceDef, failures, ret));
+            LOG.debug("<== RangerSecurityZoneValidator.validateZoneServiceInAllZones(%s, %s, %s, %s) : %s".formatted(zones, serviceName, serviceDef, failures, ret));
         }
         return ret;
     }
 
     private boolean validateSecurityZoneService(String serviceName, RangerSecurityZoneService securityZoneService, List<ValidationFailureDetails> failures) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug(String.format("==> RangerSecurityZoneValidator.validateSecurityZoneService(%s, %s, %s)", serviceName, securityZoneService, failures));
+            LOG.debug("==> RangerSecurityZoneValidator.validateSecurityZoneService(%s, %s, %s)".formatted(serviceName, securityZoneService, failures));
         }
 
         boolean       ret     = true;
@@ -524,7 +524,7 @@ public class RangerSecurityZoneValidator extends RangerValidator {
         }
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug(String.format("<== RangerSecurityZoneValidator.validateSecurityZoneService(%s, %s, %s) : %s", serviceName, securityZoneService, failures, ret));
+            LOG.debug("<== RangerSecurityZoneValidator.validateSecurityZoneService(%s, %s, %s) : %s".formatted(serviceName, securityZoneService, failures, ret));
         }
 
         return ret;

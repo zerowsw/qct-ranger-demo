@@ -21,8 +21,8 @@ package org.apache.ranger.plugin.model.validation;
 
 import java.util.*;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.plugin.errors.ValidationErrorCode;
 import org.apache.ranger.plugin.model.RangerPolicy;
 import org.apache.ranger.plugin.model.RangerPolicy.RangerDataMaskPolicyItem;
@@ -51,7 +51,7 @@ public class RangerPolicyValidator extends RangerValidator {
 
 	public void validate(RangerPolicy policy, Action action, boolean isAdmin) throws Exception {
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerPolicyValidator.validate(%s, %s, %s)", policy, action, isAdmin));
+			LOG.debug("==> RangerPolicyValidator.validate(%s, %s, %s)".formatted(policy, action, isAdmin));
 		}
 
 		List<ValidationFailureDetails> failures = new ArrayList<>();
@@ -64,7 +64,7 @@ public class RangerPolicyValidator extends RangerValidator {
 			}
 		} finally {
 			if(LOG.isDebugEnabled()) {
-				LOG.debug(String.format("<== RangerPolicyValidator.validate(%s, %s, %s): %s, reason[%s]", policy, action, isAdmin, valid, message));
+				LOG.debug("<== RangerPolicyValidator.validate(%s, %s, %s): %s, reason[%s]".formatted(policy, action, isAdmin, valid, message));
 			}
 		}
 	}
@@ -72,7 +72,7 @@ public class RangerPolicyValidator extends RangerValidator {
 	@Override
 	boolean isValid(Long id, Action action, List<ValidationFailureDetails> failures) {
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerPolicyValidator.isValid(%s, %s, %s)", id, action, failures));
+			LOG.debug("==> RangerPolicyValidator.isValid(%s, %s, %s)".formatted(id, action, failures));
 		}
 
 		boolean valid = true;
@@ -101,14 +101,14 @@ public class RangerPolicyValidator extends RangerValidator {
 		}
 
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== RangerPolicyValidator.isValid(%s, %s, %s): %s", id, action, failures, valid));
+			LOG.debug("<== RangerPolicyValidator.isValid(%s, %s, %s): %s".formatted(id, action, failures, valid));
 		}
 		return valid;
 	}
 
 	boolean isValid(RangerPolicy policy, Action action, boolean isAdmin, List<ValidationFailureDetails> failures) {
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerPolicyValidator.isValid(%s, %s, %s, %s)", policy, action, isAdmin, failures));
+			LOG.debug("==> RangerPolicyValidator.isValid(%s, %s, %s, %s)".formatted(policy, action, isAdmin, failures));
 		}
 
 		if (!(action == Action.CREATE || action == Action.UPDATE)) {
@@ -392,7 +392,7 @@ public class RangerPolicyValidator extends RangerValidator {
 		}
 		
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== RangerPolicyValidator.isValid(%s, %s, %s, %s): %s", policy, action, isAdmin, failures, valid));
+			LOG.debug("<== RangerPolicyValidator.isValid(%s, %s, %s, %s): %s".formatted(policy, action, isAdmin, failures, valid));
 		}
 		return valid;
 	}
@@ -400,7 +400,7 @@ public class RangerPolicyValidator extends RangerValidator {
 	boolean isValidAccessTypeDef(RangerPolicy policy, final List<ValidationFailureDetails> failures, Action action,boolean isAdmin, final RangerServiceDef serviceDef) {
 		boolean valid = true;
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerPolicyValidator.isValidAccessTypeDef(%s, %s, %s,%s,%s)", policy, failures, action,isAdmin,serviceDef));
+			LOG.debug("==> RangerPolicyValidator.isValidAccessTypeDef(%s, %s, %s,%s,%s)".formatted(policy, failures, action, isAdmin, serviceDef));
 		}
 		int policyType=policy.getPolicyType() == null ? RangerPolicy.POLICY_TYPE_ACCESS : policy.getPolicyType();
 		//row filter policy
@@ -489,7 +489,7 @@ public class RangerPolicyValidator extends RangerValidator {
 		}
 
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== RangerPolicyValidator.isValidAccessTypeDef(%s, %s, %s,%s,%s)", policy, failures, action,isAdmin,serviceDef));
+			LOG.debug("<== RangerPolicyValidator.isValidAccessTypeDef(%s, %s, %s,%s,%s)".formatted(policy, failures, action, isAdmin, serviceDef));
 		}
 		return valid;
 	}
@@ -498,7 +498,7 @@ public class RangerPolicyValidator extends RangerValidator {
 			boolean isAdmin, final RangerServiceDef serviceDef) {
 		
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerPolicyValidator.isValidResources(%s, %s, %s, %s, %s)", policy, failures, action, isAdmin, serviceDef));
+			LOG.debug("==> RangerPolicyValidator.isValidResources(%s, %s, %s, %s, %s)".formatted(policy, failures, action, isAdmin, serviceDef));
 		}
 		
 		boolean valid = true;
@@ -522,7 +522,7 @@ public class RangerPolicyValidator extends RangerValidator {
 		}
 
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== RangerPolicyValidator.isValidResources(%s, %s, %s, %s, %s): %s", policy, failures, action, isAdmin, serviceDef, valid));
+			LOG.debug("<== RangerPolicyValidator.isValidResources(%s, %s, %s, %s, %s): %s".formatted(policy, failures, action, isAdmin, serviceDef, valid));
 		}
 		return valid;
 	}
@@ -531,7 +531,7 @@ public class RangerPolicyValidator extends RangerValidator {
 
 		boolean valid = true;
 		if (LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerPolicyValidator.isValidValiditySchedule(%s, %s, %s)", policy, failures, action));
+			LOG.debug("==> RangerPolicyValidator.isValidValiditySchedule(%s, %s, %s)".formatted(policy, failures, action));
 		}
 		List<RangerValiditySchedule> validitySchedules = policy.getValiditySchedules();
 		List<RangerValiditySchedule> normalizedValiditySchedules = null;
@@ -556,7 +556,7 @@ public class RangerPolicyValidator extends RangerValidator {
 			policy.setValiditySchedules(normalizedValiditySchedules);
 		}
 		if (LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== RangerPolicyValidator.isValidValiditySchedule(%s, %s, %s): %s", policy, failures, action, valid));
+			LOG.debug("<== RangerPolicyValidator.isValidValiditySchedule(%s, %s, %s): %s".formatted(policy, failures, action, valid));
 		}
 		return valid;
 	}
@@ -564,7 +564,7 @@ public class RangerPolicyValidator extends RangerValidator {
 	boolean isPolicyResourceUnique(RangerPolicy policy, final List<ValidationFailureDetails> failures, Action action) {
 		
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerPolicyValidator.isPolicyResourceUnique(%s, %s, %s)", policy, failures, action));
+			LOG.debug("==> RangerPolicyValidator.isPolicyResourceUnique(%s, %s, %s)".formatted(policy, failures, action));
 		}
 
 		boolean valid = true;
@@ -588,7 +588,7 @@ public class RangerPolicyValidator extends RangerValidator {
 		}
 
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== RangerPolicyValidator.isPolicyResourceUnique(%s, %s, %s): %s", policy, failures, action, valid));
+			LOG.debug("<== RangerPolicyValidator.isPolicyResourceUnique(%s, %s, %s): %s".formatted(policy, failures, action, valid));
 		}
 		return valid;
 	}
@@ -596,7 +596,7 @@ public class RangerPolicyValidator extends RangerValidator {
 	boolean isValidResourceNames(final RangerPolicy policy, final List<ValidationFailureDetails> failures, final RangerServiceDef serviceDef) {
 
 		if (LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerPolicyValidator.isValidResourceNames(%s, %s, %s)", policy, failures, serviceDef));
+			LOG.debug("==> RangerPolicyValidator.isValidResourceNames(%s, %s, %s)".formatted(policy, failures, serviceDef));
 		}
 
 		boolean valid = true;
@@ -617,7 +617,7 @@ public class RangerPolicyValidator extends RangerValidator {
 		}
 
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== RangerPolicyValidator.isValidResourceNames(%s, %s, %s): %s", policy, failures, serviceDef, valid));
+			LOG.debug("<== RangerPolicyValidator.isValidResourceNames(%s, %s, %s): %s".formatted(policy, failures, serviceDef, valid));
 		}
 
 		return valid;
@@ -654,7 +654,7 @@ public class RangerPolicyValidator extends RangerValidator {
 			Set<List<RangerResourceDef>> candidateHierarchies = filterHierarchies_hierarchyHasAllPolicyResources(policyResources, hierarchies, defHelper);
 			if (candidateHierarchies.isEmpty()) {
 				if (LOG.isDebugEnabled()) {
-					LOG.debug(String.format("No compatible resource hierarchies found: resource[%s], service-def[%s], valid-resource-hierarchies[%s]",
+					LOG.debug("No compatible resource hierarchies found: resource[%s], service-def[%s], valid-resource-hierarchies[%s]".formatted(
 							policyResources.toString(), serviceDef.getName(), toStringHierarchies_all(hierarchies, defHelper)));
 				}
 				ValidationErrorCode error;
@@ -705,7 +705,7 @@ public class RangerPolicyValidator extends RangerValidator {
 		}
 
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== RangerPolicyValidator.isValidResourceNames(%s, %s, %s): %s", resources, failures, serviceDef, valid));
+			LOG.debug("<== RangerPolicyValidator.isValidResourceNames(%s, %s, %s): %s".formatted(resources, failures, serviceDef, valid));
 		}
 		return valid;
 	}
@@ -785,7 +785,7 @@ public class RangerPolicyValidator extends RangerValidator {
 	boolean isValidResourceFlags(final Map<String, RangerPolicyResource> inputPolicyResources, final List<ValidationFailureDetails> failures,
 			final List<RangerResourceDef> resourceDefs, final String serviceDefName, final String policyName, boolean isAdmin) {
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerPolicyValidator.isValidResourceFlags(%s, %s, %s, %s, %s, %s)", inputPolicyResources, failures, resourceDefs, serviceDefName, policyName, isAdmin));
+			LOG.debug("==> RangerPolicyValidator.isValidResourceFlags(%s, %s, %s, %s, %s, %s)".formatted(inputPolicyResources, failures, resourceDefs, serviceDefName, policyName, isAdmin));
 		}
 
 		boolean valid = true;
@@ -863,14 +863,14 @@ public class RangerPolicyValidator extends RangerValidator {
 		}
 
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== RangerPolicyValidator.isValidResourceFlags(%s, %s, %s, %s, %s, %s): %s", inputPolicyResources, failures, resourceDefs, serviceDefName, policyName, isAdmin, valid));
+			LOG.debug("<== RangerPolicyValidator.isValidResourceFlags(%s, %s, %s, %s, %s, %s): %s".formatted(inputPolicyResources, failures, resourceDefs, serviceDefName, policyName, isAdmin, valid));
 		}
 		return valid;
 	}
 
 	boolean isValidResourceValues(Map<String, RangerPolicyResource> resourceMap, List<ValidationFailureDetails> failures, RangerServiceDef serviceDef) {
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerPolicyValidator.isValidResourceValues(%s, %s, %s)", resourceMap, failures, serviceDef));
+			LOG.debug("==> RangerPolicyValidator.isValidResourceValues(%s, %s, %s)".formatted(resourceMap, failures, serviceDef));
 		}
 
 		boolean valid = true;
@@ -883,7 +883,7 @@ public class RangerPolicyValidator extends RangerValidator {
 				if(CollectionUtils.isEmpty(policyResource.getValues())){
 					ValidationErrorCode error = ValidationErrorCode.POLICY_VALIDATION_ERR_MISSING_RESOURCE_LIST;
 					if(LOG.isDebugEnabled()) {
-						LOG.debug(String.format("Resource list was empty or contains null: value[%s], resource-name[%s], service-def-name[%s]", policyResource.getValues(), name, serviceDef.getName()));
+						LOG.debug("Resource list was empty or contains null: value[%s], resource-name[%s], service-def-name[%s]".formatted(policyResource.getValues(), name, serviceDef.getName()));
 					}
 					failures.add(new ValidationFailureDetailsBuilder()
 						.field("resource-values")
@@ -899,7 +899,7 @@ public class RangerPolicyValidator extends RangerValidator {
 					if (!StringUtils.isBlank(duplicateValue)){
 						ValidationErrorCode error = ValidationErrorCode.POLICY_VALIDATION_ERR_DUPLICATE_VALUES_FOR_RESOURCE;
 						if (LOG.isDebugEnabled()){
-							LOG.debug(String.format("Duplicate values found for the resource name[%s] value[%s] service-def-name[%s]",name, duplicateValue,serviceDef.getName()));
+							LOG.debug("Duplicate values found for the resource name[%s] value[%s] service-def-name[%s]".formatted(name, duplicateValue, serviceDef.getName()));
 						}
 						failures.add(new ValidationFailureDetailsBuilder()
 								.field("resource-values")
@@ -916,7 +916,7 @@ public class RangerPolicyValidator extends RangerValidator {
 						for (String aValue : policyResource.getValues()) {
 							if (!aValue.matches(regEx)) {
 								if (LOG.isDebugEnabled()) {
-									LOG.debug(String.format("Resource failed regex check: value[%s], resource-name[%s], regEx[%s], service-def-name[%s]", aValue, name, regEx, serviceDef.getName()));
+									LOG.debug("Resource failed regex check: value[%s], resource-name[%s], regEx[%s], service-def-name[%s]".formatted(aValue, name, regEx, serviceDef.getName()));
 								}
 								ValidationErrorCode error = ValidationErrorCode.POLICY_VALIDATION_ERR_INVALID_RESOURCE_VALUE_REGEX;
 								failures.add(new ValidationFailureDetailsBuilder()
@@ -935,7 +935,7 @@ public class RangerPolicyValidator extends RangerValidator {
 		}
 
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== RangerPolicyValidator.isValidResourceValues(%s, %s, %s): %s", resourceMap, failures, serviceDef, valid));
+			LOG.debug("<== RangerPolicyValidator.isValidResourceValues(%s, %s, %s): %s".formatted(resourceMap, failures, serviceDef, valid));
 		}
 		return valid;
 	}
@@ -964,7 +964,7 @@ public class RangerPolicyValidator extends RangerValidator {
 
 	boolean isValidPolicyItems(List<RangerPolicyItem> policyItems, List<ValidationFailureDetails> failures, RangerServiceDef serviceDef) {
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerPolicyValidator.isValid(%s, %s, %s)", policyItems, failures, serviceDef));
+			LOG.debug("==> RangerPolicyValidator.isValid(%s, %s, %s)".formatted(policyItems, failures, serviceDef));
 		}
 
 		boolean valid = true;
@@ -989,14 +989,14 @@ public class RangerPolicyValidator extends RangerValidator {
 		}
 
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== RangerPolicyValidator.isValid(%s, %s, %s): %s", policyItems, failures, serviceDef, valid));
+			LOG.debug("<== RangerPolicyValidator.isValid(%s, %s, %s): %s".formatted(policyItems, failures, serviceDef, valid));
 		}
 		return valid;
 	}
 
 	boolean isValidPolicyItem(RangerPolicyItem policyItem, List<ValidationFailureDetails> failures, RangerServiceDef serviceDef) {
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerPolicyValidator.isValid(%s, %s, %s)", policyItem, failures, serviceDef));
+			LOG.debug("==> RangerPolicyValidator.isValid(%s, %s, %s)".formatted(policyItem, failures, serviceDef));
 		}
 
 		List<String> invalidItems = new ArrayList<String>(Arrays.asList("null", "NULL", "Null", null));
@@ -1070,14 +1070,14 @@ public class RangerPolicyValidator extends RangerValidator {
 		}
 
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== RangerPolicyValidator.isValid(%s, %s, %s): %s", policyItem, failures, serviceDef, valid));
+			LOG.debug("<== RangerPolicyValidator.isValid(%s, %s, %s): %s".formatted(policyItem, failures, serviceDef, valid));
 		}
 		return valid;
 	}
 
 	boolean isValidItemAccesses(List<RangerPolicyItemAccess> accesses, List<ValidationFailureDetails> failures, RangerServiceDef serviceDef) {
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerPolicyValidator.isValid(%s, %s, %s)", accesses, failures, serviceDef));
+			LOG.debug("==> RangerPolicyValidator.isValid(%s, %s, %s)".formatted(accesses, failures, serviceDef));
 		}
 		
 		boolean valid = true;
@@ -1111,14 +1111,14 @@ public class RangerPolicyValidator extends RangerValidator {
 		}
 
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== RangerPolicyValidator.isValid(%s, %s, %s): %b", accesses, failures, serviceDef, valid));
+			LOG.debug("<== RangerPolicyValidator.isValid(%s, %s, %s): %b".formatted(accesses, failures, serviceDef, valid));
 		}
 		return valid;
 	}
 
 	boolean isValidPolicyItemAccess(RangerPolicyItemAccess access, List<ValidationFailureDetails> failures, Set<String> accessTypes) {
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerPolicyValidator.isValidPolicyItemAccess(%s, %s, %s)", access, failures, accessTypes));
+			LOG.debug("==> RangerPolicyValidator.isValidPolicyItemAccess(%s, %s, %s)".formatted(access, failures, accessTypes));
 		}
 		
 		boolean valid = true;
@@ -1167,7 +1167,7 @@ public class RangerPolicyValidator extends RangerValidator {
 		}
 		
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== RangerPolicyValidator.isValidPolicyItemAccess(%s, %s, %s): %s", access, failures, accessTypes, valid));
+			LOG.debug("<== RangerPolicyValidator.isValidPolicyItemAccess(%s, %s, %s): %s".formatted(access, failures, accessTypes, valid));
 		}
 		return valid;
 	}

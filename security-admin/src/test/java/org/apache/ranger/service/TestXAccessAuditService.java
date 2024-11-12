@@ -18,8 +18,8 @@
  */
 package org.apache.ranger.service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 
 import org.apache.ranger.common.SearchCriteria;
 import org.apache.ranger.common.SearchField;
@@ -31,17 +31,17 @@ import org.apache.ranger.db.RangerDaoManager;
 import org.apache.ranger.db.XXServiceDao;
 import org.apache.ranger.entity.XXAccessAudit;
 import org.apache.ranger.view.VXAccessAuditList;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.MethodOrderer.MethodName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@ExtendWith(MockitoExtension.class)
+@TestMethodOrder(MethodName.class)
 public class TestXAccessAuditService {
 
 	@InjectMocks

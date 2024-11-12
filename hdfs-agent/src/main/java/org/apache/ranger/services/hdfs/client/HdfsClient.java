@@ -28,12 +28,12 @@ import java.util.*;
 import javax.security.auth.Subject;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.security.SecureClientLogin;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.apache.ranger.plugin.client.BaseClient;
@@ -62,9 +62,11 @@ public class HdfsClient extends BaseClient {
 	
 	private List<String> listFilesInternal(String baseDir, String fileMatching, final List<String> pathList) throws  HadoopException {
 		List<String> fileList = new ArrayList<String>();
-		String errMsg = " You can still save the repository and start creating "
-				+ "policies, but you would not be able to use autocomplete for "
-				+ "resource names. Check ranger_admin.log for more info.";
+		String errMsg = """
+				 You can still save the repository and start creating \
+				policies, but you would not be able to use autocomplete for \
+				resource names. Check ranger_admin.log for more info.\
+				""";
 		try {
 			String dirPrefix = (baseDir.endsWith("/") ? baseDir : (baseDir + "/"));
 			String filterRegEx = null;
@@ -235,10 +237,12 @@ public class HdfsClient extends BaseClient {
 			generateResponseDataMap(connectivityStatus, testconnMsg, testconnMsg,
 					null, null, responseData);
 		} else {
-			testconnMsg = "Unable to retrieve any files using given parameters, "
-				+ "You can still save the repository and start creating policies, "
-				+ "but you would not be able to use autocomplete for resource names. "
-				+ "Check ranger_admin.log for more info. ";
+			testconnMsg = """
+				Unable to retrieve any files using given parameters, \
+				You can still save the repository and start creating policies, \
+				but you would not be able to use autocomplete for resource names. \
+				Check ranger_admin.log for more info. \
+				""";
       String additionalMsg = (validateConfigsMsg != null)  ?
         validateConfigsMsg : testconnMsg;
 			generateResponseDataMap(connectivityStatus, testconnMsg, additionalMsg,

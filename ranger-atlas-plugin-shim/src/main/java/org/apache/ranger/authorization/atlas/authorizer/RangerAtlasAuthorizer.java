@@ -31,6 +31,9 @@ import org.apache.ranger.plugin.classloader.RangerPluginClassLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 public class RangerAtlasAuthorizer implements AtlasAuthorizer {
     private static final Logger LOG = LoggerFactory.getLogger(RangerAtlasAuthorizer.class);
     private static boolean isDebugEnabled = LOG.isDebugEnabled();
@@ -63,7 +66,8 @@ public class RangerAtlasAuthorizer implements AtlasAuthorizer {
 
 			activatePluginClassLoader();
 
-			rangerAtlasAuthorizerImpl = cls.newInstance();
+			Constructor<AtlasAuthorizer> constructor = cls.getDeclaredConstructor();
+			rangerAtlasAuthorizerImpl = constructor.newInstance();
 		} catch (Exception e) {
 			// check what need to be done
 			LOG.error("Error Enabling RangerAtlasPlugin", e);

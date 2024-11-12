@@ -19,10 +19,10 @@
 
 package org.apache.ranger.plugin.contextenricher;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.collections.Predicate;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.collections4.Predicate;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.authorization.hadoop.config.RangerPluginConfig;
 import org.apache.ranger.authorization.utils.JsonUtils;
 import org.apache.ranger.plugin.model.RangerPolicy;
@@ -140,7 +140,7 @@ public class RangerTagEnricher extends RangerAbstractContextEnricher {
 			if (tagRetriever != null) {
 				disableCacheIfServiceNotFound = getBooleanConfig(propertyPrefix + ".disable.cache.if.servicenotfound", true);
 				String cacheDir      = getConfig(propertyPrefix + ".policy.cache.dir", null);
-				String cacheFilename = String.format("%s_%s_tag.json", appId, serviceName);
+				String cacheFilename = "%s_%s_tag.json".formatted(appId, serviceName);
 
 				cacheFilename = cacheFilename.replace(File.separatorChar,  '_');
 				cacheFilename = cacheFilename.replace(File.pathSeparatorChar,  '_');
@@ -220,8 +220,8 @@ public class RangerTagEnricher extends RangerAbstractContextEnricher {
 
 			final EnrichedServiceTags enrichedServiceTags;
 
-			if (dataStore instanceof EnrichedServiceTags) {
-				enrichedServiceTags = (EnrichedServiceTags) dataStore;
+			if (dataStore instanceof EnrichedServiceTags tags) {
+				enrichedServiceTags = tags;
 			} else {
 				enrichedServiceTags = this.enrichedServiceTags;
 
@@ -1247,8 +1247,7 @@ public class RangerTagEnricher extends RangerAbstractContextEnricher {
 
 		@Override
 		public boolean evaluate(Object o) {
-			if (o instanceof RangerResourceEvaluator) {
-				RangerResourceEvaluator evaluator = (RangerResourceEvaluator) o;
+			if (o instanceof RangerResourceEvaluator evaluator) {
 
 				return evaluator.isLeaf(leafResourceDef.getName()) || evaluator.isAncestorOf(leafResourceDef);
 			}

@@ -32,6 +32,9 @@ import org.apache.ranger.plugin.classloader.RangerPluginClassLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 
 
 public class RangerYarnAuthorizer extends YarnAuthorizationProvider {
@@ -69,7 +72,8 @@ public class RangerYarnAuthorizer extends YarnAuthorizationProvider {
 
 			activatePluginClassLoader();
 
-			yarnAuthorizationProviderImpl = cls.newInstance();
+			Constructor<YarnAuthorizationProvider> constructor = cls.getDeclaredConstructor();
+			yarnAuthorizationProviderImpl = constructor.newInstance();
 		} catch (Exception e) {
 			// check what need to be done
 			LOG.error("Error Enabling RangerYarnPlugin", e);

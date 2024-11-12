@@ -19,7 +19,7 @@
 
 package org.apache.ranger.plugin.model.validation;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.plugin.errors.ValidationErrorCode;
 import org.apache.ranger.plugin.model.RangerRole;
 import org.apache.ranger.plugin.store.RoleStore;
@@ -38,7 +38,7 @@ public class RangerRoleValidator extends RangerValidator {
 
 	public void validate(RangerRole rangeRole, Action action) throws Exception {
 		if (LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerRoleValidator.validate(%s, %s)", rangeRole, action));
+			LOG.debug("==> RangerRoleValidator.validate(%s, %s)".formatted(rangeRole, action));
 		}
 
 		List<ValidationFailureDetails> failures = new ArrayList<>();
@@ -51,7 +51,7 @@ public class RangerRoleValidator extends RangerValidator {
 			}
 		} finally {
 			if (LOG.isDebugEnabled()) {
-				LOG.debug(String.format("<== RangerRoleValidator.validate(%s, %s): %s, reason[%s]", rangeRole, action, valid, message));
+				LOG.debug("<== RangerRoleValidator.validate(%s, %s): %s, reason[%s]".formatted(rangeRole, action, valid, message));
 			}
 		}
 	}
@@ -59,7 +59,7 @@ public class RangerRoleValidator extends RangerValidator {
 	@Override
 	boolean isValid(Long id, Action action, List<ValidationFailureDetails> failures) {
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerRoleValidator.isValid(%s, %s, %s)", id, action, failures));
+			LOG.debug("==> RangerRoleValidator.isValid(%s, %s, %s)".formatted(id, action, failures));
 		}
 
 		boolean valid = true;
@@ -94,7 +94,7 @@ public class RangerRoleValidator extends RangerValidator {
 		}
 
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== RangerRoleValidator.isValid(%s, %s, %s): %s", id, action, failures, valid));
+			LOG.debug("<== RangerRoleValidator.isValid(%s, %s, %s): %s".formatted(id, action, failures, valid));
 		}
 		return valid;
 	}
@@ -103,7 +103,7 @@ public class RangerRoleValidator extends RangerValidator {
 	@Override
 	boolean isValid(String name, Action action, List<ValidationFailureDetails> failures) {
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerRoleValidator.isValid(%s, %s, %s)", name, action, failures));
+			LOG.debug("==> RangerRoleValidator.isValid(%s, %s, %s)".formatted(name, action, failures));
 		}
 
 		boolean valid = true;
@@ -138,14 +138,14 @@ public class RangerRoleValidator extends RangerValidator {
 		}
 
 		if(LOG.isDebugEnabled()) {
-			LOG.debug(String.format("<== RangerRoleValidator.isValid(%s, %s, %s): %s", name, action, failures, valid));
+			LOG.debug("<== RangerRoleValidator.isValid(%s, %s, %s): %s".formatted(name, action, failures, valid));
 		}
 		return valid;
 	}
 
 	boolean isValid(RangerRole rangerRole, Action action, List<ValidationFailureDetails> failures) {
 		if (LOG.isDebugEnabled()) {
-			LOG.debug(String.format("==> RangerRoleValidator.isValid(%s, %s, %s)", rangerRole, action, failures));
+			LOG.debug("==> RangerRoleValidator.isValid(%s, %s, %s)".formatted(rangerRole, action, failures));
 		}
 
 		boolean valid = true;
@@ -216,7 +216,7 @@ public class RangerRoleValidator extends RangerValidator {
 			}
 
 			if (LOG.isDebugEnabled()) {
-				LOG.debug(String.format("<== RangerRoleValidator.isValid(%s, %s, %s): %s", rangerRole, action, failures, valid));
+				LOG.debug("<== RangerRoleValidator.isValid(%s, %s, %s): %s".formatted(rangerRole, action, failures, valid));
 			}
 
 		return valid;

@@ -29,6 +29,8 @@ import org.apache.ranger.plugin.classloader.RangerPluginClassLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class RangerKmsAuthorizer implements Runnable, KeyACLs {
 
 	private static final Logger LOG  = LoggerFactory.getLogger(RangerKmsAuthorizer.class);
@@ -67,7 +69,7 @@ public class RangerKmsAuthorizer implements Runnable, KeyACLs {
 
 			activatePluginClassLoader();
 
-			impl 			   = cls.newInstance();
+			impl 			   = cls.getDeclaredConstructor().newInstance();
 			implRunnable       = (Runnable)impl;
 			implKeyACLs 	   = (KeyACLs)impl;
 		} catch (Exception e) {

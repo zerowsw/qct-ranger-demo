@@ -21,19 +21,18 @@ package org.apache.ranger.plugin.policyengine;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.apache.commons.collections4.CollectionUtils;
-
-import org.junit.jupiter.api.Test;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.ranger.authorization.utils.JsonUtils;
 import org.apache.ranger.plugin.util.RangerPluginCapability;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.Test;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
+
+import static org.junit.Assert.assertTrue;
 
 public class TestRangerPluginCapability {
 
@@ -73,7 +72,7 @@ public class TestRangerPluginCapability {
 
             List<String> difference = me.compare(other);
 
-            assertTrue(StringUtils.equals(JsonUtils.listToJson(difference), JsonUtils.listToJson(testCase.difference)), fileName + "-" + testName + "-" + Arrays.toString(difference.toArray()));
+            assertTrue(fileName + "-" + testName + "-" + Arrays.toString(difference.toArray()), StringUtils.equals(JsonUtils.listToJson(difference), JsonUtils.listToJson(testCase.difference)));
 
         }
     }

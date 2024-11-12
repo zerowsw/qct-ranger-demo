@@ -19,12 +19,10 @@
 
 package org.apache.ranger.tagsync.source.atlas;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.ranger.plugin.model.RangerServiceResource;
 
 import java.util.*;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 import org.apache.ranger.tagsync.process.TagSyncConfig;
 import org.apache.ranger.tagsync.source.atlasrest.RangerAtlasEntity;
@@ -104,8 +102,7 @@ public class AtlasResourceMapperUtil {
 		for (String mapperName : mapperNames) {
 			try {
 				Class<?> clazz = Class.forName(mapperName);
-				Constructor<?> constructor = clazz.getDeclaredConstructor();
-				AtlasResourceMapper resourceMapper = (AtlasResourceMapper) constructor.newInstance();
+				AtlasResourceMapper resourceMapper = (AtlasResourceMapper) clazz.newInstance();
 
 				resourceMapper.initialize(properties);
 

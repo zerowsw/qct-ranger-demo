@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.ws.rs.WebApplicationException;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.WebApplicationException;
 
 import org.apache.ranger.common.AppConstants;
 import org.apache.ranger.common.ContextUtil;
@@ -45,16 +45,18 @@ import org.apache.ranger.view.VXPortalUser;
 import org.apache.ranger.view.VXResource;
 import org.apache.ranger.view.VXResponse;
 import org.apache.ranger.view.VXUser;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ExtendWith(MockitoExtension.class)
+@RunWith(MockitoJUnitRunner.class)
 public class TestRangerBizUtil {
 	
 	private Long id = 1L;
@@ -90,7 +92,10 @@ public class TestRangerBizUtil {
         @Mock
         VXResponse vXResponse;
 
-	@BeforeEach
+        @Rule
+        public ExpectedException thrown = ExpectedException.none();
+
+	@Before
 	public void setup(){
 		RangerSecurityContext context = new RangerSecurityContext();
 		context.setUserSession(new UserSessionBase());
@@ -102,33 +107,33 @@ public class TestRangerBizUtil {
 	@Test
 	public void testGetDBFlavor(){
 		int dbFlavor = RangerBizUtil.getDBFlavor();
-		Assertions.assertEquals(AppConstants.DB_FLAVOR_UNKNOWN, dbFlavor);
+		Assert.assertEquals(AppConstants.DB_FLAVOR_UNKNOWN, dbFlavor);
 	}
 
 	@Test
 	public void testGetDBFlavorType(){
 		int dbFlavor = 1;
 		String dbFlavourType = RangerBizUtil.getDBFlavorType(dbFlavor);
-		Assertions.assertEquals("MYSQL", dbFlavourType);
+		Assert.assertEquals("MYSQL", dbFlavourType);
 		dbFlavor = 2;
 		dbFlavourType = RangerBizUtil.getDBFlavorType(dbFlavor);
-		Assertions.assertEquals("ORACLE", dbFlavourType);
+		Assert.assertEquals("ORACLE", dbFlavourType);
 	}
 
 	@Test
 	public void testGetDBQuery(){
 		int dbFlavor = 1;
 		String dbQuery = RangerBizUtil.getDBVersionQuery(dbFlavor);
-		Assertions.assertEquals("SELECT version()", dbQuery);
+		Assert.assertEquals("SELECT version()", dbQuery);
 		dbFlavor = 2;
 		dbQuery =RangerBizUtil.getDBVersionQuery(dbFlavor);
-		Assertions.assertEquals("SELECT banner from v$version where rownum<2", dbQuery);
+		Assert.assertEquals("SELECT banner from v$version where rownum<2", dbQuery);
 		dbFlavor = 3;
 		dbQuery =RangerBizUtil.getDBVersionQuery(dbFlavor);
-		Assertions.assertEquals("SELECT version()", dbQuery);
+		Assert.assertEquals("SELECT version()", dbQuery);
 		dbFlavor = 5;
 		dbQuery =RangerBizUtil.getDBVersionQuery(dbFlavor);
-		Assertions.assertEquals("SELECT @@version", dbQuery);
+		Assert.assertEquals("SELECT @@version", dbQuery);
 	}
 
 	@Test
@@ -136,16 +141,16 @@ public class TestRangerBizUtil {
 		VXResource vXResource = null;
 		rangerBizUtil.enableResourceAccessControl = false;
 		VXResponse resp = rangerBizUtil.hasPermission(vXResource, AppConstants.XA_PERM_TYPE_UNKNOWN);
-		Assertions.assertNotNull(resp);
+		Assert.assertNotNull(resp);
 	}
 	
 	@Test
 	public void testHasPermission_When_NoResource(){
 		VXResource vXResource = null;
 		VXResponse resp = rangerBizUtil.hasPermission(vXResource, AppConstants.XA_PERM_TYPE_UNKNOWN);
-		Assertions.assertNotNull(resp);
-		Assertions.assertEquals(VXResponse.STATUS_ERROR, resp.getStatusCode());
-		Assertions.assertEquals("Please provide valid policy.", resp.getMsgDesc());
+		Assert.assertNotNull(resp);
+		Assert.assertEquals(VXResponse.STATUS_ERROR, resp.getStatusCode());
+		Assert.assertEquals("Please provide valid policy.", resp.getMsgDesc());
 	}
 	
 	@Test
@@ -177,9 +182,9 @@ public class TestRangerBizUtil {
 		Mockito.verify(userDao).getById(Mockito.anyLong());
 		Mockito.verify(daoManager).getXXUser();
 		Mockito.verify(xxUserDao).findByUserName(Mockito.anyString());
-		Assertions.assertNotNull(resp);
-		Assertions.assertEquals(VXResponse.STATUS_ERROR, resp.getStatusCode());
-		Assertions.assertEquals("Permission Denied !", resp.getMsgDesc());
+		Assert.assertNotNull(resp);
+		Assert.assertEquals(VXResponse.STATUS_ERROR, resp.getStatusCode());
+		Assert.assertEquals("Permission Denied !", resp.getMsgDesc());
 	}
 	
 	@Test
@@ -190,14 +195,14 @@ public class TestRangerBizUtil {
 		UserSessionBase currentUserSession = ContextUtil.getCurrentUserSession();
 		currentUserSession.setUserAdmin(true);
 		VXResponse resp = rangerBizUtil.hasPermission(vXResource, AppConstants.XA_PERM_TYPE_UNKNOWN);
-		Assertions.assertNotNull(resp);
-		Assertions.assertEquals(VXResponse.STATUS_SUCCESS, resp.getStatusCode());
+		Assert.assertNotNull(resp);
+		Assert.assertEquals(VXResponse.STATUS_SUCCESS, resp.getStatusCode());
 	}
 	
 	@Test
 	public void testIsNotAdmin(){
 		boolean isAdminChk = rangerBizUtil.isAdmin();
-		Assertions.assertFalse(isAdminChk);
+		Assert.assertFalse(isAdminChk);
 	}
 	
 	@Test
@@ -205,21 +210,21 @@ public class TestRangerBizUtil {
 		UserSessionBase currentUserSession = ContextUtil.getCurrentUserSession();
 		currentUserSession.setUserAdmin(true);
 		boolean isAdminChk = rangerBizUtil.isAdmin();
-		Assertions.assertTrue(isAdminChk);
+		Assert.assertTrue(isAdminChk);
 	}
 	
 	@Test
 	public void testUserSessionNull_forIsAdmin(){
 		RangerContextHolder.setSecurityContext(null);
 		boolean isAdminChk = rangerBizUtil.isAdmin();
-		Assertions.assertFalse(isAdminChk);
+		Assert.assertFalse(isAdminChk);
 	}
 	
 	@Test
 	public void testGetXUserId_NoUserSession(){
 		RangerContextHolder.setSecurityContext(null);
 		Long chk = rangerBizUtil.getXUserId();
-		Assertions.assertNull(chk);
+		Assert.assertNull(chk);
 	}
 	
 	@Test
@@ -244,7 +249,7 @@ public class TestRangerBizUtil {
 		Mockito.verify(xxPortalUserDao).getById(Mockito.anyLong());
 		Mockito.verify(daoManager).getXXUser();
 		Mockito.verify(xxUserDao).findByUserName(Mockito.anyString());
-		Assertions.assertNull(chk);
+		Assert.assertNull(chk);
 	}
 	
 	@Test
@@ -271,38 +276,38 @@ public class TestRangerBizUtil {
 		Mockito.verify(xxPortalUserDao).getById(Mockito.anyLong());
 		Mockito.verify(daoManager).getXXUser();
 		Mockito.verify(xxUserDao).findByUserName(Mockito.anyString());
-		Assertions.assertEquals(chk, id);
+		Assert.assertEquals(chk, id);
 	}
 	
 	@Test
 	public void testReplaceMetaChars_PathEmpty(){
 		String path = "";
 		String pathChk = rangerBizUtil.replaceMetaChars(path);
-		Assertions.assertFalse(pathChk.contains("\\*"));
-		Assertions.assertFalse(pathChk.contains("\\?"));
+		Assert.assertFalse(pathChk.contains("\\*"));
+		Assert.assertFalse(pathChk.contains("\\?"));
 	}
 	
 	@Test
 	public void testReplaceMetaChars_NoMetaChars(){
 		String path = "\\Demo\\Test";
 		String pathChk = rangerBizUtil.replaceMetaChars(path);
-		Assertions.assertFalse(pathChk.contains("\\*"));
-		Assertions.assertFalse(pathChk.contains("\\?"));
+		Assert.assertFalse(pathChk.contains("\\*"));
+		Assert.assertFalse(pathChk.contains("\\?"));
 	}
 	
 	@Test
 	public void testReplaceMetaChars_PathNull(){
 		String path = null;
 		String pathChk = rangerBizUtil.replaceMetaChars(path);
-		Assertions.assertNull(pathChk);
+		Assert.assertNull(pathChk);
 	}
 	
 	@Test
 	public void testReplaceMetaChars(){
 		String path = "\\Demo\\Test\\*\\?";
 		String pathChk = rangerBizUtil.replaceMetaChars(path);
-		Assertions.assertFalse(pathChk.contains("\\*"));
-		Assertions.assertFalse(pathChk.contains("\\?"));
+		Assert.assertFalse(pathChk.contains("\\*"));
+		Assert.assertFalse(pathChk.contains("\\?"));
 	}
 	
 	@Test
@@ -310,7 +315,7 @@ public class TestRangerBizUtil {
 		String firstName = "Test123456789123456789";
 		String lastName = "Unit";
 		String publicNameChk = rangerBizUtil.generatePublicName(firstName, lastName);
-		Assertions.assertEquals("Test12345678... U.", publicNameChk);
+		Assert.assertEquals("Test12345678... U.", publicNameChk);
 	}
 	
 	@Test
@@ -318,7 +323,7 @@ public class TestRangerBizUtil {
 		String firstName = "Test";
 		String lastName = "";
 		String publicNameChk = rangerBizUtil.generatePublicName(firstName, lastName);
-		Assertions.assertNull(publicNameChk);
+		Assert.assertNull(publicNameChk);
 	}
 	
 	@Test
@@ -327,20 +332,20 @@ public class TestRangerBizUtil {
 		vXPortalUser.setFirstName("Test");
 		vXPortalUser.setLastName(null);
 		String publicNameChk = rangerBizUtil.generatePublicName(vXPortalUser, null);
-		Assertions.assertNull(publicNameChk);
+		Assert.assertNull(publicNameChk);
 	}
 
 
 	@Test
 	public void testMatchHdfsPolicy_NoResourceName(){
 		boolean bnlChk = rangerBizUtil.matchHbasePolicy(null, null, null, id, AppConstants.XA_PERM_TYPE_UNKNOWN);
-		Assertions.assertFalse(bnlChk);
+		Assert.assertFalse(bnlChk);
 	}
 	
 	@Test
 	public void testMatchHdfsPolicy_NoResourceList(){
 		boolean bnlChk = rangerBizUtil.matchHbasePolicy(resourceName, null, null, id, AppConstants.XA_PERM_TYPE_UNKNOWN);
-		Assertions.assertFalse(bnlChk);
+		Assert.assertFalse(bnlChk);
 	}
 	
 	@Test
@@ -354,7 +359,7 @@ public class TestRangerBizUtil {
 		xXResource.setResourceStatus(AppConstants.STATUS_ENABLED);
 		xResourceList.add(xXResource);
 		boolean bnlChk = rangerBizUtil.matchHbasePolicy(resourceName, xResourceList, vXResponse, null, AppConstants.XA_PERM_TYPE_UNKNOWN);
-		Assertions.assertFalse(bnlChk);
+		Assert.assertFalse(bnlChk);
 	}
 	
 	@Test
@@ -370,20 +375,20 @@ public class TestRangerBizUtil {
 		Mockito.when(stringUtil.split(Mockito.anyString(), Mockito.anyString())).thenReturn(new String[0]);
 		boolean bnlChk = rangerBizUtil.matchHbasePolicy("/*/*/*", xResourceList, vXResponse, id, AppConstants.XA_PERM_TYPE_UNKNOWN);
 		Mockito.verify(stringUtil).split(Mockito.anyString(), Mockito.anyString());
-		Assertions.assertFalse(bnlChk);
+		Assert.assertFalse(bnlChk);
 	}
 	
 	@Test
 	public void testMatchHivePolicy_NoResourceName(){
 		boolean bnlChk = rangerBizUtil.matchHivePolicy(null, null, null, 0);
-		Assertions.assertFalse(bnlChk);
+		Assert.assertFalse(bnlChk);
 		
 	}
 	
 	@Test
 	public void testMatchHivePolicy_NoResourceList(){
 		boolean bnlChk = rangerBizUtil.matchHivePolicy(resourceName, null, null, 0);
-		Assertions.assertFalse(bnlChk);
+		Assert.assertFalse(bnlChk);
 		
 	}
 	
@@ -397,7 +402,7 @@ public class TestRangerBizUtil {
 		xXResource.setResourceStatus(AppConstants.STATUS_ENABLED);
 		xResourceList.add(xXResource);
 		boolean bnlChk = rangerBizUtil.matchHivePolicy(resourceName, xResourceList, null, 0);
-		Assertions.assertFalse(bnlChk);
+		Assert.assertFalse(bnlChk);
 		
 	}
 	
@@ -412,7 +417,7 @@ public class TestRangerBizUtil {
 		xResourceList.add(xXResource);
 		Mockito.when(stringUtil.split(Mockito.anyString(), Mockito.anyString())).thenReturn(new String[0]);
 		boolean bnlChk = rangerBizUtil.matchHivePolicy("/*/*/*", xResourceList, id, 0);
-		Assertions.assertFalse(bnlChk);
+		Assert.assertFalse(bnlChk);
 	}
 	
 	@Test
@@ -427,13 +432,12 @@ public class TestRangerBizUtil {
 		Mockito.when(stringUtil.split(Mockito.anyString(), Mockito.anyString())).thenReturn(new String[0]);
 		boolean bnlChk = rangerBizUtil.matchHivePolicy("/*/*/*", xResourceList, id, 17);
 		Mockito.verify(stringUtil).split(Mockito.anyString(), Mockito.anyString());
-		Assertions.assertFalse(bnlChk);
+		Assert.assertFalse(bnlChk);
 	}
 
         @Test
         public void testCheckUserAccessibleThrowErrorForKeyAdminAndUserRoleSysAdmin()
                         throws Exception {
-			assertThrows(WebApplicationException.class, () -> {
 
                 Collection<String> roleList = new ArrayList<String>();
                 roleList.add(RangerConstants.ROLE_SYS_ADMIN);
@@ -455,20 +459,19 @@ public class TestRangerBizUtil {
                                                 "Logged in user is not allowed to create/update user",
                                                 MessageEnums.OPER_NO_PERMISSION)).thenReturn(webExp);
 
+                thrown.expect(WebApplicationException.class);
+
                 rangerBizUtil.checkUserAccessible(vXUser);
 
                 Mockito.verify(restErrorUtil).createRESTException(
                                 "Logged in user is not allowed to create/update user",
                                 MessageEnums.OPER_NO_PERMISSION);
 
-			});
-
         }
 
         @Test
         public void testCheckUserAccessibleThrowErrorForKeyAdminAndUserRoleAdminAuditor()
                         throws Exception {
-			assertThrows(WebApplicationException.class, () -> {
 
                 Collection<String> roleList = new ArrayList<String>();
                 roleList.add(RangerConstants.ROLE_ADMIN_AUDITOR);
@@ -490,13 +493,13 @@ public class TestRangerBizUtil {
                                                 "Logged in user is not allowed to create/update user",
                                                 MessageEnums.OPER_NO_PERMISSION)).thenReturn(webExp);
 
+                thrown.expect(WebApplicationException.class);
+
                 rangerBizUtil.checkUserAccessible(vXUser);
 
                 Mockito.verify(restErrorUtil).createRESTException(
                                 "Logged in user is not allowed to create/update user",
                                 MessageEnums.OPER_NO_PERMISSION);
-
-			});
 
         }
 
@@ -518,14 +521,13 @@ public class TestRangerBizUtil {
                 Mockito.when(currentUserSession.isKeyAdmin()).thenReturn(true);
 
                 boolean result = rangerBizUtil.checkUserAccessible(vXUser);
-                Assertions.assertTrue(result);
+                Assert.assertTrue(result);
 
         }
 
         @Test
         public void testCheckUserAccessibleThrowErrorForAdminAndUserRoleKeyAdmin()
                         throws Exception {
-			assertThrows(WebApplicationException.class, () -> {
 
                 Collection<String> roleList = new ArrayList<String>();
                 roleList.add(RangerConstants.ROLE_KEY_ADMIN);
@@ -548,20 +550,19 @@ public class TestRangerBizUtil {
                                                 "Logged in user is not allowed to create/update user",
                                                 MessageEnums.OPER_NO_PERMISSION)).thenReturn(webExp);
 
+                thrown.expect(WebApplicationException.class);
+
                 rangerBizUtil.checkUserAccessible(vXUser);
 
                 Mockito.verify(restErrorUtil).createRESTException(
                                 "Logged in user is not allowed to create/update user",
                                 MessageEnums.OPER_NO_PERMISSION);
 
-			});
-
         }
 
         @Test
         public void testCheckUserAccessibleThrowErrorForAdminAndUserRoleKeyAdminAuditor()
                         throws Exception {
-			assertThrows(WebApplicationException.class, () -> {
 
                 Collection<String> roleList = new ArrayList<String>();
                 roleList.add(RangerConstants.ROLE_KEY_ADMIN_AUDITOR);
@@ -584,13 +585,13 @@ public class TestRangerBizUtil {
                                                 "Logged in user is not allowed to create/update user",
                                                 MessageEnums.OPER_NO_PERMISSION)).thenReturn(webExp);
 
+                thrown.expect(WebApplicationException.class);
+
                 rangerBizUtil.checkUserAccessible(vXUser);
 
                 Mockito.verify(restErrorUtil).createRESTException(
                                 "Logged in user is not allowed to create/update user",
                                 MessageEnums.OPER_NO_PERMISSION);
-
-			});
 
         }
 
@@ -611,13 +612,12 @@ public class TestRangerBizUtil {
                 Mockito.when(currentUserSession.isUserAdmin()).thenReturn(true);
 
                 boolean result = rangerBizUtil.checkUserAccessible(vXUser);
-                Assertions.assertTrue(result);
+                Assert.assertTrue(result);
 
         }
 
         @Test
         public void testBlockAuditorRoleUserThrowsErrorForAuditKeyAdmin(){
-			assertThrows(WebApplicationException.class, () -> {
                 RangerBizUtil rangerBizUtilMock = Mockito.mock(RangerBizUtil.class);
         vXResponse.setStatusCode(HttpServletResponse.SC_UNAUTHORIZED);
         vXResponse.setMsgDesc("Operation denied. LoggedInUser=1 ,isn't permitted to perform the action.");
@@ -632,16 +632,14 @@ public class TestRangerBizUtil {
                 RangerContextHolder.setSecurityContext(context);
 
                 Mockito.doThrow(new WebApplicationException()).when(rangerBizUtilMock).blockAuditorRoleUser();
+                thrown.expect(WebApplicationException.class);
 
                 rangerBizUtilMock.blockAuditorRoleUser();
-
-			});
 
         }
 
         @Test
         public void testBlockAuditorRoleUserThrowsErrorForAuditUserAdmin(){
-			assertThrows(WebApplicationException.class, () -> {
 
                 RangerBizUtil rangerBizUtilMock = Mockito.mock(RangerBizUtil.class);
 
@@ -660,8 +658,9 @@ public class TestRangerBizUtil {
 
                 Mockito.doThrow(new WebApplicationException()).when(rangerBizUtilMock).blockAuditorRoleUser();
 
+                thrown.expect(WebApplicationException.class);
+
                 rangerBizUtilMock.blockAuditorRoleUser();
-			});
         }
 
         @Test

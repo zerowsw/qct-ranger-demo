@@ -26,9 +26,9 @@ import org.apache.storm.Config;
 import org.apache.storm.LocalCluster;
 import org.apache.storm.generated.RebalanceOptions;
 import org.apache.storm.topology.TopologyBuilder;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.Ignore;
 
 /**
  * A simple test that wires a WordSpout + WordCounterBolt into a topology and runs it. The "RangerStormAuthorizer" takes care of authorization.
@@ -41,12 +41,12 @@ import org.junit.jupiter.api.Test;
  */
 
 // TODO to fix Strom Test working with Hadoop 3.0.0
-@Disabled
+@Ignore
 public class StormRangerAuthorizerTest {
 
     private static LocalCluster cluster;
 
-    @org.junit.jupiter.api.BeforeAll
+    @org.junit.BeforeClass
     public static void setup() throws Exception {
         cluster = new LocalCluster();
 
@@ -69,7 +69,7 @@ public class StormRangerAuthorizerTest {
 
     }
 
-    @org.junit.jupiter.api.AfterAll
+    @org.junit.AfterClass
     public static void cleanup() throws Exception {
         final Subject subject = new Subject();
         subject.getPrincipals().add(new SimplePrincipal("bob"));
@@ -100,7 +100,7 @@ public class StormRangerAuthorizerTest {
             public Void run() throws Exception {
                 try {
                     cluster.submitTopology("word-count2", conf, builder.createTopology());
-                    Assertions.fail("Authorization failure expected");
+                    Assert.fail("Authorization failure expected");
                 } catch (Exception ex) {
                     // expected
                 }
@@ -132,7 +132,7 @@ public class StormRangerAuthorizerTest {
                 // Try to deactivate "temp1"
                 try {
                     cluster.deactivate("temp1");
-                    Assertions.fail("Authorization failure expected");
+                    Assert.fail("Authorization failure expected");
                 } catch (Exception ex) {
                     // expected
                 }
@@ -168,7 +168,7 @@ public class StormRangerAuthorizerTest {
                 // Try to rebalance "temp2"
                 try {
                     cluster.rebalance("temp2", options);
-                    Assertions.fail("Authorization failure expected");
+                    Assert.fail("Authorization failure expected");
                 } catch (Exception ex) {
                     // expected
                 }
@@ -203,7 +203,7 @@ public class StormRangerAuthorizerTest {
                 // but not the "stormdev2" topology
                 try {
                     cluster.submitTopology("stormdev2", conf, builder.createTopology());
-                    Assertions.fail("Authorization failure expected");
+                    Assert.fail("Authorization failure expected");
                 } catch (Exception ex) {
                     // expected
                 }

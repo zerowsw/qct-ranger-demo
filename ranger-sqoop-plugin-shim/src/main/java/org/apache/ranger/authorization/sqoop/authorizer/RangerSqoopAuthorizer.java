@@ -29,9 +29,6 @@ import org.apache.sqoop.security.AuthorizationValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 public class RangerSqoopAuthorizer extends AuthorizationValidator {
 	private static final Logger LOG = LoggerFactory.getLogger(RangerSqoopAuthorizer.class);
 
@@ -68,8 +65,7 @@ public class RangerSqoopAuthorizer extends AuthorizationValidator {
 
 			activatePluginClassLoader();
 
-			Constructor<AuthorizationValidator> constructor = cls.getDeclaredConstructor();
-			authorizationValidator = constructor.newInstance();
+			authorizationValidator = cls.newInstance();
 		} catch (Exception e) {
 			LOG.error("Error Enabling RangerSqoopAuthorizer", e);
 		} finally {

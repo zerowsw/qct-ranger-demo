@@ -19,8 +19,8 @@
 
 package org.apache.ranger.plugin.store;
 
-import org.apache.commons.collections4.Predicate;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.collections.Predicate;
+import org.apache.commons.lang.StringUtils;
 import org.apache.ranger.plugin.model.RangerSecurityZone;
 import org.apache.ranger.plugin.util.SearchFilter;
 
@@ -57,7 +57,8 @@ public class SecurityZonePredicateUtil extends AbstractPredicateUtil {
 
                 boolean ret = false;
 
-                if(object instanceof RangerSecurityZone securityZone) {
+                if(object instanceof RangerSecurityZone) {
+                    RangerSecurityZone securityZone = (RangerSecurityZone) object;
 
                     ret = securityZone.getServices().get(serviceName) != null;
                 }
@@ -87,7 +88,8 @@ public class SecurityZonePredicateUtil extends AbstractPredicateUtil {
 
                 boolean ret = false;
 
-                if(object instanceof RangerSecurityZone securityZone) {
+                if(object instanceof RangerSecurityZone) {
+                    RangerSecurityZone securityZone = (RangerSecurityZone) object;
 
                     if (StringUtils.equals(zoneId, securityZone.getId().toString())) {
                         ret = true;
@@ -119,7 +121,8 @@ public class SecurityZonePredicateUtil extends AbstractPredicateUtil {
 
                 boolean ret = false;
 
-                if(object instanceof RangerSecurityZone securityZone) {
+                if(object instanceof RangerSecurityZone) {
+                    RangerSecurityZone securityZone = (RangerSecurityZone) object;
 
                     if (StringUtils.equals(zoneName, securityZone.getName())) {
                         ret = true;
@@ -151,7 +154,8 @@ public class SecurityZonePredicateUtil extends AbstractPredicateUtil {
 
                 boolean ret = false;
 
-                if(object instanceof RangerSecurityZone securityZone) {
+                if(object instanceof RangerSecurityZone) {
+                    RangerSecurityZone securityZone = (RangerSecurityZone) object;
 
                     if (!StringUtils.equals(zoneName, securityZone.getName())) {
                         ret = true;
@@ -183,7 +187,8 @@ public class SecurityZonePredicateUtil extends AbstractPredicateUtil {
 
 				boolean ret = false;
 
-				if (object instanceof RangerSecurityZone securityZone) {
+				if (object instanceof RangerSecurityZone) {
+					RangerSecurityZone securityZone = (RangerSecurityZone) object;
 
 					if (StringUtils.containsIgnoreCase(securityZone.getName(), zoneName)) {
 						ret = true;
@@ -215,7 +220,8 @@ public class SecurityZonePredicateUtil extends AbstractPredicateUtil {
 
 				boolean ret = false;
 
-				if (object instanceof RangerSecurityZone securityZone) {
+				if (object instanceof RangerSecurityZone) {
+					RangerSecurityZone securityZone = (RangerSecurityZone) object;
 
 					if (StringUtils.equals(securityZone.getCreatedBy(), createdBy)) {
 						ret = true;

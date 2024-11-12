@@ -34,8 +34,10 @@ import org.apache.ranger.plugin.model.RangerTagResourceMap;
 import org.apache.ranger.plugin.store.RangerServiceResourceSignature;
 import org.apache.ranger.plugin.store.TagStore;
 import org.apache.ranger.plugin.util.ServiceTags;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.Assert;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -54,11 +56,14 @@ public class TestServiceTagProcessor {
 	@Mock
 	TestServiceREST testServiceRest;
 
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
+
 	@Test
 	public void test1processError() throws Exception {
 		ServiceTagsProcessor sTagProcessor = new ServiceTagsProcessor(null);
 		sTagProcessor.process(serviceTags);
-		Assertions.assertNull(serviceTags);
+		Assert.assertNull(serviceTags);
 	}
 
 	@Test

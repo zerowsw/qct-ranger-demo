@@ -19,8 +19,8 @@
 
 package org.apache.ranger.plugin.store;
 
-import org.apache.commons.collections4.Predicate;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.collections.Predicate;
+import org.apache.commons.lang.StringUtils;
 import org.apache.ranger.plugin.model.RangerServiceResource;
 import org.apache.ranger.plugin.model.RangerTag;
 import org.apache.ranger.plugin.model.RangerTagResourceMap;
@@ -67,7 +67,8 @@ public class TagPredicateUtil extends AbstractPredicateUtil {
 					return ret;
 				}
 
-				if (object instanceof RangerTagDef tagDef) {
+				if (object instanceof RangerTagDef) {
+					RangerTagDef tagDef = (RangerTagDef) object;
 
 					ret = StringUtils.equals(id, tagDef.getId().toString());
 				}
@@ -98,7 +99,8 @@ public class TagPredicateUtil extends AbstractPredicateUtil {
 					return ret;
 				}
 
-				if (object instanceof RangerTagDef tagDef) {
+				if (object instanceof RangerTagDef) {
+					RangerTagDef tagDef = (RangerTagDef) object;
 
 					ret = StringUtils.equals(guid, tagDef.getGuid());
 				}
@@ -129,10 +131,12 @@ public class TagPredicateUtil extends AbstractPredicateUtil {
 					return ret;
 				}
 
-				if (object instanceof RangerTag tag) {
+				if (object instanceof RangerTag) {
+					RangerTag tag = (RangerTag) object;
 
 					ret = StringUtils.equals(id, tag.getId().toString());
-				} else if (object instanceof RangerTagResourceMap tagResourceMap) {
+				} else if (object instanceof RangerTagResourceMap) {
+					RangerTagResourceMap tagResourceMap = (RangerTagResourceMap) object;
 					ret = StringUtils.equals(id, tagResourceMap.getTagId().toString());
 				}
 
@@ -162,7 +166,8 @@ public class TagPredicateUtil extends AbstractPredicateUtil {
 					return ret;
 				}
 
-				if (object instanceof RangerTag tag) {
+				if (object instanceof RangerTag) {
+					RangerTag tag = (RangerTag) object;
 
 					ret = StringUtils.equals(guid, tag.getGuid());
 				}
@@ -193,10 +198,12 @@ public class TagPredicateUtil extends AbstractPredicateUtil {
 					return ret;
 				}
 
-				if (object instanceof RangerTagDef tagDef) {
+				if (object instanceof RangerTagDef) {
+					RangerTagDef tagDef = (RangerTagDef) object;
 
 					ret = StringUtils.equals(type, tagDef.getName());
-				} else if (object instanceof RangerTag tag) {
+				} else if (object instanceof RangerTag) {
+					RangerTag tag = (RangerTag) object;
 
 					ret = StringUtils.equals(type, tag.getType());
 				}
@@ -227,10 +234,12 @@ public class TagPredicateUtil extends AbstractPredicateUtil {
 					return ret;
 				}
 
-				if (object instanceof RangerServiceResource resource) {
+				if (object instanceof RangerServiceResource) {
+					RangerServiceResource resource = (RangerServiceResource) object;
 
 					ret = StringUtils.equals(id, resource.getId().toString());
-				} else if(object instanceof RangerTagResourceMap tagResourceMap) {
+				} else if(object instanceof RangerTagResourceMap) {
+					RangerTagResourceMap tagResourceMap = (RangerTagResourceMap)object;
 
 					ret = StringUtils.equals(id, tagResourceMap.getId().toString());
 				}
@@ -261,7 +270,8 @@ public class TagPredicateUtil extends AbstractPredicateUtil {
 					return ret;
 				}
 
-				if (object instanceof RangerServiceResource resource) {
+				if (object instanceof RangerServiceResource) {
+					RangerServiceResource resource = (RangerServiceResource) object;
 
 					ret = StringUtils.equals(id, resource.getGuid());
 				}
@@ -292,7 +302,8 @@ public class TagPredicateUtil extends AbstractPredicateUtil {
 					return ret;
 				}
 
-				if (object instanceof RangerServiceResource resource) {
+				if (object instanceof RangerServiceResource) {
+					RangerServiceResource resource = (RangerServiceResource) object;
 					ret = StringUtils.equals(resource.getServiceName(), serviceName);
 				}
 
@@ -322,7 +333,8 @@ public class TagPredicateUtil extends AbstractPredicateUtil {
 					return ret;
 				}
 
-				if (object instanceof RangerServiceResource resource) {
+				if (object instanceof RangerServiceResource) {
+					RangerServiceResource resource = (RangerServiceResource) object;
 
 					ret = StringUtils.equals(signature, resource.getResourceSignature());
 				}
@@ -353,7 +365,8 @@ public class TagPredicateUtil extends AbstractPredicateUtil {
 					return ret;
 				}
 
-				if (object instanceof RangerTagResourceMap tagResourceMap) {
+				if (object instanceof RangerTagResourceMap) {
+					RangerTagResourceMap tagResourceMap = (RangerTagResourceMap) object;
 					ret = StringUtils.equals(id, tagResourceMap.getId().toString());
 				}
 

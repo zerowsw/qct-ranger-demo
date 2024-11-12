@@ -17,7 +17,7 @@
 
 package org.apache.ranger.services.schema.registry.client.connection.util;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import javax.net.ssl.SSLContext;
 import java.util.HashMap;
@@ -27,7 +27,10 @@ import static com.hortonworks.registries.schemaregistry.client.SchemaRegistryCli
 import static org.apache.ranger.plugin.client.HadoopConfigHolder.RANGER_AUTH_TYPE;
 import static org.apache.ranger.plugin.client.HadoopConfigHolder.RANGER_LOOKUP_KEYTAB;
 import static org.apache.ranger.plugin.client.HadoopConfigHolder.RANGER_LOOKUP_PRINCIPAL;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class SecurityUtilsTest {
 
@@ -77,11 +80,9 @@ public class SecurityUtilsTest {
         assertNull(SecurityUtils.getJaasConfigForClientPrincipal(conf));
         conf.put(RANGER_LOOKUP_PRINCIPAL, "rangerlookup");
 
-        String expected = """
-                com.sun.security.auth.module.Krb5LoginModule\
-                 required useTicketCache=false principal="rangerlookup" \
-                useKeyTab=true keyTab="/tmp/rangerlookup.keytab";\
-                """;
+        String expected = "com.sun.security.auth.module.Krb5LoginModule" +
+                " required useTicketCache=false principal=\"rangerlookup\" " +
+                "useKeyTab=true keyTab=\"/tmp/rangerlookup.keytab\";";
         String actual = SecurityUtils.getJaasConfigForClientPrincipal(conf);
         assertEquals(actual, expected);
     }

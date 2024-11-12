@@ -21,8 +21,6 @@
 package org.apache.ranger.authorization.solr.authorizer;
 
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 import org.apache.ranger.plugin.classloader.RangerPluginClassLoader;
@@ -72,8 +70,7 @@ public class RangerSolrAuthorizer extends SearchComponent implements Authorizati
 
 			activatePluginClassLoader();
 
-			Constructor<AuthorizationPlugin> constructor = cls.getDeclaredConstructor();
-			Object impl = constructor.newInstance();
+			Object impl = cls.newInstance();
 			rangerSolrAuthorizerImpl = (AuthorizationPlugin)impl;
 			rangerSearchComponentImpl = (SearchComponent)impl;
 		} catch (Exception e) {

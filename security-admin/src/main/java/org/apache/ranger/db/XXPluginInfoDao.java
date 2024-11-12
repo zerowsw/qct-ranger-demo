@@ -19,7 +19,7 @@ package org.apache.ranger.db;
 
 import java.util.List;
 
-import jakarta.persistence.NoResultException;
+import javax.persistence.NoResultException;
 
 import org.apache.ranger.common.DateUtil;
 import org.apache.ranger.common.db.BaseDao;

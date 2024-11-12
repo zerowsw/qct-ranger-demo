@@ -17,16 +17,14 @@
 
 package org.apache.ranger.service;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import org.apache.ranger.biz.RangerBizUtil;
 import org.apache.ranger.common.ContextUtil;
@@ -128,9 +126,8 @@ public abstract class RangerBaseModelService<T extends XXDBBase, V extends Range
 
 	protected T createEntityObject() {
 		try {
-			Constructor<T> constructor = tEntityClass.getDeclaredConstructor();
-			return constructor.newInstance();
-		} catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+			return tEntityClass.newInstance();
+		} catch (Throwable e) {
 			LOG.error("Error instantiating entity class. tEntityClass="
 					+ tEntityClass.toString(), e);
 		}
@@ -139,10 +136,10 @@ public abstract class RangerBaseModelService<T extends XXDBBase, V extends Range
 
 	protected V createViewObject() {
 		try {
-			Constructor<V> constructor = tViewClass.getDeclaredConstructor();
-			return constructor.newInstance();
-		} catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-			LOG.error("Error instantiating view class. tViewClass=" + tViewClass.toString(), e);
+			return tViewClass.newInstance();
+		} catch (Throwable e) {
+			LOG.error("Error instantiating view class. tViewClass="
+					+ tViewClass.toString(), e);
 		}
 		return null;
 	}

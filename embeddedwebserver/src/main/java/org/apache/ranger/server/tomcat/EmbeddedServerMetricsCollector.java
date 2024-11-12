@@ -89,7 +89,9 @@ public class EmbeddedServerMetricsCollector {
 
         int activeThreadCount = -1;
 
-        if( executor instanceof ThreadPoolExecutor threadPoolExecutor){
+        if( executor instanceof ThreadPoolExecutor){
+
+            ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) executor;
             activeThreadCount = threadPoolExecutor.getActiveCount();
         }
 
@@ -101,7 +103,9 @@ public class EmbeddedServerMetricsCollector {
 
         int totalThreadCount = -1;
 
-        if( executor instanceof ThreadPoolExecutor threadPoolExecutor){
+        if( executor instanceof ThreadPoolExecutor){
+
+            ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) executor;
             totalThreadCount = threadPoolExecutor.getPoolSize();
         }
 

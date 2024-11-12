@@ -23,13 +23,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.ws.rs.WebApplicationException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.WebApplicationException;
 
-import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.ranger.admin.client.datatype.RESTResponse;
 import org.apache.ranger.biz.AssetMgr;
 import org.apache.ranger.biz.RangerPolicyAdmin;
@@ -93,26 +93,28 @@ import org.apache.ranger.service.RangerServiceDefService;
 import org.apache.ranger.service.RangerServiceService;
 import org.apache.ranger.service.XUserService;
 import org.apache.ranger.view.*;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.MethodOrderer.MethodName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.Assert;
+import org.junit.Ignore;
+import org.junit.FixMethodOrder;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.mockito.Answers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.MockitoJUnitRunner;
+
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
 
-@ExtendWith(MockitoExtension.class)
-@TestMethodOrder(MethodName.class)
+@RunWith(MockitoJUnitRunner.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestServiceREST {
 
 	private static Long Id = 8L;
@@ -221,6 +223,9 @@ public class TestServiceREST {
 	@Mock
 	RangerTransactionSynchronizationAdapter rangerTransactionSynchronizationAdapter;
 	
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
+
 	private String capabilityVector;
 
 	private final String grantor = "test-grantor-1";
@@ -467,27 +472,27 @@ public class TestServiceREST {
 
 		RangerServiceDef dbRangerServiceDef = serviceREST
 				.createServiceDef(rangerServiceDef);
-		Assertions.assertNotNull(dbRangerServiceDef);
-		Assertions.assertEquals(dbRangerServiceDef, rangerServiceDef);
-		Assertions.assertEquals(dbRangerServiceDef.getId(),
+		Assert.assertNotNull(dbRangerServiceDef);
+		Assert.assertEquals(dbRangerServiceDef, rangerServiceDef);
+		Assert.assertEquals(dbRangerServiceDef.getId(),
 				rangerServiceDef.getId());
-		Assertions.assertEquals(dbRangerServiceDef.getName(),
+		Assert.assertEquals(dbRangerServiceDef.getName(),
 				rangerServiceDef.getName());
-		Assertions.assertEquals(dbRangerServiceDef.getImplClass(),
+		Assert.assertEquals(dbRangerServiceDef.getImplClass(),
 				rangerServiceDef.getImplClass());
-		Assertions.assertEquals(dbRangerServiceDef.getLabel(),
+		Assert.assertEquals(dbRangerServiceDef.getLabel(),
 				rangerServiceDef.getLabel());
-		Assertions.assertEquals(dbRangerServiceDef.getDescription(),
+		Assert.assertEquals(dbRangerServiceDef.getDescription(),
 				rangerServiceDef.getDescription());
-		Assertions.assertEquals(dbRangerServiceDef.getRbKeyDescription(),
+		Assert.assertEquals(dbRangerServiceDef.getRbKeyDescription(),
 				rangerServiceDef.getRbKeyDescription());
-		Assertions.assertEquals(dbRangerServiceDef.getUpdatedBy(),
+		Assert.assertEquals(dbRangerServiceDef.getUpdatedBy(),
 				rangerServiceDef.getUpdatedBy());
-		Assertions.assertEquals(dbRangerServiceDef.getUpdateTime(),
+		Assert.assertEquals(dbRangerServiceDef.getUpdateTime(),
 				rangerServiceDef.getUpdateTime());
-		Assertions.assertEquals(dbRangerServiceDef.getVersion(),
+		Assert.assertEquals(dbRangerServiceDef.getVersion(),
 				rangerServiceDef.getVersion());
-		Assertions.assertEquals(dbRangerServiceDef.getConfigs(),
+		Assert.assertEquals(dbRangerServiceDef.getConfigs(),
 				rangerServiceDef.getConfigs());
 
 		Mockito.verify(validatorFactory).getServiceDefValidator(svcStore);
@@ -507,27 +512,27 @@ public class TestServiceREST {
 
 		RangerServiceDef dbRangerServiceDef = serviceREST
 				.updateServiceDef(rangerServiceDef, rangerServiceDef.getId());
-		Assertions.assertNotNull(dbRangerServiceDef);
-		Assertions.assertEquals(dbRangerServiceDef, rangerServiceDef);
-		Assertions.assertEquals(dbRangerServiceDef.getId(),
+		Assert.assertNotNull(dbRangerServiceDef);
+		Assert.assertEquals(dbRangerServiceDef, rangerServiceDef);
+		Assert.assertEquals(dbRangerServiceDef.getId(),
 				rangerServiceDef.getId());
-		Assertions.assertEquals(dbRangerServiceDef.getName(),
+		Assert.assertEquals(dbRangerServiceDef.getName(),
 				rangerServiceDef.getName());
-		Assertions.assertEquals(dbRangerServiceDef.getImplClass(),
+		Assert.assertEquals(dbRangerServiceDef.getImplClass(),
 				rangerServiceDef.getImplClass());
-		Assertions.assertEquals(dbRangerServiceDef.getLabel(),
+		Assert.assertEquals(dbRangerServiceDef.getLabel(),
 				rangerServiceDef.getLabel());
-		Assertions.assertEquals(dbRangerServiceDef.getDescription(),
+		Assert.assertEquals(dbRangerServiceDef.getDescription(),
 				rangerServiceDef.getDescription());
-		Assertions.assertEquals(dbRangerServiceDef.getRbKeyDescription(),
+		Assert.assertEquals(dbRangerServiceDef.getRbKeyDescription(),
 				rangerServiceDef.getRbKeyDescription());
-		Assertions.assertEquals(dbRangerServiceDef.getUpdatedBy(),
+		Assert.assertEquals(dbRangerServiceDef.getUpdatedBy(),
 				rangerServiceDef.getUpdatedBy());
-		Assertions.assertEquals(dbRangerServiceDef.getUpdateTime(),
+		Assert.assertEquals(dbRangerServiceDef.getUpdateTime(),
 				rangerServiceDef.getUpdateTime());
-		Assertions.assertEquals(dbRangerServiceDef.getVersion(),
+		Assert.assertEquals(dbRangerServiceDef.getVersion(),
 				rangerServiceDef.getVersion());
-		Assertions.assertEquals(dbRangerServiceDef.getConfigs(),
+		Assert.assertEquals(dbRangerServiceDef.getConfigs(),
 				rangerServiceDef.getConfigs());
 
 		Mockito.verify(validatorFactory).getServiceDefValidator(svcStore);
@@ -563,8 +568,8 @@ public class TestServiceREST {
 				.thenReturn(rangerServiceDef);
 		RangerServiceDef dbRangerServiceDef = serviceREST
 				.getServiceDef(rangerServiceDef.getId());
-		Assertions.assertNotNull(dbRangerServiceDef);
-		Assertions.assertEquals(dbRangerServiceDef.getId(),
+		Assert.assertNotNull(dbRangerServiceDef);
+		Assert.assertEquals(dbRangerServiceDef.getId(),
 				rangerServiceDef.getId());
 		Mockito.verify(svcStore).getServiceDef(rangerServiceDef.getId());
 		Mockito.verify(daoManager).getXXServiceDef();
@@ -585,8 +590,8 @@ public class TestServiceREST {
 				.thenReturn(rangerServiceDef);
 		RangerServiceDef dbRangerServiceDef = serviceREST
 				.getServiceDefByName(rangerServiceDef.getName());
-		Assertions.assertNotNull(dbRangerServiceDef);
-		Assertions.assertEquals(dbRangerServiceDef.getName(),
+		Assert.assertNotNull(dbRangerServiceDef);
+		Assert.assertEquals(dbRangerServiceDef.getName(),
 				rangerServiceDef.getName());
 		Mockito.verify(svcStore)
 				.getServiceDefByName(rangerServiceDef.getName());
@@ -612,25 +617,25 @@ public class TestServiceREST {
 
 		RangerService dbRangerService = serviceREST
 				.createService(rangerService);
-		Assertions.assertNotNull(dbRangerService);
-		Assertions.assertEquals(rangerService, dbRangerService);
-		Assertions.assertEquals(rangerService.getId(), dbRangerService.getId());
-		Assertions.assertEquals(rangerService.getConfigs(),
+		Assert.assertNotNull(dbRangerService);
+		Assert.assertEquals(rangerService, dbRangerService);
+		Assert.assertEquals(rangerService.getId(), dbRangerService.getId());
+		Assert.assertEquals(rangerService.getConfigs(),
 				dbRangerService.getConfigs());
-		Assertions.assertEquals(rangerService.getDescription(),
+		Assert.assertEquals(rangerService.getDescription(),
 				dbRangerService.getDescription());
-		Assertions.assertEquals(rangerService.getGuid(), dbRangerService.getGuid());
-		Assertions.assertEquals(rangerService.getName(), dbRangerService.getName());
-		Assertions.assertEquals(rangerService.getPolicyVersion(),
+		Assert.assertEquals(rangerService.getGuid(), dbRangerService.getGuid());
+		Assert.assertEquals(rangerService.getName(), dbRangerService.getName());
+		Assert.assertEquals(rangerService.getPolicyVersion(),
 				dbRangerService.getPolicyVersion());
-		Assertions.assertEquals(rangerService.getType(), dbRangerService.getType());
-		Assertions.assertEquals(rangerService.getVersion(),
+		Assert.assertEquals(rangerService.getType(), dbRangerService.getType());
+		Assert.assertEquals(rangerService.getVersion(),
 				dbRangerService.getVersion());
-		Assertions.assertEquals(rangerService.getCreateTime(),
+		Assert.assertEquals(rangerService.getCreateTime(),
 				dbRangerService.getCreateTime());
-		Assertions.assertEquals(rangerService.getUpdateTime(),
+		Assert.assertEquals(rangerService.getUpdateTime(),
 				dbRangerService.getUpdateTime());
-		Assertions.assertEquals(rangerService.getUpdatedBy(),
+		Assert.assertEquals(rangerService.getUpdatedBy(),
 				dbRangerService.getUpdatedBy());
 
 		Mockito.verify(validatorFactory).getServiceValidator(svcStore);
@@ -663,7 +668,7 @@ public class TestServiceREST {
 				serviceDefList);
 		RangerServiceDefList dbRangerServiceDef = serviceREST
 				.getServiceDefs(request);
-		Assertions.assertNotNull(dbRangerServiceDef);
+		Assert.assertNotNull(dbRangerServiceDef);
 		Mockito.verify(searchUtil).getSearchFilter(request,
 				serviceDefService.sortFields);
 		Mockito.verify(svcStore).getPaginatedServiceDefs(filter);
@@ -691,26 +696,26 @@ public class TestServiceREST {
 
 		RangerService dbRangerService = serviceREST
 				.updateService(rangerService, request);
-		Assertions.assertNotNull(dbRangerService);
-		Assertions.assertNotNull(dbRangerService);
-		Assertions.assertEquals(rangerService, dbRangerService);
-		Assertions.assertEquals(rangerService.getId(), dbRangerService.getId());
-		Assertions.assertEquals(rangerService.getConfigs(),
+		Assert.assertNotNull(dbRangerService);
+		Assert.assertNotNull(dbRangerService);
+		Assert.assertEquals(rangerService, dbRangerService);
+		Assert.assertEquals(rangerService.getId(), dbRangerService.getId());
+		Assert.assertEquals(rangerService.getConfigs(),
 				dbRangerService.getConfigs());
-		Assertions.assertEquals(rangerService.getDescription(),
+		Assert.assertEquals(rangerService.getDescription(),
 				dbRangerService.getDescription());
-		Assertions.assertEquals(rangerService.getGuid(), dbRangerService.getGuid());
-		Assertions.assertEquals(rangerService.getName(), dbRangerService.getName());
-		Assertions.assertEquals(rangerService.getPolicyVersion(),
+		Assert.assertEquals(rangerService.getGuid(), dbRangerService.getGuid());
+		Assert.assertEquals(rangerService.getName(), dbRangerService.getName());
+		Assert.assertEquals(rangerService.getPolicyVersion(),
 				dbRangerService.getPolicyVersion());
-		Assertions.assertEquals(rangerService.getType(), dbRangerService.getType());
-		Assertions.assertEquals(rangerService.getVersion(),
+		Assert.assertEquals(rangerService.getType(), dbRangerService.getType());
+		Assert.assertEquals(rangerService.getVersion(),
 				dbRangerService.getVersion());
-		Assertions.assertEquals(rangerService.getCreateTime(),
+		Assert.assertEquals(rangerService.getCreateTime(),
 				dbRangerService.getCreateTime());
-		Assertions.assertEquals(rangerService.getUpdateTime(),
+		Assert.assertEquals(rangerService.getUpdateTime(),
 				dbRangerService.getUpdateTime());
-		Assertions.assertEquals(rangerService.getUpdatedBy(),
+		Assert.assertEquals(rangerService.getUpdatedBy(),
 				dbRangerService.getUpdatedBy());
 		Mockito.verify(validatorFactory).getServiceValidator(svcStore);
 		Mockito.verify(daoManager).getXXServiceDef();
@@ -747,8 +752,8 @@ public class TestServiceREST {
 				rangerService);
 		RangerService dbRangerService = serviceREST.getService(rangerService
 				.getId());
-		Assertions.assertNotNull(dbRangerService);
-		Assertions.assertEquals(dbRangerService.getId(), dbRangerService.getId());
+		Assert.assertNotNull(dbRangerService);
+		Assert.assertEquals(dbRangerService.getId(), dbRangerService.getId());
 		Mockito.verify(svcStore).getService(dbRangerService.getId());
 	}
 
@@ -759,8 +764,8 @@ public class TestServiceREST {
 				.thenReturn(rangerService);
 		RangerService dbRangerService = serviceREST
 				.getServiceByName(rangerService.getName());
-		Assertions.assertNotNull(dbRangerService);
-		Assertions.assertEquals(dbRangerService.getName(),
+		Assert.assertNotNull(dbRangerService);
+		Assert.assertEquals(dbRangerService.getName(),
 				dbRangerService.getName());
 		Mockito.verify(svcStore).getServiceByName(dbRangerService.getName());
 	}
@@ -788,7 +793,7 @@ public class TestServiceREST {
 		context.setResourceName(serviceName);
 		context.setUserInput("HDFS");
 		List<String> list = serviceREST.lookupResource(serviceName, context);
-		Assertions.assertNotNull(list);
+		Assert.assertNotNull(list);
 	}
 
 	@Test
@@ -807,7 +812,7 @@ public class TestServiceREST {
 				.thenReturn(false);
 		RESTResponse restResponse = serviceREST.grantAccess(serviceName,
 				grantRequestObj, request);
-		Assertions.assertNotNull(restResponse);
+		Assert.assertNotNull(restResponse);
 		Mockito.verify(serviceUtil).isValidateHttpsAuthentication(serviceName,
 				request);
 	}
@@ -867,14 +872,14 @@ public class TestServiceREST {
 		Map<String, RangerPolicyResource> policyResourceMap = createPolicy.getResources();
 		List<String> createdPolicyColumns = policyResourceMap.get("column").getValues();
 
-		Assertions.assertTrue(createdPolicyColumns.containsAll(grantColumns));
+		Assert.assertTrue(createdPolicyColumns.containsAll(grantColumns));
 
 		Mockito.when(
 						serviceUtil.isValidateHttpsAuthentication(serviceName, request))
 				.thenReturn(false);
 		RESTResponse restResponse = serviceREST.grantAccess(serviceName,
 				grantRequestObj, request);
-		Assertions.assertNotNull(restResponse);
+		Assert.assertNotNull(restResponse);
 		Mockito.verify(serviceUtil).isValidateHttpsAuthentication(serviceName,
 				request);
 	}
@@ -900,7 +905,7 @@ public class TestServiceREST {
 
 		RESTResponse restResponse = serviceREST.revokeAccess(serviceName,
 				revokeRequest, request);
-		Assertions.assertNotNull(restResponse);
+		Assert.assertNotNull(restResponse);
 	}
 
 	@Test
@@ -950,7 +955,7 @@ public class TestServiceREST {
 				.thenReturn(rangPolicy);
 
 		RangerPolicy dbRangerPolicy = serviceREST.createPolicy(rangerPolicy,null);
-		Assertions.assertNotNull(dbRangerPolicy);
+		Assert.assertNotNull(dbRangerPolicy);
 		Mockito.verify(bizUtil, Mockito.times(2)).isAdmin();
 		Mockito.verify(validatorFactory).getPolicyValidator(svcStore);
 
@@ -987,7 +992,7 @@ public class TestServiceREST {
 		Mockito.when(daoManager.getXXServiceDef()).thenReturn(xServiceDefDao);
 		Mockito.when(xServiceDefDao.getById(xService.getType())).thenReturn(xServiceDef);
 		RangerPolicy dbRangerPolicy = serviceREST.updatePolicy(rangerPolicy, Id);
-		Assertions.assertNull(dbRangerPolicy);
+		Assert.assertNull(dbRangerPolicy);
 		Mockito.verify(validatorFactory).getPolicyValidator(svcStore);
 	}
 
@@ -1055,8 +1060,8 @@ public class TestServiceREST {
 		Mockito.when(xServiceDefDao.getById(xService.getType())).thenReturn(xServiceDef);
 		RangerPolicy dbRangerPolicy = serviceREST.getPolicy(rangerPolicy
 				.getId());
-		Assertions.assertNotNull(dbRangerPolicy);
-		Assertions.assertEquals(dbRangerPolicy.getId(), rangerPolicy.getId());
+		Assert.assertNotNull(dbRangerPolicy);
+		Assert.assertEquals(dbRangerPolicy.getId(), rangerPolicy.getId());
 		Mockito.verify(svcStore).getPolicy(rangerPolicy.getId());
 	}
 
@@ -1070,8 +1075,8 @@ public class TestServiceREST {
 				searchUtil.getSearchFilter(request, policyService.sortFields))
 				.thenReturn(filter);
 		RangerPolicyList dbRangerPolicy = serviceREST.getPolicies(request);
-		Assertions.assertNotNull(dbRangerPolicy);
-		Assertions.assertEquals(dbRangerPolicy.getListSize(), 0);
+		Assert.assertNotNull(dbRangerPolicy);
+		Assert.assertEquals(dbRangerPolicy.getListSize(), 0);
 		Mockito.verify(searchUtil).getSearchFilter(request,
 				policyService.sortFields);
 	}
@@ -1088,7 +1093,7 @@ public class TestServiceREST {
 				.thenReturn(filter);
 
 		Long data = serviceREST.countPolicies(request);
-		Assertions.assertNotNull(data);
+		Assert.assertNotNull(data);
 		Mockito.verify(searchUtil).getSearchFilter(request,
 				policyService.sortFields);
 	}
@@ -1107,7 +1112,7 @@ public class TestServiceREST {
 
 		RangerPolicyList dbRangerPolicy = serviceREST.getServicePolicies(
 				rangerPolicy.getId(), request);
-		Assertions.assertNotNull(dbRangerPolicy);
+		Assert.assertNotNull(dbRangerPolicy);
 		Mockito.verify(searchUtil).getSearchFilter(request,
 				policyService.sortFields);
 		Mockito.verify(svcStore).getServicePolicies(Id, filter);
@@ -1132,7 +1137,7 @@ public class TestServiceREST {
 
 		RangerPolicyList dbRangerPolicy = serviceREST.getServicePoliciesByName(
 				rangerPolicy.getName(), request);
-		Assertions.assertNotNull(dbRangerPolicy);
+		Assert.assertNotNull(dbRangerPolicy);
 	}
 
 	@Test
@@ -1145,7 +1150,7 @@ public class TestServiceREST {
 		ServicePolicies dbServicePolicies = serviceREST
 				.getServicePoliciesIfUpdated(serviceName, lastKnownVersion, 0L,
 						pluginId, "", "", false, capabilityVector, request);
-		Assertions.assertNull(dbServicePolicies);
+		Assert.assertNull(dbServicePolicies);
 	}
 
 
@@ -1158,7 +1163,7 @@ public class TestServiceREST {
 		Mockito.when(svcStore.getPolicies(filter)).thenReturn(ret);
 
 		List<RangerPolicy> dbRangerPolicyList = serviceREST.getPolicies(filter);
-		Assertions.assertNotNull(dbRangerPolicyList);
+		Assert.assertNotNull(dbRangerPolicyList);
 		Mockito.verify(svcStore).getPolicies(filter);
 
 	}
@@ -1172,7 +1177,7 @@ public class TestServiceREST {
 		Mockito.when(svcStore.getServices(filter)).thenReturn(ret);
 
 		List<RangerService> dbRangerService = serviceREST.getServices(filter);
-		Assertions.assertNotNull(dbRangerService);
+		Assert.assertNotNull(dbRangerService);
 		Mockito.verify(svcStore).getServices(filter);
 	}
 	
@@ -1187,9 +1192,9 @@ public class TestServiceREST {
 		Mockito.when(searchUtil.getSearchFilter(request, policyService.sortFields)).thenReturn(filter);
 		Mockito.when(svcStore.getPolicies(filter)).thenReturn(policies);
 		RangerPolicyList dbRangerPolicy = serviceREST.getPolicies(request);
-		Assertions.assertNotNull(dbRangerPolicy);
+		Assert.assertNotNull(dbRangerPolicy);
 		/*here we are not setting service admin role,hence we will not get any policy without the service admin roles*/
-		Assertions.assertEquals(dbRangerPolicy.getListSize(), 0);
+		Assert.assertEquals(dbRangerPolicy.getListSize(), 0);
 		Mockito.verify(searchUtil).getSearchFilter(request,
 				policyService.sortFields);
 	}
@@ -1214,8 +1219,8 @@ public class TestServiceREST {
 		/*here we are setting serviceAdminRole, so we will get the required policy with serviceAdmi role*/
 		Mockito.when(svcStore.isServiceAdminUser(rPol.getService(), null)).thenReturn(true);
 		RangerPolicyList dbRangerPolicy = spySVCRest.getPolicies(request);
-		Assertions.assertNotNull(dbRangerPolicy);
-		Assertions.assertEquals(dbRangerPolicy.getListSize(), 1);
+		Assert.assertNotNull(dbRangerPolicy);
+		Assert.assertEquals(dbRangerPolicy.getListSize(), 1);
 		Mockito.verify(searchUtil).getSearchFilter(request,
 				policyService.sortFields);
 		Mockito.verify(svcStore).getPolicies(filter);
@@ -1225,7 +1230,6 @@ public class TestServiceREST {
 
 	@Test
 	public void test30getPolicyFromEventTime() throws Exception {
-		assertThrows(WebApplicationException.class, () -> {
 		HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
 
 		String strdt = new Date().toString();
@@ -1246,14 +1250,14 @@ public class TestServiceREST {
 
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean()))
 				.thenThrow(new WebApplicationException());
+		thrown.expect(WebApplicationException.class);
 	
 		RangerPolicy dbRangerPolicy = serviceREST
 				.getPolicyFromEventTime(request);
-			Assertions.assertNull(dbRangerPolicy);
+		Assert.assertNull(dbRangerPolicy);
 		Mockito.verify(request).getParameter("eventTime");
 		Mockito.verify(request).getParameter("policyId");
 		Mockito.verify(request).getParameter("versionNo");
-		});
 	}
 
 	@Test
@@ -1263,7 +1267,7 @@ public class TestServiceREST {
 		filter.setParam(SearchFilter.POLICY_NAME, "policyName");
 		filter.setParam(SearchFilter.SERVICE_NAME, "serviceName");
 		RangerServiceList dbRangerService = serviceREST.getServices(request);
-		Assertions.assertNull(dbRangerService);
+		Assert.assertNull(dbRangerService);
 	}
 	
 	
@@ -1274,7 +1278,7 @@ public class TestServiceREST {
 		Mockito.when(svcStore.getPolicyVersionList(Id)).thenReturn(vXString);
 
 		VXString dbVXString = serviceREST.getPolicyVersionList(Id);
-		Assertions.assertNotNull(dbVXString);
+		Assert.assertNotNull(dbVXString);
 		Mockito.verify(svcStore).getPolicyVersionList(Id);
 	}
 
@@ -1285,7 +1289,7 @@ public class TestServiceREST {
 				rangerPolicy);
 		RangerPolicy dbRangerPolicy = serviceREST.getPolicyForVersionNumber(Id,
 				1);
-		Assertions.assertNotNull(dbRangerPolicy);
+		Assert.assertNotNull(dbRangerPolicy);
 		Mockito.verify(svcStore).getPolicyForVersionNumber(Id, 1);
 	}
 
@@ -1302,7 +1306,7 @@ public class TestServiceREST {
 
 		Mockito.when(svcStore.getPaginatedServices(filter)).thenReturn(ret);
 		Long data = serviceREST.countServices(request);
-		Assertions.assertNotNull(data);
+		Assert.assertNotNull(data);
 		Mockito.verify(searchUtil).getSearchFilter(request,
 				policyService.sortFields);
 		Mockito.verify(svcStore).getPaginatedServices(filter);
@@ -1314,7 +1318,7 @@ public class TestServiceREST {
 		Mockito.when(serviceMgr.validateConfig(rangerService, svcStore))
 				.thenReturn(vXResponse);
 		VXResponse dbVXResponse = serviceREST.validateConfig(rangerService);
-		Assertions.assertNotNull(dbVXResponse);
+		Assert.assertNotNull(dbVXResponse);
 		Mockito.verify(serviceMgr).validateConfig(rangerService, svcStore);
 	}
 
@@ -1662,7 +1666,7 @@ public class TestServiceREST {
 		List<String> ret = new ArrayList<String>();
 		Mockito.when(svcStore.getPolicyLabels(filter)).thenReturn(ret);
 		ret = serviceREST.getPolicyLabels(request);
-		Assertions.assertNotNull(ret);
+		Assert.assertNotNull(ret);
 		Mockito.verify(searchUtil).getSearchFilter(request, policyLabelsService.sortFields);
 	}
 
@@ -1932,10 +1936,8 @@ public class TestServiceREST {
 	@Test
 	public void test51getMetricByType() throws Exception {
 		String type = "usergroup";
-		String ret = """
-				{"groupCount":1,"userCountOfUserRole":0,"userCountOfKeyAdminRole":1,\
-				"userCountOfSysAdminRole":3,"userCountOfKeyadminAuditorRole":0,"userCountOfSysAdminAuditorRole":0,"userTotalCount":4}\
-				""";
+		String ret = "{\"groupCount\":1,\"userCountOfUserRole\":0,\"userCountOfKeyAdminRole\":1,"
+				+ "\"userCountOfSysAdminRole\":3,\"userCountOfKeyadminAuditorRole\":0,\"userCountOfSysAdminAuditorRole\":0,\"userTotalCount\":4}";
 		ServiceDBStore.METRIC_TYPE metricType = ServiceDBStore.METRIC_TYPE.getMetricTypeByName(type);
 		Mockito.when(svcStore.getMetricByType(metricType)).thenReturn(ret);
 		serviceREST.getMetricByType(type);
@@ -1944,7 +1946,6 @@ public class TestServiceREST {
 
 	@Test
 	public void test52deleteService() throws Exception {
-		assertThrows(WebApplicationException.class, () -> {
 
 		RangerService rangerService = rangerService();
 		XXService xService = xService();
@@ -1972,13 +1973,12 @@ public class TestServiceREST {
 		Mockito.when(xServiceDao.getById(Id)).thenReturn(xService);
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any()))
 				.thenThrow(new WebApplicationException());
+		thrown.expect(WebApplicationException.class);
 		serviceREST.deleteService(rangerService.getId());
-		});
 	}
 
 	@Test
 	public void test53getPoliciesForResource() throws Exception {
-		assertThrows(WebApplicationException.class, () -> {
 		HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
 		List<RangerService> rsList = new ArrayList<RangerService>();
 		RangerService rs = rangerService();
@@ -1986,9 +1986,9 @@ public class TestServiceREST {
 
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any()))
 				.thenThrow(new WebApplicationException());
+		thrown.expect(WebApplicationException.class);
 
 		serviceREST.getPoliciesForResource("servicedefname", "servicename", request);
-		});
 	}
 
 	@Test
@@ -2001,14 +2001,13 @@ public class TestServiceREST {
 		Mockito.when(searchUtil.getSearchFilter(request, pluginInfoService.getSortFields())).thenReturn(filter);
 		Mockito.when(pluginInfoService.searchRangerPluginInfo(filter)).thenReturn(paginatedPluginsInfo);
 		RangerPluginInfoList rPluginInfoList = serviceREST.getPluginsInfo(request);
-		Assertions.assertNotNull(rPluginInfoList);
+		Assert.assertNotNull(rPluginInfoList);
 		Mockito.verify(searchUtil).getSearchFilter(request, pluginInfoService.getSortFields());
 		Mockito.verify(pluginInfoService).searchRangerPluginInfo(filter);
 	}
 
 	@Test
 	public void test55getServicePoliciesIfUpdatedCatch() throws Exception {
-		assertThrows(WebApplicationException.class, () -> {
 		HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
 		String serviceName = "HDFS_1";
 		Long lastKnownVersion = 1L;
@@ -2016,8 +2015,8 @@ public class TestServiceREST {
 		Mockito.when(serviceUtil.isValidateHttpsAuthentication(serviceName, request)).thenReturn(true);
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean()))
 				.thenThrow(new WebApplicationException());
+		thrown.expect(WebApplicationException.class);
 		serviceREST.getServicePoliciesIfUpdated(serviceName, lastKnownVersion, 0L, pluginId, "", "", false, capabilityVector, request);
-		});
 	}
 
 	@Test
@@ -2031,12 +2030,11 @@ public class TestServiceREST {
 		Mockito.when(svcStore.getServicePoliciesIfUpdated(Mockito.anyString(), Mockito.anyLong(), Mockito.anyBoolean())).thenReturn(servicePolicies);
 		ServicePolicies dbServicePolicies = serviceREST.getServicePoliciesIfUpdated(serviceName, lastKnownVersion, 0L,
 				pluginId, "", "", true, capabilityVector, request);
-		Assertions.assertNotNull(dbServicePolicies);
+		Assert.assertNotNull(dbServicePolicies);
 	}
 
 	@Test
 	public void test57getSecureServicePoliciesIfUpdatedFail() throws Exception {
-		assertThrows(WebApplicationException.class, () -> {
 		HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
 		Long lastKnownVersion = 1L;
 		String pluginId = "1";
@@ -2053,14 +2051,13 @@ public class TestServiceREST {
 		Mockito.when(svcStore.getServiceByName(serviceName)).thenReturn(rs);
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean()))
 				.thenThrow(new WebApplicationException());
+		thrown.expect(WebApplicationException.class);
 
 		serviceREST.getSecureServicePoliciesIfUpdated(serviceName, lastKnownVersion, 0L, pluginId, "", "", false, capabilityVector, request);
-		});
 	}
 
 	@Test
 	public void test58getSecureServicePoliciesIfUpdatedAllowedFail() throws Exception {
-		assertThrows(WebApplicationException.class, () -> {
 		HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
 
 		Long lastKnownVersion = 1L;
@@ -2080,9 +2077,9 @@ public class TestServiceREST {
 		Mockito.when(bizUtil.isUserAllowed(rs, ServiceREST.Allowed_User_List_For_Grant_Revoke)).thenReturn(true);
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean()))
 				.thenThrow(new WebApplicationException());
+		thrown.expect(WebApplicationException.class);
 
 		serviceREST.getSecureServicePoliciesIfUpdated(serviceName, lastKnownVersion, 0L, pluginId, "", "", false, capabilityVector, request);
-		});
 	}
 
 	@Test
@@ -2108,7 +2105,7 @@ public class TestServiceREST {
 		Mockito.when(svcStore.getServicePoliciesIfUpdated(Mockito.anyString(), Mockito.anyLong(), Mockito.anyBoolean())).thenReturn(sp);
         	ServicePolicies dbServiceSecurePolicies = serviceREST.getSecureServicePoliciesIfUpdated(serviceName,
                 		lastKnownVersion, 0L, pluginId, "", "", true, capabilityVector, request);
-		Assertions.assertNotNull(dbServiceSecurePolicies);
+		Assert.assertNotNull(dbServiceSecurePolicies);
 		Mockito.verify(serviceUtil).isValidService(serviceName, request);
 		Mockito.verify(xServiceDao).findByName(serviceName);
 		Mockito.verify(xServiceDefDao).getById(xService.getType());
@@ -2119,7 +2116,6 @@ public class TestServiceREST {
 
 	@Test
 	public void test60getPolicyFromEventTime() throws Exception {
-		assertThrows(WebApplicationException.class, () -> {
 		HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
 
 		String strdt = new Date().toString();
@@ -2137,9 +2133,9 @@ public class TestServiceREST {
 
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean()))
 				.thenThrow(new WebApplicationException());
+		thrown.expect(WebApplicationException.class);
 
 		serviceREST.getPolicyFromEventTime(request);
-		});
 	}
 	
 	@Test
@@ -2169,13 +2165,13 @@ public class TestServiceREST {
 		Mockito.when(svcStore.getService(Id)).thenReturn(actualService);
 
 		RangerService service = serviceREST.getService(Id);
-		Assertions.assertNotNull(service);
+		Assert.assertNotNull(service);
 		Mockito.verify(svcStore).getService(Id);
-		Assertions.assertNull(service.getDescription());
-		Assertions.assertTrue(service.getConfigs().isEmpty());
-		Assertions.assertEquals(service.getId(), Id);
-		Assertions.assertEquals(service.getName(), "HDFS_1");
-		Assertions.assertEquals(service.getType(), "1");
+		Assert.assertNull(service.getDescription());
+		Assert.assertTrue(service.getConfigs().isEmpty());
+		Assert.assertEquals(service.getId(), Id);
+		Assert.assertEquals(service.getName(), "HDFS_1");
+		Assert.assertEquals(service.getType(), "1");
 	}
 
 	@Test
@@ -2205,13 +2201,13 @@ public class TestServiceREST {
 		Mockito.when(svcStore.getServiceByName(actualService.getName())).thenReturn(actualService);
 
 		RangerService service = serviceREST.getServiceByName(actualService.getName());
-		Assertions.assertNotNull(service);
+		Assert.assertNotNull(service);
 		Mockito.verify(svcStore).getServiceByName(actualService.getName());
-		Assertions.assertNull(service.getDescription());
-		Assertions.assertTrue(service.getConfigs().isEmpty());
-		Assertions.assertEquals(service.getId(), Id);
-		Assertions.assertEquals(service.getName(), "HDFS_1");
-		Assertions.assertEquals(service.getType(), "1");
+		Assert.assertNull(service.getDescription());
+		Assert.assertTrue(service.getConfigs().isEmpty());
+		Assert.assertEquals(service.getId(), Id);
+		Assert.assertEquals(service.getName(), "HDFS_1");
+		Assert.assertEquals(service.getType(), "1");
 	}
 	
 	@Test
@@ -2277,18 +2273,18 @@ public class TestServiceREST {
 		Mockito.when(svcStore.getPaginatedServices(filter)).thenReturn(paginatedSvcs);
 		Mockito.when(xUserService.getXUserByUserName("testuser")).thenReturn(loggedInUser);
 		RangerServiceList retServiceList = serviceREST.getServices(request);
-		Assertions.assertNotNull(retServiceList);
-		Assertions.assertNull(retServiceList.getServices().get(0).getDescription());
-		Assertions.assertTrue(retServiceList.getServices().get(0).getConfigs().isEmpty());
-		Assertions.assertNull(retServiceList.getServices().get(1).getDescription());
-		Assertions.assertTrue(retServiceList.getServices().get(1).getConfigs().isEmpty());
-		Assertions.assertEquals(retServiceList.getServices().get(0).getId(), Id);
-		Assertions.assertEquals(retServiceList.getServices().get(0).getName(), "HDFS_1");
-		Assertions.assertEquals(retServiceList.getServices().get(0).getType(), "1");
+		Assert.assertNotNull(retServiceList);
+		Assert.assertNull(retServiceList.getServices().get(0).getDescription());
+		Assert.assertTrue(retServiceList.getServices().get(0).getConfigs().isEmpty());
+		Assert.assertNull(retServiceList.getServices().get(1).getDescription());
+		Assert.assertTrue(retServiceList.getServices().get(1).getConfigs().isEmpty());
+		Assert.assertEquals(retServiceList.getServices().get(0).getId(), Id);
+		Assert.assertEquals(retServiceList.getServices().get(0).getName(), "HDFS_1");
+		Assert.assertEquals(retServiceList.getServices().get(0).getType(), "1");
 		
-		Assertions.assertEquals(retServiceList.getServices().get(1).getId(), svc2.getId());
-		Assertions.assertEquals(retServiceList.getServices().get(1).getName(), "YARN_1");
-		Assertions.assertEquals(retServiceList.getServices().get(1).getType(), "yarn");
+		Assert.assertEquals(retServiceList.getServices().get(1).getId(), svc2.getId());
+		Assert.assertEquals(retServiceList.getServices().get(1).getName(), "YARN_1");
+		Assert.assertEquals(retServiceList.getServices().get(1).getType(), "yarn");
 		
 		
 	}
@@ -2300,7 +2296,7 @@ public class TestServiceREST {
 	}
 
 	@Test
-	@Disabled
+	@Ignore
 	public void test14bGrantAccess() throws Exception {
 		HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
 		String serviceName = "HDFS_1";
@@ -2319,7 +2315,7 @@ public class TestServiceREST {
 		assert restResponse.getStatusCode() == RESTResponse.STATUS_SUCCESS;
 	}
 	@Test
-	@Disabled
+	@Ignore
 	public void test64SecureGrantAccess(){
 		HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
 		String serviceName = "HDFS_1";
@@ -2514,13 +2510,12 @@ public class TestServiceREST {
 		Mockito.when(daoManager.getXXServiceDef()).thenReturn(xServiceDefDao);
 		Mockito.when(xServiceDefDao.getById(xService.getType())).thenReturn(xServiceDef);
 		RangerPolicy dbRangerPolicy = serviceREST.updatePolicy(rangerPolicy, policyId);
-		Assertions.assertNull(dbRangerPolicy);
+		Assert.assertNull(dbRangerPolicy);
 		Mockito.verify(validatorFactory).getPolicyValidator(svcStore);
 	}
 
 	@Test
 	public void test72updatePolicyWithInvalidPolicyId() throws Exception {
-		assertThrows(WebApplicationException.class, () -> {
 		RangerPolicy rangerPolicy = rangerPolicy();
 		String userName = "admin";
 
@@ -2540,10 +2535,10 @@ public class TestServiceREST {
 		Mockito.when(daoManager.getXXService()).thenReturn(xServiceDao);
 		Mockito.when(daoManager.getXXServiceDef()).thenReturn(xServiceDefDao);
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
+		thrown.expect(WebApplicationException.class);
 		RangerPolicy dbRangerPolicy = serviceREST.updatePolicy(rangerPolicy, -11L);
-			Assertions.assertNull(dbRangerPolicy);
+		Assert.assertNull(dbRangerPolicy);
 		Mockito.verify(validatorFactory).getPolicyValidator(svcStore);
-		});
 	}
 
 	@Test
@@ -2561,27 +2556,27 @@ public class TestServiceREST {
 
 		RangerServiceDef dbRangerServiceDef = serviceREST
 			.updateServiceDef(rangerServiceDef, rangerServiceDef.getId());
-		Assertions.assertNotNull(dbRangerServiceDef);
-		Assertions.assertEquals(dbRangerServiceDef, rangerServiceDef);
-		Assertions.assertEquals(dbRangerServiceDef.getId(),
+		Assert.assertNotNull(dbRangerServiceDef);
+		Assert.assertEquals(dbRangerServiceDef, rangerServiceDef);
+		Assert.assertEquals(dbRangerServiceDef.getId(),
 			rangerServiceDef.getId());
-		Assertions.assertEquals(dbRangerServiceDef.getName(),
+		Assert.assertEquals(dbRangerServiceDef.getName(),
 			rangerServiceDef.getName());
-		Assertions.assertEquals(dbRangerServiceDef.getImplClass(),
+		Assert.assertEquals(dbRangerServiceDef.getImplClass(),
 			rangerServiceDef.getImplClass());
-		Assertions.assertEquals(dbRangerServiceDef.getLabel(),
+		Assert.assertEquals(dbRangerServiceDef.getLabel(),
 			rangerServiceDef.getLabel());
-		Assertions.assertEquals(dbRangerServiceDef.getDescription(),
+		Assert.assertEquals(dbRangerServiceDef.getDescription(),
 			rangerServiceDef.getDescription());
-		Assertions.assertEquals(dbRangerServiceDef.getRbKeyDescription(),
+		Assert.assertEquals(dbRangerServiceDef.getRbKeyDescription(),
 			rangerServiceDef.getRbKeyDescription());
-		Assertions.assertEquals(dbRangerServiceDef.getUpdatedBy(),
+		Assert.assertEquals(dbRangerServiceDef.getUpdatedBy(),
 			rangerServiceDef.getUpdatedBy());
-		Assertions.assertEquals(dbRangerServiceDef.getUpdateTime(),
+		Assert.assertEquals(dbRangerServiceDef.getUpdateTime(),
 			rangerServiceDef.getUpdateTime());
-		Assertions.assertEquals(dbRangerServiceDef.getVersion(),
+		Assert.assertEquals(dbRangerServiceDef.getVersion(),
 			rangerServiceDef.getVersion());
-		Assertions.assertEquals(dbRangerServiceDef.getConfigs(),
+		Assert.assertEquals(dbRangerServiceDef.getConfigs(),
 			rangerServiceDef.getConfigs());
 
 		Mockito.verify(validatorFactory).getServiceDefValidator(svcStore);
@@ -2589,39 +2584,38 @@ public class TestServiceREST {
 	}
 	@Test
 	public void test74updateServiceDefWithInvalidDefId() throws Exception {
-		assertThrows(WebApplicationException.class, () -> {
 		RangerServiceDef rangerServiceDef = rangerServiceDef();
 
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
+		thrown.expect(WebApplicationException.class);
 
 		RangerServiceDef dbRangerServiceDef = serviceREST
 			.updateServiceDef(rangerServiceDef, -1L);
-			Assertions.assertNotNull(dbRangerServiceDef);
-			Assertions.assertEquals(dbRangerServiceDef, rangerServiceDef);
-			Assertions.assertEquals(dbRangerServiceDef.getId(),
+		Assert.assertNotNull(dbRangerServiceDef);
+		Assert.assertEquals(dbRangerServiceDef, rangerServiceDef);
+		Assert.assertEquals(dbRangerServiceDef.getId(),
 			rangerServiceDef.getId());
-			Assertions.assertEquals(dbRangerServiceDef.getName(),
+		Assert.assertEquals(dbRangerServiceDef.getName(),
 			rangerServiceDef.getName());
-			Assertions.assertEquals(dbRangerServiceDef.getImplClass(),
+		Assert.assertEquals(dbRangerServiceDef.getImplClass(),
 			rangerServiceDef.getImplClass());
-			Assertions.assertEquals(dbRangerServiceDef.getLabel(),
+		Assert.assertEquals(dbRangerServiceDef.getLabel(),
 			rangerServiceDef.getLabel());
-			Assertions.assertEquals(dbRangerServiceDef.getDescription(),
+		Assert.assertEquals(dbRangerServiceDef.getDescription(),
 			rangerServiceDef.getDescription());
-			Assertions.assertEquals(dbRangerServiceDef.getRbKeyDescription(),
+		Assert.assertEquals(dbRangerServiceDef.getRbKeyDescription(),
 			rangerServiceDef.getRbKeyDescription());
-			Assertions.assertEquals(dbRangerServiceDef.getUpdatedBy(),
+		Assert.assertEquals(dbRangerServiceDef.getUpdatedBy(),
 			rangerServiceDef.getUpdatedBy());
-			Assertions.assertEquals(dbRangerServiceDef.getUpdateTime(),
+		Assert.assertEquals(dbRangerServiceDef.getUpdateTime(),
 			rangerServiceDef.getUpdateTime());
-			Assertions.assertEquals(dbRangerServiceDef.getVersion(),
+		Assert.assertEquals(dbRangerServiceDef.getVersion(),
 			rangerServiceDef.getVersion());
-			Assertions.assertEquals(dbRangerServiceDef.getConfigs(),
+		Assert.assertEquals(dbRangerServiceDef.getConfigs(),
 			rangerServiceDef.getConfigs());
 
 		Mockito.verify(validatorFactory).getServiceDefValidator(svcStore);
 		Mockito.verify(svcStore).updateServiceDef(rangerServiceDef);
-		});
 	}
 
 	@Test
@@ -2643,8 +2637,8 @@ public class TestServiceREST {
 		Mockito.when(xServiceDefDao.getById(xService.getType())).thenReturn(xServiceDef);
 		Mockito.when(svcStore.getPolicy(rangerPolicy.getGuid(), serviceName, zoneName)).thenReturn(rangerPolicy);
 		RangerPolicy dbRangerPolicy = serviceREST.getPolicyByGUIDAndServiceNameAndZoneName(rangerPolicy.getGuid(), serviceName, zoneName);
-		Assertions.assertNotNull(dbRangerPolicy);
-		Assertions.assertEquals(dbRangerPolicy.getId(), rangerPolicy.getId());
+		Assert.assertNotNull(dbRangerPolicy);
+		Assert.assertEquals(dbRangerPolicy.getId(), rangerPolicy.getId());
 		Mockito.verify(svcStore).getPolicy(rangerPolicy.getGuid(), serviceName, zoneName);
 	}
 
@@ -2675,8 +2669,8 @@ public class TestServiceREST {
 		Mockito.when(xServiceDefDao.getById(xService.getType())).thenReturn(xServiceDef);
 		Mockito.when(svcStore.getPolicy(rangerPolicy.getGuid(), null, null)).thenReturn(rangerPolicy);
 		RangerPolicy dbRangerPolicy = serviceREST.getPolicyByGUIDAndServiceNameAndZoneName(rangerPolicy.getGuid(), null, null);
-		Assertions.assertNotNull(dbRangerPolicy);
-		Assertions.assertEquals(dbRangerPolicy.getId(), rangerPolicy.getId());
+		Assert.assertNotNull(dbRangerPolicy);
+		Assert.assertEquals(dbRangerPolicy.getId(), rangerPolicy.getId());
 		Mockito.verify(svcStore).getPolicy(rangerPolicy.getGuid(), null, null);
 	}
 
@@ -2762,16 +2756,15 @@ public class TestServiceREST {
 
 	@Test
 	public void test79ResetPolicyCacheWhenServiceNameIsInvalid(){
-		assertThrows(WebApplicationException.class, () -> {
 		String serviceName = "HDFS_1";
 		try {
 			Mockito.when(svcStore.getServiceByName(serviceName)).thenReturn(null);
 		} catch (Exception e) {
 		}
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
+		thrown.expect(WebApplicationException.class);
 		serviceREST.resetPolicyCache(serviceName);
 		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean());
-		});
 	}
 
 	@Test
@@ -2787,10 +2780,10 @@ public class TestServiceREST {
 		Mockito.when(daoManager.getXXPolicy().findPolicy(policyName,serviceName,zoneName)).thenReturn(xxPolicy);
 		Mockito.when(policyService.getPopulatedViewObject(xxPolicy)).thenReturn(rangerPolicy);
 		RangerPolicy dbRangerPolicy = serviceREST.getPolicyByName(serviceName, policyName, zoneName);
-		Assertions.assertNotNull(dbRangerPolicy);
-		Assertions.assertEquals(dbRangerPolicy, rangerPolicy);
-		Assertions.assertEquals(dbRangerPolicy.getId(), rangerPolicy.getId());
-		Assertions.assertEquals(dbRangerPolicy.getName(), rangerPolicy.getName());
+		Assert.assertNotNull(dbRangerPolicy);
+		Assert.assertEquals(dbRangerPolicy, rangerPolicy);
+		Assert.assertEquals(dbRangerPolicy.getId(), rangerPolicy.getId());
+		Assert.assertEquals(dbRangerPolicy.getName(), rangerPolicy.getName());
 	}
 
 	@Test
@@ -2805,9 +2798,9 @@ public class TestServiceREST {
 		Mockito.when(daoManager.getXXPolicy().findPolicy(policyName,serviceName,null)).thenReturn(xxPolicy);
 		Mockito.when(policyService.getPopulatedViewObject(xxPolicy)).thenReturn(rangerPolicy);
 		RangerPolicy dbRangerPolicy = serviceREST.getPolicyByName(serviceName, policyName, null);
-		Assertions.assertNotNull(dbRangerPolicy);
-		Assertions.assertEquals(dbRangerPolicy, rangerPolicy);
-		Assertions.assertEquals(dbRangerPolicy.getId(), rangerPolicy.getId());
-		Assertions.assertEquals(dbRangerPolicy.getName(), rangerPolicy.getName());
+		Assert.assertNotNull(dbRangerPolicy);
+		Assert.assertEquals(dbRangerPolicy, rangerPolicy);
+		Assert.assertEquals(dbRangerPolicy.getId(), rangerPolicy.getId());
+		Assert.assertEquals(dbRangerPolicy.getName(), rangerPolicy.getName());
 	}
 }

@@ -220,7 +220,8 @@ public class ElasticSearchUtil {
                 QueryBuilder negativeQuery = getQueryBuilder(dataType, searchType, fieldName.substring(1), paramValue);
                 return null == negativeQuery ? null : QueryBuilders.boolQuery().mustNot(negativeQuery);
             }
-            if (paramValue instanceof Collection<?> valueList) {
+            if (paramValue instanceof Collection) {
+                Collection<?> valueList = (Collection<?>) paramValue;
                 if (valueList.isEmpty()) {
                     return null;
                 } else {
@@ -234,8 +235,8 @@ public class ElasticSearchUtil {
             } else {
                 if (dataType == SearchField.DATA_TYPE.DATE) {
                     if (!(paramValue instanceof Date)) {
-                        logger.error(
-								"Search value is not a Java Date Object: %s %s %s".formatted(
+                        logger.error(String.format(
+                            "Search value is not a Java Date Object: %s %s %s",
                             fieldName, searchType, paramValue));
                     } else {
                         if (searchType == SearchField.SEARCH_TYPE.GREATER_EQUAL_THAN
@@ -253,7 +254,7 @@ public class ElasticSearchUtil {
                         || searchType == SearchField.SEARCH_TYPE.GREATER_THAN
                         || searchType == SearchField.SEARCH_TYPE.LESS_EQUAL_THAN
                         || searchType == SearchField.SEARCH_TYPE.LESS_THAN) { //NOPMD
-                    logger.warn("Range Queries Not Implemented: %s %s %s".formatted(
+                    logger.warn(String.format("Range Queries Not Implemented: %s %s %s",
                         fieldName, searchType, paramValue));
                     return null;
                 } else {

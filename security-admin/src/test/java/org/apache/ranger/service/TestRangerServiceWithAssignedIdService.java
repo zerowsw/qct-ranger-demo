@@ -30,19 +30,18 @@ import org.apache.ranger.entity.XXServiceConfigMap;
 
 import org.apache.ranger.entity.XXServiceVersionInfo;
 import org.apache.ranger.entity.XXServiceWithAssignedId;
-import org.junit.jupiter.api.MethodOrderer.MethodName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
-
+import org.mockito.junit.MockitoJUnitRunner;
 import org.apache.ranger.plugin.model.RangerService;
 
-@ExtendWith(MockitoExtension.class)
-@TestMethodOrder(MethodName.class)
+@RunWith(MockitoJUnitRunner.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestRangerServiceWithAssignedIdService {
 
         @InjectMocks

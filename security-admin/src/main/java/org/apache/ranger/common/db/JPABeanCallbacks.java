@@ -19,8 +19,8 @@
 
  package org.apache.ranger.common.db;
 
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 
 import org.apache.ranger.common.DateUtil;
 import org.apache.ranger.common.UserSessionBase;
@@ -36,7 +36,8 @@ public class JPABeanCallbacks {
 	@PrePersist
 	void onPrePersist(Object o) {
 		try {
-			if (o != null && o instanceof XXDBBase entity) {
+			if (o != null && o instanceof XXDBBase) {
+				XXDBBase entity = (XXDBBase) o;
 
 				entity.setUpdateTime(DateUtil.getUTCDate());
 				if (entity.getAddedByUserId() == null || entity.getAddedByUserId() == 0) {
@@ -87,7 +88,8 @@ public class JPABeanCallbacks {
 	@PreUpdate
 	void onPreUpdate(Object o) {
 		try {
-			if (o != null && o instanceof XXDBBase entity) {
+			if (o != null && o instanceof XXDBBase) {
+				XXDBBase entity = (XXDBBase) o;
 				entity.setUpdateTime(DateUtil.getUTCDate());
 			}
 		} catch (Throwable t) {

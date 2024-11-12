@@ -25,13 +25,12 @@ import org.apache.ranger.plugin.model.RangerServiceDef.RangerResourceDef;
 import org.apache.ranger.plugin.policyengine.RangerAccessRequest.ResourceElementMatchingScope;
 import org.apache.ranger.plugin.policyengine.RangerAccessRequest.ResourceElementMatchType;
 import org.apache.ranger.plugin.util.RangerAccessRequestUtil;
+import org.junit.Test;
 
 import java.util.HashMap;
-
-import org.junit.jupiter.api.Test;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 import static org.apache.ranger.plugin.policyengine.RangerAccessRequest.ResourceElementMatchType.*;
 
 public class RangerDefaultResourceMatcherTest {
@@ -128,8 +127,8 @@ public class RangerDefaultResourceMatcherTest {
 
             MatcherWrapper matcher = new MatcherWrapper(policyValue, excludes);
 
-            assertEquals(matchType, matcher.getMatchType(resource, matchScope, evalContext), getMessage(row));
-            assertEquals(result, matcher.isMatch(resource, matchScope, evalContext), getMessage(row));
+            assertEquals(getMessage(row), matchType, matcher.getMatchType(resource, matchScope, evalContext));
+            assertEquals(getMessage(row), result, matcher.isMatch(resource, matchScope, evalContext));
         }
     }
 
@@ -150,13 +149,13 @@ public class RangerDefaultResourceMatcherTest {
 
             MatcherWrapper matcher = new MatcherWrapper(policyValue, excludes);
 
-            assertEquals(matchType, matcher.getMatchType(resource, matchScope, evalContext), getMessage(row));
-            assertEquals(result, matcher.isMatch(resource, matchScope, evalContext), getMessage(row));
+            assertEquals(getMessage(row), matchType, matcher.getMatchType(resource, matchScope, evalContext));
+            assertEquals(getMessage(row), result, matcher.isMatch(resource, matchScope, evalContext));
         }
     }
 
     String getMessage(Object[] row) {
-        return "Resource=%s, Policy=%s, excludes=%s, matchScope=%s, matchType=%s, result=%s".formatted(
+        return String.format("Resource=%s, Policy=%s, excludes=%s, matchScope=%s, matchType=%s, result=%s",
                 row[0], row[1], row[2], row[3], row[4], row[5]);
     }
 

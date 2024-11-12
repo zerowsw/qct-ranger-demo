@@ -17,12 +17,12 @@
 
 package org.apache.ranger.plugin.util;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 public class JavaScriptEditsTest {
 
@@ -39,7 +39,7 @@ public class JavaScriptEditsTest {
 			String input  = test.getKey();
 			String output = test.getValue();
 
-			assertEquals(output, JavaScriptEdits.replaceDoubleBrackets(input), "input: " + input);
+			assertEquals("input: " + input, output, JavaScriptEdits.replaceDoubleBrackets(input));
 		}
 	}
 }

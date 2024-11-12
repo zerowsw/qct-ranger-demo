@@ -31,7 +31,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 //import org.apache.hadoop.security.alias.BouncyCastleFipsKeyStoreProvider;
 import org.apache.ranger.credentialapi.CredentialReader;
@@ -43,8 +43,6 @@ import org.apache.ranger.usergroupsync.UserGroupSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.lang.reflect.InvocationTargetException;
 
 
 public class UserGroupSyncConfig  {
@@ -587,7 +585,7 @@ public class UserGroupSyncConfig  {
 
 		Class<UserGroupSource> ugSourceClass = (Class<UserGroupSource>)Class.forName(className);
 
-		UserGroupSource ret = ugSourceClass.getDeclaredConstructor().newInstance();
+		UserGroupSource ret = ugSourceClass.newInstance();
 
 		return ret;
 	}
@@ -1379,7 +1377,7 @@ public class UserGroupSyncConfig  {
 				LOG.warn("More than one character found in RegEx Separator, using default RegEx Separator /");
 			}
 		}
-		LOG.info("Using %s as the RegEx Separator".formatted(ret));
+		LOG.info(String.format("Using %s as the RegEx Separator", ret));
 		return ret;
 	}
 

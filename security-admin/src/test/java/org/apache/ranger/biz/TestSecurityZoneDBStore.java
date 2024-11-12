@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jakarta.ws.rs.WebApplicationException;
+import javax.ws.rs.WebApplicationException;
 
 import org.apache.ranger.common.MessageEnums;
 import org.apache.ranger.common.RESTErrorUtil;
@@ -35,18 +35,20 @@ import org.apache.ranger.plugin.model.RangerSecurityZone;
 import org.apache.ranger.plugin.store.ServicePredicateUtil;
 import org.apache.ranger.plugin.util.SearchFilter;
 import org.apache.ranger.service.RangerSecurityZoneServiceService;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.MethodOrderer.MethodName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.Assert;
+import org.junit.FixMethodOrder;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.runners.MockitoJUnitRunner;
 
-@ExtendWith(MockitoExtension.class)
-@TestMethodOrder(MethodName.class)
+@RunWith(MockitoJUnitRunner.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestSecurityZoneDBStore {
 	private static final String RANGER_GLOBAL_STATE_NAME = "RangerSecurityZone";
 
@@ -66,6 +68,9 @@ public class TestSecurityZoneDBStore {
 	ServicePredicateUtil predicateUtil;
 	@Mock
 	RESTErrorUtil restErrorUtil;
+
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
 	@Test
 	public void test1createSecurityZone() throws Exception {
 		XXSecurityZone xxSecurityZone = null;
@@ -87,8 +92,8 @@ public class TestSecurityZoneDBStore {
 
 		RangerSecurityZone expectedSecurityZone = securityZoneDBStore.createSecurityZone(securityZone);
 
-		Assertions.assertNull(xxSecurityZone);
-		Assertions.assertEquals(createdSecurityZone.getId(), expectedSecurityZone.getId());
+		Assert.assertNull(xxSecurityZone);
+		Assert.assertEquals(createdSecurityZone.getId(), expectedSecurityZone.getId());
 		Mockito.verify(daoManager).getXXSecurityZoneDao();
 		Mockito.verify(daoManager).getXXGlobalState();
 		Mockito.verify(securityZoneService).create(securityZone);
@@ -113,8 +118,8 @@ public class TestSecurityZoneDBStore {
 
 		RangerSecurityZone expectedSecurityZone = securityZoneDBStore.updateSecurityZoneById(securityZone);
 
-		Assertions.assertNotNull(xxSecurityZone);
-		Assertions.assertEquals(updateSecurityZone.getId(), expectedSecurityZone.getId());
+		Assert.assertNotNull(xxSecurityZone);
+		Assert.assertEquals(updateSecurityZone.getId(), expectedSecurityZone.getId());
 		Mockito.verify(daoManager).getXXGlobalState();
 		Mockito.verify(securityZoneService).update(securityZone);
 	}
@@ -140,7 +145,7 @@ public class TestSecurityZoneDBStore {
 
 		securityZoneDBStore.deleteSecurityZoneByName(securityZone.getName());
 
-		Assertions.assertNotNull(xxSecurityZone);
+		Assert.assertNotNull(xxSecurityZone);
 	}
 
 	@Test
@@ -180,8 +185,8 @@ public class TestSecurityZoneDBStore {
 
 		RangerSecurityZone expectedSecurityZone = securityZoneDBStore.getSecurityZoneByName(securityZone.getName());
 
-		Assertions.assertNotNull(xxSecurityZone);
-		Assertions.assertEquals(createdSecurityZone.getName(), expectedSecurityZone.getName());
+		Assert.assertNotNull(xxSecurityZone);
+		Assert.assertEquals(createdSecurityZone.getName(), expectedSecurityZone.getName());
 		Mockito.verify(securityZoneService).read(securityZone.getId());
 	}
 
@@ -210,8 +215,8 @@ public class TestSecurityZoneDBStore {
 
 		securityZoneDBStore.getSecurityZones(filter);
 
-		Assertions.assertNotNull(xxSecurityZone);
-		Assertions.assertNotNull(xxSecurityZones);
+		Assert.assertNotNull(xxSecurityZone);
+		Assert.assertNotNull(xxSecurityZones);
 		Mockito.verify(daoManager).getXXSecurityZoneDao();
 		Mockito.verify(securityZoneService).read(xxSecurityZone.getId());
 		Mockito.verify(predicateUtil).applyFilter(copy, filter);
@@ -248,15 +253,14 @@ public class TestSecurityZoneDBStore {
 
 		securityZoneDBStore.getSecurityZonesForService(serviceName);
 
-		Assertions.assertNotNull(xxSecurityZone);
-		Assertions.assertNotNull(xxSecurityZones);
+		Assert.assertNotNull(xxSecurityZone);
+		Assert.assertNotNull(xxSecurityZones);
 		Mockito.verify(daoManager).getXXSecurityZoneDao();
 		Mockito.verify(securityZoneService).read(xxSecurityZone.getId());
 	}
 		
 	@Test
 	public void test8createSecurityZoneWithExistingName() throws Exception {
-		assertThrows(WebApplicationException.class, () -> {
 		XXSecurityZone xxSecurityZone = new XXSecurityZone();
 		xxSecurityZone.setId(2L);
 		RangerSecurityZone securityZone = new RangerSecurityZone();
@@ -269,22 +273,22 @@ public class TestSecurityZoneDBStore {
 		Mockito.when(xXSecurityZoneDao.findByZoneName(securityZone.getName())).thenReturn(xxSecurityZone);
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyString(), Mockito.any(MessageEnums.class)))
 				.thenThrow(new WebApplicationException());
+		thrown.expect(WebApplicationException.class);
 
 		securityZoneDBStore.createSecurityZone(securityZone);
 
 		Mockito.verify(daoManager, times(1)).getXXSecurityZoneDao();
 		Mockito.verify(xXSecurityZoneDao, times(1)).findByZoneName(securityZone.getName());
-		});
 	}
 
 	@Test
 	public void test9updateSecurityZoneByUnknownId() throws Exception {
-		assertThrows(WebApplicationException.class, () -> {
 		RangerSecurityZone securityZoneToUpdate = new RangerSecurityZone();
 		securityZoneToUpdate.setId(2L);
 
 		XXSecurityZoneDao xXSecurityZoneDao = Mockito.mock(XXSecurityZoneDao.class);
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyString())).thenThrow(new WebApplicationException());
+		thrown.expect(WebApplicationException.class);
 
 		XXGlobalStateDao xXGlobalStateDao = Mockito.mock(XXGlobalStateDao.class);
 		Mockito.when(daoManager.getXXGlobalState()).thenReturn(xXGlobalStateDao);
@@ -293,12 +297,10 @@ public class TestSecurityZoneDBStore {
 		securityZoneDBStore.updateSecurityZoneById(securityZoneToUpdate);
 		Mockito.verify(daoManager, times(1)).getXXSecurityZoneDao();
 		Mockito.verify(xXSecurityZoneDao, times(1)).findByZoneId(securityZoneToUpdate.getId());
-		});
 	}
 
 	@Test
 	public void test10deleteSecurityZoneByWrongName() throws Exception {
-		assertThrows(WebApplicationException.class, () -> {
 		XXSecurityZone xxSecurityZone = new XXSecurityZone();
 		xxSecurityZone.setId(2L);
 		RangerSecurityZone securityZone = new RangerSecurityZone();
@@ -309,17 +311,15 @@ public class TestSecurityZoneDBStore {
 		Mockito.when(daoManager.getXXSecurityZoneDao()).thenReturn(xXSecurityZoneDao);
 		Mockito.when(xXSecurityZoneDao.findByZoneName(securityZone.getName())).thenReturn(null);
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyString())).thenThrow(new WebApplicationException());
+		thrown.expect(WebApplicationException.class);
 
 		securityZoneDBStore.deleteSecurityZoneByName(securityZone.getName());
 		Mockito.verify(xXSecurityZoneDao, times(1)).findByZoneName(xxSecurityZone.getName());
-
-		});
 
 	}
 
 	@Test
 	public void test11getSecurityZoneByWrongName() throws Exception {
-		assertThrows(WebApplicationException.class, () -> {
 		RangerSecurityZone securityZone = new RangerSecurityZone();
 		securityZone.setId(2L);
 		securityZone.setName("sz1");
@@ -328,11 +328,10 @@ public class TestSecurityZoneDBStore {
 		Mockito.when(daoManager.getXXSecurityZoneDao()).thenReturn(xXSecurityZoneDao);
 		Mockito.when(xXSecurityZoneDao.findByZoneName(securityZone.getName())).thenReturn(null);
 		Mockito.when(restErrorUtil.createRESTException(Mockito.anyString())).thenThrow(new WebApplicationException());
+		thrown.expect(WebApplicationException.class);
 
 		securityZoneDBStore.getSecurityZoneByName(securityZone.getName());
 		Mockito.verify(xXSecurityZoneDao, times(1)).findByZoneName(securityZone.getName());
-
-		});
 
 	}
 }

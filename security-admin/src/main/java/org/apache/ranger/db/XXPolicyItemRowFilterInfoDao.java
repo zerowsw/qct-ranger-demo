@@ -21,7 +21,7 @@ import org.apache.ranger.common.db.BaseDao;
 import org.apache.ranger.entity.XXPolicyItemRowFilterInfo;
 import org.springframework.stereotype.Service;
 
-import jakarta.persistence.NoResultException;
+import javax.persistence.NoResultException;
 import java.util.ArrayList;
 import java.util.List;
 

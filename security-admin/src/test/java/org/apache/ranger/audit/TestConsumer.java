@@ -52,7 +52,8 @@ public class TestConsumer extends AuditDestination {
 			return false;
 		}
 		countTotal++;
-		if (event instanceof AuthzAuditEvent azEvent) {
+		if (event instanceof AuthzAuditEvent) {
+			AuthzAuditEvent azEvent = (AuthzAuditEvent) event;
 			sumTotal += azEvent.getEventCount();
 			logger.info("EVENT:" + event);
 

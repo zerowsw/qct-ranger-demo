@@ -149,10 +149,8 @@ public class AuthenticationCheck {
             }
 
         } catch (BadCredentialsException bce) {
-            logFile.println("""
-                    ERROR: LDAP Authentication Failed. Please verify values for ranger.admin.auth.sampleuser and \
-                    ranger.admin.auth.samplepassword
-                    """);
+            logFile.println("ERROR: LDAP Authentication Failed. Please verify values for ranger.admin.auth.sampleuser and " +
+                    "ranger.admin.auth.samplepassword\n");
         } catch (Exception e) {
             logFile.println("ERROR: LDAP Authentication Failed: " + e);
         }
@@ -198,10 +196,8 @@ public class AuthenticationCheck {
                 result = ldapAuthenticationProvider.authenticate(finalAuthentication);
             }
         } catch (BadCredentialsException bce) {
-            logFile.println("""
-                    ERROR: LDAP Authentication Failed. Please verify values for ranger.admin.auth.sampleuser and \
-                    ranger.admin.auth.samplepassword
-                    """);
+            logFile.println("ERROR: LDAP Authentication Failed. Please verify values for ranger.admin.auth.sampleuser and " +
+                    "ranger.admin.auth.samplepassword\n");
         } catch (Exception e) {
             logFile.println("ERROR: LDAP Authentication Failed: " + e);
         }

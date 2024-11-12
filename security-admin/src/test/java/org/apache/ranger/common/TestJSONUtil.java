@@ -23,26 +23,31 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ranger.view.VXResponse;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.MethodOrderer.MethodName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.Assert;
+import org.junit.FixMethodOrder;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@TestMethodOrder(MethodName.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestJSONUtil {
 
 	@Autowired
 	JSONUtil jsonUtil = new JSONUtil();
 
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
+
 	@Test
 	public void testJsonToMapNull() {
 		String jsonStr = null;
 		Map<String, String> dbMap = jsonUtil.jsonToMap(jsonStr);
-		Assertions.assertEquals(dbMap.get(jsonStr), jsonStr);
+		Assert.assertEquals(dbMap.get(jsonStr), jsonStr);
 	}
 
 	@Test
@@ -50,21 +55,21 @@ public class TestJSONUtil {
 		String jsonStr = "";
 		Map<String, String> dbMap = jsonUtil.jsonToMap(jsonStr);
 		boolean isEmpty = dbMap.isEmpty();
-		Assertions.assertTrue(isEmpty);
+		Assert.assertTrue(isEmpty);
 	}
 
 	@Test
 	public void testJsonToMap() {
 		String jsonStr = "{\"username\":\"admin\",\"password\":\"admin\",\"fs.default.name\":\"defaultnamevalue\",\"hadoop.security.authorization\":\"authvalue\",\"hadoop.security.authentication\":\"authenticationvalue\",\"hadoop.security.auth_to_local\":\"localvalue\",\"dfs.datanode.kerberos.principal\":\"principalvalue\",\"dfs.namenode.kerberos.principal\":\"namenodeprincipalvalue\",\"dfs.secondary.namenode.kerberos.principal\":\"secprincipalvalue\",\"commonNameForCertificate\":\"certificatevalue\"}";
 		Map<String, String> dbMap = jsonUtil.jsonToMap(jsonStr);
-	    Assertions.assertNotNull(dbMap);
+	    Assert.assertNotNull(dbMap);
 	}
 
 	@Test
 	public void testReadMapToString() {		
 		Map<?, ?> map = new HashMap<Object, Object>();
 		String value = jsonUtil.readMapToString(map);
-		Assertions.assertNotNull(value);
+		Assert.assertNotNull(value);
         }
 
         @Test
@@ -78,7 +83,7 @@ public class TestJSONUtil {
 
                 String actualJsonString = jsonUtil.readListToString(testList);
 
-                Assertions.assertEquals(expectedJsonString, actualJsonString);
+                Assert.assertEquals(expectedJsonString, actualJsonString);
         }
 
         @Test
@@ -89,7 +94,7 @@ public class TestJSONUtil {
                 vXResponse.setMsgDesc("Logout Successful");
                 String actualJsonString = jsonUtil.writeObjectAsString(vXResponse);
 
-                Assertions.assertEquals(expectedJsonString, actualJsonString);
+                Assert.assertEquals(expectedJsonString, actualJsonString);
 
         }
 
@@ -102,7 +107,7 @@ public class TestJSONUtil {
                 expectedSet.add("knox");
                 Set<String> testSet = new HashSet<>();
                 Set<String> actualSet = jsonUtil.writeJsonToJavaObject(jsonString, testSet.getClass());
-                Assertions.assertEquals(expectedSet, actualSet);
+                Assert.assertEquals(expectedSet, actualSet);
 
 
         }

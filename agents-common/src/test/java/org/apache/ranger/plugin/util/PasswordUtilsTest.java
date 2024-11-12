@@ -17,14 +17,15 @@
 
 package org.apache.ranger.plugin.util;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
-
-import org.junit.jupiter.api.Test;
 import java.security.NoSuchAlgorithmException;
 
 import org.apache.hadoop.thirdparty.com.google.common.base.Joiner;
+import org.junit.Test;
 
 
 public class PasswordUtilsTest {

@@ -19,7 +19,6 @@
 
 package org.apache.ranger.examples.sampleapp;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
@@ -105,8 +104,8 @@ public class SampleApp {
 			try {
 				Class<IAuthorizer> clz = (Class<IAuthorizer>) Class.forName(authzClassName);
 
-				ret = clz.getDeclaredConstructor().newInstance();
-			} catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException excp) {
+				ret = clz.newInstance();
+			} catch(Exception excp) {
 				LOG.warn("Failed to create authorizer of type '" + authzClassName + "'", excp);
 			}
 		}

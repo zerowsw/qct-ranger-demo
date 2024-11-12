@@ -18,6 +18,8 @@
  */
 package org.apache.ranger.patch.cliutil;
 
+import static org.junit.Assert.fail;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.ranger.biz.UserMgr;
@@ -31,19 +33,17 @@ import org.apache.ranger.entity.XXPortalUser;
 import org.apache.ranger.service.XUserService;
 import org.apache.ranger.view.VXUser;
 import org.apache.ranger.view.VXUserList;
-
-import static org.junit.jupiter.api.Assertions.fail;
-import org.junit.jupiter.api.MethodOrderer.MethodName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.runners.MockitoJUnitRunner;
 
-@ExtendWith(MockitoExtension.class)
-@TestMethodOrder(MethodName.class)
+@RunWith(MockitoJUnitRunner.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestRoleBasedUserSearchUtil {
     @Mock
     XUserService xUserService;

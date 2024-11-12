@@ -19,14 +19,14 @@
 
 package org.apache.ranger.db;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.ranger.common.db.BaseDao;
 import org.apache.ranger.entity.XXGdsSharedResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import jakarta.persistence.NoResultException;
+import javax.persistence.NoResultException;
 import java.util.Collections;
 import java.util.List;
 

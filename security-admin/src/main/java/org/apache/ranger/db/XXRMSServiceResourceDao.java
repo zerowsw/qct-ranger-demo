@@ -21,9 +21,9 @@ package org.apache.ranger.db;
 
 import java.util.ArrayList;
 import java.util.List;
-import jakarta.persistence.NoResultException;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
+import javax.persistence.NoResultException;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.ranger.authorization.utils.StringUtil;
 import org.apache.ranger.common.DateUtil;
 import org.apache.ranger.common.GUIDUtil;

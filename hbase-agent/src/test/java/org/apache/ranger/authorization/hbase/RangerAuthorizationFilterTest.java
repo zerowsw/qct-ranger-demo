@@ -18,14 +18,12 @@
  */
 package org.apache.ranger.authorization.hbase;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
-
-import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -33,6 +31,7 @@ import java.util.Set;
 import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.filter.Filter.ReturnCode;
 import org.apache.hadoop.thirdparty.com.google.common.collect.ImmutableSet;
+import org.junit.Test;
 
 public class RangerAuthorizationFilterTest {
 

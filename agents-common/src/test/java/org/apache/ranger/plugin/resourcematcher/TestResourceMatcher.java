@@ -19,7 +19,7 @@
 
 package org.apache.ranger.plugin.resourcematcher;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -31,7 +31,11 @@ import org.apache.ranger.plugin.model.RangerServiceDef.RangerResourceDef;
 import org.apache.ranger.plugin.policyengine.RangerAccessRequest.ResourceElementMatchingScope;
 import org.apache.ranger.plugin.resourcematcher.TestResourceMatcher.ResourceMatcherTestCases.TestCase;
 import org.apache.ranger.plugin.resourcematcher.TestResourceMatcher.ResourceMatcherTestCases.TestCase.OneTest;
-import org.junit.jupiter.api.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -39,22 +43,22 @@ import com.google.gson.GsonBuilder;
 public class TestResourceMatcher {
 	static Gson gsonBuilder;
 
-	@BeforeAll
+	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		gsonBuilder = new GsonBuilder().setDateFormat("yyyyMMdd-HH:mm:ss.SSS-Z")
 				   .setPrettyPrinting()
 				   .create();
 	}
 
-	@AfterAll
+	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 	}
 
-	@BeforeEach
+	@Before
 	public void setUp() throws Exception {
 	}
 
-	@AfterEach
+	@After
 	public void tearDown() throws Exception {
 	}
 
@@ -98,7 +102,7 @@ public class TestResourceMatcher {
 	private void runTests(InputStreamReader reader, String testName) throws Exception {
 		ResourceMatcherTestCases testCases = gsonBuilder.fromJson(reader, ResourceMatcherTestCases.class);
 
-		assertTrue(testCases != null && testCases.testCases != null, "invalid input: " + testName);
+		assertTrue("invalid input: " + testName, testCases != null && testCases.testCases != null);
 
 		for(TestCase testCase : testCases.testCases) {
 			RangerResourceMatcher matcher = createResourceMatcher(testCase.resourceDef, testCase.policyResource);
@@ -111,7 +115,7 @@ public class TestResourceMatcher {
 				boolean expected = oneTest.result;
 				boolean result   = matcher.isMatch(oneTest.input, ResourceElementMatchingScope.SELF, oneTest.evalContext);
 
-				assertEquals(expected, result, "isMatch() failed! " + testCase.name + ":" + oneTest.name + ": input=" + oneTest.input);
+				assertEquals("isMatch() failed! " + testCase.name + ":" + oneTest.name + ": input=" + oneTest.input, expected, result);
 			}
 		}
 	}

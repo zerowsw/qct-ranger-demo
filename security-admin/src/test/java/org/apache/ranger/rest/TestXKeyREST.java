@@ -16,8 +16,8 @@
  */
 package org.apache.ranger.rest;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.ws.rs.WebApplicationException;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.WebApplicationException;
 import org.apache.ranger.biz.KmsKeyMgr;
 import org.apache.ranger.biz.XAuditMgr;
 import org.apache.ranger.common.MessageEnums;
@@ -26,20 +26,20 @@ import org.apache.ranger.common.SearchUtil;
 import org.apache.ranger.service.XAccessAuditService;
 import org.apache.ranger.view.VXKmsKey;
 import org.apache.ranger.view.VXKmsKeyList;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.MethodOrderer.MethodName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.Assert;
+import org.junit.FixMethodOrder;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ExtendWith(MockitoExtension.class)
-@TestMethodOrder(MethodName.class)
+@RunWith(MockitoJUnitRunner.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestXKeyREST {
 	@InjectMocks
 	XKeyREST keyREST = new XKeyREST();
@@ -65,6 +65,9 @@ public class TestXKeyREST {
 	@Mock
 	HttpServletRequest request;
 
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
+
 	String provider = "providerX";
 	String name = "xyz";
 	String nameNl = "";
@@ -77,8 +80,8 @@ public class TestXKeyREST {
 
 		VXKmsKeyList vxKeyListAct = keyREST.searchKeys(request, provider);
 
-		Assertions.assertNotNull(vxKeyListAct);
-		Assertions.assertEquals(vxKeyListExp, vxKeyListAct);
+		Assert.assertNotNull(vxKeyListAct);
+		Assert.assertEquals(vxKeyListExp, vxKeyListAct);
 
 		Mockito.verify(keyMgr).searchKeys(request, provider);
 	}
@@ -93,9 +96,9 @@ public class TestXKeyREST {
 
 		VXKmsKey vxKeyAct = keyREST.rolloverKey(provider, vxKeyExp);
 
-		Assertions.assertNotNull(vxKeyAct);
-		Assertions.assertEquals(vxKeyExp, vxKeyAct);
-		Assertions.assertEquals(vxKeyExp.getName(), vxKeyAct.getName());
+		Assert.assertNotNull(vxKeyAct);
+		Assert.assertEquals(vxKeyExp, vxKeyAct);
+		Assert.assertEquals(vxKeyExp.getName(), vxKeyAct.getName());
 		Mockito.verify(keyMgr).rolloverKey(provider, vxKeyExp);
 	}
 
@@ -108,26 +111,25 @@ public class TestXKeyREST {
 
 		VXKmsKey vxKeyAct = keyREST.rolloverKey(provider, vxKeyExp);
 
-		Assertions.assertNotNull(vxKeyAct);
-		Assertions.assertEquals(vxKeyExp, vxKeyAct);
-		Assertions.assertEquals(vxKeyExp.getName(), vxKeyAct.getName());
-		Assertions.assertNull(vxKeyAct.getCipher());
+		Assert.assertNotNull(vxKeyAct);
+		Assert.assertEquals(vxKeyExp, vxKeyAct);
+		Assert.assertEquals(vxKeyExp.getName(), vxKeyAct.getName());
+		Assert.assertNull(vxKeyAct.getCipher());
 
 		Mockito.verify(keyMgr).rolloverKey(provider, vxKeyExp);
 	}
 
 	@Test
 	public void Test4RolloverKey() throws Exception {
-		assertThrows(WebApplicationException.class, () -> {
 		VXKmsKey vxKeyExp = new VXKmsKey();
 
 		Mockito.when(restErrorUtil.createRESTException(Mockito.nullable(String.class), (MessageEnums) Mockito.any()))
 				.thenReturn(new WebApplicationException());
+		thrown.expect(WebApplicationException.class);
 
 		keyREST.rolloverKey(provider, vxKeyExp);
 
 		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any());
-		});
 	}
 
 	@Test
@@ -141,14 +143,14 @@ public class TestXKeyREST {
 
 	@Test
 	public void Test6DeleteKey() throws Exception {
-		assertThrows(WebApplicationException.class, () -> {
 		Mockito.when(restErrorUtil.createRESTException(Mockito.nullable(String.class), (MessageEnums) Mockito.any()))
 				.thenReturn(new WebApplicationException());
+
+		thrown.expect(WebApplicationException.class);
 
 		keyREST.deleteKey(nameNl, provider, request);
 
 		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any());
-		});
 	}
 
 	@Test
@@ -160,10 +162,10 @@ public class TestXKeyREST {
 		Mockito.when(keyMgr.createKey(provider, vxKeyExp)).thenReturn(vxKeyExp);
 		VXKmsKey vxKeyAct = keyREST.createKey(provider, vxKeyExp);
 
-		Assertions.assertNotNull(vxKeyAct);
-		Assertions.assertEquals(vxKeyAct, vxKeyExp);
-		Assertions.assertEquals(vxKeyExp.getName(), vxKeyAct.getName());
-		Assertions.assertEquals(vxKeyExp.getCipher(), vxKeyAct.getCipher());
+		Assert.assertNotNull(vxKeyAct);
+		Assert.assertEquals(vxKeyAct, vxKeyExp);
+		Assert.assertEquals(vxKeyExp.getName(), vxKeyAct.getName());
+		Assert.assertEquals(vxKeyExp.getCipher(), vxKeyAct.getCipher());
 
 		Mockito.verify(keyMgr).createKey(provider, vxKeyExp);
 	}
@@ -177,28 +179,27 @@ public class TestXKeyREST {
 
 		VXKmsKey vxKeyAct = keyREST.createKey(provider, vxKeyExp);
 
-		Assertions.assertNotNull(vxKeyAct);
-		Assertions.assertEquals(vxKeyAct, vxKeyExp);
-		Assertions.assertEquals(vxKeyExp.getName(), vxKeyAct.getName());
-		Assertions.assertNull(vxKeyAct.getCipher());
+		Assert.assertNotNull(vxKeyAct);
+		Assert.assertEquals(vxKeyAct, vxKeyExp);
+		Assert.assertEquals(vxKeyExp.getName(), vxKeyAct.getName());
+		Assert.assertNull(vxKeyAct.getCipher());
 
 		Mockito.verify(keyMgr).createKey(provider, vxKeyExp);
 	}
 
 	@Test
 	public void Test8CreateKey() throws Exception {
-		assertThrows(WebApplicationException.class, () -> {
 		VXKmsKey vxKeyExp = new VXKmsKey();
 
 		Mockito.when(restErrorUtil.createRESTException(Mockito.nullable(String.class), (MessageEnums) Mockito.any()))
 				.thenReturn(new WebApplicationException());
+		thrown.expect(WebApplicationException.class);
 
 		VXKmsKey vxKeyAct = keyREST.createKey(provider, vxKeyExp);
 
 		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any());
 
-			Assertions.assertNull(vxKeyAct);
-		});
+		Assert.assertNull(vxKeyAct);
 	}
 
 	@Test
@@ -209,24 +210,23 @@ public class TestXKeyREST {
 
 		VXKmsKey vxKeyAct = keyREST.getKey(name, provider);
 
-		Assertions.assertNotNull(vxKeyAct);
-		Assertions.assertEquals(vxKeyAct, vxKeyExp);
-		Assertions.assertEquals(vxKeyExp.getName(), vxKeyAct.getName());
+		Assert.assertNotNull(vxKeyAct);
+		Assert.assertEquals(vxKeyAct, vxKeyExp);
+		Assert.assertEquals(vxKeyExp.getName(), vxKeyAct.getName());
 
 		Mockito.verify(keyMgr).getKey(provider, name);
 	}
 
 	@Test
 	public void Test10GetKey() throws Exception {
-		assertThrows(WebApplicationException.class, () -> {
 		Mockito.when(restErrorUtil.createRESTException(Mockito.nullable(String.class), (MessageEnums) Mockito.any()))
 				.thenReturn(new WebApplicationException());
+		thrown.expect(WebApplicationException.class);
 
 		VXKmsKey vxKeyAct = keyREST.getKey(nameNl, provider);
 
-			Assertions.assertNull(vxKeyAct);
+		Assert.assertNull(vxKeyAct);
 
 		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any());
-		});
 	}
 }

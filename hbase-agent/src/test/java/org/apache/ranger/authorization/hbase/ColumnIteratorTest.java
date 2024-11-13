@@ -28,8 +28,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.hadoop.hbase.Cell;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.Assert;
+import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -39,7 +39,7 @@ public class ColumnIteratorTest {
 	public void test_firewalling() {
 		// passing null collection
 		ColumnIterator iterator = new ColumnIterator(null);
-		Assertions.assertFalse(iterator.hasNext());
+		Assert.assertFalse(iterator.hasNext());
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -80,10 +80,10 @@ public class ColumnIteratorTest {
 		int i = 0;
 		while (columnIterator.hasNext()) {
 			String value = columnIterator.next();
-			Assertions.assertEquals(values[i++], value);
+			Assert.assertEquals(values[i++], value);
 		}
 		// We should get back exactly as many items as were in the real iterator, no more no less
-		Assertions.assertEquals(3, i);
+		Assert.assertEquals(3, i);
 
 		// this should be called only once!
 		verify(collection, times(1)).iterator();
@@ -129,10 +129,10 @@ public class ColumnIteratorTest {
 		int i = 0;
 		while (columnIterator.hasNext()) {
 			String value = columnIterator.next();
-			Assertions.assertEquals(qualifiers[i++], value);
+			Assert.assertEquals(qualifiers[i++], value);
 		}
 		// We should get back exactly as many items as were in the real iterator, no more no less
-		Assertions.assertEquals(3, i);
+		Assert.assertEquals(3, i);
 
 		// this should be called only once!
 		verify(list, times(1)).iterator();

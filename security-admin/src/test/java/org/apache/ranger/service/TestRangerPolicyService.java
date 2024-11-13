@@ -36,17 +36,19 @@ import org.apache.ranger.plugin.model.RangerPolicy.RangerPolicyItemCondition;
 import org.apache.ranger.plugin.model.RangerPolicy.RangerPolicyResource;
 import org.apache.ranger.security.context.RangerContextHolder;
 import org.apache.ranger.security.context.RangerSecurityContext;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.MethodOrderer.MethodName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.Assert;
+import org.junit.FixMethodOrder;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ExtendWith(MockitoExtension.class)
-@TestMethodOrder(MethodName.class)
+@RunWith(MockitoJUnitRunner.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestRangerPolicyService {
 
 	private static Long Id = 8L;
@@ -74,6 +76,9 @@ public class TestRangerPolicyService {
 
 	@Mock
 	RangerBizUtil bizUtil;
+
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
 
 	public void setup() {
 		RangerSecurityContext context = new RangerSecurityContext();
@@ -142,7 +147,7 @@ public class TestRangerPolicyService {
 	public void test1ValidateForCreate() {
 		RangerPolicy rangerPolicy = rangerPolicy();
 		policyService.validateForCreate(rangerPolicy);
-		Assertions.assertNotNull(rangerPolicy);
+		Assert.assertNotNull(rangerPolicy);
 	}
 
 	@Test
@@ -151,7 +156,7 @@ public class TestRangerPolicyService {
 		XXPolicy policy = policy();
 		policyService.validateForUpdate(rangerPolicy, policy);
 
-		Assertions.assertNotNull(rangerPolicy);
+		Assert.assertNotNull(rangerPolicy);
 	}
 
 	@Test

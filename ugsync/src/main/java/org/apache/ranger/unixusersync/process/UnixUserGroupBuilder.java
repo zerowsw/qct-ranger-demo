@@ -61,22 +61,16 @@ public class UnixUserGroupBuilder implements UserGroupSource {
 	static final String LINUX_GET_GROUP_CMD = "getent group %s";
 
 	// mainly for testing purposes, there might be a better way
-	static final String MAC_GET_ALL_USERS_CMD = """
-			dscl . -readall /Users UniqueID PrimaryGroupID | \
-			awk 'BEGIN { OFS = ":"; ORS="\\n"; i=0;}\
-			/RecordName: / {name = $2;i = 0;}/PrimaryGroupID: / {gid = $2;}\
-			/^ / {if (i == 0) { i++; name = $1;}}\
-			/UniqueID: / {uid = $2;print name, "*", gid, uid;}'\
-			""";
-	static final String MAC_GET_ALL_GROUPS_CMD = """
-			dscl . -list /Groups PrimaryGroupID | \
-			awk -v OFS=":" '{print $1, "*", $2, ""}'\
-			""";
-	static final String MAC_GET_GROUP_CMD = """
-			dscl . -read /Groups/%1$s | paste -d, -s - | sed -e 's/:/|/g' | \
-			awk -v OFS=":" -v ORS="\\n" -F, '{print "%1$s","*",$6,$4}' | \
-			sed -e 's/:[^:]*| /:/g' | sed -e 's/ /,/g'\
-			""";
+	static final String MAC_GET_ALL_USERS_CMD = "dscl . -readall /Users UniqueID PrimaryGroupID | " +
+			"awk 'BEGIN { OFS = \":\"; ORS=\"\\n\"; i=0;}" +
+			"/RecordName: / {name = $2;i = 0;}/PrimaryGroupID: / {gid = $2;}" +
+			"/^ / {if (i == 0) { i++; name = $1;}}" +
+			"/UniqueID: / {uid = $2;print name, \"*\", gid, uid;}'";
+	static final String MAC_GET_ALL_GROUPS_CMD = "dscl . -list /Groups PrimaryGroupID | " +
+			"awk -v OFS=\":\" '{print $1, \"*\", $2, \"\"}'";
+	static final String MAC_GET_GROUP_CMD = "dscl . -read /Groups/%1$s | paste -d, -s - | sed -e 's/:/|/g' | " +
+			"awk -v OFS=\":\" -v ORS=\"\\n\" -F, '{print \"%1$s\",\"*\",$6,$4}' | " +
+			"sed -e 's/:[^:]*| /:/g' | sed -e 's/ /,/g'";
 
 	static final String BACKEND_PASSWD = "passwd";
 
@@ -150,10 +144,8 @@ public class UnixUserGroupBuilder implements UserGroupSource {
 			useNss = true;
 			unixSyncSourceInfo.setUnixBackend("nss");
 		} else {
-			LOG.warn("""
-					DEPRECATED: Unix backend is configured to use /etc/passwd and /etc/group files directly \
-					instead of standard system mechanisms.\
-					""");
+			LOG.warn("DEPRECATED: Unix backend is configured to use /etc/passwd and /etc/group files directly " +
+					"instead of standard system mechanisms.");
 			unixSyncSourceInfo.setUnixBackend(BACKEND_PASSWD);
 		}
 		buildUserGroupInfo();
@@ -507,9 +499,9 @@ public class UnixUserGroupBuilder implements UserGroupSource {
 
 				String command;
 				if (useGid) {
-					command = groupCmd.formatted(group.getKey());
+					command = String.format(groupCmd, group.getKey());
 				} else {
-					command = groupCmd.formatted(group.getValue());
+					command = String.format(groupCmd, group.getValue());
 				}
 
 				String[] cmd = new String[]{"bash", "-c", command + " " + group.getKey()};
@@ -545,7 +537,7 @@ public class UnixUserGroupBuilder implements UserGroupSource {
 			}
 
 			for (String group : groups) {
-				String command = groupCmd.formatted(group);
+				String command = String.format(groupCmd, group);
 				String[] cmd = new String[]{"bash", "-c", command};
 				if (LOG.isDebugEnabled()) {
 					LOG.debug("Executing: " + Arrays.toString(cmd));

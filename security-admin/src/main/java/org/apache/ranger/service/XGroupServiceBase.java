@@ -34,7 +34,7 @@ import org.apache.ranger.plugin.model.GroupInfo;
 import org.apache.ranger.view.VXGroup;
 import org.apache.ranger.view.VXGroupList;
 
-import jakarta.persistence.Query;
+import javax.persistence.Query;
 
 public abstract class XGroupServiceBase<T extends XXGroup, V extends VXGroup>
 		extends AbstractAuditedResourceService<T, V> {

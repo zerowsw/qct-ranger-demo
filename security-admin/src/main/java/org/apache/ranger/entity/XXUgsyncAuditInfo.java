@@ -21,7 +21,7 @@ package org.apache.ranger.entity;
 
 import org.apache.ranger.common.AppConstants;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity

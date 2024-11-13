@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import jakarta.persistence.NoResultException;
+import javax.persistence.NoResultException;
 
 import org.apache.ranger.common.db.BaseDao;
 import org.apache.ranger.entity.XXDataMaskTypeDef;

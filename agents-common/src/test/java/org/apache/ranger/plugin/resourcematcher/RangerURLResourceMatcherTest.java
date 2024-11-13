@@ -24,14 +24,13 @@ import org.apache.ranger.plugin.model.RangerPolicy;
 import org.apache.ranger.plugin.model.RangerServiceDef.RangerResourceDef;
 import org.apache.ranger.plugin.policyengine.RangerAccessRequest.ResourceElementMatchingScope;
 import org.apache.ranger.plugin.util.RangerAccessRequestUtil;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.Test;
 
 import java.util.Collections;
-
-import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
 
 public class RangerURLResourceMatcherTest {
 
@@ -122,7 +121,7 @@ public class RangerURLResourceMatcherTest {
             RangerAccessRequestUtil.setCurrentUserInContext(evalContext, user);
 
             MatcherWrapper matcher = new MatcherWrapper(policyValue, optWildcard, isRecursive);
-            assertEquals(result, matcher.isMatch(resource, ResourceElementMatchingScope.SELF, evalContext), getMessage(row));
+            assertEquals(getMessage(row), result, matcher.isMatch(resource, ResourceElementMatchingScope.SELF, evalContext));
         }
     }
 
@@ -141,12 +140,12 @@ public class RangerURLResourceMatcherTest {
             RangerAccessRequestUtil.setCurrentUserInContext(evalContext, user);
 
             MatcherWrapper matcher = new MatcherWrapper(policyValue, optWildcard, isRecursive);
-            assertEquals(result, matcher.isMatch(resource, ResourceElementMatchingScope.SELF_OR_PREFIX, evalContext), getMessage(row));
+            assertEquals(getMessage(row), result, matcher.isMatch(resource, ResourceElementMatchingScope.SELF_OR_PREFIX, evalContext));
         }
     }
 
     String getMessage(Object[] row) {
-        return "Resource=%s, Policy=%s, optWildcard=%s, recursive=%s, result=%s".formatted(
+        return String.format("Resource=%s, Policy=%s, optWildcard=%s, recursive=%s, result=%s",
                 (String)row[0], (String)row[1], (boolean)row[2], (boolean)row[3], (boolean)row[4]);
     }
 

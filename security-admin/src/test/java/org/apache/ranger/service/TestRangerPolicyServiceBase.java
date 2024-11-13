@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import jakarta.ws.rs.WebApplicationException;
+import javax.ws.rs.WebApplicationException;
 import org.apache.ranger.biz.RangerBizUtil;
 import org.apache.ranger.common.ContextUtil;
 import org.apache.ranger.common.MessageEnums;
@@ -41,20 +41,20 @@ import org.apache.ranger.plugin.model.RangerPolicy.RangerPolicyItemCondition;
 import org.apache.ranger.plugin.model.RangerPolicy.RangerPolicyResource;
 import org.apache.ranger.security.context.RangerContextHolder;
 import org.apache.ranger.security.context.RangerSecurityContext;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.MethodOrderer.MethodName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.Assert;
+import org.junit.FixMethodOrder;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ExtendWith(MockitoExtension.class)
-@TestMethodOrder(MethodName.class)
+@RunWith(MockitoJUnitRunner.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestRangerPolicyServiceBase {
 
 	private static Long Id = 8L;
@@ -76,6 +76,9 @@ public class TestRangerPolicyServiceBase {
 
 	@Mock
 	RangerSearchUtil searchUtil;
+
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
 
 	public void setup() {
 		RangerSecurityContext context = new RangerSecurityContext();
@@ -159,22 +162,21 @@ public class TestRangerPolicyServiceBase {
 
 		XXPolicy dbPolicy = policyService.mapViewToEntityBean(rangerPolicy,
 				policy, OPERATION_CONTEXT);
-		Assertions.assertNotNull(dbPolicy);
-		Assertions.assertEquals(dbPolicy.getId(), policy.getId());
-		Assertions.assertEquals(dbPolicy.getGuid(), policy.getGuid());
-		Assertions.assertEquals(dbPolicy.getName(), policy.getName());
-		Assertions.assertEquals(dbPolicy.getAddedByUserId(),
+		Assert.assertNotNull(dbPolicy);
+		Assert.assertEquals(dbPolicy.getId(), policy.getId());
+		Assert.assertEquals(dbPolicy.getGuid(), policy.getGuid());
+		Assert.assertEquals(dbPolicy.getName(), policy.getName());
+		Assert.assertEquals(dbPolicy.getAddedByUserId(),
 				policy.getAddedByUserId());
-		Assertions.assertEquals(dbPolicy.getIsEnabled(), policy.getIsEnabled());
-		Assertions.assertEquals(dbPolicy.getVersion(), policy.getVersion());
-		Assertions.assertEquals(dbPolicy.getDescription(), policy.getDescription());
+		Assert.assertEquals(dbPolicy.getIsEnabled(), policy.getIsEnabled());
+		Assert.assertEquals(dbPolicy.getVersion(), policy.getVersion());
+		Assert.assertEquals(dbPolicy.getDescription(), policy.getDescription());
 
 		Mockito.verify(daoManager).getXXService();
 	}
 
 	@Test
 	public void test2mapViewToEntityBeanNullValue() {
-		assertThrows(WebApplicationException.class, () -> {
 		XXServiceDao xServiceDao = Mockito.mock(XXServiceDao.class);
 		RangerPolicy rangerPolicy = rangerPolicy();
 		XXPolicy policy = policy();
@@ -189,24 +191,25 @@ public class TestRangerPolicyServiceBase {
 						MessageEnums.INVALID_INPUT_DATA)).thenThrow(
 				new WebApplicationException());
 
+		thrown.expect(WebApplicationException.class);
+
 		Mockito.when(daoManager.getXXService()).thenReturn(xServiceDao);
 		Mockito.when(xServiceDao.findByName(rangerPolicy.getService()))
 				.thenReturn(null);
 
 		XXPolicy dbPolicy = policyService.mapViewToEntityBean(rangerPolicy,
 				policy, OPERATION_CONTEXT);
-			Assertions.assertNotNull(dbPolicy);
-			Assertions.assertEquals(dbPolicy.getId(), policy.getId());
-			Assertions.assertEquals(dbPolicy.getGuid(), policy.getGuid());
-			Assertions.assertEquals(dbPolicy.getName(), policy.getName());
-			Assertions.assertEquals(dbPolicy.getAddedByUserId(),
+		Assert.assertNotNull(dbPolicy);
+		Assert.assertEquals(dbPolicy.getId(), policy.getId());
+		Assert.assertEquals(dbPolicy.getGuid(), policy.getGuid());
+		Assert.assertEquals(dbPolicy.getName(), policy.getName());
+		Assert.assertEquals(dbPolicy.getAddedByUserId(),
 				policy.getAddedByUserId());
-			Assertions.assertEquals(dbPolicy.getIsEnabled(), policy.getIsEnabled());
-			Assertions.assertEquals(dbPolicy.getVersion(), policy.getVersion());
-			Assertions.assertEquals(dbPolicy.getDescription(), policy.getDescription());
+		Assert.assertEquals(dbPolicy.getIsEnabled(), policy.getIsEnabled());
+		Assert.assertEquals(dbPolicy.getVersion(), policy.getVersion());
+		Assert.assertEquals(dbPolicy.getDescription(), policy.getDescription());
 
 		Mockito.verify(daoManager).getXXService();
-		});
 	}
 
 	@Test
@@ -227,15 +230,15 @@ public class TestRangerPolicyServiceBase {
 		RangerPolicy dbRangerPolicy = policyService.mapEntityToViewBean(
 				rangerPolicy, policy);
 
-		Assertions.assertNotNull(dbRangerPolicy);
-		Assertions.assertEquals(dbRangerPolicy.getId(), rangerPolicy.getId());
-		Assertions.assertEquals(dbRangerPolicy.getGuid(), rangerPolicy.getGuid());
-		Assertions.assertEquals(dbRangerPolicy.getName(), rangerPolicy.getName());
-		Assertions.assertEquals(dbRangerPolicy.getIsEnabled(),
+		Assert.assertNotNull(dbRangerPolicy);
+		Assert.assertEquals(dbRangerPolicy.getId(), rangerPolicy.getId());
+		Assert.assertEquals(dbRangerPolicy.getGuid(), rangerPolicy.getGuid());
+		Assert.assertEquals(dbRangerPolicy.getName(), rangerPolicy.getName());
+		Assert.assertEquals(dbRangerPolicy.getIsEnabled(),
 				rangerPolicy.getIsEnabled());
-		Assertions.assertEquals(dbRangerPolicy.getVersion(),
+		Assert.assertEquals(dbRangerPolicy.getVersion(),
 				rangerPolicy.getVersion());
-		Assertions.assertEquals(dbRangerPolicy.getDescription(),
+		Assert.assertEquals(dbRangerPolicy.getDescription(),
 				rangerPolicy.getDescription());
 
 		Mockito.verify(daoManager).getXXService();

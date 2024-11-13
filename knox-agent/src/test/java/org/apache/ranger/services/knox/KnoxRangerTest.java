@@ -28,10 +28,11 @@ import java.nio.file.Path;
 import org.apache.commons.io.IOUtils;
 import org.apache.knox.gateway.GatewayTestConfig;
 import org.apache.knox.gateway.GatewayTestDriver;
-import org.apache.hc.core5.http.HttpStatus;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.apache.http.HttpStatus;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 import com.mycila.xmltool.XMLDoc;
 import com.mycila.xmltool.XMLTag;
 
@@ -45,7 +46,7 @@ public class KnoxRangerTest {
 
     private static GatewayTestDriver driver = new GatewayTestDriver();
 
-    @BeforeAll
+    @BeforeClass
     public static void setupSuite() throws Exception {
         driver.setResourceBase(KnoxRangerTest.class);
         driver.setupLdap(0);
@@ -59,7 +60,7 @@ public class KnoxRangerTest {
         driver.setupGateway(config, "cluster", createTopology(), true);
     }
 
-    @AfterAll
+    @AfterClass
     public static void cleanupSuite() throws Exception {
         driver.cleanup();
     }

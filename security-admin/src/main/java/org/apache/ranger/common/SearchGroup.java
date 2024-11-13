@@ -25,7 +25,7 @@ package org.apache.ranger.common;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.Query;
+import javax.persistence.Query;
 
 public class SearchGroup {
 	public enum CONDITION {

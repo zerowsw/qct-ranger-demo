@@ -17,8 +17,7 @@
  */
 package org.apache.ranger.rest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -30,8 +29,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.ws.rs.WebApplicationException;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.WebApplicationException;
 
 import org.apache.ranger.biz.RangerBizUtil;
 import org.apache.ranger.biz.SecurityZoneDBStore;
@@ -51,17 +50,16 @@ import org.apache.ranger.plugin.model.validation.RangerValidator;
 import org.apache.ranger.plugin.util.SearchFilter;
 import org.apache.ranger.service.RangerSecurityZoneServiceService;
 import org.apache.ranger.view.RangerSecurityZoneList;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@MockitoSettings(strictness = Strictness.LENIENT)
-@ExtendWith(MockitoExtension.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class TestSecurityZoneREST {
 	@InjectMocks
 	SecurityZoneREST securityZoneREST = new SecurityZoneREST();
@@ -85,6 +83,9 @@ public class TestSecurityZoneREST {
 	RangerDaoManager daoManager;
 	@Mock
 	XXServiceDef xServiceDef;
+
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
 
 	private RangerSecurityZone createRangerSecurityZone() {
 		String testZone1 = "testzone1";
@@ -163,7 +164,6 @@ public class TestSecurityZoneREST {
 
 	@Test
 	public void testUpdateSecurityZoneWithMisMatchId() throws Exception {
-		assertThrows(WebApplicationException.class, () -> {
 		RangerSecurityZone rangerSecurityZoneToUpdate = createRangerSecurityZone();
 		Long securityZoneId = 2L;
 		XXServiceDefDao xServiceDefDao = Mockito.mock(XXServiceDefDao.class);
@@ -184,16 +184,15 @@ public class TestSecurityZoneREST {
 		when(securityZoneStore.updateSecurityZoneById(rangerSecurityZoneToUpdate))
 				.thenReturn(rangerSecurityZoneToUpdate);
 		when(restErrorUtil.createRESTException(Mockito.anyString())).thenThrow(new WebApplicationException());
+		thrown.expect(WebApplicationException.class);
 		RangerSecurityZone updatedRangerSecurityZone = securityZoneREST.updateSecurityZone(9L,
 				rangerSecurityZoneToUpdate);
 		assertEquals(rangerSecurityZoneToUpdate.getId(), updatedRangerSecurityZone.getId());
 		verify(validator, times(1)).validate(rangerSecurityZoneToUpdate, RangerValidator.Action.UPDATE);
-		});
 	}
 
-	@Test
+	@Test(expected = WebApplicationException.class)
 	public void testGetSecurityZoneById() throws Exception {
-		assertThrows(WebApplicationException.class, () -> {
 		RangerSecurityZone securityZone = createRangerSecurityZone();
 		Long securityZoneId = 2L;
 		securityZone.setId(securityZoneId);
@@ -208,12 +207,10 @@ public class TestSecurityZoneREST {
 		when(restErrorUtil.createRESTException(Mockito.anyString(), Mockito.any())).thenReturn(new WebApplicationException());
 		securityZoneREST.getSecurityZone(securityZoneId);
 		verify(securityZoneStore, times(0)).getSecurityZone(securityZoneId);
-		});
 	}
 
-	@Test
+	@Test(expected = WebApplicationException.class)
 	public void testGetSecurityZoneByName() throws Exception {
-		assertThrows(WebApplicationException.class, () -> {
 		RangerSecurityZone securityZone = createRangerSecurityZone();
 		Long securityZoneId = 2L;
 		String securityZoneName = securityZone.getName();
@@ -229,12 +226,10 @@ public class TestSecurityZoneREST {
 		when(restErrorUtil.createRESTException(Mockito.anyString(), Mockito.any())).thenReturn(new WebApplicationException());
 		securityZoneREST.getSecurityZone(securityZoneName);
 		verify(securityZoneStore, times(0)).getSecurityZoneByName(securityZoneName);
-		});
 	}
 
-	@Test
+	@Test(expected = WebApplicationException.class)
 	public void testGetAllSecurityZone() throws Exception {
-		assertThrows(WebApplicationException.class, () -> {
 		RangerSecurityZone securityZone = createRangerSecurityZone();
 		HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
 		SearchFilter filter = new SearchFilter();
@@ -260,7 +255,6 @@ public class TestSecurityZoneREST {
 		when(restErrorUtil.createRESTException(Mockito.anyString(), Mockito.any())).thenReturn(new WebApplicationException());
 		securityZoneREST.getAllZones(request);
 		verify(securityZoneStore, times(0)).getSecurityZones(filter);
-		});
 	}
 
 	@Test

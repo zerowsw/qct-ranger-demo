@@ -20,14 +20,17 @@
 package org.apache.ranger.unixusersync.process;
 
 import org.apache.ranger.unixusersync.config.UserGroupSyncConfig;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.Map;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertFalse;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
@@ -36,7 +39,7 @@ import static org.hamcrest.Matchers.hasValue;
 public class TestUnixUserGroupBuilder {
     private UserGroupSyncConfig config;
 
-    @BeforeEach
+    @Before
     public void setUp() {
         config = UserGroupSyncConfig.getInstance();
         config.setProperty("ranger.usersync.unix.minUserId", "0");

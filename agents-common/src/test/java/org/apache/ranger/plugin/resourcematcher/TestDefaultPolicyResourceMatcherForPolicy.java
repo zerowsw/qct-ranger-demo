@@ -19,7 +19,7 @@
 
 package org.apache.ranger.plugin.resourcematcher;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -32,7 +32,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.ranger.plugin.model.RangerPolicy;
 import org.apache.ranger.plugin.model.RangerPolicy.RangerPolicyResource;
 import org.apache.ranger.plugin.model.RangerServiceDef;
@@ -40,7 +40,11 @@ import org.apache.ranger.plugin.policyengine.RangerAccessResource;
 import org.apache.ranger.plugin.policyengine.RangerAccessResourceImpl;
 import org.apache.ranger.plugin.policyresourcematcher.RangerDefaultPolicyResourceMatcher;
 import org.apache.ranger.plugin.policyresourcematcher.RangerPolicyResourceMatcher;
-import org.junit.jupiter.api.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -53,7 +57,7 @@ public class TestDefaultPolicyResourceMatcherForPolicy {
 	static RangerServiceDef hbaseServiceDef;
 	static RangerServiceDef tagServiceDef;
 
-	@BeforeAll
+	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		gsonBuilder = new GsonBuilder().setDateFormat("yyyyMMdd-HH:mm:ss.SSS-Z")
 				.setPrettyPrinting()
@@ -75,15 +79,15 @@ public class TestDefaultPolicyResourceMatcherForPolicy {
 		return gsonBuilder.fromJson(reader, RangerServiceDef.class);
 	}
 
-	@AfterAll
+	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 	}
 
-	@BeforeEach
+	@Before
 	public void setUp() throws Exception {
 	}
 
-	@AfterEach
+	@After
 	public void tearDown() throws Exception {
 	}
 
@@ -126,7 +130,7 @@ public class TestDefaultPolicyResourceMatcherForPolicy {
 	}
 	private void runTest(DefaultPolicyResourceMatcherTestCases.TestCase testCase, RangerServiceDef serviceDef) throws Exception {
 
-		assertTrue(testCase != null && testCase.tests != null, "invalid input: ");
+		assertTrue("invalid input: " , testCase != null && testCase.tests != null);
 
 		RangerDefaultPolicyResourceMatcher matcher = new RangerDefaultPolicyResourceMatcher();
 		matcher.setServiceDef(serviceDef);
@@ -157,7 +161,7 @@ public class TestDefaultPolicyResourceMatcherForPolicy {
 			}
 			boolean result = matcher.isMatch(oneTest.policy, scope, oneTest.evalContext);
 
-			assertEquals(expected, result, "match failed! " + ":" + testCase.name + ":" + oneTest.name + ":" + oneTest.type + ": policy=" + oneTest.policy);
+			assertEquals("match failed! " + ":" + testCase.name + ":" + oneTest.name + ":" + oneTest.type + ": policy=" + oneTest.policy, expected, result);
 		}
 	}
 

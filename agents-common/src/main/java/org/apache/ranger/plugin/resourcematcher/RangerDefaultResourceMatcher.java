@@ -77,7 +77,8 @@ public class RangerDefaultResourceMatcher extends RangerAbstractResourceMatcher 
 		if (isMatchAny || (allValuesRequested && !isPrefixMatch)) {
 			ret = isMatchAny ? ResourceElementMatchType.SELF : NONE;
 		} else {
-			if (resource instanceof String strValue) {
+			if (resource instanceof String) {
+				String strValue = (String) resource;
 
 				for (ResourceMatcher resourceMatcher : resourceMatchers.getResourceMatchers()) {
 					ResourceElementMatchType matchType = resourceMatcher.getMatchType(strValue, matchingScope, evalContext);

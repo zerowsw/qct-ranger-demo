@@ -85,7 +85,8 @@ public class KafkaAuditProvider extends AuditDestination {
 
 	@Override
 	public boolean log(AuditEventBase event) {
-		if (event instanceof AuthzAuditEvent authzEvent) {
+		if (event instanceof AuthzAuditEvent) {
+			AuthzAuditEvent authzEvent = (AuthzAuditEvent) event;
 
 			if (authzEvent.getAgentHostname() == null) {
 				authzEvent.setAgentHostname(MiscUtil.getHostname());

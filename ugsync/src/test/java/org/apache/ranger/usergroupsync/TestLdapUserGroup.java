@@ -19,8 +19,8 @@
 
 package org.apache.ranger.usergroupsync;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import org.apache.directory.server.annotations.CreateLdapConnectionPool;
 import org.apache.directory.server.core.annotations.ApplyLdifFiles;
@@ -33,13 +33,15 @@ import org.apache.directory.server.ldap.LdapServer;
 import org.apache.directory.server.protocol.shared.transport.TcpTransport;
 import org.apache.ranger.ldapusersync.process.LdapUserGroupBuilder;
 import org.apache.ranger.unixusersync.config.UserGroupSyncConfig;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import org.apache.directory.server.core.annotations.CreateIndex;
 
+@RunWith(FrameworkRunner.class)
 @CreateDS(name = "classDS",
 partitions =
 {
@@ -48,13 +50,10 @@ partitions =
 				suffix = "DC=ranger,DC=qe,DC=hortonworks,DC=com",
 				contextEntry = @ContextEntry(
 						entryLdif =
-						"""
-						dn: DC=ranger,DC=qe,DC=hortonworks,DC=com
-						objectClass: domain
-						objectClass: top
-						dc: example
-						
-						"""
+						"dn: DC=ranger,DC=qe,DC=hortonworks,DC=com\n" +
+								"objectClass: domain\n" +
+								"objectClass: top\n" +
+								"dc: example\n\n"
 						),
 				indexes =
 			{
@@ -77,13 +76,13 @@ public class TestLdapUserGroup extends AbstractLdapTestUnit{
 	private UserGroupSource ldapBuilder;
 	private PolicyMgrUserGroupBuilderTest sink;
 
-	@BeforeEach
+	@Before
 	public void setup() throws Exception {
 		LdapServer ldapServer = new LdapServer();
 		ldapServer.setSaslHost("127.0.0.1");
 		ldapServer.setSearchBaseDn("DC=ranger,DC=qe,DC=hortonworks,DC=com");
 		String ldapPort = System.getProperty("ldap.port");
-		Assertions.assertNotNull(ldapPort, "Property 'ldap.port' null");
+		Assert.assertNotNull("Property 'ldap.port' null", ldapPort);
 		ldapServer.setTransports(new TcpTransport("127.0.0.1", Integer.parseInt(ldapPort)));
 		ldapServer.setDirectoryService(getService());
 		ldapServer.setMaxSizeLimit( LdapServer.NO_SIZE_LIMIT );
@@ -467,7 +466,7 @@ public class TestLdapUserGroup extends AbstractLdapTestUnit{
 		assertEquals(2, sink.getGroupsWithNoUsers());
 	}
 
-	@AfterEach
+	@After
 	public void shutdown() throws Exception {
 		if (getService().isStarted()) {
 			getService().shutdown();

@@ -71,7 +71,8 @@ public abstract class AuditQueue extends BaseAuditHandler {
 	 */
 	public AuditQueue(AuditHandler consumer) {
 		this.consumer = consumer;
-		if (consumer instanceof BaseAuditHandler baseAuditHander) {
+		if (consumer instanceof BaseAuditHandler) {
+			BaseAuditHandler baseAuditHander = (BaseAuditHandler) consumer;
 			baseAuditHander.setParentPath(getName());
 		}
 
@@ -125,7 +126,8 @@ public abstract class AuditQueue extends BaseAuditHandler {
 	@Override
 	public void setParentPath(String parentPath) {
 		super.setParentPath(parentPath);
-		if (consumer != null && consumer instanceof BaseAuditHandler base) {
+		if (consumer != null && consumer instanceof BaseAuditHandler) {
+			BaseAuditHandler base = (BaseAuditHandler) consumer;
 			base.setParentPath(getName());
 		}
 	}
@@ -133,8 +135,8 @@ public abstract class AuditQueue extends BaseAuditHandler {
 	@Override
 	public String getFinalPath() {
 		if (consumer != null) {
-			if (consumer instanceof BaseAuditHandler handler) {
-				return handler.getFinalPath();
+			if (consumer instanceof BaseAuditHandler) {
+				return ((BaseAuditHandler) consumer).getFinalPath();
 			} else {
 				return consumer.getName();
 			}
@@ -145,7 +147,8 @@ public abstract class AuditQueue extends BaseAuditHandler {
 	@Override
 	public void setName(String name) {
 		super.setName(name);
-		if (consumer != null && consumer instanceof BaseAuditHandler base) {
+		if (consumer != null && consumer instanceof BaseAuditHandler) {
+			BaseAuditHandler base = (BaseAuditHandler) consumer;
 			base.setParentPath(getName());
 		}
 	}

@@ -29,7 +29,6 @@ import org.apache.hadoop.hive.ql.security.authorization.plugin.HiveAuthzSessionC
 import org.apache.ranger.plugin.classloader.RangerPluginClassLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.lang.reflect.InvocationTargetException;
 
 
 public class RangerHiveAuthorizerFactory implements HiveAuthorizerFactory {
@@ -70,7 +69,7 @@ public class RangerHiveAuthorizerFactory implements HiveAuthorizerFactory {
 
 			activatePluginClassLoader();
 			
-			rangerHiveAuthorizerFactoryImpl  = cls.getDeclaredConstructor().newInstance();
+			rangerHiveAuthorizerFactoryImpl  = cls.newInstance();
 
 		} catch (Exception e) {
             // check what need to be done

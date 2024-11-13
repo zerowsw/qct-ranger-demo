@@ -27,9 +27,11 @@ import org.apache.ranger.plugin.model.RangerServiceResource;
 import org.apache.ranger.tagsync.source.atlas.AtlasHdfsResourceMapper;
 import org.apache.ranger.tagsync.source.atlas.AtlasResourceMapper;
 import org.apache.ranger.tagsync.source.atlasrest.RangerAtlasEntity;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+
 import org.mockito.Mockito;
+import org.junit.Assert;
+
 
 
 public class TestHdfsResourceMapper {
@@ -149,7 +151,7 @@ public class TestHdfsResourceMapper {
 		try {
 			RangerServiceResource resource = resourceMapper.buildResource(entity);
 
-			Assertions.fail("expected exception. Found " + resource);
+			Assert.fail("expected exception. Found " + resource);
 		} catch(Exception excp) {
 			// ignore
 		}
@@ -193,25 +195,25 @@ public class TestHdfsResourceMapper {
 	}
 
 	private void assertServiceResource(RangerServiceResource resource) {
-		Assertions.assertNotNull(resource);
-		Assertions.assertEquals(SERVICE_NAME, resource.getServiceName());
-		Assertions.assertNotNull(resource.getResourceElements());
-		Assertions.assertEquals(1, resource.getResourceElements().size());
-		Assertions.assertTrue(resource.getResourceElements().containsKey(AtlasHdfsResourceMapper.RANGER_TYPE_HDFS_PATH));
-		Assertions.assertNotNull(resource.getResourceElements().get(AtlasHdfsResourceMapper.RANGER_TYPE_HDFS_PATH).getValues());
-		Assertions.assertEquals(1, resource.getResourceElements().get(AtlasHdfsResourceMapper.RANGER_TYPE_HDFS_PATH).getValues().size());
-		Assertions.assertEquals(RANGER_PATH, resource.getResourceElements().get(AtlasHdfsResourceMapper.RANGER_TYPE_HDFS_PATH).getValues().get(0));
+		Assert.assertNotNull(resource);
+		Assert.assertEquals(SERVICE_NAME, resource.getServiceName());
+		Assert.assertNotNull(resource.getResourceElements());
+		Assert.assertEquals(1, resource.getResourceElements().size());
+		Assert.assertTrue(resource.getResourceElements().containsKey(AtlasHdfsResourceMapper.RANGER_TYPE_HDFS_PATH));
+		Assert.assertNotNull(resource.getResourceElements().get(AtlasHdfsResourceMapper.RANGER_TYPE_HDFS_PATH).getValues());
+		Assert.assertEquals(1, resource.getResourceElements().get(AtlasHdfsResourceMapper.RANGER_TYPE_HDFS_PATH).getValues().size());
+		Assert.assertEquals(RANGER_PATH, resource.getResourceElements().get(AtlasHdfsResourceMapper.RANGER_TYPE_HDFS_PATH).getValues().get(0));
 	}
 
 	private void assertFederatedServiceResource(RangerServiceResource resource) {
 		String serviceName = SERVICE_NAME + AtlasHdfsResourceMapper.ENTITY_TYPE_HDFS_CLUSTER_AND_NAME_SERVICE_SEPARATOR + NAMESERVICE_ID;
-		Assertions.assertNotNull(resource);
-		Assertions.assertEquals(serviceName, resource.getServiceName());
-		Assertions.assertNotNull(resource.getResourceElements());
-		Assertions.assertEquals(1, resource.getResourceElements().size());
-		Assertions.assertTrue(resource.getResourceElements().containsKey(AtlasHdfsResourceMapper.RANGER_TYPE_HDFS_PATH));
-		Assertions.assertNotNull(resource.getResourceElements().get(AtlasHdfsResourceMapper.RANGER_TYPE_HDFS_PATH).getValues());
-		Assertions.assertEquals(1, resource.getResourceElements().get(AtlasHdfsResourceMapper.RANGER_TYPE_HDFS_PATH).getValues().size());
-		Assertions.assertEquals(RANGER_PATH, resource.getResourceElements().get(AtlasHdfsResourceMapper.RANGER_TYPE_HDFS_PATH).getValues().get(0));
+		Assert.assertNotNull(resource);
+		Assert.assertEquals(serviceName, resource.getServiceName());
+		Assert.assertNotNull(resource.getResourceElements());
+		Assert.assertEquals(1, resource.getResourceElements().size());
+		Assert.assertTrue(resource.getResourceElements().containsKey(AtlasHdfsResourceMapper.RANGER_TYPE_HDFS_PATH));
+		Assert.assertNotNull(resource.getResourceElements().get(AtlasHdfsResourceMapper.RANGER_TYPE_HDFS_PATH).getValues());
+		Assert.assertEquals(1, resource.getResourceElements().get(AtlasHdfsResourceMapper.RANGER_TYPE_HDFS_PATH).getValues().size());
+		Assert.assertEquals(RANGER_PATH, resource.getResourceElements().get(AtlasHdfsResourceMapper.RANGER_TYPE_HDFS_PATH).getValues().get(0));
 	}
 }

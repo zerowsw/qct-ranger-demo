@@ -22,7 +22,7 @@ package org.apache.ranger.db;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.NoResultException;
+import javax.persistence.NoResultException;
 
 import org.apache.ranger.common.db.BaseDao;
 import org.apache.ranger.entity.XXContextEnricherDef;

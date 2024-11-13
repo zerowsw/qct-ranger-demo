@@ -19,14 +19,13 @@
 package org.apache.ranger.authorization.knox;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
-import jakarta.servlet.Filter;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.FilterConfig;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 
 import org.apache.ranger.plugin.classloader.RangerPluginClassLoader;
 import org.slf4j.Logger;
@@ -67,8 +66,8 @@ public class RangerPDPKnoxFilter implements Filter {
 
 			activatePluginClassLoader();
 
-			rangerPDPKnoxFilteImpl = cls.getDeclaredConstructor().newInstance();
-		} catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException | ClassNotFoundException e) {
+			rangerPDPKnoxFilteImpl = cls.newInstance();
+		} catch (Exception e) {
 			// check what need to be done
 			LOG.error("Error Enabling RangerKnoxPlugin", e);
 		} finally {

@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.ranger.biz.SecurityZoneDBStore;
 import org.apache.ranger.common.ContextUtil;
@@ -52,19 +52,21 @@ import org.apache.ranger.service.RangerPolicyService;
 import org.apache.ranger.view.RangerPolicyList;
 import org.apache.ranger.view.RangerServiceDefList;
 import org.apache.ranger.view.RangerServiceList;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer.MethodName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.FixMethodOrder;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ExtendWith(MockitoExtension.class)
-@TestMethodOrder(MethodName.class)
+@RunWith(MockitoJUnitRunner.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestPublicAPIsv2 {
 
 	private static Long Id = 8L;
@@ -89,7 +91,10 @@ public class TestPublicAPIsv2 {
 	@Mock
 	SecurityZoneDBStore securityZoneStore;
 
-	@BeforeEach
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
+	
+	@Before
 	public void setup() throws Exception {
 		RangerSecurityContext context = new RangerSecurityContext();
 		context.setUserSession(new UserSessionBase());
@@ -241,11 +246,11 @@ public class TestPublicAPIsv2 {
 		RangerServiceDef rangerServiceDef = rangerServiceDef();
 		Mockito.when(serviceREST.getServiceDef(rangerServiceDef.getId())).thenReturn(rangerServiceDef);
 		RangerServiceDef dbRangerServiceDef = publicAPIsv2.getServiceDef(Id);
-		Assertions.assertNotNull(dbRangerServiceDef);
-		Assertions.assertEquals(dbRangerServiceDef, rangerServiceDef);
-		Assertions.assertEquals(dbRangerServiceDef.getId(),
+		Assert.assertNotNull(dbRangerServiceDef);
+		Assert.assertEquals(dbRangerServiceDef, rangerServiceDef);
+		Assert.assertEquals(dbRangerServiceDef.getId(),
 				rangerServiceDef.getId());
-		Assertions.assertEquals(dbRangerServiceDef.getName(),
+		Assert.assertEquals(dbRangerServiceDef.getName(),
 				rangerServiceDef.getName());
 		Mockito.verify(serviceREST).getServiceDef(Id);
 	}
@@ -256,11 +261,11 @@ public class TestPublicAPIsv2 {
 		String name = rangerServiceDef.getName();
 		Mockito.when(serviceREST.getServiceDefByName(name)).thenReturn(rangerServiceDef);
 		RangerServiceDef dbRangerServiceDef = publicAPIsv2.getServiceDefByName(name);
-		Assertions.assertNotNull(dbRangerServiceDef);
-		Assertions.assertEquals(dbRangerServiceDef, rangerServiceDef);
-		Assertions.assertEquals(dbRangerServiceDef.getId(),
+		Assert.assertNotNull(dbRangerServiceDef);
+		Assert.assertEquals(dbRangerServiceDef, rangerServiceDef);
+		Assert.assertEquals(dbRangerServiceDef.getId(),
 				rangerServiceDef.getId());
-		Assertions.assertEquals(dbRangerServiceDef.getName(),
+		Assert.assertEquals(dbRangerServiceDef.getName(),
 				rangerServiceDef.getName());
 		Mockito.verify(serviceREST).getServiceDefByName(name);
 	}
@@ -274,8 +279,8 @@ public class TestPublicAPIsv2 {
 		RangerServiceDefList serviceDefList = new RangerServiceDefList(serviceDefsList);
 		Mockito.when(serviceREST.getServiceDefs(request)).thenReturn(serviceDefList);
 		List<RangerServiceDef> dbRangerServiceDefList = publicAPIsv2.searchServiceDefs(request);
-		Assertions.assertNotNull(dbRangerServiceDefList);
-		Assertions.assertEquals(dbRangerServiceDefList.size(), serviceDefsList.size());
+		Assert.assertNotNull(dbRangerServiceDefList);
+		Assert.assertEquals(dbRangerServiceDefList.size(), serviceDefsList.size());
 		Mockito.verify(serviceREST).getServiceDefs(request);
 	}
 	
@@ -284,11 +289,11 @@ public class TestPublicAPIsv2 {
 		RangerServiceDef rangerServiceDef = rangerServiceDef();
 		Mockito.when(serviceREST.createServiceDef(rangerServiceDef)).thenReturn(rangerServiceDef);
 		RangerServiceDef dbRangerServiceDef = publicAPIsv2.createServiceDef(rangerServiceDef);
-		Assertions.assertNotNull(dbRangerServiceDef);
-		Assertions.assertEquals(dbRangerServiceDef, rangerServiceDef);
-		Assertions.assertEquals(dbRangerServiceDef.getId(),
+		Assert.assertNotNull(dbRangerServiceDef);
+		Assert.assertEquals(dbRangerServiceDef, rangerServiceDef);
+		Assert.assertEquals(dbRangerServiceDef.getId(),
 				rangerServiceDef.getId());
-		Assertions.assertEquals(dbRangerServiceDef.getName(),
+		Assert.assertEquals(dbRangerServiceDef.getName(),
 				rangerServiceDef.getName());
 		Mockito.verify(serviceREST).createServiceDef(rangerServiceDef);
 	}
@@ -298,11 +303,11 @@ public class TestPublicAPIsv2 {
 		RangerServiceDef rangerServiceDef = rangerServiceDef();
 		Mockito.when(serviceREST.updateServiceDef(rangerServiceDef, rangerServiceDef.getId())).thenReturn(rangerServiceDef);
 		RangerServiceDef dbRangerServiceDef = publicAPIsv2.updateServiceDef(rangerServiceDef, Id);
-		Assertions.assertNotNull(dbRangerServiceDef);
-		Assertions.assertEquals(dbRangerServiceDef, rangerServiceDef);
-		Assertions.assertEquals(dbRangerServiceDef.getId(),
+		Assert.assertNotNull(dbRangerServiceDef);
+		Assert.assertEquals(dbRangerServiceDef, rangerServiceDef);
+		Assert.assertEquals(dbRangerServiceDef.getId(),
 				rangerServiceDef.getId());
-		Assertions.assertEquals(dbRangerServiceDef.getName(),
+		Assert.assertEquals(dbRangerServiceDef.getName(),
 				rangerServiceDef.getName());
 		Mockito.verify(serviceREST).updateServiceDef(rangerServiceDef, rangerServiceDef.getId());
 	}
@@ -314,11 +319,11 @@ public class TestPublicAPIsv2 {
 		Mockito.when(serviceREST.getServiceDefByName(name)).thenReturn(rangerServiceDef);
 		Mockito.when(serviceREST.updateServiceDef(rangerServiceDef, rangerServiceDef.getId())).thenReturn(rangerServiceDef);
 		RangerServiceDef dbRangerServiceDef = publicAPIsv2.updateServiceDefByName(rangerServiceDef, name);
-		Assertions.assertNotNull(dbRangerServiceDef);
-		Assertions.assertEquals(dbRangerServiceDef, rangerServiceDef);
-		Assertions.assertEquals(dbRangerServiceDef.getId(),
+		Assert.assertNotNull(dbRangerServiceDef);
+		Assert.assertEquals(dbRangerServiceDef, rangerServiceDef);
+		Assert.assertEquals(dbRangerServiceDef.getId(),
 				rangerServiceDef.getId());
-		Assertions.assertEquals(dbRangerServiceDef.getName(),
+		Assert.assertEquals(dbRangerServiceDef.getName(),
 				rangerServiceDef.getName());
 		Mockito.verify(serviceREST).updateServiceDef(rangerServiceDef, dbRangerServiceDef.getId());
 		Mockito.verify(serviceREST).getServiceDefByName(name);
@@ -349,11 +354,11 @@ public class TestPublicAPIsv2 {
 		RangerService rangerService = rangerService();
 		Mockito.when(serviceREST.getService(rangerService.getId())).thenReturn(rangerService);
 		RangerService dbRangerService = publicAPIsv2.getService(Id);
-		Assertions.assertNotNull(dbRangerService);
-		Assertions.assertEquals(dbRangerService, rangerService);
-		Assertions.assertEquals(dbRangerService.getId(),
+		Assert.assertNotNull(dbRangerService);
+		Assert.assertEquals(dbRangerService, rangerService);
+		Assert.assertEquals(dbRangerService.getId(),
 				rangerService.getId());
-		Assertions.assertEquals(dbRangerService.getName(),
+		Assert.assertEquals(dbRangerService.getName(),
 				rangerService.getName());
 		Mockito.verify(serviceREST).getService(Id);
 	}
@@ -364,11 +369,11 @@ public class TestPublicAPIsv2 {
 		String name = rangerService.getName();
 		Mockito.when(serviceREST.getServiceByName(name)).thenReturn(rangerService);
 		RangerService dbRangerService = publicAPIsv2.getServiceByName(name);
-		Assertions.assertNotNull(dbRangerService);
-		Assertions.assertEquals(dbRangerService, rangerService);
-		Assertions.assertEquals(dbRangerService.getId(),
+		Assert.assertNotNull(dbRangerService);
+		Assert.assertEquals(dbRangerService, rangerService);
+		Assert.assertEquals(dbRangerService.getId(),
 				rangerService.getId());
-		Assertions.assertEquals(dbRangerService.getName(),
+		Assert.assertEquals(dbRangerService.getName(),
 				rangerService.getName());
 		Mockito.verify(serviceREST).getServiceByName(name);
 	}
@@ -382,8 +387,8 @@ public class TestPublicAPIsv2 {
 		RangerServiceList serviceList = new RangerServiceList(servicesList);
 		Mockito.when(serviceREST.getServices(request)).thenReturn(serviceList);
 		List<RangerService> dbRangerServiceList = publicAPIsv2.searchServices(request);
-		Assertions.assertNotNull(dbRangerServiceList);
-		Assertions.assertEquals(dbRangerServiceList.size(), servicesList.size());
+		Assert.assertNotNull(dbRangerServiceList);
+		Assert.assertEquals(dbRangerServiceList.size(), servicesList.size());
 		Mockito.verify(serviceREST).getServices(request);
 	}
 	
@@ -392,11 +397,11 @@ public class TestPublicAPIsv2 {
 		RangerService rangerService = rangerService();
 		Mockito.when(serviceREST.createService(rangerService)).thenReturn(rangerService);
 		RangerService dbRangerService = publicAPIsv2.createService(rangerService);
-		Assertions.assertNotNull(dbRangerService);
-		Assertions.assertEquals(dbRangerService, rangerService);
-		Assertions.assertEquals(dbRangerService.getId(),
+		Assert.assertNotNull(dbRangerService);
+		Assert.assertEquals(dbRangerService, rangerService);
+		Assert.assertEquals(dbRangerService.getId(),
 				rangerService.getId());
-		Assertions.assertEquals(dbRangerService.getName(),
+		Assert.assertEquals(dbRangerService.getName(),
 				rangerService.getName());
 		Mockito.verify(serviceREST).createService(rangerService);
 	}
@@ -407,11 +412,11 @@ public class TestPublicAPIsv2 {
 		HttpServletRequest request = null;
 		Mockito.when(serviceREST.updateService(rangerService, request)).thenReturn(rangerService);
 		RangerService dbRangerService = publicAPIsv2.updateService(rangerService, Id, request);
-		Assertions.assertNotNull(dbRangerService);
-		Assertions.assertEquals(dbRangerService, rangerService);
-		Assertions.assertEquals(dbRangerService.getId(),
+		Assert.assertNotNull(dbRangerService);
+		Assert.assertEquals(dbRangerService, rangerService);
+		Assert.assertEquals(dbRangerService.getId(),
 				rangerService.getId());
-		Assertions.assertEquals(dbRangerService.getName(),
+		Assert.assertEquals(dbRangerService.getName(),
 				rangerService.getName());
 		Mockito.verify(serviceREST).updateService(rangerService, request);
 	}
@@ -424,11 +429,11 @@ public class TestPublicAPIsv2 {
 		Mockito.when(serviceREST.getServiceByName(name)).thenReturn(rangerService);
 		Mockito.when(serviceREST.updateService(rangerService, request)).thenReturn(rangerService);
 		RangerService dbRangerService = publicAPIsv2.updateServiceByName(rangerService, name, request);
-		Assertions.assertNotNull(dbRangerService);
-		Assertions.assertEquals(dbRangerService, rangerService);
-		Assertions.assertEquals(dbRangerService.getId(),
+		Assert.assertNotNull(dbRangerService);
+		Assert.assertEquals(dbRangerService, rangerService);
+		Assert.assertEquals(dbRangerService.getId(),
 				rangerService.getId());
-		Assertions.assertEquals(dbRangerService.getName(),
+		Assert.assertEquals(dbRangerService.getName(),
 				rangerService.getName());
 		Mockito.verify(serviceREST).updateService(rangerService, request);
 		Mockito.verify(serviceREST).getServiceByName(name);
@@ -457,11 +462,11 @@ public class TestPublicAPIsv2 {
 		RangerPolicy rangerPolicy = rangerPolicy();
 		Mockito.when(serviceREST.getPolicy(rangerPolicy.getId())).thenReturn(rangerPolicy);
 		RangerPolicy dbRangerPolicy = publicAPIsv2.getPolicy(Id);
-		Assertions.assertNotNull(dbRangerPolicy);
-		Assertions.assertEquals(dbRangerPolicy, rangerPolicy);
-		Assertions.assertEquals(dbRangerPolicy.getId(),
+		Assert.assertNotNull(dbRangerPolicy);
+		Assert.assertEquals(dbRangerPolicy, rangerPolicy);
+		Assert.assertEquals(dbRangerPolicy.getId(),
 				rangerPolicy.getId());
-		Assertions.assertEquals(dbRangerPolicy.getName(),
+		Assert.assertEquals(dbRangerPolicy.getName(),
 				rangerPolicy.getName());
 		Mockito.verify(serviceREST).getPolicy(Id);
 	}
@@ -476,11 +481,11 @@ public class TestPublicAPIsv2 {
 		String zoneName = "zone-1";
 		Mockito.when(serviceREST.getPolicyByName(Mockito.anyString(),Mockito.anyString(),Mockito.anyString())).thenReturn(rangerPolicy);
 		RangerPolicy dbRangerPolicy = publicAPIsv2.getPolicyByName(serviceName, policyName, zoneName, request);
-		Assertions.assertNotNull(dbRangerPolicy);
-		Assertions.assertEquals(dbRangerPolicy, rangerPolicy);
-		Assertions.assertEquals(dbRangerPolicy.getId(),
+		Assert.assertNotNull(dbRangerPolicy);
+		Assert.assertEquals(dbRangerPolicy, rangerPolicy);
+		Assert.assertEquals(dbRangerPolicy.getId(),
 				rangerPolicy.getId());
-		Assertions.assertEquals(dbRangerPolicy.getName(),
+		Assert.assertEquals(dbRangerPolicy.getName(),
 				rangerPolicy.getName());
 		Mockito.verify(serviceREST).getPolicyByName(Mockito.anyString(),Mockito.anyString(),Mockito.anyString());
 	}
@@ -496,8 +501,8 @@ public class TestPublicAPIsv2 {
 		RangerPolicyList policyList = new RangerPolicyList(policiesList);
 		Mockito.when(serviceREST.getServicePoliciesByName(serviceName, request)).thenReturn(policyList);
 		List<RangerPolicy> dbRangerPolicyList = publicAPIsv2.searchPolicies(serviceName, request);
-		Assertions.assertNotNull(dbRangerPolicyList);
-		Assertions.assertEquals(dbRangerPolicyList.size(), policiesList.size());
+		Assert.assertNotNull(dbRangerPolicyList);
+		Assert.assertEquals(dbRangerPolicyList.size(), policiesList.size());
 		Mockito.verify(serviceREST).getServicePoliciesByName(serviceName, request);
 	}
 	
@@ -507,11 +512,11 @@ public class TestPublicAPIsv2 {
 		RangerPolicy rangerPolicy = rangerPolicy();
 		Mockito.when(serviceREST.createPolicy(rangerPolicy, request)).thenReturn(rangerPolicy);
 		RangerPolicy dbRangerPolicy = publicAPIsv2.createPolicy(rangerPolicy, request);
-		Assertions.assertNotNull(dbRangerPolicy);
-		Assertions.assertEquals(dbRangerPolicy, rangerPolicy);
-		Assertions.assertEquals(dbRangerPolicy.getId(),
+		Assert.assertNotNull(dbRangerPolicy);
+		Assert.assertEquals(dbRangerPolicy, rangerPolicy);
+		Assert.assertEquals(dbRangerPolicy.getId(),
 				rangerPolicy.getId());
-		Assertions.assertEquals(dbRangerPolicy.getName(),
+		Assert.assertEquals(dbRangerPolicy.getName(),
 				rangerPolicy.getName());
 		Mockito.verify(serviceREST).createPolicy(rangerPolicy, request);
 	}
@@ -522,11 +527,11 @@ public class TestPublicAPIsv2 {
 		RangerPolicy rangerPolicy = rangerPolicy();
 		Mockito.when(serviceREST.applyPolicy(rangerPolicy, request)).thenReturn(rangerPolicy);
 		RangerPolicy dbRangerPolicy = publicAPIsv2.applyPolicy(rangerPolicy, request);
-		Assertions.assertNotNull(dbRangerPolicy);
-		Assertions.assertEquals(dbRangerPolicy, rangerPolicy);
-		Assertions.assertEquals(dbRangerPolicy.getId(),
+		Assert.assertNotNull(dbRangerPolicy);
+		Assert.assertEquals(dbRangerPolicy, rangerPolicy);
+		Assert.assertEquals(dbRangerPolicy.getId(),
 				rangerPolicy.getId());
-		Assertions.assertEquals(dbRangerPolicy.getName(),
+		Assert.assertEquals(dbRangerPolicy.getName(),
 				rangerPolicy.getName());
 		Mockito.verify(serviceREST).applyPolicy(rangerPolicy, request);
 	}
@@ -536,11 +541,11 @@ public class TestPublicAPIsv2 {
 		RangerPolicy rangerPolicy = rangerPolicy();
 		Mockito.when(serviceREST.updatePolicy(rangerPolicy, Id)).thenReturn(rangerPolicy);
 		RangerPolicy dbRangerPolicy = publicAPIsv2.updatePolicy(rangerPolicy, Id);
-		Assertions.assertNotNull(dbRangerPolicy);
-		Assertions.assertEquals(dbRangerPolicy, rangerPolicy);
-		Assertions.assertEquals(dbRangerPolicy.getId(),
+		Assert.assertNotNull(dbRangerPolicy);
+		Assert.assertEquals(dbRangerPolicy, rangerPolicy);
+		Assert.assertEquals(dbRangerPolicy.getId(),
 				rangerPolicy.getId());
-		Assertions.assertEquals(dbRangerPolicy.getName(),
+		Assert.assertEquals(dbRangerPolicy.getName(),
 				rangerPolicy.getName());
 		Mockito.verify(serviceREST).updatePolicy(rangerPolicy, Id);
 	}
@@ -556,11 +561,11 @@ public class TestPublicAPIsv2 {
 		Mockito.when(serviceREST.getPolicyByName(Mockito.anyString(),Mockito.anyString(),Mockito.anyString())).thenReturn(rangerPolicy);
 		Mockito.when(serviceREST.updatePolicy(rangerPolicy, rangerPolicy.getId())).thenReturn(rangerPolicy);
 		RangerPolicy dbRangerPolicy = publicAPIsv2.updatePolicyByName(rangerPolicy, serviceName, policyName, zoneName, request);
-		Assertions.assertNotNull(dbRangerPolicy);
-		Assertions.assertEquals(dbRangerPolicy, rangerPolicy);
-		Assertions.assertEquals(dbRangerPolicy.getId(),
+		Assert.assertNotNull(dbRangerPolicy);
+		Assert.assertEquals(dbRangerPolicy, rangerPolicy);
+		Assert.assertEquals(dbRangerPolicy.getId(),
 				rangerPolicy.getId());
-		Assertions.assertEquals(dbRangerPolicy.getName(),
+		Assert.assertEquals(dbRangerPolicy.getName(),
 				rangerPolicy.getName());
 		Mockito.verify(serviceREST).updatePolicy(rangerPolicy, rangerPolicy.getId());
 		Mockito.verify(serviceREST).getPolicyByName(Mockito.anyString(),Mockito.anyString(),Mockito.anyString());
@@ -600,8 +605,8 @@ public class TestPublicAPIsv2 {
 		Mockito.when(serviceREST.getPolicies(request)).thenReturn(policyList);
 		Mockito.when(policyList.getPolicies()).thenReturn(rangerPolicies);
 		List<RangerPolicy> dbRangerPolicies = publicAPIsv2.getPolicies(request);
-		Assertions.assertNotNull(dbRangerPolicies);
-		Assertions.assertEquals(dbRangerPolicies.size(), rangerPolicies.size());
+		Assert.assertNotNull(dbRangerPolicies);
+		Assert.assertEquals(dbRangerPolicies.size(), rangerPolicies.size());
 		Mockito.verify(serviceREST).getPolicies(request);
 	}
 
@@ -617,7 +622,7 @@ public class TestPublicAPIsv2 {
 
         List<RangerSecurityZoneHeaderInfo> returnedZoneHeaderInfoList = publicAPIsv2.getSecurityZoneHeaderInfoList(request);
 
-        Assertions.assertEquals(returnedZoneHeaderInfoList.size(), zoneHeaderInfoList.size());
+        Assert.assertEquals(returnedZoneHeaderInfoList.size(), zoneHeaderInfoList.size());
         Mockito.verify(securityZoneStore, Mockito.times(1)).getSecurityZoneHeaderInfoList(request);
     }
 
@@ -648,25 +653,25 @@ public class TestPublicAPIsv2 {
         List<RangerServiceHeaderInfo> returnedServicesNull = publicAPIsv2.getServiceHeaderInfoListByZoneId(null, request);
 
         Mockito.verify(securityZoneStore, Mockito.times(1)).getServiceHeaderInfoListByZoneId(null, request);
-        Assertions.assertEquals(returnedServicesNull.size(), 0);
+        Assert.assertEquals(returnedServicesNull.size(), 0);
 
         // Non existing zoneId
         List<RangerServiceHeaderInfo> returnedServicesNonExisting = publicAPIsv2.getServiceHeaderInfoListByZoneId(nonExistingZondId, request);
 
         Mockito.verify(securityZoneStore, Mockito.times(1)).getServiceHeaderInfoListByZoneId(null, request);
-        Assertions.assertEquals(returnedServicesNonExisting.size(), 0);
+        Assert.assertEquals(returnedServicesNonExisting.size(), 0);
 
         // zoneId1
         List<RangerServiceHeaderInfo> returnedServicesZone1 = publicAPIsv2.getServiceHeaderInfoListByZoneId(zoneId1, request);
 
         Mockito.verify(securityZoneStore, Mockito.times(1)).getServiceHeaderInfoListByZoneId(zoneId1, request);
-        Assertions.assertEquals(returnedServicesZone1.size(), rangerServiceList1.size());
+        Assert.assertEquals(returnedServicesZone1.size(), rangerServiceList1.size());
 
         // zoneId2
         List<RangerServiceHeaderInfo> returnedServicesZone2 = publicAPIsv2.getServiceHeaderInfoListByZoneId(zoneId2, request);
 
         Mockito.verify(securityZoneStore, Mockito.times(1)).getServiceHeaderInfoListByZoneId(zoneId2, request);
-        Assertions.assertEquals(returnedServicesZone2.size(), rangerServiceList2.size());
+        Assert.assertEquals(returnedServicesZone2.size(), rangerServiceList2.size());
     }
 
 	@Test
@@ -676,10 +681,10 @@ public class TestPublicAPIsv2 {
 		String serviceName = rangerService.getName();
 		Mockito.when(serviceREST.getPolicyByGUIDAndServiceNameAndZoneName(rangerPolicy.getGuid(), serviceName, "zone-1")).thenReturn(rangerPolicy);
 		RangerPolicy dbRangerPolicy = publicAPIsv2.getPolicyByGUIDAndServiceNameAndZoneName(rangerPolicy.getGuid(), serviceName, "zone-1");
-		Assertions.assertNotNull(dbRangerPolicy);
-		Assertions.assertEquals(dbRangerPolicy, rangerPolicy);
-		Assertions.assertEquals(dbRangerPolicy.getId(), rangerPolicy.getId());
-		Assertions.assertEquals(dbRangerPolicy.getName(), rangerPolicy.getName());
+		Assert.assertNotNull(dbRangerPolicy);
+		Assert.assertEquals(dbRangerPolicy, rangerPolicy);
+		Assert.assertEquals(dbRangerPolicy.getId(), rangerPolicy.getId());
+		Assert.assertEquals(dbRangerPolicy.getName(), rangerPolicy.getName());
 		Mockito.verify(serviceREST).getPolicyByGUIDAndServiceNameAndZoneName(rangerPolicy.getGuid(), serviceName, "zone-1");
 	}
 
@@ -688,10 +693,10 @@ public class TestPublicAPIsv2 {
 		RangerPolicy rangerPolicy = rangerPolicy();
 		Mockito.when(serviceREST.getPolicyByGUIDAndServiceNameAndZoneName(rangerPolicy.getGuid(), null, null)).thenReturn(rangerPolicy);
 		RangerPolicy dbRangerPolicy = publicAPIsv2.getPolicyByGUIDAndServiceNameAndZoneName(rangerPolicy.getGuid(), null, null);
-		Assertions.assertNotNull(dbRangerPolicy);
-		Assertions.assertEquals(dbRangerPolicy, rangerPolicy);
-		Assertions.assertEquals(dbRangerPolicy.getId(), rangerPolicy.getId());
-		Assertions.assertEquals(dbRangerPolicy.getName(), rangerPolicy.getName());
+		Assert.assertNotNull(dbRangerPolicy);
+		Assert.assertEquals(dbRangerPolicy, rangerPolicy);
+		Assert.assertEquals(dbRangerPolicy.getId(), rangerPolicy.getId());
+		Assert.assertEquals(dbRangerPolicy.getName(), rangerPolicy.getName());
 		Mockito.verify(serviceREST).getPolicyByGUIDAndServiceNameAndZoneName(rangerPolicy.getGuid(), null, null);
 	}
 

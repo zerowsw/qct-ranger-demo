@@ -30,6 +30,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletionStage;
@@ -69,8 +71,9 @@ public class RangerKafkaAuthorizer implements Authorizer {
 
       activatePluginClassLoader();
 
-      rangerKafkaAuthorizerImpl = cls.newInstance();
-    } catch (Exception e) {
+      Constructor<Authorizer> constructor = cls.getDeclaredConstructor();
+      rangerKafkaAuthorizerImpl = constructor.newInstance();
+    } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
       logger.error("Error Enabling RangerKafkaPlugin", e);
       throw new IllegalStateException("Error Enabling RangerKafkaPlugin", e);
     } finally {

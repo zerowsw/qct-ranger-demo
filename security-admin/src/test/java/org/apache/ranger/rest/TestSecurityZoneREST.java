@@ -78,7 +78,7 @@ public class TestSecurityZoneREST {
 	@Mock
 	RangerSearchUtil searchUtil;
 	@Mock
-    RangerSecurityZoneServiceService securityZoneService;
+	RangerSecurityZoneServiceService securityZoneService;
 	@Mock
 	RESTErrorUtil restErrorUtil;
 	@Mock
@@ -164,102 +164,102 @@ public class TestSecurityZoneREST {
 	@Test
 	public void testUpdateSecurityZoneWithMisMatchId() throws Exception {
 		assertThrows(WebApplicationException.class, () -> {
-		RangerSecurityZone rangerSecurityZoneToUpdate = createRangerSecurityZone();
-		Long securityZoneId = 2L;
-		XXServiceDefDao xServiceDefDao = Mockito.mock(XXServiceDefDao.class);
-		XXServiceDao xServiceDao = Mockito.mock(XXServiceDao.class);
-		XXService xService = Mockito.mock(XXService.class);
+			RangerSecurityZone rangerSecurityZoneToUpdate = createRangerSecurityZone();
+			Long securityZoneId = 2L;
+			XXServiceDefDao xServiceDefDao = Mockito.mock(XXServiceDefDao.class);
+			XXServiceDao xServiceDao = Mockito.mock(XXServiceDao.class);
+			XXService xService = Mockito.mock(XXService.class);
 
-		rangerSecurityZoneToUpdate.setId(securityZoneId);
-		when(rangerBizUtil.isAdmin()).thenReturn(true);
+			rangerSecurityZoneToUpdate.setId(securityZoneId);
+			when(rangerBizUtil.isAdmin()).thenReturn(true);
 
-		when(daoManager.getXXService()).thenReturn(xServiceDao);
-		when(xServiceDao.findByName("test_service_1")).thenReturn(xService);
+			when(daoManager.getXXService()).thenReturn(xServiceDao);
+			when(xServiceDao.findByName("test_service_1")).thenReturn(xService);
 
-		when(daoManager.getXXServiceDef()).thenReturn(xServiceDefDao);
-		when(xServiceDefDao.getById(xService.getType())).thenReturn(xServiceDef);
+			when(daoManager.getXXServiceDef()).thenReturn(xServiceDefDao);
+			when(xServiceDefDao.getById(xService.getType())).thenReturn(xServiceDef);
 
-		when(validatorFactory.getSecurityZoneValidator(svcStore, securityZoneStore)).thenReturn(validator);
-		doNothing().when(validator).validate(rangerSecurityZoneToUpdate, RangerValidator.Action.UPDATE);
-		when(securityZoneStore.updateSecurityZoneById(rangerSecurityZoneToUpdate))
-				.thenReturn(rangerSecurityZoneToUpdate);
-		when(restErrorUtil.createRESTException(Mockito.anyString())).thenThrow(new WebApplicationException());
-		RangerSecurityZone updatedRangerSecurityZone = securityZoneREST.updateSecurityZone(9L,
-				rangerSecurityZoneToUpdate);
-		assertEquals(rangerSecurityZoneToUpdate.getId(), updatedRangerSecurityZone.getId());
-		verify(validator, times(1)).validate(rangerSecurityZoneToUpdate, RangerValidator.Action.UPDATE);
+			when(validatorFactory.getSecurityZoneValidator(svcStore, securityZoneStore)).thenReturn(validator);
+			doNothing().when(validator).validate(rangerSecurityZoneToUpdate, RangerValidator.Action.UPDATE);
+			when(securityZoneStore.updateSecurityZoneById(rangerSecurityZoneToUpdate))
+					.thenReturn(rangerSecurityZoneToUpdate);
+			when(restErrorUtil.createRESTException(Mockito.anyString())).thenThrow(new WebApplicationException());
+			RangerSecurityZone updatedRangerSecurityZone = securityZoneREST.updateSecurityZone(9L,
+					rangerSecurityZoneToUpdate);
+			assertEquals(rangerSecurityZoneToUpdate.getId(), updatedRangerSecurityZone.getId());
+			verify(validator, times(1)).validate(rangerSecurityZoneToUpdate, RangerValidator.Action.UPDATE);
 		});
 	}
 
 	@Test
 	public void testGetSecurityZoneById() throws Exception {
 		assertThrows(WebApplicationException.class, () -> {
-		RangerSecurityZone securityZone = createRangerSecurityZone();
-		Long securityZoneId = 2L;
-		securityZone.setId(securityZoneId);
-		when(securityZoneStore.getSecurityZone(securityZoneId)).thenReturn(securityZone);
-		when(rangerBizUtil.hasModuleAccess(Mockito.anyString())).thenReturn(true);
-		RangerSecurityZone rangerSecurityZone = securityZoneREST.getSecurityZone(securityZoneId);
-		assertEquals(securityZoneId, rangerSecurityZone.getId());
-		verify(securityZoneStore, times(1)).getSecurityZone(securityZoneId);
+			RangerSecurityZone securityZone = createRangerSecurityZone();
+			Long securityZoneId = 2L;
+			securityZone.setId(securityZoneId);
+			when(securityZoneStore.getSecurityZone(securityZoneId)).thenReturn(securityZone);
+			when(rangerBizUtil.hasModuleAccess(Mockito.anyString())).thenReturn(true);
+			RangerSecurityZone rangerSecurityZone = securityZoneREST.getSecurityZone(securityZoneId);
+			assertEquals(securityZoneId, rangerSecurityZone.getId());
+			verify(securityZoneStore, times(1)).getSecurityZone(securityZoneId);
 
-		//No access
-		when(rangerBizUtil.hasModuleAccess(Mockito.anyString())).thenReturn(false);
-		when(restErrorUtil.createRESTException(Mockito.anyString(), Mockito.any())).thenReturn(new WebApplicationException());
-		securityZoneREST.getSecurityZone(securityZoneId);
-		verify(securityZoneStore, times(0)).getSecurityZone(securityZoneId);
+			//No access
+			when(rangerBizUtil.hasModuleAccess(Mockito.anyString())).thenReturn(false);
+			when(restErrorUtil.createRESTException(Mockito.anyString(), Mockito.any())).thenReturn(new WebApplicationException());
+			securityZoneREST.getSecurityZone(securityZoneId);
+			verify(securityZoneStore, times(0)).getSecurityZone(securityZoneId);
 		});
 	}
 
 	@Test
 	public void testGetSecurityZoneByName() throws Exception {
 		assertThrows(WebApplicationException.class, () -> {
-		RangerSecurityZone securityZone = createRangerSecurityZone();
-		Long securityZoneId = 2L;
-		String securityZoneName = securityZone.getName();
-		securityZone.setId(securityZoneId);
-		when(securityZoneStore.getSecurityZoneByName(securityZoneName)).thenReturn(securityZone);
-		when(rangerBizUtil.hasModuleAccess(Mockito.anyString())).thenReturn(true);
-		RangerSecurityZone rangerSecurityZone = securityZoneREST.getSecurityZone(securityZoneName);
-		assertEquals(securityZoneName, rangerSecurityZone.getName());
-		verify(securityZoneStore, times(1)).getSecurityZoneByName(securityZoneName);
+			RangerSecurityZone securityZone = createRangerSecurityZone();
+			Long securityZoneId = 2L;
+			String securityZoneName = securityZone.getName();
+			securityZone.setId(securityZoneId);
+			when(securityZoneStore.getSecurityZoneByName(securityZoneName)).thenReturn(securityZone);
+			when(rangerBizUtil.hasModuleAccess(Mockito.anyString())).thenReturn(true);
+			RangerSecurityZone rangerSecurityZone = securityZoneREST.getSecurityZone(securityZoneName);
+			assertEquals(securityZoneName, rangerSecurityZone.getName());
+			verify(securityZoneStore, times(1)).getSecurityZoneByName(securityZoneName);
 
-		//No access
-		when(rangerBizUtil.hasModuleAccess(Mockito.anyString())).thenReturn(false);
-		when(restErrorUtil.createRESTException(Mockito.anyString(), Mockito.any())).thenReturn(new WebApplicationException());
-		securityZoneREST.getSecurityZone(securityZoneName);
-		verify(securityZoneStore, times(0)).getSecurityZoneByName(securityZoneName);
+			//No access
+			when(rangerBizUtil.hasModuleAccess(Mockito.anyString())).thenReturn(false);
+			when(restErrorUtil.createRESTException(Mockito.anyString(), Mockito.any())).thenReturn(new WebApplicationException());
+			securityZoneREST.getSecurityZone(securityZoneName);
+			verify(securityZoneStore, times(0)).getSecurityZoneByName(securityZoneName);
 		});
 	}
 
 	@Test
 	public void testGetAllSecurityZone() throws Exception {
 		assertThrows(WebApplicationException.class, () -> {
-		RangerSecurityZone securityZone = createRangerSecurityZone();
-		HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
-		SearchFilter filter = new SearchFilter();
-		when(
-				searchUtil.getSearchFilter(request, securityZoneService.sortFields))
-				.thenReturn(filter);
-		Long securityZoneId = 2L;
-		securityZone.setId(securityZoneId);
-		List<RangerSecurityZone> zonesList = new ArrayList<>();
-		zonesList.add(securityZone);
-		RangerSecurityZoneList rangerZoneList = new RangerSecurityZoneList();
-		rangerZoneList.setSecurityZoneList(zonesList);
+			RangerSecurityZone securityZone = createRangerSecurityZone();
+			HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+			SearchFilter filter = new SearchFilter();
+			when(
+					searchUtil.getSearchFilter(request, securityZoneService.sortFields))
+					.thenReturn(filter);
+			Long securityZoneId = 2L;
+			securityZone.setId(securityZoneId);
+			List<RangerSecurityZone> zonesList = new ArrayList<>();
+			zonesList.add(securityZone);
+			RangerSecurityZoneList rangerZoneList = new RangerSecurityZoneList();
+			rangerZoneList.setSecurityZoneList(zonesList);
 
-		when(securityZoneStore.getSecurityZones(filter)).thenReturn(zonesList);
-		when(rangerBizUtil.hasModuleAccess(Mockito.anyString())).thenReturn(true);
+			when(securityZoneStore.getSecurityZones(filter)).thenReturn(zonesList);
+			when(rangerBizUtil.hasModuleAccess(Mockito.anyString())).thenReturn(true);
 
-		RangerSecurityZoneList returnedZonesList = securityZoneREST.getAllZones(request);
-		assertEquals(returnedZonesList.getResultSize(), rangerZoneList.getList().size());
-		verify(securityZoneStore, times(1)).getSecurityZones(filter);
+			RangerSecurityZoneList returnedZonesList = securityZoneREST.getAllZones(request);
+			assertEquals(returnedZonesList.getResultSize(), rangerZoneList.getList().size());
+			verify(securityZoneStore, times(1)).getSecurityZones(filter);
 
-		//No access
-		when(rangerBizUtil.hasModuleAccess(Mockito.anyString())).thenReturn(false);
-		when(restErrorUtil.createRESTException(Mockito.anyString(), Mockito.any())).thenReturn(new WebApplicationException());
-		securityZoneREST.getAllZones(request);
-		verify(securityZoneStore, times(0)).getSecurityZones(filter);
+			//No access
+			when(rangerBizUtil.hasModuleAccess(Mockito.anyString())).thenReturn(false);
+			when(restErrorUtil.createRESTException(Mockito.anyString(), Mockito.any())).thenReturn(new WebApplicationException());
+			securityZoneREST.getAllZones(request);
+			verify(securityZoneStore, times(0)).getSecurityZones(filter);
 		});
 	}
 

@@ -278,23 +278,23 @@ public class TestUserREST {
 	@Test
 	public void test9Update() {
 		assertThrows(WebApplicationException.class, () -> {
-		VXPortalUser vxPUserExp = new VXPortalUser();
-		XXPortalUser xxPUserExp = new XXPortalUser();
-		xxPUserExp = null;
-		XXPortalUserDao xxPortalUserDao = Mockito.mock(XXPortalUserDao.class);
+			VXPortalUser vxPUserExp = new VXPortalUser();
+			XXPortalUser xxPUserExp = new XXPortalUser();
+			xxPUserExp = null;
+			XXPortalUserDao xxPortalUserDao = Mockito.mock(XXPortalUserDao.class);
 
-		Mockito.when(daoManager.getXXPortalUser()).thenReturn(xxPortalUserDao);
-		Mockito.doNothing().when(userManager).checkAccess(xxPUserExp);
-		Mockito.when(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any(),
-				Mockito.nullable(Long.class), Mockito.nullable(String.class), Mockito.anyString())).thenReturn(new WebApplicationException());
+			Mockito.when(daoManager.getXXPortalUser()).thenReturn(xxPortalUserDao);
+			Mockito.doNothing().when(userManager).checkAccess(xxPUserExp);
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any(),
+					Mockito.nullable(Long.class), Mockito.nullable(String.class), Mockito.anyString())).thenReturn(new WebApplicationException());
 
-		userREST.update(vxPUserExp, request);
+			userREST.update(vxPUserExp, request);
 
-		Mockito.verify(daoManager).getXXPortalUser();
-		Mockito.verify(xxPortalUserDao).getById(Mockito.anyLong());
-		Mockito.verify(userManager).checkAccess(xxPUserExp);
-		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any(),
-				Mockito.anyLong(), Mockito.anyString(), Mockito.anyString());
+			Mockito.verify(daoManager).getXXPortalUser();
+			Mockito.verify(xxPortalUserDao).getById(Mockito.anyLong());
+			Mockito.verify(userManager).checkAccess(xxPUserExp);
+			Mockito.verify(restErrorUtil).createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any(),
+					Mockito.anyLong(), Mockito.anyString(), Mockito.anyString());
 		});
 	}
 
@@ -344,21 +344,21 @@ public class TestUserREST {
 	@Test
 	public void test12DeactivateUser() {
 		assertThrows(WebApplicationException.class, () -> {
-		XXPortalUser xxPUserExp = new XXPortalUser();
-		xxPUserExp = null;
-		XXPortalUserDao xxPortalUserDao = Mockito.mock(XXPortalUserDao.class);
+			XXPortalUser xxPUserExp = new XXPortalUser();
+			xxPUserExp = null;
+			XXPortalUserDao xxPortalUserDao = Mockito.mock(XXPortalUserDao.class);
 
-		Mockito.when(daoManager.getXXPortalUser()).thenReturn(xxPortalUserDao);
-		Mockito.when(xxPortalUserDao.getById(userId)).thenReturn(xxPUserExp);
-		Mockito.when(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any(),
-				Mockito.nullable(Long.class), Mockito.nullable(String.class), Mockito.anyString())).thenReturn(new WebApplicationException());
+			Mockito.when(daoManager.getXXPortalUser()).thenReturn(xxPortalUserDao);
+			Mockito.when(xxPortalUserDao.getById(userId)).thenReturn(xxPUserExp);
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any(),
+					Mockito.nullable(Long.class), Mockito.nullable(String.class), Mockito.anyString())).thenReturn(new WebApplicationException());
 
-		userREST.deactivateUser(userId);
+			userREST.deactivateUser(userId);
 
-		Mockito.verify(daoManager).getXXPortalUser();
-		Mockito.verify(xxPortalUserDao).getById(userId);
-		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any(),
-				Mockito.anyLong(), Mockito.anyString(), Mockito.anyString());
+			Mockito.verify(daoManager).getXXPortalUser();
+			Mockito.verify(xxPortalUserDao).getById(userId);
+			Mockito.verify(restErrorUtil).createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any(),
+					Mockito.anyLong(), Mockito.anyString(), Mockito.anyString());
 		});
 	}
 
@@ -383,81 +383,81 @@ public class TestUserREST {
 	@Test
 	public void test16ChangePassword() {
 		assertThrows(WebApplicationException.class, () -> {
-		XXPortalUser xxPUser = new XXPortalUser();
-		VXResponse vxResponseExp = new VXResponse();
-		VXPasswordChange vxPasswordChange = createPasswordChange();
-		vxResponseExp.setStatusCode(10);
-		XXPortalUserDao xxPortalUserDao = Mockito.mock(XXPortalUserDao.class);
+			XXPortalUser xxPUser = new XXPortalUser();
+			VXResponse vxResponseExp = new VXResponse();
+			VXPasswordChange vxPasswordChange = createPasswordChange();
+			vxResponseExp.setStatusCode(10);
+			XXPortalUserDao xxPortalUserDao = Mockito.mock(XXPortalUserDao.class);
 
-		Mockito.when(daoManager.getXXPortalUser()).thenReturn(xxPortalUserDao);
-		Mockito.when(restErrorUtil.createRESTException("serverMsg.userRestUser",MessageEnums.DATA_NOT_FOUND, null, null, vxPasswordChange.getLoginId())).thenThrow(new WebApplicationException());
-		VXResponse vxResponseAct = userREST.changePassword(userId, vxPasswordChange);
+			Mockito.when(daoManager.getXXPortalUser()).thenReturn(xxPortalUserDao);
+			Mockito.when(restErrorUtil.createRESTException("serverMsg.userRestUser", MessageEnums.DATA_NOT_FOUND, null, null, vxPasswordChange.getLoginId())).thenThrow(new WebApplicationException());
+			VXResponse vxResponseAct = userREST.changePassword(userId, vxPasswordChange);
 
 			Assertions.assertNotNull(vxResponseAct);
 			Assertions.assertEquals(vxResponseExp, vxResponseAct);
 			Assertions.assertEquals(vxResponseExp.getStatusCode(), vxResponseAct.getStatusCode());
 
-		Mockito.verify(daoManager).getXXPortalUser();
-		Mockito.verify(xxPortalUserDao).getById(userId);
-		Mockito.verify(userManager).checkAccessForUpdate(xxPUser);
-		Mockito.verify(userManager).changePassword(vxPasswordChange);
+			Mockito.verify(daoManager).getXXPortalUser();
+			Mockito.verify(xxPortalUserDao).getById(userId);
+			Mockito.verify(userManager).checkAccessForUpdate(xxPUser);
+			Mockito.verify(userManager).changePassword(vxPasswordChange);
 		});
 	}
 
 	@Test
 	public void test17ChangePassword() {
 		assertThrows(WebApplicationException.class, () -> {
-		XXPortalUserDao xxPortalUserDao = Mockito.mock(XXPortalUserDao.class);
-		Mockito.when(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any(),
-				Mockito.nullable(Long.class), Mockito.nullable(String.class), Mockito.nullable(String.class))).thenReturn(new WebApplicationException());
+			XXPortalUserDao xxPortalUserDao = Mockito.mock(XXPortalUserDao.class);
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any(),
+					Mockito.nullable(Long.class), Mockito.nullable(String.class), Mockito.nullable(String.class))).thenReturn(new WebApplicationException());
 
-		userREST.changePassword(userId, changePassword);
+			userREST.changePassword(userId, changePassword);
 
-		Mockito.verify(daoManager).getXXPortalUser();
-		Mockito.verify(xxPortalUserDao).getById(userId);
-		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any(),
-				Mockito.anyLong(), Mockito.anyString(), Mockito.anyString());
+			Mockito.verify(daoManager).getXXPortalUser();
+			Mockito.verify(xxPortalUserDao).getById(userId);
+			Mockito.verify(restErrorUtil).createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any(),
+					Mockito.anyLong(), Mockito.anyString(), Mockito.anyString());
 		});
 	}
 
 	@Test
 	public void test18ChangeEmailAddress() {
 		assertThrows(WebApplicationException.class, () -> {
-		XXPortalUser xxPUser = new XXPortalUser();
-		VXPortalUser vxPUserExp = CreateVXPortalUser();
-		VXPasswordChange changeEmail = createPasswordChange();
+			XXPortalUser xxPUser = new XXPortalUser();
+			VXPortalUser vxPUserExp = CreateVXPortalUser();
+			VXPasswordChange changeEmail = createPasswordChange();
 
-		XXPortalUserDao xxPortalUserDao = Mockito.mock(XXPortalUserDao.class);
+			XXPortalUserDao xxPortalUserDao = Mockito.mock(XXPortalUserDao.class);
 
-		Mockito.when(daoManager.getXXPortalUser()).thenReturn(xxPortalUserDao);
-		Mockito.when(restErrorUtil.createRESTException("serverMsg.userRestUser",MessageEnums.DATA_NOT_FOUND, null, null, changeEmail.getLoginId())).thenThrow(new WebApplicationException());
-		VXPortalUser vxPortalUserAct = userREST.changeEmailAddress(userId, changeEmail);
+			Mockito.when(daoManager.getXXPortalUser()).thenReturn(xxPortalUserDao);
+			Mockito.when(restErrorUtil.createRESTException("serverMsg.userRestUser", MessageEnums.DATA_NOT_FOUND, null, null, changeEmail.getLoginId())).thenThrow(new WebApplicationException());
+			VXPortalUser vxPortalUserAct = userREST.changeEmailAddress(userId, changeEmail);
 
 			Assertions.assertNotNull(vxPortalUserAct);
 			Assertions.assertEquals(vxPUserExp, vxPortalUserAct);
 			Assertions.assertEquals(vxPUserExp.getId(), vxPortalUserAct.getId());
 			Assertions.assertEquals(vxPUserExp.getFirstName(), vxPortalUserAct.getFirstName());
 
-		Mockito.verify(daoManager).getXXPortalUser();
-		Mockito.verify(xxPortalUserDao).getById(userId);
-		Mockito.verify(userManager).checkAccessForUpdate(xxPUser);
-		Mockito.verify(userManager).changeEmailAddress(xxPUser, changeEmail);
+			Mockito.verify(daoManager).getXXPortalUser();
+			Mockito.verify(xxPortalUserDao).getById(userId);
+			Mockito.verify(userManager).checkAccessForUpdate(xxPUser);
+			Mockito.verify(userManager).changeEmailAddress(xxPUser, changeEmail);
 		});
 	}
 
 	@Test
 	public void test19ChangeEmailAddress() {
 		assertThrows(WebApplicationException.class, () -> {
-		XXPortalUserDao xxPortalUserDao = Mockito.mock(XXPortalUserDao.class);
-		Mockito.when(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any(),
-				Mockito.nullable(Long.class), Mockito.nullable(String.class), Mockito.nullable(String.class))).thenReturn(new WebApplicationException());
+			XXPortalUserDao xxPortalUserDao = Mockito.mock(XXPortalUserDao.class);
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any(),
+					Mockito.nullable(Long.class), Mockito.nullable(String.class), Mockito.nullable(String.class))).thenReturn(new WebApplicationException());
 
-		userREST.changeEmailAddress(userId, changePassword);
+			userREST.changeEmailAddress(userId, changePassword);
 
-		Mockito.verify(daoManager).getXXPortalUser();
-		Mockito.verify(xxPortalUserDao).getById(userId);
-		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any(),
-				Mockito.anyLong(), Mockito.anyString(), Mockito.anyString());
+			Mockito.verify(daoManager).getXXPortalUser();
+			Mockito.verify(xxPortalUserDao).getById(userId);
+			Mockito.verify(restErrorUtil).createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any(),
+					Mockito.anyLong(), Mockito.anyString(), Mockito.anyString());
 		});
 	}
 

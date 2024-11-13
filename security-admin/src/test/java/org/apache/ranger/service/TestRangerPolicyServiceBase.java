@@ -175,37 +175,37 @@ public class TestRangerPolicyServiceBase {
 	@Test
 	public void test2mapViewToEntityBeanNullValue() {
 		assertThrows(WebApplicationException.class, () -> {
-		XXServiceDao xServiceDao = Mockito.mock(XXServiceDao.class);
-		RangerPolicy rangerPolicy = rangerPolicy();
-		XXPolicy policy = policy();
-		int OPERATION_CONTEXT = 0;
+			XXServiceDao xServiceDao = Mockito.mock(XXServiceDao.class);
+			RangerPolicy rangerPolicy = rangerPolicy();
+			XXPolicy policy = policy();
+			int OPERATION_CONTEXT = 0;
 
-		Mockito.when(
-				restErrorUtil.createRESTException(
-						"No corresponding service found for policyName: "
-								+ rangerPolicy.getName()
-								+ "Service Not Found : "
-								+ rangerPolicy.getName(),
-						MessageEnums.INVALID_INPUT_DATA)).thenThrow(
-				new WebApplicationException());
+			Mockito.when(
+					restErrorUtil.createRESTException(
+							"No corresponding service found for policyName: "
+									+ rangerPolicy.getName()
+									+ "Service Not Found : "
+									+ rangerPolicy.getName(),
+							MessageEnums.INVALID_INPUT_DATA)).thenThrow(
+					new WebApplicationException());
 
-		Mockito.when(daoManager.getXXService()).thenReturn(xServiceDao);
-		Mockito.when(xServiceDao.findByName(rangerPolicy.getService()))
-				.thenReturn(null);
+			Mockito.when(daoManager.getXXService()).thenReturn(xServiceDao);
+			Mockito.when(xServiceDao.findByName(rangerPolicy.getService()))
+					.thenReturn(null);
 
-		XXPolicy dbPolicy = policyService.mapViewToEntityBean(rangerPolicy,
-				policy, OPERATION_CONTEXT);
+			XXPolicy dbPolicy = policyService.mapViewToEntityBean(rangerPolicy,
+					policy, OPERATION_CONTEXT);
 			Assertions.assertNotNull(dbPolicy);
 			Assertions.assertEquals(dbPolicy.getId(), policy.getId());
 			Assertions.assertEquals(dbPolicy.getGuid(), policy.getGuid());
 			Assertions.assertEquals(dbPolicy.getName(), policy.getName());
 			Assertions.assertEquals(dbPolicy.getAddedByUserId(),
-				policy.getAddedByUserId());
+					policy.getAddedByUserId());
 			Assertions.assertEquals(dbPolicy.getIsEnabled(), policy.getIsEnabled());
 			Assertions.assertEquals(dbPolicy.getVersion(), policy.getVersion());
 			Assertions.assertEquals(dbPolicy.getDescription(), policy.getDescription());
 
-		Mockito.verify(daoManager).getXXService();
+			Mockito.verify(daoManager).getXXService();
 		});
 	}
 

@@ -177,7 +177,7 @@ public class RangerKafkaAuthorizer implements Authorizer {
   private static String toString(AuthorizableRequestContext requestContext) {
     return requestContext == null ? null :
 			"AuthorizableRequestContext{principal=%s, clientAddress=%s, clientId=%s}".formatted(
-            requestContext.principal(), requestContext.clientAddress(), requestContext.clientId());
+					requestContext.principal(), requestContext.clientAddress(), requestContext.clientId());
   }
 
   @Override

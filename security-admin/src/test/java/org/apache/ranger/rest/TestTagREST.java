@@ -221,26 +221,26 @@ public class TestTagREST {
 	@Test
 	public void test4createTagDef() {
 		assertThrows(WebApplicationException.class, () -> {
-		RangerTagDef oldtagDef = new RangerTagDef();
-		oldtagDef.setId(id);
-		
-		try {
-			Mockito.when(validator.preCreateTagDef(oldtagDef, false)).thenReturn(
-					oldtagDef);
-		} catch (Exception e) {
-		}
-		Mockito.when(
-				restErrorUtil.createRESTException(Mockito.anyInt(),
-						Mockito.anyString(), Mockito.anyBoolean())).thenThrow(
-				new WebApplicationException());
-		tagREST.createTagDef(oldtagDef, false);
+			RangerTagDef oldtagDef = new RangerTagDef();
+			oldtagDef.setId(id);
 
-		try {
-			Mockito.verify(validator).preCreateTagDef(oldtagDef, false);
-		} catch (Exception e) {
-		}
-		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(),
-				Mockito.anyString(), Mockito.anyBoolean());
+			try {
+				Mockito.when(validator.preCreateTagDef(oldtagDef, false)).thenReturn(
+						oldtagDef);
+			} catch (Exception e) {
+			}
+			Mockito.when(
+					restErrorUtil.createRESTException(Mockito.anyInt(),
+							Mockito.anyString(), Mockito.anyBoolean())).thenThrow(
+					new WebApplicationException());
+			tagREST.createTagDef(oldtagDef, false);
+
+			try {
+				Mockito.verify(validator).preCreateTagDef(oldtagDef, false);
+			} catch (Exception e) {
+			}
+			Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(),
+					Mockito.anyString(), Mockito.anyBoolean());
 		});
 	}
 	
@@ -324,19 +324,19 @@ public class TestTagREST {
 	@Test
 	public void test9getTagDef() {
 		assertThrows(WebApplicationException.class, () -> {
-		try {
-			Mockito.when(tagStore.getTagDef(id)).thenReturn(null);
-		} catch (Exception e) {
-		}
-		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
-		tagREST.getTagDef(id);
-		
-		try {
-			Mockito.verify(tagStore).getTagDef(id);
-		} catch (Exception e) {
-		}
-		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(),
-				Mockito.anyString(), Mockito.anyBoolean());
+			try {
+				Mockito.when(tagStore.getTagDef(id)).thenReturn(null);
+			} catch (Exception e) {
+			}
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
+			tagREST.getTagDef(id);
+
+			try {
+				Mockito.verify(tagStore).getTagDef(id);
+			} catch (Exception e) {
+			}
+			Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(),
+					Mockito.anyString(), Mockito.anyBoolean());
 		});
 	}
 	
@@ -365,19 +365,19 @@ public class TestTagREST {
 	@Test
 	public void test11getTagDefByGuid() {
 		assertThrows(WebApplicationException.class, () -> {
-		try {
-			Mockito.when(tagStore.getTagDefByGuid(gId)).thenReturn(null);
-		} catch (Exception e) {
-		}
-		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
-		tagREST.getTagDefByGuid(gId);
-		
-		try {
-			Mockito.verify(tagStore).getTagDefByGuid(gId);
-		} catch (Exception e) {
-		}
-		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(),
-				Mockito.anyString(), Mockito.anyBoolean());
+			try {
+				Mockito.when(tagStore.getTagDefByGuid(gId)).thenReturn(null);
+			} catch (Exception e) {
+			}
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
+			tagREST.getTagDefByGuid(gId);
+
+			try {
+				Mockito.verify(tagStore).getTagDefByGuid(gId);
+			} catch (Exception e) {
+			}
+			Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(),
+					Mockito.anyString(), Mockito.anyBoolean());
 		});
 	}
 	
@@ -406,19 +406,19 @@ public class TestTagREST {
 	@Test
 	public void test13getTagDefByName() {
 		assertThrows(WebApplicationException.class, () -> {
-		try {
-			Mockito.when(tagStore.getTagDefByName(name)).thenReturn(null);
-		} catch (Exception e) {
-		}
-		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
-		tagREST.getTagDefByName(name);
-		
-		try {
-			Mockito.verify(tagStore).getTagDefByName(name);
-		} catch (Exception e) {
-		}
-		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(),
-				Mockito.anyString(), Mockito.anyBoolean());
+			try {
+				Mockito.when(tagStore.getTagDefByName(name)).thenReturn(null);
+			} catch (Exception e) {
+			}
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
+			tagREST.getTagDefByName(name);
+
+			try {
+				Mockito.verify(tagStore).getTagDefByName(name);
+			} catch (Exception e) {
+			}
+			Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(),
+					Mockito.anyString(), Mockito.anyBoolean());
 		});
 	}
 	
@@ -481,19 +481,19 @@ public class TestTagREST {
 	@Test
 	public void test15getAllTagDefs() {
 		assertThrows(WebApplicationException.class, () -> {
-		try {
-			Mockito.when(tagStore.getTagDefs((SearchFilter)Mockito.any())).thenReturn(null);
-		} catch (Exception e) {
-		}
-		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
-		tagREST.getAllTagDefs();
-		
-		try {
-			Mockito.verify(tagStore).getTagDefs((SearchFilter)Mockito.any());
-		} catch (Exception e) {
-		}
-		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(),
-				Mockito.anyString(), Mockito.anyBoolean());
+			try {
+				Mockito.when(tagStore.getTagDefs((SearchFilter) Mockito.any())).thenReturn(null);
+			} catch (Exception e) {
+			}
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
+			tagREST.getAllTagDefs();
+
+			try {
+				Mockito.verify(tagStore).getTagDefs((SearchFilter) Mockito.any());
+			} catch (Exception e) {
+			}
+			Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(),
+					Mockito.anyString(), Mockito.anyBoolean());
 		});
 	}
 	
@@ -589,21 +589,21 @@ public class TestTagREST {
 	@Test
 	public void test19createTag(){
 		assertThrows(WebApplicationException.class, () -> {
-		RangerTag oldTag = new RangerTag();
-		oldTag.setId(id);
-		
-		try {
-			Mockito.when(validator.preCreateTag(oldTag)).thenReturn(oldTag);
-		} catch (Exception e) {
-		}
-		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
-		tagREST.createTag(oldTag,false);
-		
-		try {
-			Mockito.verify(validator).preCreateTag(oldTag);
-		} catch (Exception e) {
-		}
-		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean());
+			RangerTag oldTag = new RangerTag();
+			oldTag.setId(id);
+
+			try {
+				Mockito.when(validator.preCreateTag(oldTag)).thenReturn(oldTag);
+			} catch (Exception e) {
+			}
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
+			tagREST.createTag(oldTag, false);
+
+			try {
+				Mockito.verify(validator).preCreateTag(oldTag);
+			} catch (Exception e) {
+			}
+			Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean());
 		});
 	}
 	
@@ -907,20 +907,20 @@ public class TestTagREST {
 	@Test
 	public void test29createServiceResource(){
 		assertThrows(WebApplicationException.class, () -> {
-		RangerServiceResource oldRSR = new RangerServiceResource();
-		
-		try {
-			Mockito.when(validator.preCreateServiceResource(oldRSR)).thenReturn(oldRSR);
-		} catch (Exception e) {
-		}
-		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
-		tagREST.createServiceResource(oldRSR, false);
-		
-		try {
-			Mockito.verify(validator).preCreateServiceResource(oldRSR);
-		} catch (Exception e) {
-		}
-		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean());
+			RangerServiceResource oldRSR = new RangerServiceResource();
+
+			try {
+				Mockito.when(validator.preCreateServiceResource(oldRSR)).thenReturn(oldRSR);
+			} catch (Exception e) {
+			}
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
+			tagREST.createServiceResource(oldRSR, false);
+
+			try {
+				Mockito.verify(validator).preCreateServiceResource(oldRSR);
+			} catch (Exception e) {
+			}
+			Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean());
 		});
 	}
 	
@@ -1228,21 +1228,21 @@ public class TestTagREST {
 	@Test
 	public void test39createTagResourceMap() {
 		assertThrows(WebApplicationException.class, () -> {
-		RangerTagResourceMap oldTagResourceMap = new RangerTagResourceMap();
-		
-		try {
-			Mockito.when(tagStore.getTagResourceMapForTagAndResourceGuid(tagGuid, resourceGuid)).thenReturn(oldTagResourceMap);
-		} catch (Exception e) {
-		}
+			RangerTagResourceMap oldTagResourceMap = new RangerTagResourceMap();
 
-		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(),Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
-		tagREST.createTagResourceMap(tagGuid, resourceGuid, false);
-		
-		try {
-			Mockito.verify(tagStore).getTagResourceMapForTagAndResourceGuid(tagGuid, resourceGuid);
-		} catch (Exception e) {
-		}
-		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(),Mockito.anyString(), Mockito.anyBoolean());
+			try {
+				Mockito.when(tagStore.getTagResourceMapForTagAndResourceGuid(tagGuid, resourceGuid)).thenReturn(oldTagResourceMap);
+			} catch (Exception e) {
+			}
+
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
+			tagREST.createTagResourceMap(tagGuid, resourceGuid, false);
+
+			try {
+				Mockito.verify(tagStore).getTagResourceMapForTagAndResourceGuid(tagGuid, resourceGuid);
+			} catch (Exception e) {
+			}
+			Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean());
 		});
 	}
 	
@@ -1551,21 +1551,21 @@ public class TestTagREST {
 	@Test
 	public void test50getServiceTagsIfUpdated() {
 		assertThrows(WebApplicationException.class, () -> {
-		ServiceTags oldServiceTag = null;
-		
-		try {
-			Mockito.when(tagStore.getServiceTagsIfUpdated(serviceName, lastKnownVersion, true)).thenReturn(oldServiceTag);
-		} catch (Exception e) {
-		}
-		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(),Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
-		
-		tagREST.getServiceTagsIfUpdated(serviceName, lastKnownVersion, 0L, pluginId, false, capabilityVector, null);
-		
-		try {
-			Mockito.verify(tagStore).getServiceTagsIfUpdated(serviceName, lastKnownVersion, true);
-		} catch (Exception e) {
-		}
-		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(),Mockito.anyString(), Mockito.anyBoolean());
+			ServiceTags oldServiceTag = null;
+
+			try {
+				Mockito.when(tagStore.getServiceTagsIfUpdated(serviceName, lastKnownVersion, true)).thenReturn(oldServiceTag);
+			} catch (Exception e) {
+			}
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
+
+			tagREST.getServiceTagsIfUpdated(serviceName, lastKnownVersion, 0L, pluginId, false, capabilityVector, null);
+
+			try {
+				Mockito.verify(tagStore).getServiceTagsIfUpdated(serviceName, lastKnownVersion, true);
+			} catch (Exception e) {
+			}
+			Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean());
 		});
 	}
 	
@@ -1848,122 +1848,122 @@ public class TestTagREST {
 	@Test
 	public void test56getSecureServiceTagsIfUpdatedIsAllowedFalse() {
 		assertThrows(WebApplicationException.class, () -> {
-		boolean isAdmin = false;
-		boolean isKeyAdmin = false;
-		boolean isAllowed = false;
-		ServiceTags oldServiceTag = new ServiceTags();
-		oldServiceTag.setServiceName(serviceName);
-		oldServiceTag.setTagVersion(5L);
-		
-		XXService xService = new XXService();
-		xService.setId(id);
-		xService.setName(serviceName);
-		xService.setType(5L);
-		
-		XXServiceDef xServiceDef = new XXServiceDef();
-		xServiceDef.setId(id);
-		xServiceDef.setVersion(5L);
-		
-		RangerService rangerService = new RangerService();
-		rangerService.setId(id);
-		rangerService.setName(serviceName);
-		
-		XXServiceDao xXServiceDao = Mockito.mock(XXServiceDao.class);
-		XXServiceDefDao xXServiceDefDao  = Mockito.mock(XXServiceDefDao.class);
-		
-		Mockito.when(bizUtil.isAdmin()).thenReturn(isAdmin);
-		Mockito.when(bizUtil.isKeyAdmin()).thenReturn(isKeyAdmin);
+			boolean isAdmin = false;
+			boolean isKeyAdmin = false;
+			boolean isAllowed = false;
+			ServiceTags oldServiceTag = new ServiceTags();
+			oldServiceTag.setServiceName(serviceName);
+			oldServiceTag.setTagVersion(5L);
 
-		Mockito.when(daoManager.getXXService()).thenReturn(xXServiceDao);
-		Mockito.when(xXServiceDao.findByName(serviceName)).thenReturn(xService);
-		Mockito.when(daoManager.getXXServiceDef()).thenReturn(xXServiceDefDao);
-		Mockito.when(xXServiceDefDao.getById(xService.getType())).thenReturn(xServiceDef);
-		try {
-			Mockito.when(svcStore.getServiceByName(serviceName)).thenReturn(rangerService);
-		} catch (Exception e) {
-		}
-		
-		Mockito.when(bizUtil.isUserAllowed(rangerService, Allowed_User_List_For_Tag_Download)).thenReturn(isAllowed);
-		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
-		
-		tagREST.getSecureServiceTagsIfUpdated(serviceName, lastKnownVersion, 0L, pluginId, false, capabilityVector, null);
-		
-		Mockito.verify(bizUtil).isAdmin();
-		Mockito.verify(bizUtil).isKeyAdmin();
-		Mockito.verify(daoManager).getXXService();
-		Mockito.verify(xXServiceDao).findByName(serviceName);
-		Mockito.verify(daoManager).getXXServiceDef();
-		Mockito.verify(xXServiceDefDao).getById(xService.getType());
-		try {
-			Mockito.verify(svcStore).getServiceByName(serviceName);
-		} catch (Exception e) {
-		}
-		Mockito.verify(bizUtil).isUserAllowed(rangerService, Allowed_User_List_For_Tag_Download);
-		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean());
+			XXService xService = new XXService();
+			xService.setId(id);
+			xService.setName(serviceName);
+			xService.setType(5L);
+
+			XXServiceDef xServiceDef = new XXServiceDef();
+			xServiceDef.setId(id);
+			xServiceDef.setVersion(5L);
+
+			RangerService rangerService = new RangerService();
+			rangerService.setId(id);
+			rangerService.setName(serviceName);
+
+			XXServiceDao xXServiceDao = Mockito.mock(XXServiceDao.class);
+			XXServiceDefDao xXServiceDefDao = Mockito.mock(XXServiceDefDao.class);
+
+			Mockito.when(bizUtil.isAdmin()).thenReturn(isAdmin);
+			Mockito.when(bizUtil.isKeyAdmin()).thenReturn(isKeyAdmin);
+
+			Mockito.when(daoManager.getXXService()).thenReturn(xXServiceDao);
+			Mockito.when(xXServiceDao.findByName(serviceName)).thenReturn(xService);
+			Mockito.when(daoManager.getXXServiceDef()).thenReturn(xXServiceDefDao);
+			Mockito.when(xXServiceDefDao.getById(xService.getType())).thenReturn(xServiceDef);
+			try {
+				Mockito.when(svcStore.getServiceByName(serviceName)).thenReturn(rangerService);
+			} catch (Exception e) {
+			}
+
+			Mockito.when(bizUtil.isUserAllowed(rangerService, Allowed_User_List_For_Tag_Download)).thenReturn(isAllowed);
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
+
+			tagREST.getSecureServiceTagsIfUpdated(serviceName, lastKnownVersion, 0L, pluginId, false, capabilityVector, null);
+
+			Mockito.verify(bizUtil).isAdmin();
+			Mockito.verify(bizUtil).isKeyAdmin();
+			Mockito.verify(daoManager).getXXService();
+			Mockito.verify(xXServiceDao).findByName(serviceName);
+			Mockito.verify(daoManager).getXXServiceDef();
+			Mockito.verify(xXServiceDefDao).getById(xService.getType());
+			try {
+				Mockito.verify(svcStore).getServiceByName(serviceName);
+			} catch (Exception e) {
+			}
+			Mockito.verify(bizUtil).isUserAllowed(rangerService, Allowed_User_List_For_Tag_Download);
+			Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean());
 		});
 	}
 	
 	@Test
 	public void test57getSecureServiceTagsIfUpdated() {
 		assertThrows(WebApplicationException.class, () -> {
-		boolean isAdmin = false;
-		boolean isKeyAdmin = false;
-		boolean isAllowed = true;
-		ServiceTags oldServiceTag = null;
-		
-		XXService xService = new XXService();
-		xService.setId(id);
-		xService.setName(serviceName);
-		xService.setType(5L);
-		
-		XXServiceDef xServiceDef = new XXServiceDef();
-		xServiceDef.setId(id);
-		xServiceDef.setVersion(5L);
-		
-		RangerService rangerService = new RangerService();
-		rangerService.setId(id);
-		rangerService.setName(serviceName);
-		
-		XXServiceDao xXServiceDao = Mockito.mock(XXServiceDao.class);
-		XXServiceDefDao xXServiceDefDao  = Mockito.mock(XXServiceDefDao.class);
-		
-		Mockito.when(bizUtil.isAdmin()).thenReturn(isAdmin);
-		Mockito.when(bizUtil.isKeyAdmin()).thenReturn(isKeyAdmin);
+			boolean isAdmin = false;
+			boolean isKeyAdmin = false;
+			boolean isAllowed = true;
+			ServiceTags oldServiceTag = null;
 
-		Mockito.when(daoManager.getXXService()).thenReturn(xXServiceDao);
-		Mockito.when(xXServiceDao.findByName(serviceName)).thenReturn(xService);
-		Mockito.when(daoManager.getXXServiceDef()).thenReturn(xXServiceDefDao);
-		Mockito.when(xXServiceDefDao.getById(xService.getType())).thenReturn(xServiceDef);
-		try {
-			Mockito.when(svcStore.getServiceByName(serviceName)).thenReturn(rangerService);
-		} catch (Exception e) {
-		}
-		
-		Mockito.when(bizUtil.isUserAllowed(rangerService, Allowed_User_List_For_Tag_Download)).thenReturn(isAllowed);
-		try {
-			Mockito.when(tagStore.getServiceTagsIfUpdated(serviceName, lastKnownVersion, true)).thenReturn(oldServiceTag);
-		} catch (Exception e) {
-		}
-		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
-		
-		tagREST.getSecureServiceTagsIfUpdated(serviceName, lastKnownVersion, 0L, pluginId, false, capabilityVector, null);
-		
-		Mockito.verify(bizUtil).isAdmin();
-		Mockito.verify(bizUtil).isKeyAdmin();
-		Mockito.verify(daoManager).getXXService();
-		Mockito.verify(xXServiceDao).findByName(serviceName);
-		Mockito.verify(daoManager).getXXServiceDef();
-		Mockito.verify(xXServiceDefDao).getById(xService.getType());
-		try {
-			Mockito.verify(svcStore).getServiceByName(serviceName);
-		} catch (Exception e) {
-		}
-		Mockito.verify(bizUtil).isUserAllowed(rangerService, Allowed_User_List_For_Tag_Download);
-		try {
-			Mockito.verify(tagStore).getServiceTagsIfUpdated(serviceName, lastKnownVersion, false);
-		} catch (Exception e) {
-		}
-		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean());
+			XXService xService = new XXService();
+			xService.setId(id);
+			xService.setName(serviceName);
+			xService.setType(5L);
+
+			XXServiceDef xServiceDef = new XXServiceDef();
+			xServiceDef.setId(id);
+			xServiceDef.setVersion(5L);
+
+			RangerService rangerService = new RangerService();
+			rangerService.setId(id);
+			rangerService.setName(serviceName);
+
+			XXServiceDao xXServiceDao = Mockito.mock(XXServiceDao.class);
+			XXServiceDefDao xXServiceDefDao = Mockito.mock(XXServiceDefDao.class);
+
+			Mockito.when(bizUtil.isAdmin()).thenReturn(isAdmin);
+			Mockito.when(bizUtil.isKeyAdmin()).thenReturn(isKeyAdmin);
+
+			Mockito.when(daoManager.getXXService()).thenReturn(xXServiceDao);
+			Mockito.when(xXServiceDao.findByName(serviceName)).thenReturn(xService);
+			Mockito.when(daoManager.getXXServiceDef()).thenReturn(xXServiceDefDao);
+			Mockito.when(xXServiceDefDao.getById(xService.getType())).thenReturn(xServiceDef);
+			try {
+				Mockito.when(svcStore.getServiceByName(serviceName)).thenReturn(rangerService);
+			} catch (Exception e) {
+			}
+
+			Mockito.when(bizUtil.isUserAllowed(rangerService, Allowed_User_List_For_Tag_Download)).thenReturn(isAllowed);
+			try {
+				Mockito.when(tagStore.getServiceTagsIfUpdated(serviceName, lastKnownVersion, true)).thenReturn(oldServiceTag);
+			} catch (Exception e) {
+			}
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
+
+			tagREST.getSecureServiceTagsIfUpdated(serviceName, lastKnownVersion, 0L, pluginId, false, capabilityVector, null);
+
+			Mockito.verify(bizUtil).isAdmin();
+			Mockito.verify(bizUtil).isKeyAdmin();
+			Mockito.verify(daoManager).getXXService();
+			Mockito.verify(xXServiceDao).findByName(serviceName);
+			Mockito.verify(daoManager).getXXServiceDef();
+			Mockito.verify(xXServiceDefDao).getById(xService.getType());
+			try {
+				Mockito.verify(svcStore).getServiceByName(serviceName);
+			} catch (Exception e) {
+			}
+			Mockito.verify(bizUtil).isUserAllowed(rangerService, Allowed_User_List_For_Tag_Download);
+			try {
+				Mockito.verify(tagStore).getServiceTagsIfUpdated(serviceName, lastKnownVersion, false);
+			} catch (Exception e) {
+			}
+			Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean());
 		});
 	}
 
@@ -2004,13 +2004,13 @@ public class TestTagREST {
 	@Test
 	public void test59resetTagCacheWhenServiceNameIsInvalid() {
 		assertThrows(WebApplicationException.class, () -> {
-		try {
-			Mockito.when(svcStore.getServiceByName(serviceName)).thenReturn(null);
-		} catch (Exception e) {
-		}
-		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
-		tagREST.resetTagCache(serviceName);
-		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean());
+			try {
+				Mockito.when(svcStore.getServiceByName(serviceName)).thenReturn(null);
+			} catch (Exception e) {
+			}
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
+			tagREST.resetTagCache(serviceName);
+			Mockito.verify(restErrorUtil).createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean());
 		});
 	}
 }

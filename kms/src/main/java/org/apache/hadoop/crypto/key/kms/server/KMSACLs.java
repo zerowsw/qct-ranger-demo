@@ -250,9 +250,9 @@ public class KMSACLs implements Runnable, KeyACLs {
       KMSWebApp.getUnauthorizedCallsMeter().mark();
       KMSWebApp.getKMSAudit().unauthorized(ugi, operation, key);
       throw new AuthorizationException((
-          (key != null) ? UNAUTHORIZED_MSG_WITH_KEY
+			  (key != null) ? UNAUTHORIZED_MSG_WITH_KEY
 						: UNAUTHORIZED_MSG_WITHOUT_KEY).formatted(
-          ugi.getShortUserName(), operation, key));
+			  ugi.getShortUserName(), operation, key));
     }
   }
 

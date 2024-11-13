@@ -179,8 +179,8 @@ public class RangerKylinAuthorizerTest {
 	@Test
 	public void readProjectAnyWithoutCredentials() {
 		assertThrows(AuthenticationCredentialsNotFoundException.class, () -> {
-		ProjectInstance project = getRandomProjectInstance();
-		aclEvaluate.hasProjectReadPermission(project);
+			ProjectInstance project = getRandomProjectInstance();
+			aclEvaluate.hasProjectReadPermission(project);
 		});
 	}
 
@@ -272,8 +272,8 @@ public class RangerKylinAuthorizerTest {
 	@Test
 	public void operationProjectAnyWithoutCredentials() {
 		assertThrows(AuthenticationCredentialsNotFoundException.class, () -> {
-		ProjectInstance project = getRandomProjectInstance();
-		aclEvaluate.hasProjectOperationPermission(project);
+			ProjectInstance project = getRandomProjectInstance();
+			aclEvaluate.hasProjectOperationPermission(project);
 		});
 	}
 
@@ -365,8 +365,8 @@ public class RangerKylinAuthorizerTest {
 	@Test
 	public void writeProjectAnyWithoutCredentials() {
 		assertThrows(AuthenticationCredentialsNotFoundException.class, () -> {
-		ProjectInstance project = getRandomProjectInstance();
-		aclEvaluate.hasProjectWritePermission(project);
+			ProjectInstance project = getRandomProjectInstance();
+			aclEvaluate.hasProjectWritePermission(project);
 		});
 	}
 
@@ -458,8 +458,8 @@ public class RangerKylinAuthorizerTest {
 	@Test
 	public void adminProjectAnyWithoutCredentials() {
 		assertThrows(AuthenticationCredentialsNotFoundException.class, () -> {
-		ProjectInstance project = getRandomProjectInstance();
-		aclEvaluate.hasProjectAdminPermission(project);
+			ProjectInstance project = getRandomProjectInstance();
+			aclEvaluate.hasProjectAdminPermission(project);
 		});
 	}
 

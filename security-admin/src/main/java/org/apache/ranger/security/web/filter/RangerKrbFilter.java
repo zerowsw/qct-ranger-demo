@@ -13,9 +13,6 @@
  */
 package org.apache.ranger.security.web.filter;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.NoSuchMethodException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.classification.InterfaceAudience;
 import org.apache.hadoop.classification.InterfaceStability;
@@ -176,10 +173,10 @@ public class RangerKrbFilter implements Filter {
       throws ServletException {
     try {
       Class<?> klass = Thread.currentThread().getContextClassLoader().loadClass(authHandlerClassName);
-      authHandler = (AuthenticationHandler) klass.getDeclaredConstructor().newInstance();
+      authHandler = (AuthenticationHandler) klass.newInstance();
       authHandler.init(config);
     } catch (ClassNotFoundException | InstantiationException |
-        IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
+        IllegalAccessException ex) {
       throw new ServletException(ex);
     }
   }
@@ -241,9 +238,8 @@ public class RangerKrbFilter implements Filter {
       provider = new ZKSignerSecretProvider();
       provider.init(config, ctx, validity);
     } else {
-      Class<?> providerClass = Thread.currentThread().getContextClassLoader().loadClass(name);
-      Constructor<?> constructor = providerClass.getDeclaredConstructor();
-      provider = (SignerSecretProvider) constructor.newInstance();
+      provider = (SignerSecretProvider) Thread.currentThread().
+          getContextClassLoader().loadClass(name).newInstance();
       provider.init(config, ctx, validity);
     }
     return provider;

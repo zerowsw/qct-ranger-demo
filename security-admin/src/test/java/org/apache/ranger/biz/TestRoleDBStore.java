@@ -261,23 +261,23 @@ public class TestRoleDBStore {
     @Test
     public void testGetRoleByRoleName() throws Exception {
 		assertThrows(WebApplicationException.class, () -> {
-        XXRoleDao  xxRoleDao  = Mockito.mock(XXRoleDao.class);
-        XXRole     xxRole     = getTestRole();
-        RangerRole rangerRole = getRangerRole();
+			XXRoleDao  xxRoleDao = Mockito.mock(XXRoleDao.class);
+			XXRole     xxRole = getTestRole();
+			RangerRole rangerRole = getRangerRole();
 
-        Mockito.when(daoMgr.getXXRole()).thenReturn(xxRoleDao);
-        Mockito.when(xxRoleDao.findByRoleName(roleName)).thenReturn(xxRole);
-        Mockito.when(roleService.read(xxRole.getId())).thenReturn(rangerRole);
+			Mockito.when(daoMgr.getXXRole()).thenReturn(xxRoleDao);
+			Mockito.when(xxRoleDao.findByRoleName(roleName)).thenReturn(xxRole);
+			Mockito.when(roleService.read(xxRole.getId())).thenReturn(rangerRole);
 
-        RangerRole rangerRoleInDB = roleDBStore.getRole(roleName);
+			RangerRole rangerRoleInDB = roleDBStore.getRole(roleName);
 
 			Assertions.assertNotNull(rangerRoleInDB);
 
-        Mockito.when(restErrorUtil.createRESTException(Mockito.anyString())).thenThrow(new WebApplicationException());
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyString())).thenThrow(new WebApplicationException());
 
-        roleDBStore.getRole(roleName + "-non-existing");
+			roleDBStore.getRole(roleName + "-non-existing");
 		});
-    }
+	}
 
     @Test
     public void testGetRoleNames() throws Exception {
@@ -346,15 +346,15 @@ public class TestRoleDBStore {
     @Test
     public void testDeleteRoleByInValidRoleName() throws Exception {
 		assertThrows(WebApplicationException.class, () -> {
-        XXRoleDao xxRoleDao = Mockito.mock(XXRoleDao.class);
+			XXRoleDao xxRoleDao = Mockito.mock(XXRoleDao.class);
 
-        Mockito.when(daoMgr.getXXRole()).thenReturn(xxRoleDao);
-        Mockito.when(xxRoleDao.findByRoleName(roleName)).thenReturn(null);
-        Mockito.when(restErrorUtil.createRESTException(Mockito.anyString())).thenThrow(new WebApplicationException());
+			Mockito.when(daoMgr.getXXRole()).thenReturn(xxRoleDao);
+			Mockito.when(xxRoleDao.findByRoleName(roleName)).thenReturn(null);
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyString())).thenThrow(new WebApplicationException());
 
-        roleDBStore.deleteRole(roleName);
+			roleDBStore.deleteRole(roleName);
 		});
-    }
+	}
 
     @Test
     public void testDeleteRoleByValidRoleName() throws Exception {
@@ -386,17 +386,17 @@ public class TestRoleDBStore {
     @Test
     public void testCreateRoleWhenTheRoleExists() throws Exception {
 		assertThrows(WebApplicationException.class, () -> {
-        XXRoleDao  xxRoleDao  = Mockito.mock(XXRoleDao.class);
-        XXRole     xxRole     = getTestRole();
-        RangerRole rangerRole = getRangerRole();
+			XXRoleDao  xxRoleDao = Mockito.mock(XXRoleDao.class);
+			XXRole     xxRole = getTestRole();
+			RangerRole rangerRole = getRangerRole();
 
-        Mockito.when(daoMgr.getXXRole()).thenReturn(xxRoleDao);
-        Mockito.when(xxRoleDao.findByRoleName(roleName)).thenReturn(xxRole);
-        Mockito.when(restErrorUtil.createRESTException(Mockito.anyString(), Mockito.any())).thenThrow(new WebApplicationException());
+			Mockito.when(daoMgr.getXXRole()).thenReturn(xxRoleDao);
+			Mockito.when(xxRoleDao.findByRoleName(roleName)).thenReturn(xxRole);
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyString(), Mockito.any())).thenThrow(new WebApplicationException());
 
-        roleDBStore.createRole(rangerRole, true);
+			roleDBStore.createRole(rangerRole, true);
 		});
-    }
+	}
 
     @Test
     public void testCreateRole() throws Exception {
@@ -418,16 +418,16 @@ public class TestRoleDBStore {
     @Test
     public void testUpdateRoleWhenTheRoleNotExists() throws Exception {
 		assertThrows(WebApplicationException.class, () -> {
-        RangerRole rangerRole = getRangerRole();
-        XXRoleDao  xxRoleDao  = Mockito.mock(XXRoleDao.class);
+			RangerRole rangerRole = getRangerRole();
+			XXRoleDao  xxRoleDao = Mockito.mock(XXRoleDao.class);
 
-        Mockito.when(daoMgr.getXXRole()).thenReturn(xxRoleDao);
-        Mockito.when(xxRoleDao.findByRoleId(rangerRole.getId())).thenReturn(null);
-        Mockito.when(restErrorUtil.createRESTException(Mockito.anyString())).thenThrow(new WebApplicationException());
+			Mockito.when(daoMgr.getXXRole()).thenReturn(xxRoleDao);
+			Mockito.when(xxRoleDao.findByRoleId(rangerRole.getId())).thenReturn(null);
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyString())).thenThrow(new WebApplicationException());
 
-        roleDBStore.updateRole(rangerRole, true);
+			roleDBStore.updateRole(rangerRole, true);
 		});
-    }
+	}
 
     @Test
     public void testUpdateRole() throws Exception {
@@ -474,41 +474,41 @@ public class TestRoleDBStore {
     @Test
     public void testDeleteRoleByValidRoleNameWhenRoleIsAssociatedWithOneOrMorePolices() throws Exception {
 		assertThrows(Exception.class, () -> {
-        XXRole    xxRole    = getTestRole();
-        XXRoleDao xxRoleDao = Mockito.mock(XXRoleDao.class);
+			XXRole    xxRole = getTestRole();
+			XXRoleDao xxRoleDao = Mockito.mock(XXRoleDao.class);
 
-        Mockito.when(xxRoleDao.findByRoleName(roleName)).thenReturn(xxRole);
-        Mockito.when(daoMgr.getXXRole()).thenReturn(xxRoleDao);
+			Mockito.when(xxRoleDao.findByRoleName(roleName)).thenReturn(xxRole);
+			Mockito.when(daoMgr.getXXRole()).thenReturn(xxRoleDao);
 
-        roleDBStore.deleteRole(roleName);
+			roleDBStore.deleteRole(roleName);
 		});
-    }
+	}
 
     @Test
     public void testDeleteRoleByValidRoleNameWhenRoleIsAssociatedWithOneOrMoreRoles() throws Exception {
 		assertThrows(Exception.class, () -> {
-        XXRole    xxRole    = getTestRole();
-        XXRoleDao xxRoleDao = Mockito.mock(XXRoleDao.class);
+			XXRole    xxRole = getTestRole();
+			XXRoleDao xxRoleDao = Mockito.mock(XXRoleDao.class);
 
-        Mockito.when(daoMgr.getXXRole()).thenReturn(xxRoleDao);
-        Mockito.when(xxRoleDao.findByRoleName(roleName)).thenReturn(xxRole);
+			Mockito.when(daoMgr.getXXRole()).thenReturn(xxRoleDao);
+			Mockito.when(xxRoleDao.findByRoleName(roleName)).thenReturn(xxRole);
 
-        roleDBStore.deleteRole(roleName);
+			roleDBStore.deleteRole(roleName);
 		});
-    }
+	}
 
     @Test
     public void testDeleteRoleByValidRoleNameWhenRoleIsAssociatedWithOneOrMoreSecurityZones() throws Exception {
 		assertThrows(Exception.class, () -> {
-        XXRole    xxRole    = getTestRole();
-        XXRoleDao xxRoleDao = Mockito.mock(XXRoleDao.class);
+			XXRole    xxRole = getTestRole();
+			XXRoleDao xxRoleDao = Mockito.mock(XXRoleDao.class);
 
-        Mockito.when(daoMgr.getXXRole()).thenReturn(xxRoleDao);
-        Mockito.when(xxRoleDao.findByRoleName(roleName)).thenReturn(xxRole);
+			Mockito.when(daoMgr.getXXRole()).thenReturn(xxRoleDao);
+			Mockito.when(xxRoleDao.findByRoleName(roleName)).thenReturn(xxRole);
 
-        roleDBStore.deleteRole(roleName);
+			roleDBStore.deleteRole(roleName);
 		});
-    }
+	}
 
     private XXRole getTestRole() {
         return new XXRole() {{

@@ -186,7 +186,7 @@ public class DefaultSchemaRegistryClientTest {
     @Test
     public void checkConnection2() throws Exception {
 		assertThrows(Exception.class, () -> {
-        new DefaultSchemaRegistryClient(new HashMap<>()).checkConnection();
+			new DefaultSchemaRegistryClient(new HashMap<>()).checkConnection();
 		});
-    }
+	}
 }

@@ -190,9 +190,9 @@ public class RangerSqoopAuthorizerTest {
 	@Test
 	public void readConnectorHdfsWithoutPermission() {
 		assertThrows(SqoopException.class, () -> {
-		String user = ZHANGQIANG;
-		String connector = HDFS_CONNECTOR;
-		AuthorizationEngine.readConnector(user, connector);
+			String user = ZHANGQIANG;
+			String connector = HDFS_CONNECTOR;
+			AuthorizationEngine.readConnector(user, connector);
 		});
 	}
 
@@ -222,9 +222,9 @@ public class RangerSqoopAuthorizerTest {
 	@Test
 	public void readConnectorKafkaWithoutPermission() {
 		assertThrows(SqoopException.class, () -> {
-		String user = YUWEN;
-		String connector = KAFKA_CONNECTOR;
-		AuthorizationEngine.readConnector(user, connector);
+			String user = YUWEN;
+			String connector = KAFKA_CONNECTOR;
+			AuthorizationEngine.readConnector(user, connector);
 		});
 	}
 
@@ -277,9 +277,9 @@ public class RangerSqoopAuthorizerTest {
 	@Test
 	public void readLinkAnyWithoutPermission() {
 		assertThrows(SqoopException.class, () -> {
-		String user = YUWEN;
-		String link = getRandomLinkName();
-		AuthorizationEngine.readLink(user, link);
+			String user = YUWEN;
+			String link = getRandomLinkName();
+			AuthorizationEngine.readLink(user, link);
 		});
 	}
 
@@ -313,9 +313,9 @@ public class RangerSqoopAuthorizerTest {
 	@Test
 	public void createLinkByHdfsConnectorWithoutPermission() {
 		assertThrows(SqoopException.class, () -> {
-		String user = ZHANGQIANG;
-		String connector = HDFS_CONNECTOR;
-		AuthorizationEngine.createLink(user, connector);
+			String user = ZHANGQIANG;
+			String connector = HDFS_CONNECTOR;
+			AuthorizationEngine.createLink(user, connector);
 		});
 	}
 
@@ -345,9 +345,9 @@ public class RangerSqoopAuthorizerTest {
 	@Test
 	public void createLinkByKafkaConnectorWithoutPermission() {
 		assertThrows(SqoopException.class, () -> {
-		String user = YUWEN;
-		String connector = KAFKA_CONNECTOR;
-		AuthorizationEngine.createLink(user, connector);
+			String user = YUWEN;
+			String connector = KAFKA_CONNECTOR;
+			AuthorizationEngine.createLink(user, connector);
 		});
 	}
 
@@ -383,10 +383,10 @@ public class RangerSqoopAuthorizerTest {
 	@Test
 	public void updateLinkAnyByHdfsConnectorWithoutPermission() {
 		assertThrows(SqoopException.class, () -> {
-		String user = ZHANGQIANG;
-		String connector = HDFS_CONNECTOR;
-		String link = getRandomLinkName();
-		AuthorizationEngine.updateLink(user, connector, link);
+			String user = ZHANGQIANG;
+			String connector = HDFS_CONNECTOR;
+			String link = getRandomLinkName();
+			AuthorizationEngine.updateLink(user, connector, link);
 		});
 	}
 
@@ -418,10 +418,10 @@ public class RangerSqoopAuthorizerTest {
 	@Test
 	public void updateLinkByKafkaConnectorWithoutPermission() {
 		assertThrows(SqoopException.class, () -> {
-		String user = YUWEN;
-		String connector = KAFKA_CONNECTOR;
-		String link = getRandomLinkName();
-		AuthorizationEngine.updateLink(user, connector, link);
+			String user = YUWEN;
+			String connector = KAFKA_CONNECTOR;
+			String link = getRandomLinkName();
+			AuthorizationEngine.updateLink(user, connector, link);
 		});
 	}
 
@@ -474,9 +474,9 @@ public class RangerSqoopAuthorizerTest {
 	@Test
 	public void deleteLinkAnyWithoutPermission() {
 		assertThrows(SqoopException.class, () -> {
-		String user = YUWEN;
-		String link = getRandomLinkName();
-		AuthorizationEngine.deleteLink(user, link);
+			String user = YUWEN;
+			String link = getRandomLinkName();
+			AuthorizationEngine.deleteLink(user, link);
 		});
 	}
 
@@ -529,9 +529,9 @@ public class RangerSqoopAuthorizerTest {
 	@Test
 	public void enableDisableLinkAnyWithoutPermission() {
 		assertThrows(SqoopException.class, () -> {
-		String user = YUWEN;
-		String link = getRandomLinkName();
-		AuthorizationEngine.enableDisableLink(user, link);
+			String user = YUWEN;
+			String link = getRandomLinkName();
+			AuthorizationEngine.enableDisableLink(user, link);
 		});
 	}
 
@@ -574,9 +574,9 @@ public class RangerSqoopAuthorizerTest {
 	@Test
 	public void readJobAnyWithoutPermission() {
 		assertThrows(SqoopException.class, () -> {
-		String user = YUWEN;
-		String job = getRandomJobName();
-		AuthorizationEngine.readJob(user, job);
+			String user = YUWEN;
+			String job = getRandomJobName();
+			AuthorizationEngine.readJob(user, job);
 		});
 	}
 
@@ -622,10 +622,10 @@ public class RangerSqoopAuthorizerTest {
 	@Test
 	public void createJobFromOracle2AnyLinkWithoutPermission() {
 		assertThrows(SqoopException.class, () -> {
-		String user = YUWEN;
-		String link1 = ORACLE_LINK;
-		String link2 = getRandomLinkName();
-		AuthorizationEngine.createJob(user, link1, link2);
+			String user = YUWEN;
+			String link1 = ORACLE_LINK;
+			String link2 = getRandomLinkName();
+			AuthorizationEngine.createJob(user, link1, link2);
 		});
 	}
 
@@ -635,10 +635,10 @@ public class RangerSqoopAuthorizerTest {
 	@Test
 	public void createJobByAnyTwoLinksWithoutPermission() {
 		assertThrows(SqoopException.class, () -> {
-		String user = YUWEN;
-		String link1 = getRandomLinkName();
-		String link2 = getRandomLinkName();
-		AuthorizationEngine.createJob(user, link1, link2);
+			String user = YUWEN;
+			String link1 = getRandomLinkName();
+			String link2 = getRandomLinkName();
+			AuthorizationEngine.createJob(user, link1, link2);
 		});
 	}
 
@@ -689,11 +689,11 @@ public class RangerSqoopAuthorizerTest {
 	@Test
 	public void updateJobOracle2HdfsByTwoLinksWithoutPermission() {
 		assertThrows(SqoopException.class, () -> {
-		String user = YUWEN;
-		String link1 = "new_" + ORACLE_LINK;
-		String link2 = HDFS_LINK;
-		String job = ORACLE2HDFS_JOB;
-		AuthorizationEngine.updateJob(user, link1, link2, job);
+			String user = YUWEN;
+			String link1 = "new_" + ORACLE_LINK;
+			String link2 = HDFS_LINK;
+			String job = ORACLE2HDFS_JOB;
+			AuthorizationEngine.updateJob(user, link1, link2, job);
 		});
 	}
 
@@ -703,11 +703,11 @@ public class RangerSqoopAuthorizerTest {
 	@Test
 	public void updateJobAnyByTwoLinksWithoutPermission() {
 		assertThrows(SqoopException.class, () -> {
-		String user = YUWEN;
-		String link1 = ORACLE_LINK;
-		String link2 = HDFS_LINK;
-		String job = getRandomJobName();
-		AuthorizationEngine.updateJob(user, link1, link2, job);
+			String user = YUWEN;
+			String link1 = ORACLE_LINK;
+			String link2 = HDFS_LINK;
+			String job = getRandomJobName();
+			AuthorizationEngine.updateJob(user, link1, link2, job);
 		});
 	}
 
@@ -717,11 +717,11 @@ public class RangerSqoopAuthorizerTest {
 	@Test
 	public void updateJobAnyByAnyLinksWithoutPermission() {
 		assertThrows(SqoopException.class, () -> {
-		String user = YUWEN;
-		String link1 = getRandomLinkName();
-		String link2 = getRandomLinkName();
-		String job = getRandomJobName();
-		AuthorizationEngine.updateJob(user, link1, link2, job);
+			String user = YUWEN;
+			String link1 = getRandomLinkName();
+			String link2 = getRandomLinkName();
+			String job = getRandomJobName();
+			AuthorizationEngine.updateJob(user, link1, link2, job);
 		});
 	}
 
@@ -764,9 +764,9 @@ public class RangerSqoopAuthorizerTest {
 	@Test
 	public void deleteJobAnyWithoutPermission() {
 		assertThrows(SqoopException.class, () -> {
-		String user = YUWEN;
-		String job = getRandomJobName();
-		AuthorizationEngine.deleteJob(user, job);
+			String user = YUWEN;
+			String job = getRandomJobName();
+			AuthorizationEngine.deleteJob(user, job);
 		});
 	}
 
@@ -809,9 +809,9 @@ public class RangerSqoopAuthorizerTest {
 	@Test
 	public void enableDisableJobAnyWithoutPermission() {
 		assertThrows(SqoopException.class, () -> {
-		String user = YUWEN;
-		String job = getRandomJobName();
-		AuthorizationEngine.enableDisableJob(user, job);
+			String user = YUWEN;
+			String job = getRandomJobName();
+			AuthorizationEngine.enableDisableJob(user, job);
 		});
 	}
 
@@ -854,9 +854,9 @@ public class RangerSqoopAuthorizerTest {
 	@Test
 	public void startJobAnyWithoutPermission() {
 		assertThrows(SqoopException.class, () -> {
-		String user = YUWEN;
-		String job = getRandomJobName();
-		AuthorizationEngine.startJob(user, job);
+			String user = YUWEN;
+			String job = getRandomJobName();
+			AuthorizationEngine.startJob(user, job);
 		});
 	}
 
@@ -899,9 +899,9 @@ public class RangerSqoopAuthorizerTest {
 	@Test
 	public void stopJobAnyWithoutPermission() {
 		assertThrows(SqoopException.class, () -> {
-		String user = YUWEN;
-		String job = getRandomJobName();
-		AuthorizationEngine.stopJob(user, job);
+			String user = YUWEN;
+			String job = getRandomJobName();
+			AuthorizationEngine.stopJob(user, job);
 		});
 	}
 
@@ -944,9 +944,9 @@ public class RangerSqoopAuthorizerTest {
 	@Test
 	public void statusJobAnyWithoutPermission() {
 		assertThrows(SqoopException.class, () -> {
-		String user = YUWEN;
-		String job = getRandomJobName();
-		AuthorizationEngine.statusJob(user, job);
+			String user = YUWEN;
+			String job = getRandomJobName();
+			AuthorizationEngine.statusJob(user, job);
 		});
 	}
 

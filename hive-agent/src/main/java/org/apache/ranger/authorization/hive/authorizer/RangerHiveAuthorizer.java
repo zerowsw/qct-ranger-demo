@@ -871,7 +871,7 @@ public class RangerHiveAuthorizer extends RangerHiveAuthorizerBase {
               LOG.error("Error getting permissions for " + path, e);
               throw new HiveAccessControlException(
 					  "Permission denied: user [%s] does not have [%s] privilege on [%s]".formatted(user,
-                      permission.name(), path),
+							  permission.name(), path),
                   e);
             }
 
@@ -890,7 +890,7 @@ public class RangerHiveAuthorizer extends RangerHiveAuthorizerBase {
               if (!isURIAccessAllowed(user, permission, path, fs)) {
                 throw new HiveAccessControlException(
 						"Permission denied: user [%s] does not have [%s] privilege on [%s]".formatted(user,
-                        permission.name(), path));
+								permission.name(), path));
               }
               continue;
             }
@@ -997,7 +997,7 @@ public class RangerHiveAuthorizer extends RangerHiveAuthorizerBase {
               LOG.error("Error getting permissions for " + path, e);
               throw new HiveAccessControlException(
 					  "Permission denied: user [%s] does not have [%s] privilege on [%s]".formatted(user,
-                      permission.name(), path),
+							  permission.name(), path),
                   e);
             }
 
@@ -1016,7 +1016,7 @@ public class RangerHiveAuthorizer extends RangerHiveAuthorizerBase {
               if (!isURIAccessAllowed(user, permission, path, fs)) {
                 throw new HiveAccessControlException(
 						"Permission denied: user [%s] does not have [%s] privilege on [%s]".formatted(user,
-                        permission.name(), path));
+								permission.name(), path));
               }
               continue;
             }
@@ -1153,7 +1153,7 @@ public class RangerHiveAuthorizer extends RangerHiveAuthorizerBase {
 					String path = resource.getAsString();
 					path = (path == null) ? "Unknown resource!!" : buildPathForException(path, hiveOpType);
 					throw new HiveAccessControlException("Permission denied: user [%s] does not have [%s] privilege on [%s]".formatted(
-														 user, request.getHiveAccessType().name(), path));
+							user, request.getHiveAccessType().name(), path));
 				}
 			}
 		} finally {
@@ -2293,7 +2293,7 @@ public class RangerHiveAuthorizer extends RangerHiveAuthorizerBase {
 		auditHandler.logAuditEventForDfs(user, dfsCommandParams, false, serviceType, serviceName);
 
 		throw new HiveAccessControlException("Permission denied: user [%s] does not have privilege for [%s] command".formatted(
-											 user, hiveOpType.name()));
+				user, hiveOpType.name()));
 	}
 
 	private boolean existsByResourceAndAccessType(Collection<RangerHiveAccessRequest> requests, RangerHiveResource resource, HiveAccessType accessType) {

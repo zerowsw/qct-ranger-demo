@@ -76,7 +76,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-@Component
+ @Component
 public class AssetMgr extends AssetMgrBase {
 	private static final String PROP_RANGER_LOG_SC_NOT_MODIFIED          = "ranger.log.SC_NOT_MODIFIED";
 	private static final String PROP_PLUGIN_ACTIVITY_AUDIT_NOT_MODIFIED  = "ranger.plugin.activity.audit.not.modified";

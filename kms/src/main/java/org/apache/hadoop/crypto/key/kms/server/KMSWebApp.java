@@ -179,7 +179,7 @@ public class KMSWebApp implements ServletContextListener {
 				 check whether %s '%s' is configured correctly in\
 				 kms-site.xml.\
 				""").formatted(KMSConfiguration.KEY_PROVIDER_URI,
-          providerString));
+			  providerString));
       LOG.info("keyProvider = "+keyProvider.toString());
       if (kmsConf.getBoolean(KMSConfiguration.KEY_CACHE_ENABLE,
           KMSConfiguration.KEY_CACHE_ENABLE_DEFAULT)) {

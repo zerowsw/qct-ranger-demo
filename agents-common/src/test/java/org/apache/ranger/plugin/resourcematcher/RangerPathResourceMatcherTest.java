@@ -206,7 +206,7 @@ public class RangerPathResourceMatcherTest {
 
     String getMessage(Object[] row) {
         return "Resource=%s, Policy=%s, optWildcard=%s, recursive=%s, result=%s".formatted(
-                (String)row[0], (String)row[1], (boolean)row[2], (boolean)row[3], (boolean)row[4]);
+				(String) row[0], (String) row[1], (boolean) row[2], (boolean) row[3], (boolean) row[4]);
     }
 
     static class MatcherWrapper extends RangerPathResourceMatcher {

@@ -349,17 +349,17 @@ public class TestRangerServiceDefServiceBase {
 	@Test
 	public void test8populateRangerAccessTypeDefToXXNullValue() {
 		assertThrows(WebApplicationException.class, () -> {
-		RangerAccessTypeDef rangerAccessTypeDefObj = null;
-		XXAccessTypeDef accessTypeDefObj = null;
-		XXServiceDef serviceDefObj = null;
-		Mockito.when(
-				restErrorUtil.createRESTException(
-						"RangerServiceDef cannot be null.",
-						MessageEnums.DATA_NOT_FOUND)).thenThrow(
-				new WebApplicationException());
-		XXAccessTypeDef dbAccessTypeDef = rangerServiceDefService
-				.populateRangerAccessTypeDefToXX(rangerAccessTypeDefObj,
-						accessTypeDefObj, serviceDefObj, 1);
+			RangerAccessTypeDef rangerAccessTypeDefObj = null;
+			XXAccessTypeDef accessTypeDefObj = null;
+			XXServiceDef serviceDefObj = null;
+			Mockito.when(
+					restErrorUtil.createRESTException(
+							"RangerServiceDef cannot be null.",
+							MessageEnums.DATA_NOT_FOUND)).thenThrow(
+					new WebApplicationException());
+			XXAccessTypeDef dbAccessTypeDef = rangerServiceDefService
+					.populateRangerAccessTypeDefToXX(rangerAccessTypeDefObj,
+							accessTypeDefObj, serviceDefObj, 1);
 			Assertions.assertNull(dbAccessTypeDef);
 		});
 	}
@@ -447,19 +447,19 @@ public class TestRangerServiceDefServiceBase {
 	@Test
 	public void test11populateRangerPolicyConditionDefToXXnullValue() {
 		assertThrows(WebApplicationException.class, () -> {
-		RangerPolicyConditionDef rangerConditionDefvObj = null;
-		XXPolicyConditionDef policyConditionDefObj = null;
-		XXServiceDef serviceDefObj = null;
+			RangerPolicyConditionDef rangerConditionDefvObj = null;
+			XXPolicyConditionDef policyConditionDefObj = null;
+			XXServiceDef serviceDefObj = null;
 
-		Mockito.when(
-				restErrorUtil.createRESTException(
-						"RangerServiceDef cannot be null.",
-						MessageEnums.DATA_NOT_FOUND)).thenThrow(
-				new WebApplicationException());
+			Mockito.when(
+					restErrorUtil.createRESTException(
+							"RangerServiceDef cannot be null.",
+							MessageEnums.DATA_NOT_FOUND)).thenThrow(
+					new WebApplicationException());
 
-		XXPolicyConditionDef dbPolicyConditionDef = rangerServiceDefService
-				.populateRangerPolicyConditionDefToXX(rangerConditionDefvObj,
-						policyConditionDefObj, serviceDefObj, 1);
+			XXPolicyConditionDef dbPolicyConditionDef = rangerServiceDefService
+					.populateRangerPolicyConditionDefToXX(rangerConditionDefvObj,
+							policyConditionDefObj, serviceDefObj, 1);
 			Assertions.assertNull(dbPolicyConditionDef);
 		});
 	}
@@ -547,20 +547,20 @@ public class TestRangerServiceDefServiceBase {
 	@Test
 	public void test14populateRangerContextEnricherDefToXXnullValue() {
 		assertThrows(WebApplicationException.class, () -> {
-		RangerContextEnricherDef rangerContextEnricherDefObj = null;
-		XXContextEnricherDef contextEnricherDefObj = null;
-		XXServiceDef serviceDefObj = null;
+			RangerContextEnricherDef rangerContextEnricherDefObj = null;
+			XXContextEnricherDef contextEnricherDefObj = null;
+			XXServiceDef serviceDefObj = null;
 
-		Mockito.when(
-				restErrorUtil.createRESTException(
-						"RangerServiceDef cannot be null.",
-						MessageEnums.DATA_NOT_FOUND)).thenThrow(
-				new WebApplicationException());
+			Mockito.when(
+					restErrorUtil.createRESTException(
+							"RangerServiceDef cannot be null.",
+							MessageEnums.DATA_NOT_FOUND)).thenThrow(
+					new WebApplicationException());
 
-		XXContextEnricherDef dbContextEnricherDef = rangerServiceDefService
-				.populateRangerContextEnricherDefToXX(
-						rangerContextEnricherDefObj, contextEnricherDefObj,
-						serviceDefObj, 1);
+			XXContextEnricherDef dbContextEnricherDef = rangerServiceDefService
+					.populateRangerContextEnricherDefToXX(
+							rangerContextEnricherDefObj, contextEnricherDefObj,
+							serviceDefObj, 1);
 			Assertions.assertNull(dbContextEnricherDef);
 
 		});
@@ -633,19 +633,19 @@ public class TestRangerServiceDefServiceBase {
 	@Test
 	public void test17populateRangerEnumDefToXXnullValue() {
 		assertThrows(WebApplicationException.class, () -> {
-		RangerEnumDef rangerEnumDefObj = null;
-		XXEnumDef enumDefObj = null;
-		XXServiceDef serviceDefObj = null;
+			RangerEnumDef rangerEnumDefObj = null;
+			XXEnumDef enumDefObj = null;
+			XXServiceDef serviceDefObj = null;
 
-		Mockito.when(
-				restErrorUtil.createRESTException(
-						"RangerServiceDef cannot be null.",
-						MessageEnums.DATA_NOT_FOUND)).thenThrow(
-				new WebApplicationException());
+			Mockito.when(
+					restErrorUtil.createRESTException(
+							"RangerServiceDef cannot be null.",
+							MessageEnums.DATA_NOT_FOUND)).thenThrow(
+					new WebApplicationException());
 
-		XXEnumDef dbEnumDef = rangerServiceDefService
-				.populateRangerEnumDefToXX(rangerEnumDefObj, enumDefObj,
-						serviceDefObj, 1);
+			XXEnumDef dbEnumDef = rangerServiceDefService
+					.populateRangerEnumDefToXX(rangerEnumDefObj, enumDefObj,
+							serviceDefObj, 1);
 			Assertions.assertNull(dbEnumDef);
 
 		});

@@ -35,7 +35,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Transactional
 @SpringJUnitConfig(locations = {"classpath:applicationContext.xml",
-		"classpath:asynctask-applicationContext.xml" })
+		"classpath:asynctask-applicationContext.xml"})
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
 		DirtiesContextTestExecutionListener.class,
 		TransactionalTestExecutionListener.class })

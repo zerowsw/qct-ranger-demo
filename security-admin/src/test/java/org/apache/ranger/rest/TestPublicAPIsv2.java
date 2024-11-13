@@ -88,7 +88,7 @@ public class TestPublicAPIsv2 {
 
 	@Mock
 	SecurityZoneDBStore securityZoneStore;
-
+	
 	@BeforeEach
 	public void setup() throws Exception {
 		RangerSecurityContext context = new RangerSecurityContext();

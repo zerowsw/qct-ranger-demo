@@ -2021,18 +2021,18 @@ public class TestServiceDBStore {
 	@Test
 	public void test32getServicePolicies() throws Exception {
 		assertThrows(Exception.class, () -> {
-		SearchFilter filter = new SearchFilter();
-		filter.setParam(SearchFilter.POLICY_NAME, "policyName");
-		filter.setParam(SearchFilter.SERVICE_NAME, "serviceName");
+			SearchFilter filter = new SearchFilter();
+			filter.setParam(SearchFilter.POLICY_NAME, "policyName");
+			filter.setParam(SearchFilter.SERVICE_NAME, "serviceName");
 
-		XXService xService = xService();
-		XXServiceDao xServiceDao = Mockito.mock(XXServiceDao.class);
-		Mockito.when(daoManager.getXXService()).thenReturn(xServiceDao);
-		Mockito.when(xServiceDao.getById(Id)).thenReturn(xService);
-		List<RangerPolicy> dbRangerPolicy = serviceDBStore.getServicePolicies(
-				Id, filter);
+			XXService xService = xService();
+			XXServiceDao xServiceDao = Mockito.mock(XXServiceDao.class);
+			Mockito.when(daoManager.getXXService()).thenReturn(xServiceDao);
+			Mockito.when(xServiceDao.getById(Id)).thenReturn(xService);
+			List<RangerPolicy> dbRangerPolicy = serviceDBStore.getServicePolicies(
+					Id, filter);
 			Assertions.assertFalse(dbRangerPolicy.isEmpty());
-		Mockito.verify(daoManager).getXXService();
+			Mockito.verify(daoManager).getXXService();
 		});
 	}
 

@@ -475,17 +475,17 @@ public class TestAssetREST {
 	@Test
 	public void testUpdateXResourceForInvalidResourceId() {
 		assertThrows(WebApplicationException.class, () -> {
-		VXResource vxResource = vxResource(Id);
-		RangerPolicy rangerPolicy = rangerPolicy(Id);
-		RangerService rangerService = rangerService(Id);
-		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
-		VXResource actualvxResource = assetREST.updateXResource(vxResource, -11L);
+			VXResource vxResource = vxResource(Id);
+			RangerPolicy rangerPolicy = rangerPolicy(Id);
+			RangerService rangerService = rangerService(Id);
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
+			VXResource actualvxResource = assetREST.updateXResource(vxResource, -11L);
 			Assertions.assertNotNull(actualvxResource);
 			Assertions.assertEquals(vxResource, actualvxResource);
-		Mockito.verify(serviceREST).getService(vxResource.getAssetId());
-		Mockito.verify(serviceREST).updatePolicy(rangerPolicy, Id);
-		Mockito.verify(serviceUtil).toRangerPolicy(vxResource, rangerService);
-		Mockito.verify(serviceUtil).toVXResource(rangerPolicy, rangerService);
+			Mockito.verify(serviceREST).getService(vxResource.getAssetId());
+			Mockito.verify(serviceREST).updatePolicy(rangerPolicy, Id);
+			Mockito.verify(serviceUtil).toRangerPolicy(vxResource, rangerService);
+			Mockito.verify(serviceUtil).toVXResource(rangerPolicy, rangerService);
 		});
 	}
 

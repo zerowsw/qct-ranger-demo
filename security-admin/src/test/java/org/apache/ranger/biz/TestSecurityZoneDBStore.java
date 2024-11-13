@@ -257,61 +257,61 @@ public class TestSecurityZoneDBStore {
 	@Test
 	public void test8createSecurityZoneWithExistingName() throws Exception {
 		assertThrows(WebApplicationException.class, () -> {
-		XXSecurityZone xxSecurityZone = new XXSecurityZone();
-		xxSecurityZone.setId(2L);
-		RangerSecurityZone securityZone = new RangerSecurityZone();
-		RangerSecurityZone createdSecurityZone = new RangerSecurityZone();
-		createdSecurityZone.setId(2L);
+			XXSecurityZone xxSecurityZone = new XXSecurityZone();
+			xxSecurityZone.setId(2L);
+			RangerSecurityZone securityZone = new RangerSecurityZone();
+			RangerSecurityZone createdSecurityZone = new RangerSecurityZone();
+			createdSecurityZone.setId(2L);
 
-		XXSecurityZoneDao xXSecurityZoneDao = Mockito.mock(XXSecurityZoneDao.class);
+			XXSecurityZoneDao xXSecurityZoneDao = Mockito.mock(XXSecurityZoneDao.class);
 
-		Mockito.when(daoManager.getXXSecurityZoneDao()).thenReturn(xXSecurityZoneDao);
-		Mockito.when(xXSecurityZoneDao.findByZoneName(securityZone.getName())).thenReturn(xxSecurityZone);
-		Mockito.when(restErrorUtil.createRESTException(Mockito.anyString(), Mockito.any(MessageEnums.class)))
-				.thenThrow(new WebApplicationException());
+			Mockito.when(daoManager.getXXSecurityZoneDao()).thenReturn(xXSecurityZoneDao);
+			Mockito.when(xXSecurityZoneDao.findByZoneName(securityZone.getName())).thenReturn(xxSecurityZone);
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyString(), Mockito.any(MessageEnums.class)))
+					.thenThrow(new WebApplicationException());
 
-		securityZoneDBStore.createSecurityZone(securityZone);
+			securityZoneDBStore.createSecurityZone(securityZone);
 
-		Mockito.verify(daoManager, times(1)).getXXSecurityZoneDao();
-		Mockito.verify(xXSecurityZoneDao, times(1)).findByZoneName(securityZone.getName());
+			Mockito.verify(daoManager, times(1)).getXXSecurityZoneDao();
+			Mockito.verify(xXSecurityZoneDao, times(1)).findByZoneName(securityZone.getName());
 		});
 	}
 
 	@Test
 	public void test9updateSecurityZoneByUnknownId() throws Exception {
 		assertThrows(WebApplicationException.class, () -> {
-		RangerSecurityZone securityZoneToUpdate = new RangerSecurityZone();
-		securityZoneToUpdate.setId(2L);
+			RangerSecurityZone securityZoneToUpdate = new RangerSecurityZone();
+			securityZoneToUpdate.setId(2L);
 
-		XXSecurityZoneDao xXSecurityZoneDao = Mockito.mock(XXSecurityZoneDao.class);
-		Mockito.when(restErrorUtil.createRESTException(Mockito.anyString())).thenThrow(new WebApplicationException());
+			XXSecurityZoneDao xXSecurityZoneDao = Mockito.mock(XXSecurityZoneDao.class);
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyString())).thenThrow(new WebApplicationException());
 
-		XXGlobalStateDao xXGlobalStateDao = Mockito.mock(XXGlobalStateDao.class);
-		Mockito.when(daoManager.getXXGlobalState()).thenReturn(xXGlobalStateDao);
-		Mockito.doNothing().when(xXGlobalStateDao).onGlobalStateChange(RANGER_GLOBAL_STATE_NAME);
+			XXGlobalStateDao xXGlobalStateDao = Mockito.mock(XXGlobalStateDao.class);
+			Mockito.when(daoManager.getXXGlobalState()).thenReturn(xXGlobalStateDao);
+			Mockito.doNothing().when(xXGlobalStateDao).onGlobalStateChange(RANGER_GLOBAL_STATE_NAME);
 
-		securityZoneDBStore.updateSecurityZoneById(securityZoneToUpdate);
-		Mockito.verify(daoManager, times(1)).getXXSecurityZoneDao();
-		Mockito.verify(xXSecurityZoneDao, times(1)).findByZoneId(securityZoneToUpdate.getId());
+			securityZoneDBStore.updateSecurityZoneById(securityZoneToUpdate);
+			Mockito.verify(daoManager, times(1)).getXXSecurityZoneDao();
+			Mockito.verify(xXSecurityZoneDao, times(1)).findByZoneId(securityZoneToUpdate.getId());
 		});
 	}
 
 	@Test
 	public void test10deleteSecurityZoneByWrongName() throws Exception {
 		assertThrows(WebApplicationException.class, () -> {
-		XXSecurityZone xxSecurityZone = new XXSecurityZone();
-		xxSecurityZone.setId(2L);
-		RangerSecurityZone securityZone = new RangerSecurityZone();
-		securityZone.setId(2L);
-		securityZone.setName("sz1");
+			XXSecurityZone xxSecurityZone = new XXSecurityZone();
+			xxSecurityZone.setId(2L);
+			RangerSecurityZone securityZone = new RangerSecurityZone();
+			securityZone.setId(2L);
+			securityZone.setName("sz1");
 
-		XXSecurityZoneDao xXSecurityZoneDao = Mockito.mock(XXSecurityZoneDao.class);
-		Mockito.when(daoManager.getXXSecurityZoneDao()).thenReturn(xXSecurityZoneDao);
-		Mockito.when(xXSecurityZoneDao.findByZoneName(securityZone.getName())).thenReturn(null);
-		Mockito.when(restErrorUtil.createRESTException(Mockito.anyString())).thenThrow(new WebApplicationException());
+			XXSecurityZoneDao xXSecurityZoneDao = Mockito.mock(XXSecurityZoneDao.class);
+			Mockito.when(daoManager.getXXSecurityZoneDao()).thenReturn(xXSecurityZoneDao);
+			Mockito.when(xXSecurityZoneDao.findByZoneName(securityZone.getName())).thenReturn(null);
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyString())).thenThrow(new WebApplicationException());
 
-		securityZoneDBStore.deleteSecurityZoneByName(securityZone.getName());
-		Mockito.verify(xXSecurityZoneDao, times(1)).findByZoneName(xxSecurityZone.getName());
+			securityZoneDBStore.deleteSecurityZoneByName(securityZone.getName());
+			Mockito.verify(xXSecurityZoneDao, times(1)).findByZoneName(xxSecurityZone.getName());
 
 		});
 
@@ -320,17 +320,17 @@ public class TestSecurityZoneDBStore {
 	@Test
 	public void test11getSecurityZoneByWrongName() throws Exception {
 		assertThrows(WebApplicationException.class, () -> {
-		RangerSecurityZone securityZone = new RangerSecurityZone();
-		securityZone.setId(2L);
-		securityZone.setName("sz1");
+			RangerSecurityZone securityZone = new RangerSecurityZone();
+			securityZone.setId(2L);
+			securityZone.setName("sz1");
 
-		XXSecurityZoneDao xXSecurityZoneDao = Mockito.mock(XXSecurityZoneDao.class);
-		Mockito.when(daoManager.getXXSecurityZoneDao()).thenReturn(xXSecurityZoneDao);
-		Mockito.when(xXSecurityZoneDao.findByZoneName(securityZone.getName())).thenReturn(null);
-		Mockito.when(restErrorUtil.createRESTException(Mockito.anyString())).thenThrow(new WebApplicationException());
+			XXSecurityZoneDao xXSecurityZoneDao = Mockito.mock(XXSecurityZoneDao.class);
+			Mockito.when(daoManager.getXXSecurityZoneDao()).thenReturn(xXSecurityZoneDao);
+			Mockito.when(xXSecurityZoneDao.findByZoneName(securityZone.getName())).thenReturn(null);
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyString())).thenThrow(new WebApplicationException());
 
-		securityZoneDBStore.getSecurityZoneByName(securityZone.getName());
-		Mockito.verify(xXSecurityZoneDao, times(1)).findByZoneName(securityZone.getName());
+			securityZoneDBStore.getSecurityZoneByName(securityZone.getName());
+			Mockito.verify(xXSecurityZoneDao, times(1)).findByZoneName(securityZone.getName());
 
 		});
 

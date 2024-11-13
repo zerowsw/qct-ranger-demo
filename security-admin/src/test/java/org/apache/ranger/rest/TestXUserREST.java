@@ -730,22 +730,22 @@ public class TestXUserREST {
 	@Test
 	public void test38getXPermMapVXResourceNull() throws Exception{
 		assertThrows(WebApplicationException.class, () -> {
-		VXPermMap permMap = testcreateXPermMap();
-		
-		Mockito.when(xUserMgr.getXPermMap(id)).thenReturn(permMap);
-		
-		Mockito.when(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums)Mockito.any())).thenThrow(new WebApplicationException());
-		
-		VXPermMap retVxGroup= xUserRest.getXPermMap(id);
-		
-		Mockito.verify(xUserMgr).getXPermMap(id);
-		Mockito.verify(xResourceService).readResource(null);
-		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyString(), (MessageEnums)Mockito.any());
-		assertEquals(permMap.getId(),retVxGroup.getId());
-		assertEquals(permMap.getClass(),retVxGroup.getClass());
-		assertNotNull(retVxGroup);
-		
-	
+			VXPermMap permMap = testcreateXPermMap();
+
+			Mockito.when(xUserMgr.getXPermMap(id)).thenReturn(permMap);
+
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any())).thenThrow(new WebApplicationException());
+
+			VXPermMap retVxGroup = xUserRest.getXPermMap(id);
+
+			Mockito.verify(xUserMgr).getXPermMap(id);
+			Mockito.verify(xResourceService).readResource(null);
+			Mockito.verify(restErrorUtil).createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any());
+			assertEquals(permMap.getId(), retVxGroup.getId());
+			assertEquals(permMap.getClass(), retVxGroup.getClass());
+			assertNotNull(retVxGroup);
+
+
 		});
 
 
@@ -778,20 +778,20 @@ public class TestXUserREST {
 	public void test41createXPermMap() {
 		assertThrows(WebApplicationException.class, () -> {
 
-		VXPermMap permMap = testcreateXPermMap();
-		permMap.setResourceId(null);
-		Mockito.when(xResourceService.readResource(permMap.getResourceId())).thenReturn(null);
-		Mockito.when(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums)Mockito.any())).thenThrow(new WebApplicationException());
-		
-		VXPermMap retVxGroup=xUserRest.createXPermMap(permMap);
-		
-		assertEquals(permMap.getId(),retVxGroup.getId());
-		assertEquals(permMap.getClass(),retVxGroup.getClass());
-		assertNotNull(retVxGroup);
-		
-		Mockito.verify(xUserMgr).createXPermMap(permMap);
-		Mockito.verify(xResourceService).readResource(permMap.getResourceId());
-		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyString(), (MessageEnums)Mockito.any());
+			VXPermMap permMap = testcreateXPermMap();
+			permMap.setResourceId(null);
+			Mockito.when(xResourceService.readResource(permMap.getResourceId())).thenReturn(null);
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any())).thenThrow(new WebApplicationException());
+
+			VXPermMap retVxGroup = xUserRest.createXPermMap(permMap);
+
+			assertEquals(permMap.getId(), retVxGroup.getId());
+			assertEquals(permMap.getClass(), retVxGroup.getClass());
+			assertNotNull(retVxGroup);
+
+			Mockito.verify(xUserMgr).createXPermMap(permMap);
+			Mockito.verify(xResourceService).readResource(permMap.getResourceId());
+			Mockito.verify(restErrorUtil).createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any());
 		});
 	}
 	
@@ -849,21 +849,21 @@ public class TestXUserREST {
 	@Test
 	public void test46updateXPermMap() {
 		assertThrows(WebApplicationException.class, () -> {
-		VXPermMap permMap = testcreateXPermMap();
-		
-		Mockito.when(xResourceService.readResource(permMap.getResourceId())).thenReturn(null);
-		Mockito.when(restErrorUtil.createRESTException(Mockito.anyString())).thenThrow(new WebApplicationException());
-		
-		VXPermMap retVxGroup=xUserRest.updateXPermMap(permMap);
-		
-		assertEquals(permMap.getId(),retVxGroup.getId());
-		assertEquals(permMap.getClass(),retVxGroup.getClass());
-		assertNotNull(retVxGroup);
-		
-		Mockito.verify(xUserMgr).updateXPermMap(permMap);
-		Mockito.verify(xResourceService).readResource(permMap.getResourceId());
-		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyString());
-		
+			VXPermMap permMap = testcreateXPermMap();
+
+			Mockito.when(xResourceService.readResource(permMap.getResourceId())).thenReturn(null);
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyString())).thenThrow(new WebApplicationException());
+
+			VXPermMap retVxGroup = xUserRest.updateXPermMap(permMap);
+
+			assertEquals(permMap.getId(), retVxGroup.getId());
+			assertEquals(permMap.getClass(), retVxGroup.getClass());
+			assertNotNull(retVxGroup);
+
+			Mockito.verify(xUserMgr).updateXPermMap(permMap);
+			Mockito.verify(xResourceService).readResource(permMap.getResourceId());
+			Mockito.verify(restErrorUtil).createRESTException(Mockito.anyString());
+
 		});
 
 	}
@@ -917,21 +917,21 @@ public class TestXUserREST {
 	@Test
 	public void test50getXAuditMapVXAuditMapNull() {
 		assertThrows(WebApplicationException.class, () -> {
-		VXAuditMap testvXAuditMap =  createVXAuditMapObj();
-		Mockito.when(xUserMgr.getXAuditMap(testvXAuditMap.getResourceId())).thenReturn(testvXAuditMap);
+			VXAuditMap testvXAuditMap = createVXAuditMapObj();
+			Mockito.when(xUserMgr.getXAuditMap(testvXAuditMap.getResourceId())).thenReturn(testvXAuditMap);
 
-		Mockito.when(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums)Mockito.any())).thenThrow(new WebApplicationException());
-		
-		VXAuditMap retVXAuditMap=xUserRest.getXAuditMap(testvXAuditMap.getResourceId());
-		
-		assertEquals(testvXAuditMap.getId(),retVXAuditMap.getId());
-		assertEquals(testvXAuditMap.getClass(),retVXAuditMap.getClass());
-		assertNotNull(retVXAuditMap);
-		
-		Mockito.verify(xUserMgr).getXAuditMap(testvXAuditMap.getResourceId());
-		Mockito.verify(xResourceService).readResource(null);
-		Mockito.verify(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums)Mockito.any()));
-		
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any())).thenThrow(new WebApplicationException());
+
+			VXAuditMap retVXAuditMap = xUserRest.getXAuditMap(testvXAuditMap.getResourceId());
+
+			assertEquals(testvXAuditMap.getId(), retVXAuditMap.getId());
+			assertEquals(testvXAuditMap.getClass(), retVXAuditMap.getClass());
+			assertNotNull(retVXAuditMap);
+
+			Mockito.verify(xUserMgr).getXAuditMap(testvXAuditMap.getResourceId());
+			Mockito.verify(xResourceService).readResource(null);
+			Mockito.verify(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any()));
+
 		});
 
 	}
@@ -990,22 +990,22 @@ public class TestXUserREST {
 	public void test54createXAuditMapVxResourceNull() {
 		assertThrows(WebApplicationException.class, () -> {
 
-		VXAuditMap testvXAuditMap =  createVXAuditMapObj();
-		testvXAuditMap.setResourceId(null);
-		
-		Mockito.when(xResourceService.readResource(testvXAuditMap.getResourceId())).thenReturn(null);
+			VXAuditMap testvXAuditMap = createVXAuditMapObj();
+			testvXAuditMap.setResourceId(null);
 
-		Mockito.when(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums)Mockito.any())).thenThrow(new WebApplicationException());
-		
-		VXAuditMap retvXAuditMap= xUserRest.createXAuditMap(testvXAuditMap);
-		assertEquals(testvXAuditMap.getId(),retvXAuditMap.getId());
-		assertEquals(testvXAuditMap.getClass(),retvXAuditMap.getClass());
-		assertNotNull(retvXAuditMap);
-		
-		Mockito.verify(xUserMgr).createXAuditMap(testvXAuditMap);
-		Mockito.verify(xResourceService).readResource(testvXAuditMap.getResourceId());
-		Mockito.verify(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums)Mockito.any()));
-		
+			Mockito.when(xResourceService.readResource(testvXAuditMap.getResourceId())).thenReturn(null);
+
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any())).thenThrow(new WebApplicationException());
+
+			VXAuditMap retvXAuditMap = xUserRest.createXAuditMap(testvXAuditMap);
+			assertEquals(testvXAuditMap.getId(), retvXAuditMap.getId());
+			assertEquals(testvXAuditMap.getClass(), retvXAuditMap.getClass());
+			assertNotNull(retvXAuditMap);
+
+			Mockito.verify(xUserMgr).createXAuditMap(testvXAuditMap);
+			Mockito.verify(xResourceService).readResource(testvXAuditMap.getResourceId());
+			Mockito.verify(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any()));
+
 		});
 
 	}@Test
@@ -1039,15 +1039,15 @@ public class TestXUserREST {
 	@Test
 	public void test57updateXAuditMapNull() {
 		assertThrows(WebApplicationException.class, () -> {
-		VXAuditMap testvXAuditMap =  createVXAuditMapObj();
-		
-		
-		Mockito.when(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums)Mockito.any())).thenThrow(new WebApplicationException());
-		VXAuditMap retvXAuditMap=xUserRest.updateXAuditMap(testvXAuditMap);
-		assertNull(retvXAuditMap);
-		Mockito.verify(xUserMgr).updateXAuditMap(testvXAuditMap);
-		Mockito.verify(xResourceService).readResource(null);
-		Mockito.verify(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums)Mockito.any()));
+			VXAuditMap testvXAuditMap = createVXAuditMapObj();
+
+
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any())).thenThrow(new WebApplicationException());
+			VXAuditMap retvXAuditMap = xUserRest.updateXAuditMap(testvXAuditMap);
+			assertNull(retvXAuditMap);
+			Mockito.verify(xUserMgr).updateXAuditMap(testvXAuditMap);
+			Mockito.verify(xResourceService).readResource(null);
+			Mockito.verify(restErrorUtil.createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any()));
 		});
 	}
 	@Test
@@ -1987,45 +1987,45 @@ public class TestXUserREST {
 	@Test
 	public void test113ErrorWhenRoleUserIsTryingToFetchAnotherUserDetails() {
 		assertThrows(WebApplicationException.class, () -> {
-	
-		destroySession();
-		String userLoginID = "testuser";
-		Long userId = 8L;
-		
-		RangerSecurityContext context = new RangerSecurityContext();
-		context.setUserSession(new UserSessionBase());
-		RangerContextHolder.setSecurityContext(context);
-		UserSessionBase currentUserSession = ContextUtil.getCurrentUserSession();
-		currentUserSession.setUserAdmin(false);
-		XXPortalUser xXPortalUser = new XXPortalUser();
-		xXPortalUser.setLoginId(userLoginID);
-		xXPortalUser.setId(userId);
-		currentUserSession.setXXPortalUser(xXPortalUser);
-		
-		VXUser loggedInUser = createVXUser();
-		List<String> loggedInUserRole = new ArrayList<String>();
-		loggedInUserRole.add(RangerConstants.ROLE_USER);
-		loggedInUser.setId(8L);
-		loggedInUser.setName("testuser");
-		loggedInUser.setUserRoleList(loggedInUserRole);
-		
-		HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
-		SearchCriteria testSearchCriteria=createsearchCriteria();
-		testSearchCriteria.addParam("name", "admin");
-		
-		Mockito.when(searchUtil.extractCommonCriterias((HttpServletRequest)Mockito.any(), (List<SortField>)Mockito.any())).thenReturn(testSearchCriteria);
-		
-		Mockito.when(searchUtil.extractCommonCriterias(request, xUserService.sortFields)).thenReturn(testSearchCriteria);
-		Mockito.when(searchUtil.extractString(request, testSearchCriteria, "emailAddress", "Email Address",null)).thenReturn("");
-		Mockito.when(searchUtil.extractInt(request, testSearchCriteria, "userSource", "User Source")).thenReturn(1);
-		Mockito.when(searchUtil.extractInt(request, testSearchCriteria, "isVisible", "User Visibility")).thenReturn(1);
-		Mockito.when(searchUtil.extractInt(request, testSearchCriteria, "status", "User Status")).thenReturn(1);
-		Mockito.when(searchUtil.extractStringList(request, testSearchCriteria, "userRoleList", "User Role List", "userRoleList", null,null)).thenReturn(new ArrayList<String>());
-		Mockito.when(searchUtil.extractRoleString(request, testSearchCriteria, "userRole", "Role", null)).thenReturn("");
-		Mockito.when(xUserService.getXUserByUserName("testuser")).thenReturn(loggedInUser);
-		Mockito.when(restErrorUtil.create403RESTException("Logged-In user is not allowed to access requested user data.")).thenThrow(new WebApplicationException());
-		
-		xUserRest.searchXUsers(request);
+
+			destroySession();
+			String userLoginID = "testuser";
+			Long userId = 8L;
+
+			RangerSecurityContext context = new RangerSecurityContext();
+			context.setUserSession(new UserSessionBase());
+			RangerContextHolder.setSecurityContext(context);
+			UserSessionBase currentUserSession = ContextUtil.getCurrentUserSession();
+			currentUserSession.setUserAdmin(false);
+			XXPortalUser xXPortalUser = new XXPortalUser();
+			xXPortalUser.setLoginId(userLoginID);
+			xXPortalUser.setId(userId);
+			currentUserSession.setXXPortalUser(xXPortalUser);
+
+			VXUser loggedInUser = createVXUser();
+			List<String> loggedInUserRole = new ArrayList<String>();
+			loggedInUserRole.add(RangerConstants.ROLE_USER);
+			loggedInUser.setId(8L);
+			loggedInUser.setName("testuser");
+			loggedInUser.setUserRoleList(loggedInUserRole);
+
+			HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+			SearchCriteria testSearchCriteria = createsearchCriteria();
+			testSearchCriteria.addParam("name", "admin");
+
+			Mockito.when(searchUtil.extractCommonCriterias((HttpServletRequest) Mockito.any(), (List<SortField>) Mockito.any())).thenReturn(testSearchCriteria);
+
+			Mockito.when(searchUtil.extractCommonCriterias(request, xUserService.sortFields)).thenReturn(testSearchCriteria);
+			Mockito.when(searchUtil.extractString(request, testSearchCriteria, "emailAddress", "Email Address", null)).thenReturn("");
+			Mockito.when(searchUtil.extractInt(request, testSearchCriteria, "userSource", "User Source")).thenReturn(1);
+			Mockito.when(searchUtil.extractInt(request, testSearchCriteria, "isVisible", "User Visibility")).thenReturn(1);
+			Mockito.when(searchUtil.extractInt(request, testSearchCriteria, "status", "User Status")).thenReturn(1);
+			Mockito.when(searchUtil.extractStringList(request, testSearchCriteria, "userRoleList", "User Role List", "userRoleList", null, null)).thenReturn(new ArrayList<String>());
+			Mockito.when(searchUtil.extractRoleString(request, testSearchCriteria, "userRole", "Role", null)).thenReturn("");
+			Mockito.when(xUserService.getXUserByUserName("testuser")).thenReturn(loggedInUser);
+			Mockito.when(restErrorUtil.create403RESTException("Logged-In user is not allowed to access requested user data.")).thenThrow(new WebApplicationException());
+
+			xUserRest.searchXUsers(request);
 		});
 	}
 
@@ -2087,14 +2087,14 @@ public class TestXUserREST {
 	public void test115updateXGroupPermissionWithInvalidPermissionId() {
 		assertThrows(WebApplicationException.class, () -> {
 
-		VXGroupPermission testVXGroupPermission = createVXGroupPermission();
-		Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
-		VXGroupPermission retVXGroupPermission=xUserRest.updateXGroupPermission(-1L, testVXGroupPermission);
-		Mockito.verify(xUserMgr).updateXGroupPermission(testVXGroupPermission);
-		Mockito.verify(xUserMgr).checkAdminAccess();
-		assertNotNull(retVXGroupPermission);
-		assertEquals(retVXGroupPermission.getId(), testVXGroupPermission.getId());
-		assertEquals(retVXGroupPermission.getClass(), testVXGroupPermission.getClass());
+			VXGroupPermission testVXGroupPermission = createVXGroupPermission();
+			Mockito.when(restErrorUtil.createRESTException(Mockito.anyInt(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new WebApplicationException());
+			VXGroupPermission retVXGroupPermission = xUserRest.updateXGroupPermission(-1L, testVXGroupPermission);
+			Mockito.verify(xUserMgr).updateXGroupPermission(testVXGroupPermission);
+			Mockito.verify(xUserMgr).checkAdminAccess();
+			assertNotNull(retVXGroupPermission);
+			assertEquals(retVXGroupPermission.getId(), testVXGroupPermission.getId());
+			assertEquals(retVXGroupPermission.getClass(), testVXGroupPermission.getClass());
 
 		});
 

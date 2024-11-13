@@ -157,7 +157,7 @@ public class RangerDefaultResourceMatcherTest {
 
     String getMessage(Object[] row) {
         return "Resource=%s, Policy=%s, excludes=%s, matchScope=%s, matchType=%s, result=%s".formatted(
-                row[0], row[1], row[2], row[3], row[4], row[5]);
+				row[0], row[1], row[2], row[3], row[4], row[5]);
     }
 
     static class MatcherWrapper extends RangerDefaultResourceMatcher {

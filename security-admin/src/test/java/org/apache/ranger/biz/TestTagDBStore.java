@@ -141,29 +141,29 @@ public class TestTagDBStore {
     @Test
     public void testUpdateTagDefWhenItIsNotAvailable() throws Exception {
 		assertThrows(WebApplicationException.class, () -> {
-        RangerTagDef rangerTagDef = createRangerTagDef();
+			RangerTagDef rangerTagDef = createRangerTagDef();
 
-        Mockito.when(rangerTagDefService.read(id)).thenReturn(null).thenReturn(rangerTagDef);
-        Mockito.when(errorUtil.createRESTException(Mockito.anyString(), Mockito.any(MessageEnums.class))).thenThrow(new WebApplicationException());
+			Mockito.when(rangerTagDefService.read(id)).thenReturn(null).thenReturn(rangerTagDef);
+			Mockito.when(errorUtil.createRESTException(Mockito.anyString(), Mockito.any(MessageEnums.class))).thenThrow(new WebApplicationException());
 
-        tagDBStore.updateTagDef(rangerTagDef);
+			tagDBStore.updateTagDef(rangerTagDef);
 		});
-    }
+	}
 
     @Test
     public void testUpdateTagDefForTheSameName() throws Exception {
 		assertThrows(WebApplicationException.class, () -> {
-        RangerTagDef rangerTagDef     = createRangerTagDef();
-        RangerTagDef rangerTagDefInDB = createRangerTagDef();
+			RangerTagDef rangerTagDef = createRangerTagDef();
+			RangerTagDef rangerTagDefInDB = createRangerTagDef();
 
-        rangerTagDefInDB.setName("test1");
+			rangerTagDefInDB.setName("test1");
 
-        Mockito.when(rangerTagDefService.read(id)).thenReturn(rangerTagDefInDB);
-        Mockito.when(errorUtil.createRESTException(Mockito.anyString(), Mockito.any(MessageEnums.class))).thenThrow(new WebApplicationException());
+			Mockito.when(rangerTagDefService.read(id)).thenReturn(rangerTagDefInDB);
+			Mockito.when(errorUtil.createRESTException(Mockito.anyString(), Mockito.any(MessageEnums.class))).thenThrow(new WebApplicationException());
 
-        tagDBStore.updateTagDef(rangerTagDef);
+			tagDBStore.updateTagDef(rangerTagDef);
 		});
-    }
+	}
 
     @Test
     public void testGetTagDefByName() throws Exception {
@@ -294,14 +294,14 @@ public class TestTagDBStore {
     @Test
     public void testUpdateTagWhenItIsNotAvailable() throws Exception {
 		assertThrows(WebApplicationException.class, () -> {
-        RangerTag rangerTag = createRangerTag();
+			RangerTag rangerTag = createRangerTag();
 
-        Mockito.when(rangerTagService.read(id)).thenReturn(null).thenReturn(rangerTag);
-        Mockito.when(errorUtil.createRESTException(Mockito.anyString(), Mockito.any(MessageEnums.class))).thenThrow(new WebApplicationException());
+			Mockito.when(rangerTagService.read(id)).thenReturn(null).thenReturn(rangerTag);
+			Mockito.when(errorUtil.createRESTException(Mockito.anyString(), Mockito.any(MessageEnums.class))).thenThrow(new WebApplicationException());
 
-        tagDBStore.updateTag(rangerTag);
+			tagDBStore.updateTag(rangerTag);
 		});
-    }
+	}
 
     @Test
     public void testDeleteTagById() throws Exception {
@@ -474,14 +474,14 @@ public class TestTagDBStore {
     @Test
     public void testUpdateServiceResourceWhenItIsNotAvailable() throws Exception {
 		assertThrows(WebApplicationException.class, () -> {
-        RangerServiceResource rangerServiceResource = createRangerServiceResource();
+			RangerServiceResource rangerServiceResource = createRangerServiceResource();
 
-        Mockito.when(rangerServiceResourceService.read(id)).thenReturn(null).thenReturn(rangerServiceResource);
-        Mockito.when(errorUtil.createRESTException(Mockito.anyString(), Mockito.any(MessageEnums.class))).thenThrow(new WebApplicationException());
+			Mockito.when(rangerServiceResourceService.read(id)).thenReturn(null).thenReturn(rangerServiceResource);
+			Mockito.when(errorUtil.createRESTException(Mockito.anyString(), Mockito.any(MessageEnums.class))).thenThrow(new WebApplicationException());
 
-        tagDBStore.updateServiceResource(rangerServiceResource);
+			tagDBStore.updateServiceResource(rangerServiceResource);
 		});
-    }
+	}
 
     @Test
     public void testRefreshServiceResource() throws Exception {

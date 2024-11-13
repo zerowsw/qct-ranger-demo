@@ -119,14 +119,14 @@ public class TestXKeyREST {
 	@Test
 	public void Test4RolloverKey() throws Exception {
 		assertThrows(WebApplicationException.class, () -> {
-		VXKmsKey vxKeyExp = new VXKmsKey();
+			VXKmsKey vxKeyExp = new VXKmsKey();
 
-		Mockito.when(restErrorUtil.createRESTException(Mockito.nullable(String.class), (MessageEnums) Mockito.any()))
-				.thenReturn(new WebApplicationException());
+			Mockito.when(restErrorUtil.createRESTException(Mockito.nullable(String.class), (MessageEnums) Mockito.any()))
+					.thenReturn(new WebApplicationException());
 
-		keyREST.rolloverKey(provider, vxKeyExp);
+			keyREST.rolloverKey(provider, vxKeyExp);
 
-		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any());
+			Mockito.verify(restErrorUtil).createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any());
 		});
 	}
 
@@ -142,12 +142,12 @@ public class TestXKeyREST {
 	@Test
 	public void Test6DeleteKey() throws Exception {
 		assertThrows(WebApplicationException.class, () -> {
-		Mockito.when(restErrorUtil.createRESTException(Mockito.nullable(String.class), (MessageEnums) Mockito.any()))
-				.thenReturn(new WebApplicationException());
+			Mockito.when(restErrorUtil.createRESTException(Mockito.nullable(String.class), (MessageEnums) Mockito.any()))
+					.thenReturn(new WebApplicationException());
 
-		keyREST.deleteKey(nameNl, provider, request);
+			keyREST.deleteKey(nameNl, provider, request);
 
-		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any());
+			Mockito.verify(restErrorUtil).createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any());
 		});
 	}
 
@@ -188,14 +188,14 @@ public class TestXKeyREST {
 	@Test
 	public void Test8CreateKey() throws Exception {
 		assertThrows(WebApplicationException.class, () -> {
-		VXKmsKey vxKeyExp = new VXKmsKey();
+			VXKmsKey vxKeyExp = new VXKmsKey();
 
-		Mockito.when(restErrorUtil.createRESTException(Mockito.nullable(String.class), (MessageEnums) Mockito.any()))
-				.thenReturn(new WebApplicationException());
+			Mockito.when(restErrorUtil.createRESTException(Mockito.nullable(String.class), (MessageEnums) Mockito.any()))
+					.thenReturn(new WebApplicationException());
 
-		VXKmsKey vxKeyAct = keyREST.createKey(provider, vxKeyExp);
+			VXKmsKey vxKeyAct = keyREST.createKey(provider, vxKeyExp);
 
-		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any());
+			Mockito.verify(restErrorUtil).createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any());
 
 			Assertions.assertNull(vxKeyAct);
 		});
@@ -219,14 +219,14 @@ public class TestXKeyREST {
 	@Test
 	public void Test10GetKey() throws Exception {
 		assertThrows(WebApplicationException.class, () -> {
-		Mockito.when(restErrorUtil.createRESTException(Mockito.nullable(String.class), (MessageEnums) Mockito.any()))
-				.thenReturn(new WebApplicationException());
+			Mockito.when(restErrorUtil.createRESTException(Mockito.nullable(String.class), (MessageEnums) Mockito.any()))
+					.thenReturn(new WebApplicationException());
 
-		VXKmsKey vxKeyAct = keyREST.getKey(nameNl, provider);
+			VXKmsKey vxKeyAct = keyREST.getKey(nameNl, provider);
 
 			Assertions.assertNull(vxKeyAct);
 
-		Mockito.verify(restErrorUtil).createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any());
+			Mockito.verify(restErrorUtil).createRESTException(Mockito.anyString(), (MessageEnums) Mockito.any());
 		});
 	}
 }

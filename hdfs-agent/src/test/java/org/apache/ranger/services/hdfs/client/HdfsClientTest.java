@@ -32,115 +32,115 @@ public class HdfsClientTest {
   @Test
   public void testUsernameNotSpecified() throws IllegalArgumentException {
 	  assertThrows(IllegalArgumentException.class, () -> {
-    Map<String, String> configs = new HashMap<String, String>();
-    HdfsClient.validateConnectionConfigs(configs);
+			Map<String, String> configs = new HashMap<String, String>();
+			HdfsClient.validateConnectionConfigs(configs);
 		});
-  }
+	}
 
   @Test
   public void testPasswordNotSpecified() throws IllegalArgumentException {
 	  assertThrows(IllegalArgumentException.class, () -> {
-    Map<String, String> configs = new HashMap<String, String>();
-    configs.put("username", "hdfsuser");
-    HdfsClient.validateConnectionConfigs(configs);
+			Map<String, String> configs = new HashMap<String, String>();
+			configs.put("username", "hdfsuser");
+			HdfsClient.validateConnectionConfigs(configs);
 		});
-  }
+	}
   @Test
   public void testAuthenticationNotSpecified()  throws IllegalArgumentException {
 	  assertThrows(IllegalArgumentException.class, () -> {
-    Map<String, String> configs = new HashMap<String, String>();
-    configs.put("username", "hdfsuser");
-    configs.put("password", "hdfsuser");
-    HdfsClient.validateConnectionConfigs(configs);
+			Map<String, String> configs = new HashMap<String, String>();
+			configs.put("username", "hdfsuser");
+			configs.put("password", "hdfsuser");
+			HdfsClient.validateConnectionConfigs(configs);
 		});
-  }
+	}
 
   @Test
   public void testFsDefaultNameNotSpecified()  throws IllegalArgumentException {
 	  assertThrows(IllegalArgumentException.class, () -> {
-    Map<String, String> configs = new HashMap<String, String>();
-    configs.put("username", "hdfsuser");
-    configs.put("password", "hdfsuser");
-    configs.put("hadoop.security.authentication", "simple");
-    HdfsClient.validateConnectionConfigs(configs);
+			Map<String, String> configs = new HashMap<String, String>();
+			configs.put("username", "hdfsuser");
+			configs.put("password", "hdfsuser");
+			configs.put("hadoop.security.authentication", "simple");
+			HdfsClient.validateConnectionConfigs(configs);
 		});
-  }
+	}
 
   @Test
   public void testProxyProviderNotSpecified()  throws IllegalArgumentException {
 	  assertThrows(IllegalArgumentException.class, () -> {
-    Map<String, String> configs = new HashMap<String, String>();
-    configs.put("username", "hdfsuser");
-    configs.put("password", "hdfsuser");
-    configs.put("hadoop.security.authentication", "simple");
-    configs.put("fs.default.name", "hdfs://hwqe-1425428405");
-    configs.put("dfs.nameservices", "hwqe-1425428405");
-    HdfsClient.validateConnectionConfigs(configs);
+			Map<String, String> configs = new HashMap<String, String>();
+			configs.put("username", "hdfsuser");
+			configs.put("password", "hdfsuser");
+			configs.put("hadoop.security.authentication", "simple");
+			configs.put("fs.default.name", "hdfs://hwqe-1425428405");
+			configs.put("dfs.nameservices", "hwqe-1425428405");
+			HdfsClient.validateConnectionConfigs(configs);
 		});
-  }
+	}
 
   @Test
 	public void testNnElementsNotSpecified()  throws IllegalArgumentException {
 	  assertThrows(IllegalArgumentException.class, () -> {
-    Map<String, String> configs = new HashMap<String, String>();
-    configs.put("username", "hdfsuser");
-    configs.put("password", "hdfsuser");
-    configs.put("hadoop.security.authentication", "simple");
-    configs.put("fs.default.name", "hdfs://hwqe-1425428405");
-    configs.put("dfs.nameservices", "hwqe-1425428405");
-    configs.put("dfs.client.failover.proxy.provider.hwqe-1425428405",
-      "org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider");
-    HdfsClient.validateConnectionConfigs(configs);
+			Map<String, String> configs = new HashMap<String, String>();
+			configs.put("username", "hdfsuser");
+			configs.put("password", "hdfsuser");
+			configs.put("hadoop.security.authentication", "simple");
+			configs.put("fs.default.name", "hdfs://hwqe-1425428405");
+			configs.put("dfs.nameservices", "hwqe-1425428405");
+			configs.put("dfs.client.failover.proxy.provider.hwqe-1425428405",
+					"org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider");
+			HdfsClient.validateConnectionConfigs(configs);
 		});
 	}
 
   @Test
 	public void testNn1UrlNn2UrlNotSpecified()  throws IllegalArgumentException {
 	  assertThrows(IllegalArgumentException.class, () -> {
-    Map<String, String> configs = new HashMap<String, String>();
-    configs.put("username", "hdfsuser");
-    configs.put("password", "hdfsuser");
-    configs.put("hadoop.security.authentication", "simple");
-    configs.put("fs.default.name", "hdfs://hwqe-1425428405");
-    configs.put("dfs.nameservices", "hwqe-1425428405");
-    configs.put("dfs.client.failover.proxy.provider.hwqe-1425428405",
-      "org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider");
-    configs.put("dfs.ha.namenodes.hwqe-1425428405", "nn1,nn2");
-    HdfsClient.validateConnectionConfigs(configs);
+			Map<String, String> configs = new HashMap<String, String>();
+			configs.put("username", "hdfsuser");
+			configs.put("password", "hdfsuser");
+			configs.put("hadoop.security.authentication", "simple");
+			configs.put("fs.default.name", "hdfs://hwqe-1425428405");
+			configs.put("dfs.nameservices", "hwqe-1425428405");
+			configs.put("dfs.client.failover.proxy.provider.hwqe-1425428405",
+					"org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider");
+			configs.put("dfs.ha.namenodes.hwqe-1425428405", "nn1,nn2");
+			HdfsClient.validateConnectionConfigs(configs);
 		});
 	}
 
   @Test
 	public void testNn1UrlNotSpecified()  throws IllegalArgumentException {
 	  assertThrows(IllegalArgumentException.class, () -> {
-    Map<String, String> configs = new HashMap<String, String>();
-    configs.put("username", "hdfsuser");
-    configs.put("password", "hdfsuser");
-    configs.put("hadoop.security.authentication", "simple");
-    configs.put("fs.default.name", "hdfs://hwqe-1425428405");
-    configs.put("dfs.nameservices", "hwqe-1425428405");
-    configs.put("dfs.client.failover.proxy.provider.hwqe-1425428405",
-      "org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider");
-    configs.put("dfs.ha.namenodes.hwqe-1425428405", "nn1,nn2");
-    configs.put("dfs.namenode.rpc-address.hwqe-1425428405.nn2", "node-2.example.com:8020");
-    HdfsClient.validateConnectionConfigs(configs);
+			Map<String, String> configs = new HashMap<String, String>();
+			configs.put("username", "hdfsuser");
+			configs.put("password", "hdfsuser");
+			configs.put("hadoop.security.authentication", "simple");
+			configs.put("fs.default.name", "hdfs://hwqe-1425428405");
+			configs.put("dfs.nameservices", "hwqe-1425428405");
+			configs.put("dfs.client.failover.proxy.provider.hwqe-1425428405",
+					"org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider");
+			configs.put("dfs.ha.namenodes.hwqe-1425428405", "nn1,nn2");
+			configs.put("dfs.namenode.rpc-address.hwqe-1425428405.nn2", "node-2.example.com:8020");
+			HdfsClient.validateConnectionConfigs(configs);
 		});
 	}
 
   @Test
 	public void testNn2UrlNotSpecified()  throws IllegalArgumentException {
 	  assertThrows(IllegalArgumentException.class, () -> {
-    Map<String, String> configs = new HashMap<String, String>();
-    configs.put("username", "hdfsuser");
-    configs.put("password", "hdfsuser");
-    configs.put("hadoop.security.authentication", "simple");
-    configs.put("fs.default.name", "hdfs://hwqe-1425428405");
-    configs.put("dfs.nameservices", "hwqe-1425428405");
-    configs.put("dfs.client.failover.proxy.provider.hwqe-1425428405",
-      "org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider");
-    configs.put("dfs.ha.namenodes.hwqe-1425428405", "nn1,nn2");
-    configs.put("dfs.namenode.rpc-address.hwqe-1425428405.nn1", "node-1.example.com:8020");
-    HdfsClient.validateConnectionConfigs(configs);
+			Map<String, String> configs = new HashMap<String, String>();
+			configs.put("username", "hdfsuser");
+			configs.put("password", "hdfsuser");
+			configs.put("hadoop.security.authentication", "simple");
+			configs.put("fs.default.name", "hdfs://hwqe-1425428405");
+			configs.put("dfs.nameservices", "hwqe-1425428405");
+			configs.put("dfs.client.failover.proxy.provider.hwqe-1425428405",
+					"org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider");
+			configs.put("dfs.ha.namenodes.hwqe-1425428405", "nn1,nn2");
+			configs.put("dfs.namenode.rpc-address.hwqe-1425428405.nn1", "node-1.example.com:8020");
+			HdfsClient.validateConnectionConfigs(configs);
 		});
 	}
 

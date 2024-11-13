@@ -42,7 +42,7 @@ import static org.apache.ranger.service.RangerBaseModelService.OPERATION_CREATE_
 import static org.apache.ranger.service.RangerBaseModelService.OPERATION_DELETE_CONTEXT;
 import static org.apache.ranger.service.RangerBaseModelService.OPERATION_UPDATE_CONTEXT;
 
-public abstract class AbstractAuditedResourceService<T extends XXDBBase, V extends VXDataObject> extends AbstractBaseResourceService<T, V> {
+ public abstract class AbstractAuditedResourceService<T extends XXDBBase, V extends VXDataObject> extends AbstractBaseResourceService<T, V> {
 	protected static final Logger logger = LoggerFactory.getLogger(AbstractAuditedResourceService.class);
 
 	@Autowired

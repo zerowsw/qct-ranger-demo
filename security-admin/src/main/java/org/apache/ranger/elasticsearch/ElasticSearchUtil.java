@@ -236,7 +236,7 @@ public class ElasticSearchUtil {
                     if (!(paramValue instanceof Date)) {
                         logger.error(
 								"Search value is not a Java Date Object: %s %s %s".formatted(
-                            fieldName, searchType, paramValue));
+								fieldName, searchType, paramValue));
                     } else {
                         if (searchType == SearchField.SEARCH_TYPE.GREATER_EQUAL_THAN
                                 || searchType == SearchField.SEARCH_TYPE.GREATER_THAN) {
@@ -254,7 +254,7 @@ public class ElasticSearchUtil {
                         || searchType == SearchField.SEARCH_TYPE.LESS_EQUAL_THAN
                         || searchType == SearchField.SEARCH_TYPE.LESS_THAN) { //NOPMD
                     logger.warn("Range Queries Not Implemented: %s %s %s".formatted(
-                        fieldName, searchType, paramValue));
+							fieldName, searchType, paramValue));
                     return null;
                 } else {
                     if (searchType == SearchField.SEARCH_TYPE.PARTIAL) {
